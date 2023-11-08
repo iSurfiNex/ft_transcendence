@@ -1,16 +1,4 @@
 from django.contrib import admin
-from .models import BlogPost
-
-
-class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ("title", "pub_date")
-    list_filter = ("pub_date",)
-    search_fields = ("title",)
-
-
-admin.site.register(BlogPost)
-
-
 from .models import Game, Player
 
 
@@ -23,7 +11,5 @@ class GameAdmin(admin.ModelAdmin):
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ("id", "games_played")
-    list_filter = ("games_played",)
+    list_display = ("id", "xp")
     search_fields = ("id",)
-    filter_horizontal = ("blocked_players", "games_list")

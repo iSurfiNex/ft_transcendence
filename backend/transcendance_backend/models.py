@@ -1,12 +1,6 @@
 from django.db import models
 
 
-class BlogPost(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    pub_date = models.DateTimeField(auto_now_add=True)
-
-
 class Game(models.Model):
     NUM_PLAYERS_CHOICES = [
         (2, "2 Players"),
@@ -24,11 +18,8 @@ class Game(models.Model):
 
 
 class Player(models.Model):
-    blocked_players = models.ManyToManyField(
-        "self", blank=True, symmetrical=False, related_name="blocked_by"
-    )
-    games_played = models.PositiveIntegerField(default=0)
-    games_list = models.ManyToManyField(Game, related_name="players")
+    name = models.CharField(max_length=100, default="")
+    xp = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"Player (ID: {self.id})"
