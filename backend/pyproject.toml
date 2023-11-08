@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "transcendance-backend"
+version = "0.1.0"
+description = "Django backend application for ft_transcendance 42 project."
+authors = ["Félix JULLIEN <jullienfelix@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^4.2.7"
+psycopg2-binary = "^2.9.9"
+django-extensions = "^3.2.3"
+python-dotenv = "^1.0.0"
+pygraphviz = "^1.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
