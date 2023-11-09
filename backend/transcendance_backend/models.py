@@ -1,25 +1,64 @@
 from django.db import models
-
-
-class Game(models.Model):
-    NUM_PLAYERS_CHOICES = [
-        (2, "2 Players"),
-        (4, "4 Players"),
-        (6, "6 Players"),
-        (8, "8 Players"),
-    ]
-    DIFFICULTY_CHOICES = [("simple", "Simple"), ("evil", "Evil")]
-
-    num_players = models.PositiveSmallIntegerField(choices=NUM_PLAYERS_CHOICES)
-    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
-
-    def __str__(self):
-        return f"Game ({self.num_players} Players, {self.difficulty})"
+from django.core.validators import MinValueValidator, MaxValueValidator
+from .validators import even_value_validator
 
 
 class Player(models.Model):
-    name = models.CharField(max_length=100, default="")
-    xp = models.PositiveIntegerField(default=0)
+    name = models.CharField(max_length=32)
+    blocked_users = models.ManyToManyField("self", symmetrical=False)
+    games = models.ManyToManyField("Game")
+    tournaments = models.ManyToManyField("Tournament")
 
-    def __str__(self):
-        return f"Player (ID: {self.id})"
+
+class GameStat(models.Model):
+    goal_nb = models.PositiveIntegerField(default=0)
+    touch_nb = models.PositiveIntegerField(default=0)
+    miss_nb = models.PositiveIntegerField(default=0)
+    game = models.ForeignKey("Game", on_delete=models.CASCADE)
+    game = models.ForeignKey("Game", on_delete=models.CASCADE)
+    player = models.ForeignKey("Player", on_delete=models.CASCADE)
+
+
+class Game(models.Model):
+    GAME_STATES = (
+        ("waiting", "Waiting"),
+        ("running", "Running"),
+        ("done", "Done"),
+    )
+    state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
+    required_player_number = models.PositiveIntegerField(default=2)
+    started_at = models.DateTimeField(null=True, blank=True)
+    ended_at = models.DateTimeField(null=True, blank=True)
+    players = models.ManyToManyField(
+        "Player", through="GameStat", related_name="games_played"
+    )
+    winner = models.ForeignKey(
+        "Player",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="games_won",
+    )
+    goal_objective = models.PositiveIntegerField(
+        default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
+    )
+    ia = models.BooleanField(default=False)
+
+
+class Pool(models.Model):
+    tournament = models.ForeignKey(
+        "Tournament", on_delete=models.CASCADE, related_name="tournaments"
+    )
+    games = models.ManyToManyField(Game)
+
+
+class Tournament(models.Model):
+    pools = models.ManyToManyField(Pool, related_name="tournaments")
+    created_by = models.ForeignKey(
+        "Player", on_delete=models.CASCADE, related_name="created_tournaments"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    required_player_number = models.PositiveIntegerField(
+        default=2, validators=[even_value_validator]
+    )
+    joined_players = models.ManyToManyField(Player)
