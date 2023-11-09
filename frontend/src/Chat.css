@@ -242,6 +242,53 @@ body {
 		top: 10px;
 		margin-left: 5px;
 	}
+
+	.messages {
+		position: absolute;
+		width: 100%;
+		height: calc(100% - 160px);
+		top: 81px;
+		display: flex;
+		flex-direction: column-reverse;
+		overflow: scroll;
+	}
+
+	.message {
+		position: relative;
+		width: calc(100% - 20px);
+		left: 10px;
+		margin-top: 15px;
+	}
+
+	.message-player-img {
+		width: 40px;
+		height: 40px;
+		position: relative;
+		border-radius: 20px;
+	}
+
+	.message-player-name {
+		position: absolute;
+		top: 8px;
+		font-size: 15px;
+		left: 45px;
+		color: rgb(177, 177, 177);
+	}
+
+	.message-player-date {
+		position: absolute;
+		top: 10px;
+		font-size: 11px;
+		right: 10px;
+		color: rgb(177, 177, 177);
+	}
+
+	.message-player-content {
+		position: relative;
+		color: rgb(177, 177, 177);
+		width: calc(100% - 10px);
+		word-wrap: break-word;
+	}
 }
 
 @media (hover: hover) {
@@ -449,7 +496,7 @@ body {
 		position: absolute;
 		width: 100%;
 		height: calc(100% - 160px);
-		top: 80px;
+		top: 81px;
 		display: flex;
 		flex-direction: column-reverse;
 		overflow: scroll;
@@ -491,7 +538,6 @@ body {
 		width: calc(100% - 10px);
 		word-wrap: break-word;
 	}
-
 }
 
 .btn.focus {

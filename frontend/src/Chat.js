@@ -117,6 +117,114 @@ function Chat() {
 						<div class="message-player-date">18:05</div>
 						<div class="message-player-content">Salut a tous</div>
 					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
+					<div class="message">
+						<img class="message-player-img" src={list} alt="profile"></img>
+						<div class="message-player-name">teeeeeeeeeeeeest</div>
+						<div class="message-player-date">18:05</div>
+						<div class="message-player-content">Salut a tous</div>
+					</div>
 				</div>
 
 				<div class="bottom-bar">
