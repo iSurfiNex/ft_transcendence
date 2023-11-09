@@ -20,6 +20,6 @@ from .views import PlayerView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("players/", PlayerView.as_view(), name="player-list"),
-    path("players/<int:id>/", PlayerView.as_view(), name="player-detail"),
+    path("api/players/", PlayerView.as_view(), name="player-list"),
+    path("api/players/<int:id>/", PlayerView.as_view(), name="player-detail"),
 ]
