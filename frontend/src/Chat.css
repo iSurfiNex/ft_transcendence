@@ -125,7 +125,7 @@ body {
 	height: 80px;
 	top: 0px;
 	display: flex;
-	overflow-y: auto;
+	overflow: scroll;
 	scrollbar-width: 2px;
 	box-shadow: 0 19px 38px rgba(0,0,0,1.00), 0 15px 12px rgba(0,0,0,0.22);
 }
