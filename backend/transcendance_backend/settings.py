@@ -137,3 +137,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Use a different test database name
+TEST_DATABASE_NAME = os.environ.get("TEST_DB_NAME")
+
+# Specify the test database user
+TEST_DATABASE_USER = os.environ.get("TEST_DB_USER")
