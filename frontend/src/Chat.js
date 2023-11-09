@@ -5,7 +5,8 @@ import send from './img/send.svg';
 import plus from './img/plus.svg';
 import message from './img/message.svg';
 import block from './img/block.svg';
-import { useState, useEffect} from 'react';
+import { useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import './Chat.css';
 
 
@@ -23,36 +24,6 @@ function Chat() {
 		setIsPlayerListChecked(!isPlayerListChecked);
 	}
 
-
-	const [mobile, setMobile] = useState(window.innerWidth <= 500);
-
-	const handleWindowSizeChange = () => {
-		setMobile(window.innerWidth <= 500);
-	}
-
-	useEffect(() => {
-		window.addEventListener('resize', handleWindowSizeChange);
-		return () => {
-			window.removeEventListener('resize', handleWindowSizeChange);
-		}
-	}, []);
-
-
-	const [mobileDefault, setMobileDefault] = useState(true);
-
-	if (!mobile && isBubbleChecked) {
-		setIsBubbleChecked(false);
-		setMobileDefault(true);
-	}
-	if (!mobile && !isBubbleChecked && !mobileDefault) {
-		setIsBubbleChecked(true);
-		setMobileDefault(false);
-	}
-	if (mobile && !isBubbleChecked && mobileDefault) {
-		setIsBubbleChecked(true);
-		setMobileDefault(false);
-	}
-
 	return (
 		<div class="Chat">
 			<div class="chat-mobile">
@@ -65,7 +36,7 @@ function Chat() {
 				</div>
 			</div>
 
-			{!isBubbleChecked && (<div class="chat-desktop">
+			{(!isBubbleChecked || !isMobile) && (<div class="chat-desktop">
 				<div class="channels">
 					<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 						<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" defaultChecked/>
