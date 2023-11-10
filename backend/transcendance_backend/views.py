@@ -16,11 +16,11 @@ class PlayerView(View):
             if id:
                 player = Player.objects.get(id=id)
                 response = player.serialize()
-                return JsonResponse(response, safe=False)
+                return JsonResponse(response, status=200)
             else:
                 players = Player.objects.all()
                 response = [player.serialize() for player in players]
-                return JsonResponse(response, safe=False)
+                return JsonResponse(response, safe=False, status=200)
         except Player.DoesNotExist:
             return JsonResponse({"errors": "Player not found"}, status=404)
 
@@ -33,7 +33,8 @@ class PlayerView(View):
             new_player = Player(**form.cleaned_data)
             new_player.save()
             created_player = Player.objects.get(id=new_player.id)
-            return JsonResponse(created_player.serialize(), status=201, safe=False)
+            response = created_player.serialize()
+            return JsonResponse(response, status=201)
         except KeyError:
             return JsonResponse({"errors": "Invalid data"}, status=400)
         except IntegrityError as e:
@@ -55,7 +56,8 @@ class PlayerView(View):
                 setattr(player, key, value)
             player.save()
             updated_player = Player.objects.get(id=player.id)
-            return JsonResponse(updated_player.serialize(), status=200)
+            response = updated_player.serialize()
+            return JsonResponse(response, status=200)
         except Player.DoesNotExist:
             return JsonResponse({"errors": "Player not found"}, status=404)
         except IntegrityError as e:
