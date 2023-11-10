@@ -2,11 +2,24 @@ body {
 	background-color: rgb(29, 29, 29);
 }
 
-.background {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	width: calc(75% - 10px);
-	height: calc(90% - 10px);
-	background-color: rgba(255, 255, 255, 0.5);
+@media (pointer:none), (pointer:coarse) {
+	.background-tournament {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 6px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
+
+@media (hover: hover) {
+	.background-tournament {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: calc(75% - 10px);
+		height: calc(90% - 10px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
 }

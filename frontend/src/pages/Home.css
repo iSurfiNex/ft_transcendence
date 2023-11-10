@@ -1,101 +1,196 @@
 @media (pointer:none), (pointer:coarse) {
+	.home {
+		position: absolute;
+		right: 0;
+		bottom: 70px;
+		width: 100%;
+		height: calc(90% - 8px - 70px);
+		background-color: rgb(29, 29, 29);
+		transition: all 0.4s ease-in-out;
+	}
 
+	.pong {
+		position: absolute;
+		top: 2.5%;
+		left: 2%;
+		height: 31%;
+		width: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+	}
+
+	.other-game {
+		position: absolute;
+		top: calc(2.5% + 31% + 1%);
+		left: 2%;
+		height: 31%;
+		width: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+	}
+
+	.tournament {
+		position: absolute;
+		top: calc(2.5% + 31% + 1% + 31% + 1%);
+		left: 2%;
+		height: 31%;
+		width: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+	}
+
+	.title {
+		width: 50%;
+		font-family: 'Press Start 2P', sans-serif;
+		color: white;
+		font-size: 30px;
+		word-wrap: break-word;
+	}
+
+	.button {
+		margin-left: 20px;
+		color: white;
+		font-size: 40px;
+		word-wrap: break-word;
+	}
+
+	.queue {
+		position: absolute;
+		width: 80%;
+		left: 0;
+		bottom: 0;
+	}
+
+	.content-main {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+	}
+
+	.content {
+		width: 100%;
+		height: 100%;
+	}
+
+	.player-nb {
+		color: white;
+		font-size: 15px;
+		word-wrap: break-word;
+	}
+
+	.player-text {
+		color: white;
+		font-size: 15px;
+		word-wrap: break-word;
+	}
 }
 
 @media (hover: hover) {
+	.home {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: calc(75% - 10px);
+		height: calc(90% - 10px);
+		background-color: rgb(29, 29, 29);
+	}
 
-}
+	.pong {
+		position: absolute;
+		left: 2.5%;
+		top: 2%;
+		width: 31%;
+		height: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+	}
 
-.home {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	width: calc(75% - 10px);
-	height: calc(90% - 10px);
-	background-color: rgb(29, 29, 29);
-}
+	.other-game {
+		position: absolute;
+		left: calc(2.5% + 31% + 1%);
+		top: 2%;
+		width: 31%;
+		height: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+	}
 
-.pong {
-	position: absolute;
-	left: 2.5%;
-	top: 2%;
-	width: 31%;
-	height: 96%;
-	background-color: rgba(255, 255, 255, 0.5);
-	backdrop-filter: blur(5px);
-	border-radius: 20px;
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-	text-align: center;
-	transition: all 0.4s ease-in-out;
-}
+	.tournament {
+		position: absolute;
+		left: calc(2.5% + 31% + 1% + 31% + 1%);
+		top: 2%;
+		width: 31%;
+		height: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+	}
 
-.other-game {
-	position: absolute;
-	left: calc(2.5% + 31% + 1%);
-	top: 2%;
-	width: 31%;
-	height: 96%;
-	background-color: rgba(255, 255, 255, 0.5);
-	backdrop-filter: blur(5px);
-	border-radius: 20px;
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-	text-align: center;
-	transition: all 0.4s ease-in-out;
-}
+	.title {
+		position: relative;
+		top: 31%;
+		font-family: 'Press Start 2P', sans-serif;
+		color: white;
+		font-size: 40px;
+		word-wrap: break-word;
+	}
 
-.tournament {
-	position: absolute;
-	left: calc(2.5% + 31% + 1% + 31% + 1%);
-	top: 2%;
-	width: 31%;
-	height: 96%;
-	background-color: rgba(255, 255, 255, 0.5);
-	backdrop-filter: blur(5px);
-	border-radius: 20px;
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-	text-align: center;
-	transition: all 0.4s ease-in-out;
-}
+	.button {
+		position: relative;
+		top: 32%;
+		color: white;
+		font-size: 40px;
+		word-wrap: break-word;
+	}
 
-.content {
-	width: 100%;
-	height: 100%;
-}
+	.queue {
+		width: 100%;
+		text-align: center;
+		position: absolute;
+		bottom: 20px;
+	}
 
-.title {
-	position: relative;
-	top: 31%;
-	font-family: 'Press Start 2P', sans-serif;
-	color: white;
-	font-size: 40px;
-	word-wrap: break-word;
-}
+	.content, .content-main {
+		width: 100%;
+		height: 100%;
+	}
 
-.button {
-	position: relative;
-	top: 32%;
-	color: white;
-	font-size: 40px;
-	word-wrap: break-word;
-}
+	.player-nb {
+		color: white;
+		font-size: 20px;
+		word-wrap: break-word;
+	}
 
-.queue {
-	width: 100%;
-	text-align: center;
-	position: absolute;
-	bottom: 20px;
-}
-
-.player-nb {
-	color: white;
-	font-size: 20px;
-	word-wrap: break-word;
-}
-
-.player-text {
-	color: white;
-	font-size: 20px;
-	word-wrap: break-word;
+	.player-text {
+		color: white;
+		font-size: 20px;
+		word-wrap: break-word;
+	}
 }
 
 .pushable {

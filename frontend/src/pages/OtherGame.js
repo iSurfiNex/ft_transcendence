@@ -3,7 +3,7 @@ import "./OtherGame.css";
 
 function OtherGame() {
 	return (
-		<div className="background">
+		<div className="background-other-game">
 
 		</div>
 	);
