@@ -3,20 +3,15 @@ from .models import Player, Game, Tournament, GameStat, Pool
 from django import forms
 
 
-class EvenValueValidator:
-    def __init__(self, min_value, message=None):
-        self.min_value = min_value
-        self.message = message
-
-    def __call__(self, value):
-        if value % 2 != 0:
-            raise forms.ValidationError(self.message or "Value must be an even number.")
-
-
 class TournamentAdmin(admin.ModelAdmin):
     filter_horizontal = (
         "pools",
-        "joined_players",
+        "players",
+    )
+    list_display = ("id", "created_by", "required_player_number")
+    search_fields = (
+        "id",
+        "created_by",
     )
 
 

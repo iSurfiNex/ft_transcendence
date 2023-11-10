@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import PlayerView, TournamentView
+from .views import PlayerView, TournamentView, GameView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,4 +26,6 @@ urlpatterns = [
     path(
         "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
     ),
+    path("api/games/", GameView.as_view(), name="game-list"),
+    path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
 ]

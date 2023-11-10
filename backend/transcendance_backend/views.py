@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 
-from .models import Player, Tournament
-from .forms import PlayerForm, TournamentForm
+from .models import Player, Tournament, Game
+from .forms import PlayerForm, TournamentForm, GameForm
 from typing import Type
 
 
@@ -82,3 +82,4 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
 
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")
 TournamentView = create_rest_api_endpoint(Tournament, TournamentForm, "Tournament")
+GameView = create_rest_api_endpoint(Game, GameForm, "Game")
