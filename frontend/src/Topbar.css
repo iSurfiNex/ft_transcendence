@@ -1,12 +1,3 @@
-body {
-	margin: 0;
-
-	font-family: 'Roboto', sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	background-color: black;
-}
-
 @media (pointer:none), (pointer:coarse) {
 	.topbar {
 		display: block;
@@ -19,10 +10,20 @@ body {
 		z-index: 11;
 	}
 
-	.logo img {
+	.logo {
 		position: absolute;
-		top: 5%;
 		height: calc(100% - 10%);
+		top: 5%;
+		width: 25%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.logo img {
+		max-height: 100%;
+		height: auto;
+		overflow: hidden;
 	}
 
 	.separator {
@@ -51,8 +52,10 @@ body {
 	}
 
 	.profile-picture-div {
+		position: absolute;
 		width: 100%;
-		height: 100%;
+		height: 90%;
+		top: 5%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -61,11 +64,13 @@ body {
 	.profile-picture-div img {
 		top: 5%;
 		left: 5%;
-		height: calc(100% - 10%);
-		border-radius: 50px;
+		border-radius: 50%;
 		border: 3px solid #9f9f9f;
 		box-shadow: 0px 0px 15px -3px #9F9F9F;
 		background-color: #9F9F9F;
+		max-height: 100%;
+		height: auto;
+		overflow: hidden;
 	}
 }
 
@@ -80,10 +85,20 @@ body {
 		z-index: 11;
 	}
 
-	.logo img {
+	.logo {
 		position: absolute;
-		top: 5%;
 		height: calc(100% - 10%);
+		top: 5%;
+		width: 25%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.logo img {
+		max-height: 100%;
+		height: auto;
+		overflow: hidden;
 	}
 
 	.separator {
@@ -112,30 +127,24 @@ body {
 	}
 
 	.profile-picture-div {
+		position: absolute;
 		width: 100%;
-		height: 100%;
+		height: 90%;
+		top: 5%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
 	.profile-picture-div img {
-		top: 5%;
-		left: 5%;
-		height: calc(100% - 10%);
-		border-radius: 50px;
+		max-height: 100%;
+		height: auto;
+		border-radius: 50%;
 		border: 3px solid #9f9f9f;
 		box-shadow: 0px 0px 15px -3px #9F9F9F;
 		background-color: #9F9F9F;
+		overflow: hidden;
 	}
-}
-
-.logo {
-	height: 100%;
-	width: 25%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 ::-webkit-scrollbar {
