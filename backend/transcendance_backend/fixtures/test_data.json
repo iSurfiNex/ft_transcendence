@@ -3,28 +3,40 @@
         "model": "transcendance_backend.player",
         "pk": 1,
         "fields": {
-            "name": "Player 1"
+            "name": "Player 1",
+            "blocked_users": [],
+            "tournaments": [],
+            "games": []
         }
     },
     {
         "model": "transcendance_backend.player",
         "pk": 2,
         "fields": {
-            "name": "Player 2"
+            "name": "Player 2",
+            "blocked_users": [],
+            "tournaments": [],
+            "games": []
         }
     },
     {
         "model": "transcendance_backend.player",
         "pk": 3,
         "fields": {
-            "name": "Player 3"
+            "name": "Player 3",
+            "blocked_users": [],
+            "tournaments": [],
+            "games": []
         }
     },
     {
         "model": "transcendance_backend.player",
         "pk": 4,
         "fields": {
-            "name": "Player 4"
+            "name": "Player 4",
+            "blocked_users": [],
+            "tournaments": [],
+            "games": []
         }
     },
     {
