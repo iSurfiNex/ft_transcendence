@@ -25,121 +25,121 @@ function Chat() {
 	}
 
 	return (
-		<div class="Chat">
-			<div class="chat-mobile">
-				<div class="chat-bubble">
-					<label class="btn btn-primary chat-bubble-label" for="btn-check">
-						<input onChange={bubbleCheckHandler} checked={isBubbleChecked} type="checkbox" class="btn-check chat-bubble-check" id="btn-check" autocomplete="off"/>
-						<img class="chat-bubble-unchecked" src={bubble} alt="bubble"/>
-						<img class="chat-bubble-checked" src={close} alt="close"/>
+		<div className="Chat">
+			<div className="chat-mobile">
+				<div className="chat-bubble">
+					<label className="btn btn-primary chat-bubble-label" htmlFor="btn-check">
+						<input onChange={bubbleCheckHandler} checked={isBubbleChecked} type="checkbox" className="btn-check chat-bubble-check" id="btn-check" autoComplete="off"/>
+						<img className="chat-bubble-unchecked" src={bubble} alt="bubble"/>
+						<img className="chat-bubble-checked" src={close} alt="close"/>
 					</label>
 				</div>
 			</div>
 
-			{(!isBubbleChecked || !isMobile) && (<div class="chat-desktop">
-				<div class="channels">
-					<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" defaultChecked/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio1">G
-							<div class ="channels-bubble-notif"></div>
+			{(!isBubbleChecked || !isMobile) && (<div className="chat-desktop">
+				<div className="channels">
+					<div className="btn-group" role="group" aria-label="Basic radio toggle button group">
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" defaultChecked/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio1">G
+							<div className ="channels-bubble-notif"></div>
 						</label>
 
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio2">T
-							<div class ="channels-bubble-notif active">1</div>
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off"/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio2">T
+							<div className ="channels-bubble-notif active">1</div>
 						</label>
 
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio3">
-							<div class ="channels-bubble-notif"></div>
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off"/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio3">
+							<div className ="channels-bubble-notif"></div>
 						</label>
 
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio4">
-							<div class ="channels-bubble-notif active">4</div>
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio4" autoComplete="off"/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio4">
+							<div className ="channels-bubble-notif active">4</div>
 						</label>
 
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off"/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio5">
-							<div class ="channels-bubble-notif active">1</div>
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio5" autoComplete="off"/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio5">
+							<div className ="channels-bubble-notif active">1</div>
 						</label>
 
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off"/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio6">
-							<div class ="channels-bubble-notif active">+9</div>
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio6" autoComplete="off"/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio6">
+							<div className ="channels-bubble-notif active">+9</div>
 						</label>
 
-						<input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off"/>
-						<label class="btn btn-secondary channels-bubble" for="btnradio7">
-							<div class ="channels-bubble-notif"></div>
+						<input type="radio" className="btn-check" name="btnradio" id="btnradio7" autoComplete="off"/>
+						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio7">
+							<div className ="channels-bubble-notif"></div>
 						</label>
 					</div>
 				</div>
 
-				<div class="messages">
-					<div class="message">
+				<div className="messages">
+					<div className="message">
 						<a href="/">
-							<img class="message-player-img" src={list} alt="profile"></img>
-							<div class="message-player-date">18:05</div>
+							<img className="message-player-img" src={list} alt="profile"></img>
+							<div className="message-player-date">18:05</div>
 						</a>
-						<div class="message-player-name">teeeeeeeeeeeeest</div>
-						<div class="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
+						<div className="message-player-name">teeeeeeeeeeeeest</div>
+						<div className="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
 					</div>
-					<div class="message">
+					<div className="message">
 						<a href="/">
-							<img class="message-player-img" src={list} alt="profile"></img>
-							<div class="message-player-date">18:05</div>
+							<img className="message-player-img" src={list} alt="profile"></img>
+							<div className="message-player-date">18:05</div>
 						</a>
-						<div class="message-player-name">teeeeeeeeeeeeest</div>
-						<div class="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
+						<div className="message-player-name">teeeeeeeeeeeeest</div>
+						<div className="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
 					</div>
-					<div class="message">
+					<div className="message">
 						<a href="/">
-							<img class="message-player-img" src={list} alt="profile"></img>
-							<div class="message-player-name">teeeeeeeeeeeeest</div>
+							<img className="message-player-img" src={list} alt="profile"></img>
+							<div className="message-player-name">teeeeeeeeeeeeest</div>
 						</a>
-						<div class="message-player-date">18:05</div>
-						<div class="message-player-content">Salut a tous</div>
+						<div className="message-player-date">18:05</div>
+						<div className="message-player-content">Salut a tous</div>
 					</div>
 				</div>
 
-				<div class="bottom-bar">
-					<input placeholder="Ecrivez votre message ici" class="form-control chat-input"/>
-					<label class="btn btn-primary chat-send" for="btn-check">
-						<div class="chat-send-button">
-							<input class="chat-send-img" alt="send" type="image" src={send} name="submit"/>
+				<div className="bottom-bar">
+					<input placeholder="Ecrivez votre message ici" className="htmlForm-control chat-input"/>
+					<label className="btn btn-primary chat-send" htmlFor="btn-check">
+						<div className="chat-send-button">
+							<input className="chat-send-img" alt="send" type="image" src={send} name="submit"/>
 						</div>
 					</label>
-					<div class="player-list">
-						<label class="btn btn-primary player-list-label" for="btn-check-list">
-							<input class="btn-check player-list-input" onChange={playerListCheckHandler} checked={isPlayerListChecked} type="checkbox" id="btn-check-list" autocomplete="off"/>
-							<img class="player-list-unchecked" src={list} alt="list"/>
-							<img class="player-list-checked" src={close} alt="close"/>
+					<div className="player-list">
+						<label className="btn btn-primary player-list-label" htmlFor="btn-check-list">
+							<input className="btn-check player-list-input" onChange={playerListCheckHandler} checked={isPlayerListChecked} type="checkbox" id="btn-check-list" autoComplete="off"/>
+							<img className="player-list-unchecked" src={list} alt="list"/>
+							<img className="player-list-checked" src={close} alt="close"/>
 						</label>
 					</div>
 				</div>
 
-				{!isPlayerListChecked && (<div class="chat-player-list">
-					<span class="chat-player-list-header-text">Player list</span>
-					<div class="chat-list-player">
-						<div class="chat-player">
-							<a class="chat-player-link" href="/">
-								<img class="chat-player-img" src={list} alt="profile"></img>
-								<div class="chat-player-name">teeeeeeeeeeeeeeeeeest</div>
+				{!isPlayerListChecked && (<div className="chat-player-list">
+					<span className="chat-player-list-header-text">Player list</span>
+					<div className="chat-list-player">
+						<div className="chat-player">
+							<a className="chat-player-link" href="/">
+								<img className="chat-player-img" src={list} alt="profile"></img>
+								<div className="chat-player-name">teeeeeeeeeeeeeeeeeest</div>
 							</a>
-							<button class="chat-player-message btn btn-primary"><img class="chat-player-button-img" src={message} alt="send message"></img></button>
-							<button class="chat-player-invite btn btn-success"><img class="chat-player-button-img" src={plus} alt="invite"></img></button>
-							<button class="chat-player-block btn btn-danger"><img class="chat-player-button-img" src={block} alt="block"></img></button>
-							<div class="chat-player-seperator"></div>
+							<button className="chat-player-message btn btn-primary"><img className="chat-player-button-img" src={message} alt="send message"></img></button>
+							<button className="chat-player-invite btn btn-success"><img className="chat-player-button-img" src={plus} alt="invite"></img></button>
+							<button className="chat-player-block btn btn-danger"><img className="chat-player-button-img" src={block} alt="block"></img></button>
+							<div className="chat-player-seperator"></div>
 						</div>
-						<div class="chat-player">
-							<a class="chat-player-link" href="/">
-								<img class="chat-player-img" src={list} alt="profile"></img>
-								<span class="chat-player-name">test</span>
+						<div className="chat-player">
+							<a className="chat-player-link" href="/">
+								<img className="chat-player-img" src={list} alt="profile"></img>
+								<span className="chat-player-name">test</span>
 							</a>
-							<button class="chat-player-message btn btn-primary"><img class="chat-player-button-img" src={message} alt="send message"></img></button>
-							<button class="chat-player-invite btn btn-success"><img class="chat-player-button-img" src={plus} alt="invite"></img></button>
-							<button class="chat-player-block btn btn-danger"><img class="chat-player-button-img" src={block} alt="block"></img></button>
+							<button className="chat-player-message btn btn-primary"><img className="chat-player-button-img" src={message} alt="send message"></img></button>
+							<button className="chat-player-invite btn btn-success"><img className="chat-player-button-img" src={plus} alt="invite"></img></button>
+							<button className="chat-player-block btn btn-danger"><img className="chat-player-button-img" src={block} alt="block"></img></button>
 						</div>
 					</div>
 				</div>)}
