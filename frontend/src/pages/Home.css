@@ -1,0 +1,75 @@
+body {
+	margin: 0;
+
+	font-family: 'Roboto', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: black;
+}
+
+@media (pointer:none), (pointer:coarse) {
+
+}
+
+@media (hover: hover) {
+
+}
+
+.home {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: calc(75% - 10px);
+	height: calc(90% - 10px);
+	background-color: rgb(29, 29, 29);
+}
+
+.pong {
+	position: absolute;
+	left: 4%;
+	top: 2%;
+	width: 28%;
+	height: 96%;
+	background-color: rgba(255, 255, 255, 0.5);
+	backdrop-filter: blur(5px);
+	border-radius: 20px;
+	box-shadow: 0px 0px 15px 5px rgba(120,120,120,0.5);
+	text-align: center;
+}
+
+.other-game {
+	position: absolute;
+	left: calc(4% + 28% + 4%);
+	top: 2%;
+	width: 28%;
+	height: 96%;
+	background-color: rgba(255, 255, 255, 0.5);
+	backdrop-filter: blur(5px);
+	border-radius: 20px;
+	box-shadow: 0px 0px 15px 5px rgba(120,120,120,0.5);
+	text-align: center;
+}
+
+.tournament {
+	position: absolute;
+	left: calc(4% + 28% + 4% + 28% + 4%);
+	top: 2%;
+	width: 28%;
+	height: 96%;
+	background-color: rgba(255, 255, 255, 0.5);
+	backdrop-filter: blur(5px);
+	border-radius: 20px;
+	box-shadow: 0px 0px 15px 5px rgba(120,120,120,0.5);
+	text-align: center;
+}
+
+.title {
+	position: relative;
+	top: 30%;
+}
+
+.background {
+	background-color: rgb(163, 11, 131);
+	width: 100%;
+	height: 100%;
+}
