@@ -1,7 +1,7 @@
 import React from "react";
-import "./Game.css";
+import "./Tournament.css";
 
-function Game() {
+function Tournament() {
 	return (
 		<div className="background">
 
@@ -9,4 +9,4 @@ function Game() {
 	);
 }
 
-export default Game;
+export default Tournament;
