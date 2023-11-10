@@ -4,20 +4,6 @@ import requests
 from http import HTTPStatus
 from django.forms import model_to_dict
 
-# class TournamentTestCase(TestCase):
-#    fixtures = ["test_data.json"]
-#
-#    def test_tournament_and_pools(self):
-#        # Check if the players, tournament, and pools were created correctly
-#        players = Player.objects.all()
-#        tournament = Tournament.objects.get(pk=1)
-#        pools = Pool.objects.filter(tournament=tournament)
-#
-#        self.assertEqual(players.count(), 4)
-#        self.assertEqual(players[0].name, "Player 1")
-#        self.assertEqual(pools.count(), 2)
-
-# from django.test import TestCase
 from django.test import LiveServerTestCase
 from django.urls import reverse
 
@@ -94,33 +80,3 @@ class ApiTests(LiveServerTestCase):
                 "games": [],
             },
         )
-
-
-#    def test_create_endpoint(self):
-#        data = {"name": "New Item"}
-#        response = self.client.post("/api/your_endpoint/", data)
-#
-#        # Assert that the response status code is 201 (Created)
-#        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-
-## Make a GET request to retrieve data
-# response = requests.get("http://localhost:8000/api/your_endpoint/")
-# print(response.status_code)
-# print(response.json())
-#
-## Make a POST request to create data
-# data = {"name": "New Item"}
-# response = requests.post("http://localhost:8000/api/your_endpoint/", json=data)
-# print(response.status_code)
-# print(response.json())
-#
-## Make a PUT request to update data
-# data = {"name": "Updated Item"}
-# response = requests.put("http://localhost:8000/api/your_endpoint/1/", json=data)
-# print(response.status_code)
-# print(response.json())
-#
-## Make a DELETE request to delete data
-# response = requests.delete("http://localhost:8000/api/your_endpoint/1/")
-# print(response.status_code)
