@@ -1,5 +1,8 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import (
+    MinValueValidator,
+    MaxValueValidator,
+)
 from .validators import even_value_validator
 
 
@@ -49,7 +52,9 @@ class Game(models.Model):
     started_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
     players = models.ManyToManyField(
-        "Player", through="GameStat", related_name="games_played"
+        "Player",
+        through="GameStat",
+        related_name="games_played",
     )
     winner = models.ForeignKey(
         "Player",
@@ -66,6 +71,13 @@ class Game(models.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "state": self.state,
+            "required_player_number": self.required_player_number,
+            "ended_at": self.ended_at,
+            "players": [player.serialize_summary() for player in self.players.all()],
+            "winner": self.winner,
+            "goal_objective": self.goal_objective,
+            "ia": self.ia,
         }
 
     def serialize_summary(self):
@@ -81,18 +93,11 @@ class Pool(models.Model):
     games = models.ManyToManyField(Game)
 
     def serialize(self):
-        return {
-            "id": self.id,
-        }
-
-    def serialize_summary(self):
-        return {
-            "id": self.id,
-        }
+        return {"id": self.id, "games": [game.serialize() for game in self.games.all()]}
 
 
 class Tournament(models.Model):
-    pools = models.ManyToManyField(Pool, related_name="tournaments")
+    pools = models.ManyToManyField(Pool, related_name="tournaments", blank=True)
     created_by = models.ForeignKey(
         "Player", on_delete=models.CASCADE, related_name="created_tournaments"
     )
@@ -100,11 +105,16 @@ class Tournament(models.Model):
     required_player_number = models.PositiveIntegerField(
         default=2, validators=[even_value_validator]
     )
-    joined_players = models.ManyToManyField(Player)
+    players = models.ManyToManyField(Player, blank=True)
 
     def serialize(self):
         return {
             "id": self.id,
+            "pools": [pool.serialize() for pool in self.pools.all()],
+            "created_by": self.created_by.serialize_summary(),
+            "created_at": self.created_at,
+            "players": [player.serialize_summary() for player in self.players.all()],
+            "required_player_number": self.required_player_number,
         }
 
     def serialize_summary(self):
