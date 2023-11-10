@@ -127,9 +127,9 @@ function Chat() {
 								<img className="chat-player-img" src={list} alt="profile"></img>
 								<div className="chat-player-name">teeeeeeeeeeeeeeeeeest</div>
 							</a>
-							<button className="chat-player-message btn btn-primary"><img className="chat-player-button-img" src={message} alt="send message"></img></button>
-							<button className="chat-player-invite btn btn-success"><img className="chat-player-button-img" src={plus} alt="invite"></img></button>
-							<button className="chat-player-block btn btn-danger"><img className="chat-player-button-img" src={block} alt="block"></img></button>
+							<button className="chat-player-message btn btn-primary" title="Send message"><img className="chat-player-button-img" src={message} alt="send message"></img></button>
+							<button className="chat-player-invite btn btn-success" title="Invite"><img className="chat-player-button-img" src={plus} alt="invite"></img></button>
+							<button className="chat-player-block btn btn-danger" title="Block"><img className="chat-player-button-img" src={block} alt="block"></img></button>
 							<div className="chat-player-seperator"></div>
 						</div>
 						<div className="chat-player">
@@ -137,9 +137,9 @@ function Chat() {
 								<img className="chat-player-img" src={list} alt="profile"></img>
 								<span className="chat-player-name">test</span>
 							</a>
-							<button className="chat-player-message btn btn-primary"><img className="chat-player-button-img" src={message} alt="send message"></img></button>
-							<button className="chat-player-invite btn btn-success"><img className="chat-player-button-img" src={plus} alt="invite"></img></button>
-							<button className="chat-player-block btn btn-danger"><img className="chat-player-button-img" src={block} alt="block"></img></button>
+							<button className="chat-player-message btn btn-primary" title="Send message"><img className="chat-player-button-img" src={message} alt="send message"></img></button>
+							<button className="chat-player-invite btn btn-success" title="Invite"><img className="chat-player-button-img" src={plus} alt="invite"></img></button>
+							<button className="chat-player-block btn btn-danger" title="Block"><img className="chat-player-button-img" src={block} alt="block"></img></button>
 						</div>
 					</div>
 				</div>)}
