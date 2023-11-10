@@ -3,7 +3,7 @@ import "./Tournament.css";
 
 function Tournament() {
 	return (
-		<div className="background">
+		<div className="background-tournament">
 
 		</div>
 	);
