@@ -19,9 +19,12 @@
 		// You can send an initial message to the server if needed
 			//socket.send("Hello from the client");
 		};
+			var jfile
+
 			socket.onmessage = (event) => {
 			const message = event.data;
-			//console.log(`Received: ${message}`);
+			jfile = JSON.parse(event.data)
+			console.log(jfile['msg'] + "from " + jfile['user']);
 		};
 		socket.onclose = (event) => {
 			const message = event.data;
