@@ -16,6 +16,10 @@ class Player(models.Model):
             "blocked_users": [
                 user.serialize_summary() for user in self.blocked_users.all()
             ],
+            "tournaments": [
+                tournament.serialize_summary() for tournament in self.tournaments.all()
+            ],
+            "games": [game.serialize_summary() for game in self.games.all()],
         }
 
     def serialize_summary(self):
@@ -59,12 +63,32 @@ class Game(models.Model):
     )
     ia = models.BooleanField(default=False)
 
+    def serialize(self):
+        return {
+            "id": self.id,
+        }
+
+    def serialize_summary(self):
+        return {
+            "id": self.id,
+        }
+
 
 class Pool(models.Model):
     tournament = models.ForeignKey(
         "Tournament", on_delete=models.CASCADE, related_name="tournaments"
     )
     games = models.ManyToManyField(Game)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+        }
+
+    def serialize_summary(self):
+        return {
+            "id": self.id,
+        }
 
 
 class Tournament(models.Model):
@@ -77,3 +101,13 @@ class Tournament(models.Model):
         default=2, validators=[even_value_validator]
     )
     joined_players = models.ManyToManyField(Player)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+        }
+
+    def serialize_summary(self):
+        return {
+            "id": self.id,
+        }
