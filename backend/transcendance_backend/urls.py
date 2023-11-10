@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import PlayerView
+from .views import PlayerView, TournamentView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/players/", PlayerView.as_view(), name="player-list"),
     path("api/players/<int:id>/", PlayerView.as_view(), name="player-detail"),
+    path("api/tournaments/", TournamentView.as_view(), name="tournament-list"),
+    path(
+        "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
+    ),
 ]
