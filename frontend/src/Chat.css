@@ -42,7 +42,7 @@
 	.chat-desktop {
 		position: fixed;
 		width: calc(100% - 20px);
-		height: calc(100% - 164px);
+		height: calc(100% - 164	px);
 		top: calc(10% + 18px);
 		left: 10px;
 		background-color: rgb(54, 54, 54);
