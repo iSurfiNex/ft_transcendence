@@ -352,7 +352,9 @@
 	position: absolute;
 	top: 10px;
 	font-size: 12px;
+	width: calc(100% - 120px);
 	left: 45px;
+	overflow-x: auto;
 	color: rgb(177, 177, 177);
 }
 
@@ -361,10 +363,14 @@
 	color: rgb(177, 177, 177);
 }
 
+.message-player-name::-webkit-scrollbar {
+	display: none;
+}
+
 .message-player-date {
 	position: absolute;
 	top: 10px;
-	font-size: 10px;
+	font-size: 11px;
 	right: 10px;
 	color: rgb(177, 177, 177);
 }
