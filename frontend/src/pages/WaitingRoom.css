@@ -1,0 +1,108 @@
+@media (pointer:none), (pointer:coarse) {
+	.background-waiting-room {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 6px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+
+    .rectangle {
+        position: absolute;
+        bottom: 10%;
+        width: 70%;
+        height: 80%;
+        left: 15%;
+        background-color: rgb(54, 54, 54);
+        box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+    }
+
+    .title {
+        color: rgb(254, 254, 254);
+        font-size: 22px;
+        width: 90%;
+        left: 5%;
+        top: 10%;
+        position: absolute;
+    }
+
+    .players {
+        position: absolute;
+        width: 70%;
+        height: 70%; 
+        left: 20%;
+        bottom: 5%;
+        overflow: auto;
+        text-decoration: none;
+    }
+
+    .player {
+        color: rgb(254, 254, 254);
+        font-size: 15px;
+        width: 50%;
+        left: 13%;
+        position: relative;
+        margin: 5%;
+    }
+
+    a{
+        text-decoration: none;
+    }
+}
+
+
+
+
+
+@media (hover: hover) {
+	.background-waiting-room {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: calc(75% - 10px);
+		height: calc(90% - 10px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+
+    .rectangle {
+        position: absolute;
+        bottom: 10%;
+        width: 50%;
+        height: 80%;
+        left: 25%;
+        background-color: rgb(54, 54, 54);
+        box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+    }
+
+    .title {
+        color: rgb(254, 254, 254);
+        font-size: 40px;
+        width: 70%;
+        left: 15%;
+        top: 5%;
+    }
+
+    .players {
+        position: absolute;
+        width: 50%;
+        height: 70%; 
+        left: 25%;
+        bottom: 5%;
+        overflow: auto;
+        text-decoration: none;
+    }
+
+    .player {
+        color: rgb(254, 254, 254);
+        font-size: 30px;
+        width: 50%;
+        left: 13%;
+        position: relative;
+        margin: 5%;
+    }
+
+    a{
+        text-decoration: none;
+    }
+}
