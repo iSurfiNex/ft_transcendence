@@ -83,17 +83,17 @@ function Chat() {
 					<div className="message">
 						<Link to="/profile">
 							<img className="message-player-img" src={list} alt="profile"></img>
-							<div className="message-player-date">18:05</div>
-						</Link>
 						<div className="message-player-name">teeeeeeeeeeeeest</div>
+						</Link>
+						<div className="message-player-date">18:05</div>
 						<div className="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
 					</div>
 					<div className="message">
 						<Link to="/profile">
 							<img className="message-player-img" src={list} alt="profile"></img>
-							<div className="message-player-date">18:05</div>
-						</Link>
 						<div className="message-player-name">teeeeeeeeeeeeest</div>
+						</Link>
+						<div className="message-player-date">18:05</div>
 						<div className="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
 					</div>
 					<div className="message">
@@ -107,7 +107,7 @@ function Chat() {
 				</div>
 
 				<div className="bottom-bar">
-					<input placeholder="Ecrivez votre message ici" className="htmlForm-control chat-input"/>
+					<input placeholder="Ecrivez votre message ici" className="chat-input"/>
 					<label className="btn btn-primary chat-send" htmlFor="btn-check">
 						<div className="chat-send-button">
 							<input className="chat-send-img" alt="send" type="image" src={send} name="submit"/>
