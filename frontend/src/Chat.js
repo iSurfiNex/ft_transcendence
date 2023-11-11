@@ -81,9 +81,9 @@ function Chat() {
 
 				<div className="messages">
 					<div className="message">
-						<Link to="/profile">
+						<Link to="/profile" className='test'>
 							<img className="message-player-img" src={list} alt="profile"></img>
-						<div className="message-player-name">teeeeeeeeeeeeest</div>
+							<div className="message-player-name">teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest</div>
 						</Link>
 						<div className="message-player-date">18:05</div>
 						<div className="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
@@ -91,7 +91,7 @@ function Chat() {
 					<div className="message">
 						<Link to="/profile">
 							<img className="message-player-img" src={list} alt="profile"></img>
-						<div className="message-player-name">teeeeeeeeeeeeest</div>
+							<div className="message-player-name">teeeeeeeeeeeeest</div>
 						</Link>
 						<div className="message-player-date">18:05</div>
 						<div className="message-player-content">Saqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqlut a tous</div>
