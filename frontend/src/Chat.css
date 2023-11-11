@@ -54,9 +54,8 @@
 		width: calc(100% - 40px);
 		text-align: center;
 		color: white;
-		font-size: 30px;
+		font-size: 27px;
 		background-color: #5e5e5e;
-		font-family: 'Roboto', sans-serif;
 		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 		z-index: 10;
 	}
@@ -94,9 +93,8 @@
 		width: calc(25% - 20px);
 		text-align: center;
 		color: white;
-		font-size: 30px;
+		font-size: 27px;
 		background-color: #5e5e5e;
-		font-family: 'Roboto', sans-serif;
 		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 		z-index: 10;
 	}
@@ -133,9 +131,9 @@
 	width: 50px;
 	height: 50px;
 	margin-right: 10px;
-	padding-top: 1px;
+	padding-top: 6px;
 	padding-left: 11px;
-	font-size: 30px;
+	font-size: 25px;
 }
 
 .channels-bubble-notif.active {
@@ -146,7 +144,8 @@
 	width: 20px;
 	height: 20px;
 	border-radius: 10px;
-	font-size: 13px;
+	font-size: 9px;
+	padding-top: 3px;
 }
 
 .chat-input {
@@ -158,6 +157,7 @@
 	border: none;
 	left: 6px;
 	bottom: 6px;
+	font-size: 11px;
 }
 
 .chat-send {
@@ -270,11 +270,10 @@
 
 .chat-player-name {
 	position: absolute;
-	top: 10px;
+	top: 16px;
 	left: 50px;
-	font-size: 18px;
+	font-size: 13px;
 	width: calc(100% - 180px);
-	font-family: 'Roboto', sans-serif;
 	overflow-x: auto;
 	color: rgb(233, 233, 233);
 }
@@ -335,7 +334,8 @@
 	position: relative;
 	width: calc(100% - 10px);
 	left: 10px;
-	margin-bottom: 10px;
+	margin-top: 25px;
+	bottom: 10px;
 }
 
 .message-player-img {
@@ -350,22 +350,21 @@
 
 .message-player-name {
 	position: absolute;
-	top: 8px;
-	font-size: 15px;
+	top: 10px;
+	font-size: 12px;
 	left: 45px;
 	color: rgb(177, 177, 177);
 }
 
 .message-player-name:hover {
 	text-decoration: none;
-	font-size: 15px;
 	color: rgb(177, 177, 177);
 }
 
 .message-player-date {
 	position: absolute;
 	top: 10px;
-	font-size: 11px;
+	font-size: 10px;
 	right: 10px;
 	color: rgb(177, 177, 177);
 }
@@ -375,6 +374,8 @@
 	color: rgb(177, 177, 177);
 	width: calc(100% - 10px);
 	word-wrap: break-word;
+	margin-top: 5px;
+	font-size: 12px;
 }
 
 ::-webkit-scrollbar {
