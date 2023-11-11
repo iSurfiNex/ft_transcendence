@@ -70,8 +70,8 @@ function Home() {
 					<div className="content-main">
 						<div id="pong-title" className="title">PONG</div>
 						<div className="button">
-							<button id="pong-button" onClick={pongHandler} class="pushable">
-								<span class="front">PLAY</span>
+							<button id="pong-button" onClick={pongHandler} className="pushable">
+								<span className="front">PLAY</span>
 							</button>
 						</div>
 						<div className="queue">
@@ -86,8 +86,8 @@ function Home() {
 					<div className="content-main">
 						<div id="other-game-title" className="title">OTHER-GAME</div>
 						<div className="button">
-							<button id="other-game-button" onClick={othergameHandler} class="pushable">
-								<span class="front">PLAY</span>
+							<button id="other-game-button" onClick={othergameHandler} className="pushable">
+								<span className="front">PLAY</span>
 							</button>
 						</div>
 						<div className="queue">
@@ -102,8 +102,8 @@ function Home() {
 					<div className="content-main">
 						<div id="tournament-title" className="title">TOURNAMENT</div>
 						<div className="button">
-							<button id="tournament-button" onClick={tournamentHandler} class="pushable">
-								<span class="front">PLAY</span>
+							<button id="tournament-button" onClick={tournamentHandler} className="pushable">
+								<span className="front">PLAY</span>
 							</button>
 						</div>
 						<div className="queue">
