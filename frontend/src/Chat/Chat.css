@@ -124,6 +124,10 @@
 	transform:rotateX(180deg);
 }
 
+.channels-bubble-img {
+	width: 100%;
+}
+
 .channels-bubble {
 	left: 10px;
 	bottom: -10px;
@@ -132,8 +136,8 @@
 	height: 50px;
 	margin-right: 10px;
 	padding-top: 6px;
-	padding-left: 11px;
 	font-size: 25px;
+	text-transform: uppercase;
 }
 
 .channels-bubble-notif.active {
@@ -332,7 +336,7 @@
 
 .message {
 	position: relative;
-	width: calc(100% - 10px);
+	width: calc(100% - 15px);
 	left: 10px;
 	margin-top: 25px;
 	bottom: 10px;
