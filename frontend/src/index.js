@@ -19,17 +19,18 @@ const defaultGlobal = {
 			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 		],
 		channels: [
-			{ name: 'Global', picture: 'img/empty.svg' },
+			{ name: 'Global', picture: '' },
 			{ name: 'rsterin', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 			{ name: 'fjullien', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 			{ name: 'jtoulous', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 			{ name: 'tlarraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 		],
+		activeChannel: 'Global',
 		messages: [
-			{ text: 'Hello', sender: 'rsterin', date: '16:03', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
-			{ text: 'Hi there', sender: 'fjullien', date: '17:04', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
-			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
-			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
 		],
 	},
 };

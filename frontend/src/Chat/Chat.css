@@ -360,6 +360,7 @@
 	left: 45px;
 	overflow-x: auto;
 	color: rgb(177, 177, 177);
+	white-space: nowrap
 }
 
 .message-player-name:hover {
