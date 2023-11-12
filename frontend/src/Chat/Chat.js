@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Link } from "react-router-dom"
 
-import list from './img/list.svg';
-import bubble from './img/bubble.svg';
-import close from './img/close.svg';
-import send from './img/send.svg';
-import plus from './img/plus.svg';
-import message from './img/message.svg';
-import block from './img/block.svg';
+import list from '../img/list.svg';
+import bubble from '../img/bubble.svg';
+import close from '../img/close.svg';
+import send from '../img/send.svg';
+import plus from '../img/plus.svg';
+import message from '../img/message.svg';
+import block from '../img/block.svg';
 
 import './Chat.css';
-
+import Channels from './Channels'
 
 function Chat() {
 
@@ -40,44 +40,7 @@ function Chat() {
 			</div>
 
 			{(!isBubbleChecked || !isMobile) && (<div className="chat-desktop">
-				<div className="channels">
-					<div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" defaultChecked/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio1">G
-							<div className ="channels-bubble-notif"></div>
-						</label>
-
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off"/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio2">T
-							<div className ="channels-bubble-notif active">1</div>
-						</label>
-
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off"/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio3">
-							<div className ="channels-bubble-notif"></div>
-						</label>
-
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio4" autoComplete="off"/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio4">
-							<div className ="channels-bubble-notif active">4</div>
-						</label>
-
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio5" autoComplete="off"/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio5">
-							<div className ="channels-bubble-notif active">1</div>
-						</label>
-
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio6" autoComplete="off"/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio6">
-							<div className ="channels-bubble-notif active">+9</div>
-						</label>
-
-						<input type="radio" className="btn-check" name="btnradio" id="btnradio7" autoComplete="off"/>
-						<label className="btn btn-secondary channels-bubble" htmlFor="btnradio7">
-							<div className ="channels-bubble-notif"></div>
-						</label>
-					</div>
-				</div>
+				<Channels />
 
 				<div className="messages">
 					<div className="message">
