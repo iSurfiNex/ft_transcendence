@@ -13,23 +13,23 @@ const GlobalContext = createContext();
 const defaultGlobal = {
 	jsonMap: {
 		users: [
-			{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
-			{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
-			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
-			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
+			{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 		],
 		channels: [
 			{ name: 'Global', picture: 'img/empty.svg' },
-			{ name: 'rsterin', picture: 'img/list.svg' },
-			{ name: 'fjullien', picture: 'img/list.svg' },
-			{ name: 'jtoulous', picture: 'img/list.svg' },
-			{ name: 'tlarraze', picture: 'img/list.svg' },
+			{ name: 'rsterin', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ name: 'fjullien', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ name: 'jtoulous', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ name: 'tlarraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 		],
 		messages: [
-			{ text: 'Hello', sender: 'rsterin', date: '16:03', channels: 'Global' },
-			{ text: 'Hi there', sender: 'fjullien', date: '17:04', channels: 'Global' },
-			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channels: 'Global' },
-			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channels: 'Global' },
+			{ text: 'Hello', sender: 'rsterin', date: '16:03', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Hi there', sender: 'fjullien', date: '17:04', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channels: 'Global' }, // Temporary, this is to see the dynamic rendering
 		],
 	},
 };
