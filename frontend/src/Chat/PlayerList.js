@@ -15,7 +15,7 @@ function PlayerList() {
 
 				return (
 					<div key={index} className="chat-player">
-						<Link className="chat-player-link" to="/profile">
+						<Link className="chat-player-link" to="/profile/">
 								<img className="chat-player-img" src={require(`../${user?.picture}`)} alt="profile"/>
 								<div className="chat-player-name">{user?.fullname || user.nickname}</div>
 						</Link>

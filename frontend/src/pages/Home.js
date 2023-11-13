@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ function Home() {
 			document.getElementById("home").style.bottom="0";
 		}
 		await sleep(400);
-		navigate("game");
+		navigate("play/pong/");
 	}
 	async function othergameHandler() {
 		document.getElementById("other-game").style.zIndex=50;
@@ -43,7 +43,7 @@ function Home() {
 			document.getElementById("home").style.bottom="0";
 		}
 		await sleep(400);
-		navigate("othergame");
+		navigate("play/pongpowerup/");
 	}
 	async function tournamentHandler() {
 		document.getElementById("tournament").style.zIndex=50;
@@ -60,7 +60,7 @@ function Home() {
 			document.getElementById("home").style.bottom="0";
 		}
 		await sleep(400);
-		navigate("tournament");
+		navigate("play/tournament/");
 	}
 
 	return (
@@ -84,7 +84,7 @@ function Home() {
 			<div id="other-game" className="other-game">
 				<div id="other-game-content" className="content">
 					<div className="content-main">
-						<div id="other-game-title" className="title">PONG POWERUPS</div>
+						<div id="other-game-title" className="title">PONG POWERUP</div>
 						<div className="button">
 							<button id="other-game-button" onClick={othergameHandler} className="pushable">
 								<span className="front">PLAY</span>
