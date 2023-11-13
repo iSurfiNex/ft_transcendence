@@ -84,7 +84,7 @@ function Home() {
 			<div id="other-game" className="other-game">
 				<div id="other-game-content" className="content">
 					<div className="content-main">
-						<div id="other-game-title" className="title">OTHER-GAME</div>
+						<div id="other-game-title" className="title">PONG POWERUPS</div>
 						<div className="button">
 							<button id="other-game-button" onClick={othergameHandler} className="pushable">
 								<span className="front">PLAY</span>
