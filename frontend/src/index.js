@@ -18,6 +18,7 @@ const defaultGlobal = {
 			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
 		],
+		whoAmI: 'rsterin',
 		channels: [
 			{ name: 'Global', picture: '' },
 			{ name: 'rsterin', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
@@ -32,6 +33,14 @@ const defaultGlobal = {
 			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
 			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
 		],
+		Games: [
+			{ type: 'normal', id: '1', creator: 'rsterin', },
+			{ type: 'othergame', id: '2', creator: 'fjullien', },
+		],
+		Tournament: [
+			{ type: 'tournament', id: '1', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze']},
+		],
+		currentGame: { type: 'normal', id: '3'},
 	},
 };
 
