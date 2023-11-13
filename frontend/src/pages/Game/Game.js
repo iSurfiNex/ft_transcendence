@@ -1,6 +1,5 @@
 import React from "react";
 
-import share from '../../img/share.svg';
 import "./Game.css";
 import GameList from './GameList'
 

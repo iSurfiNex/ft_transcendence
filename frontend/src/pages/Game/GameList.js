@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { Link } from "react-router-dom"
 import share from '../../img/share.svg';
 import GlobalContext from '../../index';
 
@@ -14,7 +13,7 @@ function GameList() {
 
 	return (
 		<div className="game-list">
-			{globalData.jsonMap.games.map((game, index) => {
+			{globalData.jsonMap.games.filter(game => game.type === "normal").filter(game => game.status !== "done").map((game, index) => {
 
 				return (
 					<div key={index} className="game-desc">
