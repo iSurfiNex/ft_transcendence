@@ -34,13 +34,11 @@ const defaultGlobal = {
 			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
 		],
 		Games: [
-			{ type: 'normal', id: '1', creator: 'rsterin', },
-			{ type: 'othergame', id: '2', creator: 'fjullien', },
+			{ type: 'normal', id: '1', creator: 'rsterin', players: ['rsterin', 'jtoulous']},
+			{ type: 'othergame', id: '2', creator: 'fjullien', players: ['fjullien', 'tlarraze']},
+			{ type: 'tournament', id: '3', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze']},
 		],
-		Tournament: [
-			{ type: 'tournament', id: '1', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze']},
-		],
-		currentGame: { type: 'normal', id: '3'},
+		currentGame: { type: 'normal', id: '1'},
 	},
 };
 
