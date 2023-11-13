@@ -1,7 +1,7 @@
 import React from "react"
 import { Routes ,Route } from 'react-router-dom';
 
-import Game from "./pages/Game"
+import Game from "./pages/Game/Game"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import OtherGame from "./pages/OtherGame"

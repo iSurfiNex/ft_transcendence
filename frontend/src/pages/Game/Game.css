@@ -81,18 +81,18 @@ body {
 }
 
 .game-type {
-	position: absolute;
+	position: relative;
 	color: white;
 }
 
 .game-players {
 	display: flex;
-	position: absolute;
-	left: 120px;
-	width: calc(100% - 250px);
+	position: relative;
+	left: 10px;
 	font-size: 12px;
 	color: rgb(192, 192, 192);
 	overflow-x: auto;
+	flex: 1;
 }
 
 .game-players::-webkit-scrollbar {
@@ -106,13 +106,12 @@ body {
 
 .game-player-count {
 	color: white;
-	position: absolute;
+	padding-left: 20px;
 	right: 65px;
 }
 
 .game-player-join {
-	position: absolute;
-	right: 15px;
+	margin-right: 15px;
 	width: 40px;
 	margin-left: 5px;
 	overflow: hidden;
