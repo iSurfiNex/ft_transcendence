@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import share from '../../img/share.svg';
 import GlobalContext from '../../index';
+import { Link } from 'react-router-dom';
 
 function OtherGameList() {
 	const { globalData, updateGlobal } = useContext(GlobalContext);
@@ -24,9 +25,9 @@ function OtherGameList() {
 							))}
 						</div>
 						<div className="othergame-game-player-count">{`${game.players.length}/${game.maxPlayer}`}</div>
-						<button className="othergame-game-player-join btn btn-primary btn-lg" title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
-							<img className="othergame-game-player-img" src={share} alt="join"/>
-						</button>
+						<Link to="/play/waiting-room/" className={`othergame-player-join btn btn-primary btn-lg ${game.players.length >= game.maxPlayer ? 'disabled' : ''}`} title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
+							<img className="othergame-player-img" src={share} alt="join"/>
+						</Link>
 					</div>
 				);
 			})}

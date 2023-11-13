@@ -21,7 +21,7 @@ function Topbar() {
 			</div>
 
 			<div className="profile-picture">
-				<Link className="profile-picture-div" to="/profile">
+				<Link className="profile-picture-div" to="/profile/">
 					<img src={list} alt="profile"/>
 				</Link>
 			</div>

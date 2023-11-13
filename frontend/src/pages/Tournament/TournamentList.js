@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import share from '../../img/share.svg';
 import GlobalContext from '../../index';
+import { Link } from 'react-router-dom';
 
 function TournamentList() {
 	const { globalData, updateGlobal } = useContext(GlobalContext);
@@ -8,7 +9,6 @@ function TournamentList() {
 	const handleGameChange = (id) => {
 		const newGlobal = { ...globalData, jsonMap: { ...globalData.jsonMap, currentGame: id } };
 		updateGlobal(newGlobal);
-		window.location.href = 'waiting-room';
 	};
 
 	return (
@@ -24,9 +24,9 @@ function TournamentList() {
 							))}
 						</div>
 						<div className="tournament-game-player-count">{`${game.players.length}/${game.maxPlayer}`}</div>
-						<button className="tournament-game-player-join btn btn-primary btn-lg" title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
-							<img className="tournament-game-player-img" src={share} alt="join"/>
-						</button>
+						<Link to="/play/waiting-room/" className={`tournament-player-join btn btn-primary btn-lg ${game.players.length >= game.maxPlayer ? 'disabled' : ''}`} title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
+							<img className="tournament-player-img" src={share} alt="join"/>
+						</Link>
 					</div>
 				);
 			})}

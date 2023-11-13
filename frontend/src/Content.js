@@ -12,13 +12,15 @@ import WaitingRoom from "./pages/WaitingRoom"
 export default function Content() {
 	return (
 		<Routes path="/">
-			<Route index element={<Home/>}/>
-			<Route path="login" element={<Login/>}/>
-			<Route path="game" element={<Game/>}/>
-			<Route path="othergame" element={<OtherGame/>}/>
-			<Route path="tournament" element={<Tournament/>}/>
-			<Route path="profile" element={<Profile/>}/>
-			<Route path="waiting-room" element={<WaitingRoom/>}/>
+			<Route index element={<Home />}/>
+			<Route path="login/" element={<Login />}/>
+			<Route path="profile/" element={<Profile />}/>
+			<Route path="play/">
+				<Route path="waiting-room/" element={<WaitingRoom />}/>
+				<Route path="pong/" element={<Game />}/>
+				<Route path="pong-powerup/" element={<OtherGame />}/>
+				<Route path="tournament/" element={<Tournament />}/>
+			</Route>
 		</Routes>
 	)
 }

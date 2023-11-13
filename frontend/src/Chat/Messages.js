@@ -12,7 +12,7 @@ function Messages() {
 
 				return (
 					<div key={index} className="message">
-						<Link to="/profile" className='test'>
+						<Link to="/profile/" className='test'>
 							<img className="message-player-img" src={require(`../${senderUser?.picture}`)} alt="profile"/>
 							<div className="message-player-name">{senderUser?.fullname || message.sender}</div>
 						</Link>

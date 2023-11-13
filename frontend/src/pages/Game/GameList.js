@@ -24,7 +24,7 @@ function GameList() {
 							))}
 						</div>
 						<div className="game-player-count">{`${game.players.length}/${game.maxPlayer}`}</div>
-						<Link to="/waiting-room" className={`game-player-join btn btn-primary btn-lg ${game.players.length >= game.maxPlayer ? 'disabled' : ''}`} title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
+						<Link to="/play/waiting-room/" className={`game-player-join btn btn-primary btn-lg ${game.players.length >= game.maxPlayer ? 'disabled' : ''}`} title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
 							<img className="game-player-img" src={share} alt="join"/>
 						</Link>
 					</div>
