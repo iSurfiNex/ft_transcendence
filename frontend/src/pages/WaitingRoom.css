@@ -8,7 +8,7 @@
 		background-color: rgba(255, 255, 255, 0.5);
 	}
 
-    .rectangle {
+    .rectangle-waiting-room {
         position: absolute;
         bottom: 10%;
         width: 70%;
@@ -18,7 +18,7 @@
         box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
     }
 
-    .title {
+    .title-waiting-room {
         color: rgb(254, 254, 254);
         font-size: 22px;
         width: 90%;
@@ -27,7 +27,7 @@
         position: absolute;
     }
 
-    .players {
+    .players-list-waiting-room {
         position: absolute;
         width: 70%;
         height: 70%; 
@@ -37,11 +37,11 @@
         text-decoration: none;
     }
 
-    .player {
+    .player-waiting-room {
         color: rgb(254, 254, 254);
-        font-size: 15px;
+        font-size: 10px;
         width: 50%;
-        left: 13%;
+        left: 5%;
         position: relative;
         margin: 5%;
     }
@@ -65,7 +65,7 @@
 		background-color: rgba(255, 255, 255, 0.5);
 	}
 
-    .rectangle {
+    .rectangle-waiting-room {
         position: absolute;
         bottom: 10%;
         width: 50%;
@@ -75,7 +75,8 @@
         box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
     }
 
-    .title {
+    .title-waiting-room {
+        position: absolute;
         color: rgb(254, 254, 254);
         font-size: 40px;
         width: 70%;
@@ -83,21 +84,21 @@
         top: 5%;
     }
 
-    .players {
+    .players-list-waiting-room {
         position: absolute;
         width: 50%;
         height: 70%; 
-        left: 25%;
+        left: 20%;
         bottom: 5%;
         overflow: auto;
         text-decoration: none;
     }
 
-    .player {
+    .player-waiting-room {
         color: rgb(254, 254, 254);
-        font-size: 30px;
+        font-size: 15px;
         width: 50%;
-        left: 13%;
+        left: 25%;
         position: relative;
         margin: 5%;
     }

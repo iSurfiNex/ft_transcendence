@@ -3,19 +3,19 @@ import "./WaitingRoom.css";
 import { Link } from "react-router-dom"
 
 function WaitingRoom() {
-	var toto = ["tonton_adolf6969", "oussama_sama", "miaKalifa", "augustAmes", "nikitaBelucci", "abellaDanger"]
-	var truc = toto.map((item)=>(<Link to="/profile"><div className="player"> {item} </div> </Link>))
+	var players = ["tonton_adolf6969", "oussama_sama", "miaKalifa", "augustAmes", "nikitaBelucci", "abellaDanger"]
+	var linkPlayers = players.map((item)=>(<Link to="/profile"><div className="player-waiting-room"> {item} </div> </Link>))
 
 	return (
 		<div className="background-waiting-room">
-			<div className="rectangle">
+			<div className="rectangle-waiting-room">
 				
-				<div className="title">
+				<div className="title-waiting-room">
 					Waiting Room
 				</div>
 
-				<div className="players"> 
-					{truc}
+				<div className="players-list-waiting-room"> 
+					{linkPlayers}
 				</div>
 
 			</div>
