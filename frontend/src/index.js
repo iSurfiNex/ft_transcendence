@@ -34,9 +34,12 @@ const defaultGlobal = {
 			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
 		],
 		Games: [
-			{ type: 'normal', id: '1', creator: 'rsterin', players: ['rsterin', 'jtoulous']},
-			{ type: 'othergame', id: '2', creator: 'fjullien', players: ['fjullien', 'tlarraze']},
-			{ type: 'tournament', id: '3', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze']},
+			{ type: 'normal', id: '1', status: 'done', creator: 'fjullien', players: ['fjullien', 'tlarraze'], maxPlayer: '2'},
+			{ type: 'othergame', id: '2', status: 'running', creator: 'fjullien', players: ['fjullien', 'tlarraze'], maxPlayer: '2'},
+			{ type: 'normal', id: '3', status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous'], maxPlayer: '2'},
+			{ type: 'tournament', id: '3', status: 'done', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4'},
+			{ type: 'tournament', id: '4', status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8'},
+			{ type: 'tournament', id: '5', status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6'},
 		],
 		currentGame: { type: 'normal', id: '1'},
 	},
