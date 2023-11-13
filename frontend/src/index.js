@@ -47,7 +47,7 @@ const defaultGlobal = {
 			{ type: 'tournament', id: '11', status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8'},
 			{ type: 'tournament', id: '12', status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6'},
 		],
-		currentGame: '3',
+		currentGame: '-1',
 	},
 };
 

@@ -124,7 +124,8 @@ body {
 	width: 20px;
 }
 
-button:disabled {
+
+.disabled {
 	cursor: not-allowed;
 	pointer-events: all !important;
 }
