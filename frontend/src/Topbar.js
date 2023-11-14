@@ -13,9 +13,9 @@ function Topbar() {
 	return (
 		<div className="topbar">
 			<Link to="/" className="logo">
-				<img src={logo} alt="logo"/>
+				<div className="logo-text">PONG</div>
 			</Link>
-			<h1>{globalData.jsonMap.currentGame}</h1>
+			{/* <h1>{globalData.jsonMap.currentGame}</h1> */}
 			<div className="notification">
 				<div className="separator"></div>
 			</div>
