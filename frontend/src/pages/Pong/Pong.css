@@ -1,0 +1,132 @@
+body {
+	background-color: rgb(29, 29, 29);
+}
+
+@keyframes fadeIn {
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+@media (pointer:none), (pointer:coarse) {
+	.pong {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 6px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
+
+@media (hover: hover) {
+	.pong {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: calc(75% - 10px);
+		height: calc(90% - 10px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
+
+.content {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	animation: fadeIn 0.5s;
+}
+
+.pong-title {
+	position: absolute;
+	padding-top: 15px;
+	color: white;
+	font-size: 30px;
+	word-wrap: break-word;
+	text-align: center;
+	width: 100%;
+}
+
+.pong-content {
+	position: absolute;
+	bottom: 0;
+	left: 25%;
+	width: 50%;
+	height: calc(100% - 70px);
+	background-color: rgb(112, 112, 112);
+	overflow: hidden;
+}
+
+.pong-create {
+	position: absolute;
+	text-align: center;
+	top: 25px;
+	width: 100%;
+}
+
+.pong-list {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: calc(100% - 95px);
+	background-color: rgb(86, 86, 86);
+}
+
+.pong-desc {
+	margin-top: 8px;
+	margin-left: 15px;
+	height: 40px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	display: flex;
+	align-items: center;
+}
+
+.pong-type {
+	position: relative;
+	color: white;
+}
+
+.pong-players {
+	display: flex;
+	position: relative;
+	left: 10px;
+	font-size: 12px;
+	color: rgb(192, 192, 192);
+	overflow-x: auto;
+	flex: 1;
+}
+
+.pong-players::-webkit-scrollbar {
+	display: none;
+}
+
+.pong-player {
+	position: relative;
+	margin-left: 10px;
+}
+
+.pong-player-count {
+	color: white;
+	padding-left: 20px;
+	right: 65px;
+}
+
+.pong-player-join {
+	margin-right: 15px;
+	width: 40px;
+	margin-left: 5px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.pong-player-img {
+	width: 20px;
+}
+
+
+.disabled {
+	cursor: not-allowed;
+	pointer-events: all !important;
+}
