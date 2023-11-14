@@ -16,7 +16,6 @@ function Channels() {
 			{globalData.jsonMap.channels.map((channel, index) => {
 				const uniqueId = `btnradio${idCounter++}`;
 				const channelUser = globalData.jsonMap.users.find(user => user.nickname === channel.name);
-				console.log(channelUser);
 
 				return (
 					<div key={index} className="btn-group" role="group" aria-label="Basic radio toggle button group">
