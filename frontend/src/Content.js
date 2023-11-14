@@ -5,7 +5,7 @@ import Pong from "./pages/Pong/Pong"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import PongPowerup from "./pages/PongPowerup/PongPowerup"
-import Profile from "./pages/Profile"
+import Profile from "./pages/Profile/Profile"
 import Tournament from "./pages/Tournament/Tournament"
 import WaitingRoom from "./pages/WaitingRoom"
 

@@ -19,7 +19,7 @@ body {
 		height: 100%;
 		right: 20%;;
 		top: 0;
-		font-size: 30px;
+		font-size: 20px;
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
@@ -126,15 +126,16 @@ body {
 	}
 
 	.profile-topbar-fullname {
-		position: absolute	;
+		position: absolute;
 		color: #9F9F9F;
 		width: 50%;
 		height: 100%;
 		right: 20%;
 		top: 0;
-		font-size: 40px;
+		font-size: 30px;
 		display: flex;
-		align-items: center;
+		justify-content: center;
+		flex-direction: column;
 	}
 
 	.profile-topbar-picture img {
@@ -210,7 +211,6 @@ body {
 
 .profile-topbar-nickname {
 	position: relative;
-	margin-left: 10px;
 	font-style: italic;
 }
 
@@ -224,6 +224,7 @@ body {
 	position: absolute;
 	width: 32%;
 	height: calc(100% - 30%);
+	overflow-y: auto;
 }
 
 .profile-game-history {
@@ -241,6 +242,7 @@ body {
 	left: 66%;
 	height: calc(100% - 30%);
 	border-left: 10px solid #424242;
+	overflow-y: auto;
 }
 
 .profile-stat {
@@ -279,4 +281,48 @@ body {
 .profile-game-score {
 	margin-left: 3px;
 	margin-right: 3px;
+}
+
+.profile-chart {
+	position: relative;
+	top: 20px;
+	left: 10px;
+	width: calc(100% - 20px);
+	height: calc(100% - 235px);
+	min-height: 100px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	text-align: center;
+	align-items: end;
+}
+
+.profile-bar {
+	overflow-x: auto;
+	margin-left: 5px;
+	width: 28%;
+	background-color: rgb(97, 97, 97);
+}
+
+.profile-chart-desc {
+	position: relative;
+	top: 20px;
+	left: 10px;
+	width: calc(100% - 20px);
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	text-align: center;
+	align-items: end;
+}
+
+.profile-bar-desc {
+	overflow-x: auto;
+	margin-left: 5px;
+	font-size: 15px;
+	width: 28%;
+}
+
+.profile-bar-desc::-webkit-scrollbar {
+	display: none;
 }
