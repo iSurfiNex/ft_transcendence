@@ -2,7 +2,7 @@
 	.chat-bubble {
 		display: block;
 		position: absolute;
-		left: 10px;
+		right: 10px;
 		bottom: 10px;
 		height: 60px;
 		width: 60px;
@@ -68,6 +68,72 @@
 		height: 80px;
 		box-shadow: 0px -8px 11px -6px rgba(0,0,0,0.36);
 	}
+
+	.messages {
+		position: absolute;
+		width: 100%;
+		height: calc(100% - 165px);
+		top: 81px;
+		display: flex;
+		flex-direction: column-reverse;
+		overflow-y: auto;
+	}
+}
+
+@media (pointer:none), (pointer:coarse) and (orientation: landscape) {
+	.chat-desktop {
+		position: fixed;
+		width: calc(100% - 20px);
+		height: calc(100% - 10% - 30px);
+		top: calc(10% + 18px);
+		left: 10px;
+		background-color: rgb(54, 54, 54);
+		z-index: 50;
+	}
+
+	.chat-bubble {
+		right: 20px;
+		bottom: 25px;
+	}
+
+	.chat-bubble-unchecked {
+		width: 50px;
+		height: 50px;
+		left: 8px;
+		position: absolute;
+	}
+
+	.chat-bubble-checked {
+		width: 35px;
+		height: 35px;
+		margin-top: 8px;
+	}
+
+	.chat-bubble-label {
+		width: 64px;
+		height: 64px;
+	}
+
+	.bottom-bar {
+		position: fixed;
+		left: 10px;
+		bottom: 15px;
+		width: calc(100% - 20px);
+		height: 80px;
+		box-shadow: 0px -8px 11px -6px rgba(0,0,0,0.36);
+	}
+
+	.chat-input {
+		width: calc(100% - 226px) !important;
+	}
+
+	.chat-send {
+		right: 148px !important;
+	}
+
+	.player-list {
+		right: 76px !important;
+	}
 }
 
 @media (hover: hover) {
@@ -106,6 +172,16 @@
 		width: 25%;
 		height: 80px;
 		box-shadow: 0 19px 38px rgba(0,0,0,1.00), 0 15px 12px rgba(0,0,0,0.22);
+	}
+
+	.messages {
+		position: absolute;
+		width: 100%;
+		height: calc(100% - 160px);
+		top: 81px;
+		display: flex;
+		flex-direction: column-reverse;
+		overflow-y: auto;
 	}
 }
 
@@ -318,16 +394,6 @@
 
 .chat-player-button-img {
 	width: 20px;
-}
-
-.messages {
-	position: absolute;
-	width: 100%;
-	height: calc(100% - 160px);
-	top: 81px;
-	display: flex;
-	flex-direction: column-reverse;
-	overflow-y: auto;
 }
 
 .messages::-webkit-scrollbar {
