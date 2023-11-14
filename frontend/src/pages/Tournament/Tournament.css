@@ -53,6 +53,7 @@ body {
 	width: 50%;
 	height: calc(100% - 70px);
 	background-color: rgb(112, 112, 112);
+	overflow: hidden;
 }
 
 .tournament-game-create {
