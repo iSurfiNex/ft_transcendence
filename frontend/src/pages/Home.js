@@ -43,7 +43,7 @@ function Home() {
 			document.getElementById("home").style.bottom="0";
 		}
 		await sleep(400);
-		navigate("play/pongpowerup/");
+		navigate("play/pong-powerup/");
 	}
 	async function tournamentHandler() {
 		document.getElementById("tournament").style.zIndex=50;
@@ -65,7 +65,7 @@ function Home() {
 
 	return (
 		<div id="home" className="home">
-			<div id="pong" className="pong">
+			<div id="pong" className="pong-pannel">
 				<div id="pong-content" className="content">
 					<div className="content-main">
 						<div id="pong-title" className="title">PONG</div>

@@ -9,7 +9,7 @@
 		transition: all 0.4s ease-in-out;
 	}
 
-	.pong {
+	.pong-pannel {
 		position: absolute;
 		top: 2.5%;
 		left: 2%;
@@ -113,7 +113,7 @@
 		background-color: rgb(29, 29, 29);
 	}
 
-	.pong {
+	.pong-pannel {
 		position: absolute;
 		left: 2.5%;
 		top: 2%;
