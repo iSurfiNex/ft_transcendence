@@ -24,7 +24,7 @@ function Chat() {
 	const [isMobile, setIsMobile] = useState(false);
 	useEffect(() => {
 		const handleResize = () => {
-			setIsMobile(window.innerWidth < 768 || window.innerHeight < 768);
+			setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 		};
 		handleResize();
 		window.addEventListener('resize', handleResize);
