@@ -12,18 +12,19 @@
 
 	.logo {
 		position: absolute;
-		height: calc(100% - 10%);
-		top: 5%;
+		height: calc(100%);
+		top: 0;
 		width: 25%;
+		overflow: hidden;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-	.logo img {
-		max-height: 100%;
-		height: auto;
-		overflow: hidden;
+
+	.logo-text {
+		font-size: 2.5vh;
+		color: white;
 	}
 
 	.separator {
@@ -74,6 +75,13 @@
 	}
 }
 
+@media (pointer:none), (pointer:coarse) and (orientation: landscape) {
+	.logo-text {
+		font-size: 5vh;
+		color: white;
+	}
+}
+
 @media (hover: hover) {
 	.topbar {
 		display: block;
@@ -87,18 +95,19 @@
 
 	.logo {
 		position: absolute;
-		height: calc(100% - 10%);
-		top: 5%;
+		height: calc(100%);
+		top: 0;
 		width: 25%;
+		max-width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		overflow: hidden;
 	}
 
-	.logo img {
-		max-height: 100%;
-		height: auto;
-		overflow: hidden;
+	.logo-text {
+		font-size: 6vh;
+		color: white;
 	}
 
 	.separator {

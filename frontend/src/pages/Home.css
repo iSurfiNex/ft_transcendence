@@ -2,9 +2,9 @@
 	.home {
 		position: absolute;
 		right: 0;
-		bottom: 70px;
+		bottom: 0;
 		width: 100%;
-		height: calc(90% - 8px - 70px);
+		height: calc(90% - 8px);
 		background-color: rgb(29, 29, 29);
 		transition: all 0.4s ease-in-out;
 	}
