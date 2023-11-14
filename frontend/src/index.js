@@ -2,11 +2,7 @@ import React, { createContext, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from "react-router-dom"
 
-import Chat from './Chat/Chat';
-import Topbar from './Topbar';
-import Layout from './Layout';
-
-import Content from './Content';
+import App from './App';
 
 const GlobalContext = createContext();
 
@@ -18,7 +14,8 @@ const defaultGlobal = {
 			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
 			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 		],
-		whoAmI: 'rsterin',
+		whoAmI: '',
+		isLoggedIn: false,
 		channels: [
 			{ name: 'Global'},
 			{ name: 'rsterin'},
@@ -70,10 +67,7 @@ root.render(
 	<React.StrictMode>
 		<GlobalProvider>
 			<BrowserRouter>
-				<Topbar />
-				<Layout />
-				<Chat />
-				<Content />
+				<App />
 			</BrowserRouter>
 		</GlobalProvider>
 	</React.StrictMode>
