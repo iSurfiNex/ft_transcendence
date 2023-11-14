@@ -294,7 +294,7 @@ body {
 	flex-direction: row;
 	justify-content: center;
 	text-align: center;
-	align-items: end;
+	align-items: flex-end;
 }
 
 .profile-bar {
@@ -313,7 +313,7 @@ body {
 	flex-direction: row;
 	justify-content: center;
 	text-align: center;
-	align-items: end;
+	align-items: flex-end;
 }
 
 .profile-bar-desc {
