@@ -11,27 +11,27 @@ import Content from './Content';
 const GlobalContext = createContext();
 
 const defaultGlobal = {
-	jsonMap: {
+	jsonMap: { // Temporary, this is to see the dynamic rendering
 		users: [
-			{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
-			{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
-			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
-			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
+			{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
+			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
+			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 		],
 		whoAmI: 'rsterin',
 		channels: [
 			{ name: 'Global', picture: '' },
-			{ name: 'rsterin', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
-			{ name: 'fjullien', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
-			{ name: 'jtoulous', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
-			{ name: 'tlarraze', picture: 'img/list.svg' }, // Temporary, this is to see the dynamic rendering
+			{ name: 'rsterin', picture: 'img/list.svg' },
+			{ name: 'fjullien', picture: 'img/list.svg' },
+			{ name: 'jtoulous', picture: 'img/list.svg' },
+			{ name: 'tlarraze', picture: 'img/list.svg' },
 		],
 		activeChannel: 'Global',
 		messages: [
-			{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' }, // Temporary, this is to see the dynamic rendering
-			{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
-			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
-			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' }, // Temporary, this is to see the dynamic rendering
+			{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' },
+			{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' },
+			{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' },
+			{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' },
 		],
 		games: [
 			{ type: 'normal', id: '1', status: 'done', creator: 'fjullien', players: ['fjullien', 'tlarraze'], maxPlayer: '2'},
