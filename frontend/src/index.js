@@ -20,11 +20,11 @@ const defaultGlobal = {
 		],
 		whoAmI: 'rsterin',
 		channels: [
-			{ name: 'Global', picture: '' },
-			{ name: 'rsterin', picture: 'img/list.svg' },
-			{ name: 'fjullien', picture: 'img/list.svg' },
-			{ name: 'jtoulous', picture: 'img/list.svg' },
-			{ name: 'tlarraze', picture: 'img/list.svg' },
+			{ name: 'Global'},
+			{ name: 'rsterin'},
+			{ name: 'fjullien'},
+			{ name: 'jtoulous'},
+			{ name: 'tlarraze'},
 		],
 		activeChannel: 'Global',
 		messages: [
