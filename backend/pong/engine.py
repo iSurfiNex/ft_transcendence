@@ -31,7 +31,6 @@ class Pad(Moving):
         super().__init__(pos, speed, direction)
         self.clamp_y = clamp_y
         self.dim = dim
-        
 
     def get_next_pos(self, delta: float):
         pos = super().get_next_pos(delta)
@@ -102,7 +101,7 @@ class PongEngine:
         for p in self.players:
             p.pad.update_pos(delta)
         ball_vec = self.ball.get_vec(delta)
-        collisions, next_pos, next_dir, _ = collisions_check(
+        collisions, next_pos, next_dir = collisions_check(
             self.ball.p, ball_vec, self.lines_obstacles
         )
         self.bounces += collisions
@@ -111,9 +110,9 @@ class PongEngine:
             self.ball.d = next_dir
 
     def score_update(self):
-        if self.ball.p.x <= -self.dim.x/2:
+        if self.ball.p.x <= 0:
             self.players[0].score += 1
-        elif self.ball.p.x >= self.dim.x/2:
+        elif self.ball.p.x >= self.dim.x:
             self.players[1].score += 1
         else:
             return
