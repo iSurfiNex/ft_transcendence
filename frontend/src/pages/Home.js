@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from 'react';
-import { isMobile } from 'react-device-detect';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import './Home.css';
@@ -10,6 +9,18 @@ function Home() {
 	function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
+
+	const [isMobile, setIsMobile] = useState(false);
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768 || window.innerHeight < 768);
+		};
+		handleResize();
+		window.addEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	async function pongHandler() {
 		document.getElementById("pong").style.zIndex=50;

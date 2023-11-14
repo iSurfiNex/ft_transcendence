@@ -1,6 +1,4 @@
-import { useState, useContext } from 'react';
-import { isMobile } from 'react-device-detect';
-import { Link } from "react-router-dom"
+import { useState, useEffect } from 'react';
 
 import list from '../img/list.svg';
 import bubble from '../img/bubble.svg';
@@ -13,18 +11,27 @@ import Messages from './Messages'
 import PlayerList from './PlayerList'
 
 function Chat() {
-
 	const [isBubbleChecked, setIsBubbleChecked] = useState(true);
-
 	const bubbleCheckHandler = () => {
 		setIsBubbleChecked(!isBubbleChecked);
 	}
 
 	const [isPlayerListChecked, setIsPlayerListChecked] = useState(true);
-
 	const playerListCheckHandler = () => {
 		setIsPlayerListChecked(!isPlayerListChecked);
 	}
+
+	const [isMobile, setIsMobile] = useState(false);
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768 || window.innerHeight < 768);
+		};
+		handleResize();
+		window.addEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	return (
 		<div className="chat">
