@@ -24,8 +24,8 @@ function TournamentList() {
 							))}
 						</div>
 						<div className="tournament-game-player-count">{`${game.players.length}/${game.maxPlayer}`}</div>
-						<Link to="/play/waiting-room/" className={`tournament-player-join btn btn-primary btn-lg ${game.players.length >= game.maxPlayer ? 'disabled' : ''}`} title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
-							<img className="tournament-player-img" src={share} alt="join"/>
+						<Link to="/play/waiting-room/" className={`tournament-game-player-join btn btn-primary btn-lg ${game.players.length >= game.maxPlayer ? 'disabled' : ''}`} title="Join" disabled={game.players.length >= game.maxPlayer} onClick={() => handleGameChange(game.id)}>
+							<img className="tournament-game-player-img" src={share} alt="join"/>
 						</Link>
 					</div>
 				);
