@@ -111,6 +111,7 @@ When you make changes to your Django models (e.g., adding, modifying, or deletin
 │ ├── manage.py
 │ ├── poetry.lock
 │ ├── pyproject.toml
+│ ├── pong/
 │ ├── README.md
 │ ├── scripts/
 │ │ ├── visualize_db.sh
@@ -124,6 +125,7 @@ When you make changes to your Django models (e.g., adding, modifying, or deletin
 │ │ ├── urls.py
 │ │ ├── wsgi.py
 │ │ ├── __init__.py
+
 ```
 
 ### Visualize DB
@@ -134,3 +136,13 @@ bash ./scripts/visualize_db
 ```
 
 ![DB visualization](images/db.png)
+
+
+## Pong
+
+To try the pong with a python frontend
+
+``` sh
+cd backend/
+python ./pong/test/app.py
+```
