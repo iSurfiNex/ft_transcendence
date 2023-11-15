@@ -57,6 +57,63 @@ def compute_collision(
     return None, None, None
 
 
+def ai_collisions_check(
+    pos: Vec,
+    vec: Vec,
+    obstacles: list[Obstacle],
+    until_coll_with,
+    max_coll=100,
+) -> tuple[list[Collision], Vec, Vec | None, Vec | None]:
+    remaining_dist: float = vec.len
+    collisions: list[Collision] = []
+    r_dir = None
+    line = None
+    while len(collisions) < max_coll:
+        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
+
+        if not coll or not next_dir:
+            # or (coll.pos.x == pos.x and coll.pos.y == pos.y):
+            break
+
+        seg_dist = get_distance(pos, coll.pos)
+        pos = coll.pos
+        remaining_dist -= seg_dist
+        vec = next_dir * remaining_dist
+        collisions.append(coll)
+        r_dir = next_dir
+        # if line == until_coll_with:
+        #    break
+
+    pos += vec
+    next_pos = pos
+    next_r_dir = r_dir
+    last_coll = None
+    if collisions:
+        last_coll = collisions[-1].pos
+
+    remaining_dist = 10000
+    if r_dir == None:
+        r_dir = vec.normalized
+    vec = r_dir * remaining_dist
+
+    while len(collisions) < max_coll:
+        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
+
+        if not coll or not next_dir:
+            # or (coll.pos.x == pos.x and coll.pos.y == pos.y):
+            break
+
+        seg_dist = get_distance(pos, coll.pos)
+        pos = coll.pos
+        remaining_dist -= seg_dist
+        vec = next_dir * remaining_dist
+        collisions.append(coll)
+        r_dir = next_dir
+        if line == until_coll_with:
+            break
+    return collisions, next_pos, next_r_dir, last_coll
+
+
 def collisions_check(
     pos: Vec, vec: Vec, obstacles: list[Obstacle], max_coll=100
 ) -> tuple[list[Collision], Vec, Vec | None]:
@@ -68,7 +125,6 @@ def collisions_check(
         coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
 
         if not coll or not next_dir:
-            # or (coll.pos.x == pos.x and coll.pos.y == pos.y):
             break
         seg_dist = get_distance(pos, coll.pos)
         pos = coll.pos
