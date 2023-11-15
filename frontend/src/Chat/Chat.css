@@ -1,4 +1,4 @@
-@media (pointer:none), (pointer:coarse) {
+@media only screen and (max-width: 768px) {
 	.chat-bubble {
 		display: block;
 		position: absolute;
@@ -80,7 +80,7 @@
 	}
 }
 
-@media (pointer:none), (pointer:coarse) and (orientation: landscape) {
+@media only screen and (max-height: 524px) {
 	.chat-desktop {
 		position: fixed;
 		width: calc(100% - 20px);
@@ -89,11 +89,6 @@
 		left: 10px;
 		background-color: rgb(54, 54, 54);
 		z-index: 50;
-	}
-
-	.chat-bubble {
-		right: 20px;
-		bottom: 25px;
 	}
 
 	.chat-bubble-unchecked {
@@ -134,9 +129,52 @@
 	.player-list {
 		right: 76px !important;
 	}
+
+	.chat-bubble {
+		display: block;
+		position: absolute;
+		right: 20px;
+		bottom: 25px;
+		height: 60px;
+		width: 60px;
+		z-index: 70;
+	}
+
+	.chat-bubble-check {
+		display: none;
+	}
+
+	.chat-bubble-check:checked ~ .chat-bubble-checked {
+		display: none;
+	}
+
+	.chat-bubble-check:not(:checked) ~ .chat-bubble-unchecked {
+		display: none;
+	}
+
+	.chat-player-list-header-text {
+		position: fixed;
+		width: calc(100% - 40px);
+		text-align: center;
+		color: white;
+		font-size: 27px;
+		background-color: #5e5e5e;
+		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+		z-index: 10;
+	}
+
+	.messages {
+		position: absolute;
+		width: 100%;
+		height: calc(100% - 165px);
+		top: 81px;
+		display: flex;
+		flex-direction: column-reverse;
+		overflow-y: auto;
+	}
 }
 
-@media (hover: hover) {
+@media only screen and (min-width: 768px) and (min-height: 524px) {
 	.chat-bubble {
 		display: none;
 	}

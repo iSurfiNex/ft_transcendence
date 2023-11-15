@@ -12,7 +12,7 @@ function ProfileTop() {
 	return (
 		<div className="profile-topbar">
 			<div className="profile-topbar-picture">
-				<img src={require(`../../${user?.picture}`)} alt="profile"/>
+				{/* <img src={require(`../../${user?.picture}`)} alt="profile"/> */}
 			</div>
 			<div className="profile-topbar-fullname">
 				<span className="profile-topbar-name">{user?.fullname}</span>

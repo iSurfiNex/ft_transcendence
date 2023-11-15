@@ -15,7 +15,7 @@ const defaultGlobal = {
 			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 		],
 		whoAmI: '',
-		isLoggedIn: false,
+		isLoggedIn: true,
 		channels: [
 			{ name: 'Global'},
 			{ name: 'rsterin'},

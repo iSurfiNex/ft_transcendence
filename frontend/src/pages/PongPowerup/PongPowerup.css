@@ -7,7 +7,7 @@ body {
 	100% { opacity: 1; }
 }
 
-@media (pointer:none), (pointer:coarse) {
+@media only screen and (max-width: 768px) {
 	.pong-powerup {
 		position: absolute;
 		right: 0;
@@ -18,7 +18,18 @@ body {
 	}
 }
 
-@media (hover: hover) {
+@media only screen and (max-height: 524px) {
+	.pong-powerup {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 6px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+}
+
+@media only screen and (min-width: 768px) and (min-height: 524px) {
 	.pong-powerup {
 		position: absolute;
 		right: 0;
