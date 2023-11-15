@@ -101,7 +101,7 @@ class PongEngine:
         for p in self.players:
             p.pad.update_pos(delta)
         ball_vec = self.ball.get_vec(delta)
-        collisions, next_pos, next_dir = collisions_check(
+        collisions, next_pos, next_dir, _ = collisions_check(
             self.ball.p, ball_vec, self.lines_obstacles
         )
         self.bounces += collisions
