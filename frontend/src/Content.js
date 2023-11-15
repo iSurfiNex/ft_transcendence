@@ -24,6 +24,7 @@ export default function Content() {
 				<Route path="pong-powerup/" element={globalData.jsonMap.isLoggedIn ? <PongPowerup /> : <Navigate to="/login/"/>}/>
 				<Route path="tournament/" element={globalData.jsonMap.isLoggedIn ? <Tournament /> : <Navigate to="/login/"/>}/>
 			</Route>
+			<Route path="*" element={<Navigate to="/" replace />} />
 		</Routes>
 	)
 }
