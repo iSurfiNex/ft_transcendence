@@ -2,6 +2,7 @@ from pygame import color
 from pong.types import (
     Obstacle,
     Vec,
+    Line,
     compute_line_normal,
     get_distance,
 )
@@ -62,61 +63,30 @@ def ai_collisions_check(
     vec: Vec,
     obstacles: list[Obstacle],
     until_coll_with,
-    max_coll=100,
-) -> tuple[list[Collision], Vec, Vec | None, Vec | None]:
-    remaining_dist: float = vec.len
-    collisions: list[Collision] = []
-    r_dir = None
-    line = None
-    while len(collisions) < max_coll:
-        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
-
-        if not coll or not next_dir:
-            # or (coll.pos.x == pos.x and coll.pos.y == pos.y):
-            break
-
-        seg_dist = get_distance(pos, coll.pos)
-        pos = coll.pos
-        remaining_dist -= seg_dist
-        vec = next_dir * remaining_dist
-        collisions.append(coll)
-        r_dir = next_dir
-        # if line == until_coll_with:
-        #    break
-
-    pos += vec
-    next_pos = pos
-    next_r_dir = r_dir
-    last_coll = None
-    if collisions:
-        last_coll = collisions[-1].pos
-
-    remaining_dist = 10000
+) -> tuple[list[Collision], Vec | None, Line | None]:
+    collisions, pos, r_dir, line = collisions_check(
+        pos, vec, obstacles, until_coll_with=until_coll_with
+    )
+    next_pos = collisions[-1].pos if collisions else None
     if r_dir == None:
         r_dir = vec.normalized
-    vec = r_dir * remaining_dist
+    vec = r_dir * 10000
 
-    while len(collisions) < max_coll:
-        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
+    next_collisions, _, _, line2 = collisions_check(
+        pos, vec, obstacles, until_coll_with=until_coll_with
+    )
+    collisions += next_collisions
 
-        if not coll or not next_dir:
-            # or (coll.pos.x == pos.x and coll.pos.y == pos.y):
-            break
+    # TODO simplify/cleanup
+    if line2:
+        line = line2
 
-        seg_dist = get_distance(pos, coll.pos)
-        pos = coll.pos
-        remaining_dist -= seg_dist
-        vec = next_dir * remaining_dist
-        collisions.append(coll)
-        r_dir = next_dir
-        if line == until_coll_with:
-            break
-    return collisions, next_pos, next_r_dir, last_coll
+    return collisions, next_pos, line
 
 
 def collisions_check(
-    pos: Vec, vec: Vec, obstacles: list[Obstacle], max_coll=100
-) -> tuple[list[Collision], Vec, Vec | None]:
+    pos: Vec, vec: Vec, obstacles: list[Obstacle], max_coll=100, until_coll_with=None
+) -> tuple[list[Collision], Vec, Vec | None, Line | None]:
     remaining_dist: float = vec.len
     collisions: list[Collision] = []
     r_dir = None
@@ -132,6 +102,34 @@ def collisions_check(
         vec = next_dir * remaining_dist
         collisions.append(coll)
         r_dir = next_dir
+        if until_coll_with and line == until_coll_with:
+            break
 
     pos += vec
-    return collisions, pos, r_dir
+    return collisions, pos, r_dir, line
+
+
+# def collisions_check_generator(
+#    pos: Vec, vec: Vec, obstacles: list[Obstacle], max_coll=100, until_coll_with=None
+# ) -> tuple[list[Collision], Vec, Vec | None]:
+#    remaining_dist: float = vec.len
+#    collisions: list[Collision] = []
+#    r_dir = None
+#    line = None
+#    while len(collisions) < max_coll:
+#        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
+#
+#        if not coll or not next_dir:
+#            break
+#        seg_dist = get_distance(pos, coll.pos)
+#        pos = coll.pos
+#        remaining_dist -= seg_dist
+#        vec = next_dir * remaining_dist
+#        collisions.append(coll)
+#        r_dir = next_dir
+#        yield (coll, pos, r_dir)
+#        if until_coll_with and line == until_coll_with:
+#            break
+#
+#    pos += vec
+#    return collisions, pos, r_dir
