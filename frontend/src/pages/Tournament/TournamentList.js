@@ -1,7 +1,9 @@
 import { useContext } from 'react';
-import share from '../../img/share.svg';
-import GlobalContext from '../../index';
 import { Link } from 'react-router-dom';
+
+import share from '../../img/share.svg';
+
+import GlobalContext from '../../index';
 
 function TournamentList() {
 	const { globalData, updateGlobal } = useContext(GlobalContext);

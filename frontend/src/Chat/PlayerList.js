@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { Link } from "react-router-dom"
-import GlobalContext from '../index';
 
 import plus from '../img/plus.svg';
 import message from '../img/message.svg';
 import block from '../img/block.svg';
+
+import GlobalContext from '../index';
 
 function PlayerList() {
 	const { globalData, updateGlobal } = useContext(GlobalContext);

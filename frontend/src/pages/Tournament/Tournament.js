@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./Tournament.css";
+
 import TournamentList from './TournamentList'
 
 function Tournament() {

@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./PongPowerup.css";
+
 import PongPowerupList from './PongPowerupList'
 
 function PongPowerup() {

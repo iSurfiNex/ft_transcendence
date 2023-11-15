@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Link } from "react-router-dom"
+
 import GlobalContext from '../index';
 
 function Messages() {

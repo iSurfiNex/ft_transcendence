@@ -6,6 +6,7 @@ import close from '../img/close.svg';
 import send from '../img/send.svg';
 
 import './Chat.css';
+
 import Channels from './Channels'
 import Messages from './Messages'
 import PlayerList from './PlayerList'

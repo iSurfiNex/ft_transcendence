@@ -1,4 +1,5 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
+
 import GlobalContext from '../../index';
 
 function Stats() {
