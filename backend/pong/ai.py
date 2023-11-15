@@ -1,5 +1,5 @@
 import time
-from pong.collision import collisions_check
+from pong.collision import collisions_check, ai_collisions_check
 from pong.types import Vec, get_distance
 
 
@@ -38,8 +38,13 @@ class PongAI:
         v = v * remaining_dist
         # self.intersections.append(tuple(game.ball.p))
 
-        collisions, next_pos, _ = collisions_check(game.ball.p, v, game.lines_obstacles)
+        collisions, next_pos, _, last_coll = ai_collisions_check(
+            game.ball.p,
+            v,
+            game.lines_obstacles,
+            until_coll_with=game.lines_obstacles[0][3],
+        )
         self.ball_path += [collision.pos for collision in collisions]
-        if collisions:
-            self.frames_data.append(collisions[-1].pos)
-        self.ball_path.append(next_pos)
+        if last_coll:
+            self.frames_data.append(last_coll)
+        # self.ball_path.append(next_pos)
