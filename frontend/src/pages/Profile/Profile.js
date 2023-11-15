@@ -1,7 +1,9 @@
 import React from "react";
-import "./Profile.css";
+
 import ProfileTop from "./ProfileTop"
 import Stats from "./Stats"
+
+import "./Profile.css";
 
 function Profile() {
 	return (

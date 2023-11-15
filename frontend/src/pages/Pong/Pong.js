@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./Pong.css";
+
 import PongList from './PongList'
 
 function Pong() {

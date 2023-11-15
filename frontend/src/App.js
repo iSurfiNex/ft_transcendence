@@ -1,10 +1,9 @@
+import { useLocation } from "react-router-dom"
+
 import Chat from './Chat/Chat';
 import Topbar from './Topbar';
 import Layout from './Layout';
-
 import Content from './Content';
-
-import { useLocation } from "react-router-dom"
 
 export default function App() {
     const { pathname } = useLocation();

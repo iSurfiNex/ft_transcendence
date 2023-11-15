@@ -14,7 +14,7 @@ const defaultGlobal = {
 			{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
 			{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 		],
-		whoAmI: '',
+		whoAmI: 'rsterin',
 		isLoggedIn: true,
 		channels: [
 			{ name: 'Global'},

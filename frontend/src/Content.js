@@ -22,7 +22,7 @@ export default function Content() {
 				<Route path="waiting-room/" element={globalData.jsonMap.isLoggedIn ? <WaitingRoom /> : <Navigate to="/login/"/>}/>
 				<Route path="pong/" element={globalData.jsonMap.isLoggedIn ? <Pong /> : <Navigate to="/login/"/>}/>
 				<Route path="pong-powerup/" element={globalData.jsonMap.isLoggedIn ? <PongPowerup /> : <Navigate to="/login/"/>}/>
-				<Route path="tournament/" element={globalData.jsonMap.isLoggedIn ? <PongPowerup /> : <Navigate to="/login/"/>}/>
+				<Route path="tournament/" element={globalData.jsonMap.isLoggedIn ? <Tournament /> : <Navigate to="/login/"/>}/>
 			</Route>
 		</Routes>
 	)
