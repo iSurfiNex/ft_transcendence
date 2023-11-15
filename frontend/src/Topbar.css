@@ -180,21 +180,23 @@
 		color: white;
 	}
 
-	.separator {
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 10px;
-		height: 100%;
-		background-color: #424242;
-	}
-
-	.notification {
+	.notifications {
 		position: fixed;
 		width: 65%;
 		height: 10%;
 		top: 0;
 		left: 25%;
+		border-right: 10px solid #424242;
+		overflow: auto;
+	}
+
+	.notifications::-webkit-scrollbar {
+		display: none;
+	}
+
+	.notifications-container {
+		display: flex;
+		font-size: 5px;
 	}
 
 	.profile-picture {
