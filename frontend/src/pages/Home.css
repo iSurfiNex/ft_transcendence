@@ -1,4 +1,4 @@
-@media (pointer:none), (pointer:coarse) {
+@media only screen and (max-width: 768px) {
 	.home {
 		position: absolute;
 		right: 0;
@@ -103,7 +103,112 @@
 	}
 }
 
-@media (hover: hover) {
+@media only screen and (max-height: 524px) {
+	.home {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 8px);
+		background-color: rgb(29, 29, 29);
+		transition: all 0.4s ease-in-out;
+	}
+
+	.pong-pannel {
+		position: absolute;
+		top: 2.5%;
+		left: 2%;
+		height: 31%;
+		width: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+	}
+
+	.other-game {
+		position: absolute;
+		top: calc(2.5% + 31% + 1%);
+		left: 2%;
+		height: 31%;
+		width: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+	}
+
+	.tournament {
+		position: absolute;
+		top: calc(2.5% + 31% + 1% + 31% + 1%);
+		left: 2%;
+		height: 31%;
+		width: 96%;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+	}
+
+	.title {
+		width: 50%;
+		font-family: 'Press Start 2P', sans-serif;
+		color: white;
+		font-size: 30px;
+		word-wrap: break-word;
+	}
+
+	.button {
+		margin-left: 20px;
+		color: white;
+		font-size: 40px;
+		word-wrap: break-word;
+	}
+
+	.queue {
+		position: absolute;
+		width: 80%;
+		left: 0;
+		bottom: 0;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	.content-main {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+	}
+
+	.content {
+		width: 100%;
+		height: 100%;
+	}
+
+	.player-nb {
+		color: white;
+		font-size: 15px;
+		word-wrap: break-word;
+	}
+
+	.player-text {
+		color: white;
+		font-size: 15px;
+		word-wrap: break-word;
+	}
+}
+
+@media only screen and (min-width: 768px) and (min-height: 524px) {
 	.home {
 		position: absolute;
 		right: 0;

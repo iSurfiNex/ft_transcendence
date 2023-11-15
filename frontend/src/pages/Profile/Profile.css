@@ -2,7 +2,7 @@ body {
 	background-color: rgb(29, 29, 29);
 }
 
-@media (pointer:none), (pointer:coarse) {
+@media only screen and (max-width: 768px) {
 	.profile {
 		position: absolute;
 		right: 0;
@@ -36,9 +36,7 @@ body {
 		box-shadow: 0px 0px 15px -3px #9F9F9F;
 		background-color: #9F9F9F;
 	}
-}
 
-@media (pointer:none), (pointer:coarse) and (orientation: portrait) {
 	.profile-topbar-button {
 		position: absolute;
 		width: 20%;
@@ -74,9 +72,78 @@ body {
 		overflow: hidden;
 		max-height: 100%;
 	}
+
+	.profile {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 6px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+
+	.profile-topbar-fullname {
+		position: absolute	;
+		color: #9F9F9F;
+		width: 40%;
+		height: 100%;
+		right: 20%;;
+		top: 0;
+		font-size: 20px;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	.profile-topbar-picture img {
+		margin-left: 10px;
+		max-height: 100%;
+		height: auto;
+		overflow: hidden;
+		background-color: white;
+		border-radius: 50%;
+		border: 3px solid #9f9f9f;
+		box-shadow: 0px 0px 15px -3px #9F9F9F;
+		background-color: #9F9F9F;
+	}
 }
 
-@media (pointer:none), (pointer:coarse) and (orientation: landscape) {
+@media only screen and (max-height: 524px) {
+
+	.profile {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: calc(90% - 6px);
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+
+	.profile-topbar-fullname {
+		position: absolute	;
+		color: #9F9F9F;
+		width: 40%;
+		height: 100%;
+		right: 20%;;
+		top: 0;
+		font-size: 20px;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	.profile-topbar-picture img {
+		margin-left: 10px;
+		max-height: 100%;
+		height: auto;
+		overflow: hidden;
+		background-color: white;
+		border-radius: 50%;
+		border: 3px solid #9f9f9f;
+		box-shadow: 0px 0px 15px -3px #9F9F9F;
+		background-color: #9F9F9F;
+	}
+
 	.profile-topbar-button {
 		position: absolute;
 		width: 30%;
@@ -115,7 +182,7 @@ body {
 	}
 }
 
-@media (hover: hover) {
+@media only screen and (min-width: 768px) and (min-height: 524px) {
 	.profile {
 		position: absolute;
 		right: 0;
