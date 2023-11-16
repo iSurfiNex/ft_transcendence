@@ -5,11 +5,15 @@
   "main": "client.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browser-sync start --server --files \"index.html, js/*.js\""
+    "start": "browser-sync start --server --files \"game.html, js/*.js\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "browser-sync": "^2.29.3"
+    "asyncio": "^0.0.2",
+    "browser-sync": "^2.23.7",
+    "http-server": "^14.1.1",
+    "three": "^0.158.0",
+    "three-gltf-loader": "^1.111.0"
   }
 }
