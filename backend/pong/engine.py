@@ -42,18 +42,19 @@ class Pad(Moving):
 
 
 class Player:
-    def __init__(self, pad):
+    def __init__(self, pad: Pad, camp_line: Line):
         self.pad = pad
         self.score = 0
+        self.camp_line = camp_line
 
     def go_down(self):
-        self.pad.direction = Vec(0, 1)
+        self.pad.d = Vec(0, 1)
 
     def go_up(self):
-        self.pad.direction = Vec(0, -1)
+        self.pad.d = Vec(0, -1)
 
     def stay_still(self):
-        self.pad.direction = Vec(0, 0)
+        self.pad.d = Vec(0, 0)
 
 
 class Bounce:
