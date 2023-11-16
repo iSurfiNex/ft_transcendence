@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/11/15 19:13:13 by tlarraze         ###   ########.fr        #
+#    Updated: 2023/11/16 16:02:48 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ from threading import Thread
 from queue import Queue
 import time
 import socket
+from pong.pong_backend import PongBackend
 
 def move_paddle_ball(jfile):
 	tolerance = 0.001  # Adjust the tolerance based on your precision requirements
@@ -70,6 +71,7 @@ async def send_pos_to_all(websocket, jfile):
 	
 	while True:
 		# Send the jfile data to all connected clients
+		
 		jfile = move_paddle_ball(jfile)
 		for client in users:
 			await websocket.send(json.dumps(jfile))
@@ -102,6 +104,8 @@ async def listener(websocket, path):
 		print(f"Number of connected clients: {len(users)}")
 
 if __name__ == "__main__":
+	game_phy = Pongbackend()
+
 	start_server = websockets.serve(listener, socket.gethostbyname(socket.gethostname()), 8080)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()

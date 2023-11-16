@@ -7,26 +7,27 @@ import  './node_modules/three/src/geometries/SphereGeometry.js';
 
 		// Set up camera
 		const camera = new THREE.PerspectiveCamera(75, 1.55, 0.1, 1000);
-		camera.position.z = 10;
+		camera.position.z = 600;
 
 		const renderer = new THREE.WebGLRenderer();
-		renderer.setSize(window.innerWidth - window.innerWidth / 10, window.innerHeight - window.innerHeight / 10);
+		renderer.setSize(800, 800);
 		document.body.appendChild(renderer.domElement);
 	
-		const geometry_ligne = new THREE.BoxGeometry(0.05,16, 0.05);
-		const geometry_paddle = new THREE.BoxGeometry(0.2, 3, 0.2, 5, 5, 5); 
-		const geometry_ball = new THREE.SphereGeometry(0.25, 6, 6); 
-		const material_ball = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} ); 
+		const geometry_ligne = new THREE.BoxGeometry(800, 800, 1);
+		const geometry_paddle = new THREE.BoxGeometry(2, 100, 20, 5, 5, 5); 
+		const geometry_ball = new THREE.SphereGeometry(25, 6, 6); 
+		const material_ball = new THREE.MeshBasicMaterial( {color: 0x000000} ); 
 		const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
 		const material_paddleR = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
-		const material_ligne = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} ); 
+		const material_ligne = new THREE.MeshBasicMaterial( {color: 0xFFFFFF,opacity:0.1} ); 
 		const ligne = new THREE.Mesh( geometry_ligne, material_ligne); 
 		const paddleL = new THREE.Mesh( geometry_paddle, material_paddleL ); 
 		const paddleR = new THREE.Mesh( geometry_paddle, material_paddleR ); 
 		const ball = new THREE.Mesh( geometry_ball, material_ball ); 
-		paddleL.position.x = -10;
-		paddleR.position.x = 10;
+		paddleL.position.x = -290;
+		paddleR.position.x = 290;
 		ligne.position.x = 0;
+		ligne.position.y = 0;
 		scene.add(paddleL);
 		scene.add(paddleR);
 		scene.add(ball);
@@ -122,8 +123,8 @@ import  './node_modules/three/src/geometries/SphereGeometry.js';
 			}
 		}
 		function handleResize(){
-			const newWidth =  window.innerWidth - window.innerWidth / 10;
-			const newHeight = window.innerHeight - window.innerHeight / 10;
+			const newWidth =  800;
+			const newHeight = 800;
 
 			// camera.aspect = newWidth / newHeight;
 			// camera.updateProjectionMatrix();
@@ -146,6 +147,7 @@ import  './node_modules/three/src/geometries/SphereGeometry.js';
 			paddleR.position.y = jfile['paddleR']['y'];
 			paddleL.position.y = jfile['paddleL']['y'];
 			ball.position.x = jfile['ball']['x'];
+			ball.position.y = -jfile['ball']['y'];
 //		paddleR.position.z = jfile['position']['z'];
 		renderer.render(scene, camera);
 

@@ -110,9 +110,9 @@ class PongEngine:
             self.ball.d = next_dir
 
     def score_update(self):
-        if self.ball.p.x <= 0:
+        if self.ball.p.x <= -self.dim.x/2:
             self.players[0].score += 1
-        elif self.ball.p.x >= self.dim.x:
+        elif self.ball.p.x >= self.dim.x/2:
             self.players[1].score += 1
         else:
             return
