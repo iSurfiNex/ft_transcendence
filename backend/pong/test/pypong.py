@@ -80,8 +80,8 @@ class PyPong:
         padPlayer2 = Pad(
             pos=(W - PAD_SHIFT, H / 2), dim=(PAD_W, PAD_H), clamp_y=(0, H), speed=0
         )
-        player1 = Player(pad=padPlayer1)
-        player2 = Player(pad=padPlayer2)
+        player1 = Player(pad=padPlayer1, camp_line=wall_contours[1])
+        player2 = Player(pad=padPlayer2, camp_line=wall_contours[3])
 
         self.engine = PongEngine(
             obstacles_contours=[wall_contours],
@@ -89,7 +89,9 @@ class PyPong:
             players=[player1, player2],
             dim=(W, H),
         )
-        self.ai = PongAI(on_up=ai_go_up, on_down=ai_go_down, speed=ball.s)
+        self.ai = PongAI(
+            speed=ball.s, game=self.engine, player=player1, opponent=player2
+        )
 
         # Initialize Pygame
         pygame.init()
@@ -107,6 +109,11 @@ class PyPong:
         sys.exit()
 
     def handle_keypress(self):
+        if "up" in self.ai.keypressed:
+            self.ai.player.go_up()
+        elif "down" in self.ai.keypressed:
+            self.ai.player.go_down()
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.engine.players[0].go_up()
