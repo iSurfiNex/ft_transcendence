@@ -6,7 +6,7 @@ import  './node_modules/three/src/geometries/SphereGeometry.js';
 		const scene = new THREE.Scene();
 
 		// Set up camera
-		const camera = new THREE.PerspectiveCamera(75, 1.55, 0.1, 1000);
+		const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 		camera.position.z = 600;
 
 		const renderer = new THREE.WebGLRenderer();
@@ -14,7 +14,7 @@ import  './node_modules/three/src/geometries/SphereGeometry.js';
 		document.body.appendChild(renderer.domElement);
 	
 		const geometry_ligne = new THREE.BoxGeometry(800, 800, 1);
-		const geometry_paddle = new THREE.BoxGeometry(2, 100, 20, 5, 5, 5); 
+		const geometry_paddle = new THREE.BoxGeometry(1, 1, 2, 5, 5, 5); 
 		const geometry_ball = new THREE.SphereGeometry(25, 6, 6); 
 		const material_ball = new THREE.MeshBasicMaterial( {color: 0x000000} ); 
 		const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
@@ -144,10 +144,15 @@ import  './node_modules/three/src/geometries/SphereGeometry.js';
 		var jfile
 		const message = event.data;
 		jfile = JSON.parse(event.data)
-			paddleR.position.y = jfile['paddleR']['y'];
-			paddleL.position.y = jfile['paddleL']['y'];
-			ball.position.x = jfile['ball']['x'];
-			ball.position.y = -jfile['ball']['y'];
+		paddleR.position.y = jfile['paddleR']['y'];
+		paddleR.scale.x = jfile["paddleR"]["sizeX"];
+		paddleR.scale.y = jfile["paddleR"]["sizeY"];
+
+		paddleL.scale.x = jfile["paddleL"]["sizeX"];
+		paddleL.scale.y = jfile["paddleL"]["sizeY"];
+		paddleL.position.y = jfile['paddleL']['y'];
+		ball.position.x = jfile['ball']['x'];
+		ball.position.y = -jfile['ball']['y'];
 //		paddleR.position.z = jfile['position']['z'];
 		renderer.render(scene, camera);
 

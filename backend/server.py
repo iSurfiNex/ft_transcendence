@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/11/16 16:20:42 by tlarraze         ###   ########.fr        #
+#    Updated: 2023/11/16 17:30:26 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,8 +49,8 @@ def update_jfile(jfile, jfile2):
 
 # Global variable to store the JSON data
 jfile = {
-	"paddleL": {"x": 10, "y": 0, "z": 0, "up": -1, "down": -1},
-	"paddleR": {"x": -10, "y": 0, "z": 0, "up": -1, "down": -1},
+	"paddleL": {"x": 10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
+	"paddleR": {"x": -10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"ball": {"x": 0, "y": 0, "z": 0, "w": "r", "s": 0.1}
 }
 
@@ -60,7 +60,6 @@ async def send_pos_to_all(websocket, jfile):
 	
 	while True:
 		# Send the jfile data to all connected clients
-		print(game_phy.engine.ball.p)
 		jfile["ball"]["y"] = game_phy.engine.ball.p.y
 		jfile["ball"]["x"] = game_phy.engine.ball.p.x
 		game_phy.update()
