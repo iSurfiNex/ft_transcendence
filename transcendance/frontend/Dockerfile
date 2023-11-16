@@ -12,6 +12,6 @@ WORKDIR home/frontend
 RUN apt-get update
 RUN apt-get install -y nodejs npm
 
-#EXPOSE 3000
+EXPOSE 3000
 
 CMD ./init.sh
