@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/11/16 17:30:26 by tlarraze         ###   ########.fr        #
+#    Updated: 2023/11/16 17:31:46 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,13 +26,13 @@ game_phy = PongBackend()
 def move_paddle_ball(jfile):
 
 	if jfile["paddleL"]["up"] == 1:
-		jfile["paddleL"]["y"] += 2
+		jfile["paddleL"]["y"] += 5
 	if jfile["paddleL"]["down"] == 1:
-		jfile["paddleL"]["y"] -= 2
+		jfile["paddleL"]["y"] -= 5
 	if jfile["paddleR"]["up"] == 1:
-		jfile["paddleR"]["y"] += 2
+		jfile["paddleR"]["y"] += 5
 	if jfile["paddleR"]["down"] == 1:
-		jfile["paddleR"]["y"] -= 2
+		jfile["paddleR"]["y"] -= 5
 	return jfile
 
 

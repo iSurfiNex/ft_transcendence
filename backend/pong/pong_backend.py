@@ -25,12 +25,6 @@ d = Vec(6, 5).normalized
 ball = Ball(pos=ball_reset_pos, speed=100, radius=25, direction=d)
 
 
-wall_contours = [
-	(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
-	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2  + W / 2, -BALL_RADIUS + H / 2),
-	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
-	(PAD_SHIFT + BALL_RADIUS + PAD_W / 2- W / 2, BALL_RADIUS - H / 2),
-]
 
 class PongBackend:
 	def __init__(self):
@@ -44,6 +38,14 @@ class PongBackend:
 		)
 		player1 = Player(pad=padPlayer1)
 		player2 = Player(pad=padPlayer2)
+
+
+wall_contours = [
+	(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
+	pad_right,
+	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
+	pad_left,
+]
 
 		self.engine = PongEngine(
 			obstacles_contours=[wall_contours],
