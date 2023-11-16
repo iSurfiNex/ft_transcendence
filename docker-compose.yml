@@ -1,0 +1,42 @@
+version: '3'
+
+networks:
+  mynetwork:
+    driver: bridge
+
+services:
+  database:
+    build:
+      context: ./transcendance/postgres/
+      dockerfile: Dockerfile
+    networks:
+      - mynetwork
+    env_file:
+      - env
+
+  backend:
+    build:
+      context: ./transcendance/backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    networks:
+      - mynetwork
+    env_file:
+      - env
+  
+  frontend:
+    build:
+      context: ./transcendance/frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depend_on:
+      - database
+      - backend
+    network:
+      - mynetwork
+    env_file:
+      - env

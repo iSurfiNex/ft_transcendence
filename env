@@ -1,0 +1,7 @@
+DB_USER=my_postgres_user
+DB_NAME=transcendance_db
+DB_PASSWORD=my_postgres_pw
+DB_HOST=database
+DB_PORT=5432
+
+POSTGRES_PASSWORD='my_postgres_pw'
