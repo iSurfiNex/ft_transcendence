@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import "./WaitingRoom.css";
 import { Link } from "react-router-dom"
+import GlobalContext from "../index";
 
 function WaitingRoom() {
-	var players = ["tonton_adolf6969", "oussama_sama", "miaKalifa", "augustAmes", "nikitaBelucci", "abellaDanger"]
-	var linkPlayers = players.map((item)=>(<Link to="/profile"><div className="player-waiting-room"> {item} </div> </Link>))
+	const { globalData, updateGlobal } = useContext(GlobalContext);
+	
+	//var gameType = globalData.jsonMap.currentGame.type
 
+	//var gameId = globalData.jsonMap.currentGame.id
+	var gameId = 10
+	var players = globalData.jsonMap.games[gameId].players.map( (item) =>
+						{
+							const user = globalData.jsonMap.users.find(user => user.nickname === item);
+							const picture = '../' + (user ? user.picture : null);
+							
+							return (
+							<Link className="link-wr" key={item} to="/profile"> 
+									<div className="player-waiting-room"> 
+										<img className="profil-pic-wr" class="img-fluid" src={picture} alt="profil pic"/>
+										{item} 
+									</div>
+							</Link>);
+						} );
+
+	
 	return (
 		<div className="background-waiting-room">
 			<div className="rectangle-waiting-room">
@@ -15,7 +34,7 @@ function WaitingRoom() {
 				</div>
 
 				<div className="players-list-waiting-room"> 
-					{linkPlayers}
+					{players}
 				</div>
 
 			</div>
