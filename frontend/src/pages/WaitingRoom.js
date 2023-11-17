@@ -13,13 +13,15 @@ function WaitingRoom() {
 	var players = globalData.jsonMap.games[gameId].players.map( (item) =>
 						{
 							const user = globalData.jsonMap.users.find(user => user.nickname === item);
-							const picture = '../' + (user ? user.picture : null);
+							const picture = (user ? user.picture : null);
 							
 							return (
 							<Link className="link-wr" key={item} to="/profile"> 
 									<div className="player-waiting-room"> 
-										<img className="profil-pic-wr" class="img-fluid" src={picture} alt="profil pic"/>
-										{item} 
+										
+										<img className="profil-pic-wr" src={process.env.PUBLIC_URL + '/' + picture} alt="profil pic"/>
+										{item}
+
 									</div>
 							</Link>);
 						} );
@@ -29,13 +31,9 @@ function WaitingRoom() {
 		<div className="background-waiting-room">
 			<div className="rectangle-waiting-room">
 				
-				<div className="title-waiting-room">
-					Waiting Room
-				</div>
+				<div className="title-waiting-room"> Waiting Room </div>
 
-				<div className="players-list-waiting-room"> 
-					{players}
-				</div>
+				<div className="players-list-waiting-room"> {players} </div>
 
 			</div>
 		</div>
