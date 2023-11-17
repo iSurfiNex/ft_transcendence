@@ -3,9 +3,7 @@ FROM debian:bullseye-slim
 COPY src home/frontend 
 COPY init.sh home/frontend/init.sh
 
-RUN chmod 777 home/init.sh
 RUN chmod 777 -R home/frontend
-
 
 WORKDIR home/frontend
 

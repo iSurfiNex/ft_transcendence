@@ -33,10 +33,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    depend_on:
+    depends_on:
       - database
       - backend
-    network:
+    networks:
       - mynetwork
     env_file:
       - env
