@@ -13,6 +13,7 @@ services:
       - mynetwork
     env_file:
       - env
+    restart: always
 
   backend:
     build:
@@ -26,6 +27,7 @@ services:
       - mynetwork
     env_file:
       - env
+    restart: always
   
   frontend:
     build:
@@ -40,3 +42,4 @@ services:
       - mynetwork
     env_file:
       - env
+    restart: always
