@@ -1,5 +1,4 @@
 import {setup} from "./pouic/state.js"
-import {evalRepeat} from './pouic/repeat_binding.js'
 
 var state_base = {
 	users: [
@@ -42,6 +41,4 @@ var state_base = {
 }
 
 const state = setup(state_base)
-console.log(state)
-evalRepeat(document, window)
 
