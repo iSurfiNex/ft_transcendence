@@ -1,7 +1,7 @@
 import { Component, register } from 'pouic'
 import { initPopover } from './init_bootstrap_plugins.js'
 
-import {bootstrapSheet} from 'bootstrap_css'
+import { bootstrapSheet } from 'bootstrap_css'
 
 //const templateString = `
 //  <style>
@@ -37,8 +37,8 @@ import {bootstrapSheet} from 'bootstrap_css'
 
 
 class MyParagraph extends Component {
-  static sheets = [bootstrapSheet]
-  static template= `
+	static sheets = [bootstrapSheet]
+	static template = `
 <div>
   <div repeat="players" as="item">
     <h1> hello from {item.name}!</h1>
@@ -50,7 +50,7 @@ class MyParagraph extends Component {
         </div>
 `
 
-  static css= `
+	static css = `
     .hey, span {
 background: red;
 }
@@ -58,17 +58,17 @@ background: red;
 color: blue;
 }
 `
-  observers= {
-    'player.active': active => console.log("active?: ", active)
-  }
+	observers = {
+		'player.active': active => console.log("active?: ", active)
+	}
 
-  connectedCallback(){
-    initPopover(this)
-  }
-  fn(a, b){
-    window.state.player.active = !window.state.player.active
-    console.log("method function: ",a,b)
-  }
+	connectedCallback() {
+		initPopover(this)
+	}
+	fn(a, b) {
+		window.state.player.active = !window.state.player.active
+		console.log("method function: ", a, b)
+	}
 }
 
 register(MyParagraph)

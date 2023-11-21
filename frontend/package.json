@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start":  "browser-sync start --server --files \"**/*\" --exclude \"./node_modules\""
+    "start": "browser-sync start --server --files \"**/*\" --exclude \"./node_modules\" --config bs-config.js --index \"./index.html\""
   },
   "browserslist": {
     "development": [
@@ -13,6 +13,7 @@
     ]
   },
   "devDependencies": {
-    "browser-sync": "^2.29.3"
+    "browser-sync": "^2.29.3",
+    "connect-history-api-fallback": "^2.0.0"
   }
 }
