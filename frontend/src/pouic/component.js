@@ -1,10 +1,6 @@
 import {bindAttr, bindText, evalRepeat, observe} from 'pouic'
 
 export class Component extends HTMLElement {
-onExtended() {
-
-    console.log("Callback when extended");
-  }
     constructor() {
       super();
       if (this.constructor.templateEl) {
@@ -25,7 +21,6 @@ onExtended() {
       }
     }
     get state() {
-      console.log('=')
       return window.state
     }
   }
