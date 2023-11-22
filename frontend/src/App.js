@@ -1,6 +1,7 @@
 import {setup} from "./pouic/state.js"
 
 var state_base = {
+	isMobile: undefined,
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
 		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
@@ -10,11 +11,11 @@ var state_base = {
 	whoAmI: 'rsterin',
 	isLoggedIn: true,
 	channels: [
-		{ name: 'Global'},
-		{ name: 'rsterin'},
-		{ name: 'fjullien'},
-		{ name: 'jtoulous'},
-		{ name: 'tlarraze'},
+		{ name: 'Global', id: 1},
+		{ name: 'rsterin', id: 2},
+		{ name: 'fjullien', id: 3},
+		{ name: 'jtoulous', id: 4},
+		{ name: 'tlarraze', id: 5},
 	],
 	activeChannel: 'Global',
 	messages: [
@@ -41,4 +42,3 @@ var state_base = {
 }
 
 const state = setup(state_base)
-
