@@ -1,4 +1,3 @@
-
 const sheet = new CSSStyleSheet();
 
 const styles = `

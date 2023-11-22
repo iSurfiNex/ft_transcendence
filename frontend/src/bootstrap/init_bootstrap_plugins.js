@@ -1,4 +1,3 @@
-
 import { Toast, Popover } from 'bootstrap'
 
 export const initPopover = (scope) => {
