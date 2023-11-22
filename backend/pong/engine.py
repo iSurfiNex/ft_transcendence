@@ -31,6 +31,7 @@ class Pad(Moving):
         super().__init__(pos, speed, direction)
         self.clamp_y = clamp_y
         self.dim = dim
+        
 
     def get_next_pos(self, delta: float):
         pos = super().get_next_pos(delta)

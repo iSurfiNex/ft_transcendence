@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/11/16 17:31:46 by tlarraze         ###   ########.fr        #
+#    Updated: 2023/11/22 17:38:12 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ async def send_pos_to_all(websocket, jfile):
 		# Send the jfile data to all connected clients
 		jfile["ball"]["y"] = game_phy.engine.ball.p.y
 		jfile["ball"]["x"] = game_phy.engine.ball.p.x
-		game_phy.update()
+		#game_phy.update() waiting to be fixed
 		jfile = move_paddle_ball(jfile)
 		for client in users:
 			await websocket.send(json.dumps(jfile))
@@ -84,10 +84,6 @@ async def listener(websocket, path):
 			jfile = update_jfile(jfile, jfile2)
 			if jfile2["key"] == 't':
 				break
-#			print("got \"" + jfile2['key'] + "\" from " + jfile2['user'])
-#			print("pos x =", jfile["paddleR"]['x'])
-#			print("pos y =", jfile["paddleR"]['y'])
-#			print("pos z =", jfile["paddleR"]['z'])
 	finally:
 	# Remove the client from the set when they disconnect
 		users.remove(websocket)
@@ -95,6 +91,7 @@ async def listener(websocket, path):
 		print(f"Number of connected clients: {len(users)}")
 
 if __name__ == "__main__":
+	print(socket.gethostbyname(socket.gethostname()))
 	start_server = websockets.serve(listener, socket.gethostbyname(socket.gethostname()), 8080)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()

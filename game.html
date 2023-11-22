@@ -6,7 +6,14 @@
 <meta http-equiv="Content-Security-Policy" script-src='unsafe-inline';>
 </meta>
 <body>
-		<script type="module" src="/main.js"></script>
+		<script type="importmap">
+			{
+				"imports": {
+					"three" : "./node_modules/three/src/Three.js"
+				}
+			}
+		</script>
+		<script type="module" src="./main.js"></script>
 </script>
 </body>
 </html>

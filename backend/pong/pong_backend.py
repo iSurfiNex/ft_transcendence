@@ -39,9 +39,12 @@ class PongBackend:
 		player1 = Player(pad=padPlayer1)
 		player2 = Player(pad=padPlayer2)
 
+
 		wall_contours = [
 			(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
+			player2,
 			(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
+			player1,
 		]
 
 		self.engine = PongEngine(
