@@ -50,7 +50,7 @@ export const matchVariable = str => {
   return matches[1]
 }
 
-export const bracketEval = (query, scope) => {
+export const bracketEval = (query, scope, prefixes) => {
   let attrVal = matchVariable(query)
 
   if (!attrVal)
@@ -63,11 +63,6 @@ export const bracketEval = (query, scope) => {
   } else {
     negate = false
   }
-
-  if (attrVal.startsWith("this."))
-    attrVal = attrVal.substring(5);
-  else
-    scope = window.state
 
   let res = attrVal.split('?');
   let useValue = false
@@ -82,5 +77,7 @@ export const bracketEval = (query, scope) => {
     return[]
   var [path, forwardVal] = res
   path = path.split('.')
+
+  scope = extractPathScope(path, scope, prefixes)
   return [path, negate, useValue, forwardVal, scope]
 }
