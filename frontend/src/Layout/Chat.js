@@ -26,7 +26,7 @@ class PongChat extends Component {
 			<div class="channels" repeat="channels" as="channel">
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="({channel.name} === {activeChannel})"/>
-					<label class="btn btn-secondary channels-bubble" id="{channel.id}" for="{channel.id}">
+					<label class="btn btn-secondary channels-bubble" id="{channel.id}" for="{channel.id}">{channel.name[0]}
 						<div class ="channels-bubble-notif"></div>
 					</label>
 				</div>
