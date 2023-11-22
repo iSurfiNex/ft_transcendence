@@ -9,22 +9,22 @@ document.addEventListener("DOMContentLoaded", function () {
 			Layout();
 
 			if (path === "/") {
-				displayElement("home");
+				displayElement("pong-home");
 			}
-			else if (path === "/profile/") {
-				displayElement("profile");
+			else if (path === "/profile") {
+				displayElement("pong-profile");
 			}
-			else if (path === "/play/waiting-room/") {
-				displayElement("waiting-room");
+			else if (path === "/play/waiting-room") {
+				displayElement("pong-waiting-room");
 			}
-			else if (path === "/play/pong/") {
-				displayElement("pong");
+			else if (path === "/play/pong") {
+				displayElement("pong-classic");
 			}
-			else if (path === "/play/pong-powerup/") {
+			else if (path === "/play/pong-powerup") {
 				displayElement("pong-power-up");
 			}
-			else if (path === "/play/tournament/") {
-				displayElement("tournament");
+			else if (path === "/play/tournament") {
+				displayElement("pong-tournament");
 			}
 			else {
 				displayNotFound();
@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function Layout() {
-		let topbar = document.createElement("top-bar");
-		let chat = document.createElement("chat");
-		let content = document.createElement("content-separator");
+		let topbar = document.createElement("pong-top-bar");
+		let chat = document.createElement("pong-chat");
+		let content = document.createElement("pong-content-separator");
 
 		body.appendChild(topbar);
 		body.appendChild(chat);
@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	function displayElement(element) {
 		let tmp = document.createElement(element);
 
+		tmp.classList.add("pong-content");
 		body.appendChild(tmp);
 	}
 
 	function displayNotFound() {
-		appContainer.innerHTML = "<h2>Page not found!</h2>";
-		updateContent("/");
+		history.pushState({}, "", '/')
 	}
 
 	function updateContent(path) {

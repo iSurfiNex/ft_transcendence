@@ -1,7 +1,7 @@
 import { Component, register } from 'pouic'
-import { initPopover } from './init_bootstrap_plugins.js'
+import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 
-import { bootstrapSheet } from 'bootstrap_css'
+import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 //const templateString = `
 //  <style>
@@ -39,11 +39,7 @@ import { bootstrapSheet } from 'bootstrap_css'
 class MyParagraph extends Component {
 	static sheets = [bootstrapSheet]
 	static template = `
-<div>
-  <div repeat="players" as="item">
-    <h1> hello from {item.name}!</h1>
-  </div>
-</div>
+	<a href="/profile" onClick="navigateTo('/profile'); return false;">Clique</a>
 
 <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>        <div repeat="players" as="item">
             <span>SCOPE {item.name}!<span>
