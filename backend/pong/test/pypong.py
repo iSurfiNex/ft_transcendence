@@ -3,17 +3,19 @@ import sys
 from copy import deepcopy
 from time import time
 
-from pong.engine import Ball, Pad, Player, PongEngine
+from pong.engine import PongEngine
+from pong.entities import Ball, Pad, Player
 from pong.ai import PongAI
-from pong.types import Vec
+from pong.types import Vec, Pos, Line
 
 from pong.test.draw import draw_contours, draw_arrow, draw_obstacles
 
 W, H = 800, 800
 WHITE = (255, 255, 255)
 GREY = (150, 150, 150)
+CYAN = (35, 150, 150)
 BALL_RADIUS = 25
-PAD_W, PAD_H = 20, 1400
+PAD_W, PAD_H = 20, 140
 FPS = 60
 PAD_SHIFT = 50
 
@@ -27,18 +29,18 @@ d = Vec(6, 5).normalized
 ball = Ball(pos=ball_reset_pos, speed=100, radius=25, direction=d)
 
 
-wall_contours = [
-    (PAD_SHIFT + BALL_RADIUS + 100 + PAD_W / 2, BALL_RADIUS),
-    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2 - 20, BALL_RADIUS),
-    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2, H - 70 - BALL_RADIUS),
-    (PAD_SHIFT + BALL_RADIUS + PAD_W / 2, H - BALL_RADIUS),
-]
 # wall_contours = [
-#    (PAD_SHIFT + BALL_RADIUS + PAD_W / 2, BALL_RADIUS),
-#    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2, BALL_RADIUS),
-#    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2, H - BALL_RADIUS),
+#    (PAD_SHIFT + BALL_RADIUS + 100 + PAD_W / 2, BALL_RADIUS),
+#    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2 - 20, BALL_RADIUS),
+#    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2, H - 70 - BALL_RADIUS),
 #    (PAD_SHIFT + BALL_RADIUS + PAD_W / 2, H - BALL_RADIUS),
 # ]
+wall_contours = [
+    (PAD_SHIFT / 2 + BALL_RADIUS + PAD_W / 2, BALL_RADIUS),
+    (W - PAD_SHIFT / 2 - BALL_RADIUS - PAD_W / 2, BALL_RADIUS),
+    (W - PAD_SHIFT / 2 - BALL_RADIUS - PAD_W / 2, H - BALL_RADIUS),
+    (PAD_SHIFT / 2 + BALL_RADIUS + PAD_W / 2, H - BALL_RADIUS),
+]
 
 
 # pad_left_path = "pad_left.png"
@@ -47,6 +49,17 @@ wall_contours = [
 # pad_left_image = pygame.image.load(pad_left_path)
 # pad_right_image = pygame.image.load(pad_right_path)
 # ball_image = pygame.image.load(ball_path)
+
+
+def contour_to_lines(contour: list[Pos]) -> list[Line]:
+    lines = []
+
+    pt_count = len(contour)
+    for i, _ in enumerate(contour):
+        p1 = contour[i]
+        p2 = contour[(i + 1) % pt_count]
+        lines.append((p1, p2))
+    return lines
 
 
 # thread = threading.Thread(target=ai_periodic_function, args=(game,))
@@ -68,29 +81,31 @@ class PyPong:
             BALL_RADIUS,
         )
 
-        def ai_go_up():
-            self.pad2.y -= 5
-
-        def ai_go_down():
-            self.pad2.y += 5
-
+        player1PadLine = (Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
+        player2PadLine = (Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
+        lines_obstacles = [contour_to_lines(contour) for contour in [wall_contours]]
         padPlayer1 = Pad(
-            pos=(PAD_SHIFT, H / 2), dim=(PAD_W, PAD_H), clamp_y=(0, H), speed=0
+            pos=(PAD_SHIFT, H / 2 + 30),
+            dim=(PAD_W, PAD_H),
+            clamp_line=player1PadLine,
+            speed=100,
         )
         padPlayer2 = Pad(
-            pos=(W - PAD_SHIFT, H / 2), dim=(PAD_W, PAD_H), clamp_y=(0, H), speed=0
+            pos=(W - PAD_SHIFT, H / 2),
+            dim=(PAD_W, PAD_H),
+            clamp_line=player2PadLine,
+            speed=100,  # FIXME decide on speed / Base speed
         )
-        player1 = Player(pad=padPlayer1, camp_line=wall_contours[1])
-        player2 = Player(pad=padPlayer2, camp_line=wall_contours[3])
+        player1 = Player(pad=padPlayer1, camp_line=lines_obstacles[0][3])
+        player2 = Player(pad=padPlayer2, camp_line=lines_obstacles[0][1])
+        self.ai = PongAI(speed=ball.s, player=player2, opponent=player1)
 
         self.engine = PongEngine(
-            obstacles_contours=[wall_contours],
+            lines_obstacles=lines_obstacles,
             ball=ball,
             players=[player1, player2],
             dim=(W, H),
-        )
-        self.ai = PongAI(
-            speed=ball.s, game=self.engine, player=player1, opponent=player2
+            ai=[self.ai],
         )
 
         # Initialize Pygame
@@ -139,6 +154,13 @@ class PyPong:
         # path.insert(0, ball.center)
         for i in range(len(path) - 1):
             draw_arrow(tuple(path[i]), tuple(path[i + 1]), self.screen)
+
+        if self.ai.goal_pos:
+            pygame.draw.circle(self.screen, CYAN, tuple(self.ai.goal_pos), 8)
+        if self.ai.target_pos:
+            pygame.draw.circle(self.screen, RED, tuple(self.ai.target_pos), 8)
+        if self.ai.goal_pos_proj:
+            pygame.draw.circle(self.screen, GREY, tuple(self.ai.goal_pos_proj), 8)
 
     def draw(self):
         self.screen.fill(WHITE)

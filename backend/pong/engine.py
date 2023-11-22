@@ -1,78 +1,14 @@
 from pong.collision import collisions_check
-from pong.types import Pos, Line, Vec
+from pong.types import Vec
+from pong.ai import PongAI
+from pong.entities import Player
 
 
-class Moving:
-    def __init__(self, pos: Vec, speed: float, direction: Vec):
-        self.p = pos
-        self.s = speed
-        self.d = Vec(direction)
-
-    def get_next_pos(self, delta: float):
-        return self.p + self.get_vec(delta)
-
-    def get_vec(self, delta: float):
-        return self.s * delta * self.d
-
-
-class Ball(Moving):
-    def __init__(self, pos, speed, radius, direction):
-        super().__init__(pos, speed, direction)
-        self.r = radius
-
-    def __str__(self):
-        return f"Ball(pos={self.p}, speed={self.s}, radius={self.r}, direction={self.d.__dict__})"
-
-
-class Pad(Moving):
-    def __init__(
-        self, pos, dim, clamp_y: tuple[float, float], speed=0, direction=(0, 1)
-    ):
-        super().__init__(pos, speed, direction)
-        self.clamp_y = clamp_y
-        self.dim = dim
-
-    def get_next_pos(self, delta: float):
-        pos = super().get_next_pos(delta)
-        clamped_y = max(self.clamp_y[0], min(pos.y, self.clamp_y[1]))
-        return (pos.x, clamped_y)
-
-    def update_pos(self, delta):
-        self.pos = self.get_next_pos(delta)
-
-
-class Player:
-    def __init__(self, pad: Pad, camp_line: Line):
-        self.pad = pad
-        self.score = 0
-        self.camp_line = camp_line
-
-    def go_down(self):
-        self.pad.d = Vec(0, 1)
-
-    def go_up(self):
-        self.pad.d = Vec(0, -1)
-
-    def stay_still(self):
-        self.pad.d = Vec(0, 0)
-
-
-class Bounce:
-    def __init__(self, ts, entity, pos):
-        self.ts = ts
-        self.entity = entity
-        self.pos = pos
-
-
-def contour_to_lines(contour: list[Pos]) -> list[Line]:
-    lines = []
-
-    pt_count = len(contour)
-    for i, _ in enumerate(contour):
-        p1 = contour[i]
-        p2 = contour[(i + 1) % pt_count]
-        lines.append((p1, p2))
-    return lines
+# class Bounce:
+#    def __init__(self, ts, entity, pos):
+#        self.ts = ts
+#        self.entity = entity
+#        self.pos = pos
 
 
 # def obstacles_to_lines(contours: list[Contour]) -> list[Line]:
@@ -82,20 +18,25 @@ def contour_to_lines(contour: list[Pos]) -> list[Line]:
 
 
 class PongEngine:
-    def __init__(self, obstacles_contours, ball, players: list[Player], dim: Vec):
+    def __init__(
+        self, lines_obstacles, ball, players: list[Player], dim: Vec, ai: list[PongAI]
+    ):
         self.dim = Vec(dim)
         self.pause = False
-        self.obstacles_contours = obstacles_contours
-        self.lines_obstacles = [
-            contour_to_lines(contour) for contour in obstacles_contours
-        ]
+        # self.obstacles_contours = obstacles_contours
+        self.lines_obstacles = lines_obstacles
         self.ball = ball
         self.running = True
         self.players = players
         self.bounces = []
+        self.ai = ai
+        for bot in ai:
+            bot.engine = self
 
     def update(self, delta):
         self.physic_update(delta)
+        for ai in self.ai:
+            ai.update()
         self.score_update()
 
     def physic_update(self, delta):
