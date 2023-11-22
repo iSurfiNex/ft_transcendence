@@ -100,8 +100,12 @@ class Vec:
         return lhs.y * self.x - lhs.x * self.y
 
     @property
+    def len2(self) -> float:
+        return self.x**2 + self.y**2
+
+    @property
     def len(self) -> float:
-        return math.sqrt(self.x**2 + self.y**2)
+        return math.sqrt(self.len2)
 
     @property
     def normalized(self) -> "Vec":
@@ -133,3 +137,33 @@ def get_distance(p1: Vec, p2: Vec):
 def compute_line_normal(p1: Vec, p2: Vec):
     v = p2 - p1
     return v.normal
+
+
+# Project point p on line
+def projection(line: Line, p: Vec):
+    a, b = line
+    a = Vec(a)
+    b = Vec(b)  # FIXME cleanup
+    ab = b - a
+    ap = p - a
+    aq = ((ap @ ab) / ab.len2) * ab
+    q = a + aq
+    return q
+
+
+def clamp_projection(line: Line, p: Vec):
+    a, b = line
+    a = Vec(a)
+    b = Vec(b)  # FIXME cleanup
+    q = projection(line, p)
+    aq = Vec.fromPoints(a, q)
+    bq = Vec.fromPoints(b, q)
+    ab = Vec.fromPoints(a, b)  # TODO line method
+    aq_len = aq.len
+    bq_len = bq.len
+    ab_len = ab.len
+    if aq_len > ab_len or bq_len > ab_len:
+        if aq_len > bq_len:
+            return b
+        return a
+    return q

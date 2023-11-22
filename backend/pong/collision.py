@@ -62,12 +62,14 @@ def ai_collisions_check(
     pos: Vec,
     vec: Vec,
     obstacles: list[Obstacle],
-    until_coll_with,
+    until_coll_with: list[Line],
 ) -> tuple[list[Collision], Vec | None, Line | None]:
     collisions, pos, r_dir, line = collisions_check(
         pos, vec, obstacles, until_coll_with=until_coll_with
     )
     next_pos = collisions[-1].pos if collisions else None
+    if line in until_coll_with:
+        return collisions, next_pos, line
     if r_dir == None:
         r_dir = vec.normalized
     vec = r_dir * 10000
@@ -85,7 +87,11 @@ def ai_collisions_check(
 
 
 def collisions_check(
-    pos: Vec, vec: Vec, obstacles: list[Obstacle], max_coll=100, until_coll_with=None
+    pos: Vec,
+    vec: Vec,
+    obstacles: list[Obstacle],
+    max_coll=100,
+    until_coll_with: list[Line] = [],
 ) -> tuple[list[Collision], Vec, Vec | None, Line | None]:
     remaining_dist: float = vec.len
     collisions: list[Collision] = []
@@ -102,7 +108,7 @@ def collisions_check(
         vec = next_dir * remaining_dist
         collisions.append(coll)
         r_dir = next_dir
-        if until_coll_with and line == until_coll_with:
+        if until_coll_with and line in until_coll_with:
             break
 
     pos += vec
