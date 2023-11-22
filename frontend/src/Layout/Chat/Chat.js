@@ -15,15 +15,22 @@ class PongChat extends Component {
 		<div class="chat-mobile">
 			<div class="chat-bubble">
 				<label class="btn btn-primary chat-bubble-label" for="btn-check">
-					<input @click="this.bubbleCheckHandler()" checked={isBubbleChecked} type="checkbox" class="btn-check chat-bubble-check" id="btn-check" autoComplete="off"/>
+					<input @click="this.chatCheckHandler()" checked={isChatBubbleChecked} type="checkbox" class="btn-check chat-bubble-check" id="btn-check" autoComplete="off"/>
 					<img class="chat-bubble-unchecked" src="/src/img/bubble.svg" alt="bubble"/>
 					<img class="chat-bubble-checked" src='/src/img/close.svg' alt="close"/>
 				</label>
 			</div>
 		</div>
 
-		<div class="chat-desktop" hidden="{this.isMobile}">
-			<channels></channels>
+		<div class="chat-desktop" hidden="{isMobile}">
+			<div class="channels" repeat="channels" as="channel">
+				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="({channel.name} === {activeChannel})"/>
+					<label class="btn btn-secondary channels-bubble" id="{channel.id}" for="{channel.id}">
+						<div class ="channels-bubble-notif"></div>
+					</label>
+				</div>
+			</div>
 			<messages></messages>
 
 			<div class="bottom-bar">
@@ -42,7 +49,7 @@ class PongChat extends Component {
 				</div>
 			</div>
 
-			<div class="chat-player-list">
+			<div class="chat-player-list" hidden="{isPlayerListChecked}">
 				<span class="chat-player-list-header-text">Player list</span>
 				<PlayerList />
 			</div>
@@ -574,21 +581,16 @@ class PongChat extends Component {
 	}
 
 	connectedCallback() {
-		console.log(this.isMobile);
-		initPopover(this)
+		initPopover(this);
 	}
 
-	isBubbleChecked = true;
-	bubbleCheckHandler() {
-		this.isBubbleChecked = !this.isBubbleChecked;
+	chatCheckHandler() {
+		state.isChatBubbleChecked = !state.isChatBubbleChecked;
 	}
 
-	isPlayerListChecked = true;
 	playerListCheckHandler() {
-		this.isBubbleChecked = !this.isBubbleChecked;
+		state.isPlayerListChecked = !state.isPlayerListChecked;
 	}
-
-	isMobile = ((window.innerWidth < 768 || window.innerHeight < 524));
 }
 
 register(PongChat);
