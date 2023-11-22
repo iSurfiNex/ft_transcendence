@@ -1,7 +1,7 @@
 import {bracketEval, get_prop, addPathObserver} from './utils.js'
 
-const attach_class_obs = (scope, query, i, classList) => {
-  let [path, negate, useValue, forwardVal, localScope] = bracketEval(query, scope)
+const attach_class_obs = (scope, prefixes, query, i, classList) => {
+  let [path, negate, useValue, forwardVal, localScope] = bracketEval(query, scope, prefixes)
   if (path === undefined)
     return
 
@@ -23,4 +23,4 @@ const attach_class_obs = (scope, query, i, classList) => {
   addPathObserver(path, onchange)
 }
 
-export const attach_classes_obs = (node, scope) => node.classList.forEach(attach_class_obs.bind(null, scope))
+export const attach_classes_obs = (node, scope, prefixes) => node.classList.forEach(attach_class_obs.bind(null, scope, prefixes))

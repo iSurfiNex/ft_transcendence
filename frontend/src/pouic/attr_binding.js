@@ -2,8 +2,8 @@ import { bracketEval, get_prop, addPathObserver} from './utils.js'
 import {attach_event_obs} from './event_binding.js'
 
 
-const attach_attr_obs = (attrName, query, node, scope) => {
-  let [path, negate, useValue, forwardVal, localScope] = bracketEval(query, scope)
+const attach_attr_obs = (attrName, query, node, scope, prefixes) => {
+  let [path, negate, useValue, forwardVal, localScope] = bracketEval(query, scope, prefixes)
   if (path === undefined)
     return
   let onchange = (newVal) => {
@@ -23,7 +23,7 @@ const attach_attr_obs = (attrName, query, node, scope) => {
 }
 
 
-export const attach_attributes_obs = (node, scope) => [...node.attributes].forEach(attr => {
+export const attach_attributes_obs = (node, scope, prefixes) => [...node.attributes].forEach(attr => {
   if (attr.name == "class") return
 
   if (attr.name[0] === '@') {
@@ -33,5 +33,5 @@ export const attach_attributes_obs = (node, scope) => [...node.attributes].forEa
   }
 
 
-  attach_attr_obs(attr.name, attr.value, node, scope)
+  attach_attr_obs(attr.name, attr.value, node, scope, prefixes)
 })

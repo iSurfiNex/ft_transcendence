@@ -13,18 +13,18 @@ const getAllDescTextNodes = (element, textNodes = []) => {
   return textNodes;
 }
 
-const attach_node_obs = (node, scope) => {
-  attach_classes_obs(node, scope)
-  attach_attributes_obs(node, scope)
+const attach_node_obs = (node, scope, prefixes) => {
+  attach_classes_obs(node, scope, prefixes)
+  attach_attributes_obs(node, scope, prefixes)
 }
 
-export const bindAttr = (node, scope, asParent = false) => {
+export const bindAttr = (node, scope, asParent = false, prefixes = {}) => {
   let nodeIterator = document.createNodeIterator(node, NodeFilter.SHOW_ELEMENT, null, false);
   if (!asParent)
-    attach_node_obs(node, scope)
+    attach_node_obs(node, scope, prefixes)
 
   while (node = nodeIterator.nextNode()) {
-    attach_node_obs(node, scope)
+    attach_node_obs(node, scope, prefixes)
   }
 }
 

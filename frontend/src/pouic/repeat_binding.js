@@ -1,5 +1,5 @@
 import {extractPathScope, get_prop, isIterable, addPathObserver } from './utils.js'
-import {bindText } from './binding.js'
+import {bindText, bindAttr } from './binding.js'
 
 export const evalRepeat = (node, scope) => {
   let elements = node.querySelectorAll("[repeat]")
@@ -37,6 +37,7 @@ export const evalRepeat = (node, scope) => {
           el.appendChild(c)
           nodePool.push(c)
           bindText(c, scope, { [as]: [...arrayPath, nodePool.length - 1] })
+          bindAttr(c, scope, true, { [as]: [...arrayPath, nodePool.length - 1] })
         }
       }
       else {
