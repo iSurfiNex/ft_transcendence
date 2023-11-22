@@ -42,3 +42,10 @@ var state_base = {
 }
 
 const state = setup(state_base)
+
+function checkScreenWidth() {
+	state.isMobile = (window.innerWidth < 768 || window.innerHeight < 524);
+}
+
+checkScreenWidth();
+window.addEventListener('resize', checkScreenWidth);
