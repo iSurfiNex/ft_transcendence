@@ -26,6 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			else if (path === "/play/tournament") {
 				displayElement("pong-tournament");
 			}
+			else if (path === "/play/tournament-waiting-room") {
+				displayElement("tournament-waiting-room");
+			}
 			else {
 				displayNotFound();
 			}
