@@ -120,17 +120,18 @@ Bind element n of an array
 Boolean to attribute
 
 `<h1 hidden="{pages.home.active}">Am I shown ?</h1>`
+If the value behind `pages.home.active` is a boolean, the attribute is toggled. Otherwise, the attribute takes the value of the variable.
 
 Negate variable
-
+With negation, the value becomes a boolean so the attribute toggles
 `<h1 hidden="{!pages.home.active}">Am I shown ?</h1>`
 
 Kind-of ternary
-
+if the variable evaluates to `true`, the attribute takes the value one the right side of the `?`
 `<h1 hello="{pages.home.active?world}"></h1>`
 
 function call with parameter path binding
-any time `pages.home.title` changes, the dom is updated with the result of the function
+any time `pages.home.title` changes, the dom updates with the result of the function
 
 `<h1>The page slug is {getSlug(pages.home.title)}></h1>`
 
