@@ -6,7 +6,7 @@ class PongTopBar extends Component {
 	static sheets = [bootstrapSheet]
 	static template = `
 	<div class="topbar">
-		<a href="/" onClick="navigateTo('/'); class="logo">
+		<a href="/" onClick="navigateTo('/'); return false;" class="logo">
 			<div class="logo-text">PONG</div>
 		</a>
 
@@ -14,7 +14,8 @@ class PongTopBar extends Component {
 		</div>
 
 		<div class="profile-picture">
-			<a class="profile-picture-div" href="/profile" onClick="navigateTo('/profile');>
+			<a class="profile-picture-div" href="/profile" onClick="navigateTo('/profile'); return false;">
+				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
 			</a>
 		</div>
 	</div>
@@ -25,7 +26,7 @@ class PongTopBar extends Component {
 		.topbar {
 			display: block;
 			position: fixed;
-			width: calc(100% + 1px);
+			width: 100%;
 			height: 10%;
 			left: 0;
 			top: 0;
@@ -42,6 +43,7 @@ class PongTopBar extends Component {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			overflow: hidden;
 		}
 
 
@@ -102,7 +104,7 @@ class PongTopBar extends Component {
 		.topbar {
 			display: block;
 			position: fixed;
-			width: calc(100% + 1px);
+			width: 100%;
 			height: 10%;
 			left: 0;
 			top: 0;
@@ -266,12 +268,14 @@ class PongTopBar extends Component {
 	}
 
 	.topbar {
-		margin: 0;
-
 		font-family: 'Press Start 2P', sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		background-color: black;
+		background-color: rgb(54, 54, 54);
+	}
+
+	.logo {
+		text-decoration: none;
 	}
 `
 	observers = {
@@ -282,12 +286,15 @@ class PongTopBar extends Component {
 		initPopover(this);
 	}
 
-	chatCheckHandler() {
-		state.isChatBubbleChecked = !state.isChatBubbleChecked;
-	}
+	getProfilePicture(whoAmI) {
+		const user = state.users.find(user => user.nickname === whoAmI);
 
-	playerListCheckHandler() {
-		state.isPlayerListChecked = !state.isPlayerListChecked;
+		if (user) {
+			return ("/src/" + user.picture);
+		}
+		else {
+			return '/src/img/list.svg';
+		}
 	}
 }
 
