@@ -119,11 +119,11 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
     var [path, forwardVal] = res
     path = path.split('.')
 
-    scope = extractPathScope(path, scope, prefixes)
+    let localScope = extractPathScope(path, scope, prefixes)
 
     let initialUseAttr = get_prop(localScope, path)
-    onchange(initialUseAttr, negate, useValue, forwardVal)
-    addPathObserver(path, onchange)
+    onChange(initialUseAttr, negate, useValue, forwardVal)
+    addPathObserver(path, onChange)
   } else {
     fnEval(bindName, bindArgsStr, scope, prefixes, negate, onChange)
   }
