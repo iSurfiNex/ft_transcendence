@@ -47,7 +47,7 @@ export const matchVariable = str => {
   const regexPattern = /^\{(!?[a-zA-Z0-9_.?]+)(?:\(([^)]*)\))?\}$/;
   const matches = str.split(regexPattern);
   if (matches.length < 3)
-    return
+    return []
   // items 0 and n-1 contains empty string
   // if one element is return, it's a variable path, otherwise, first item is a function name, and the rest are the arguments
   return matches.slice(1, -1)
@@ -92,7 +92,7 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
   let [bindName, bindArgsStr] = matchVariable(query)
 
   if (!bindName)
-    return
+    return false
   let negate
 
   if (bindName[0]==='!'){
@@ -110,12 +110,12 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
 
     if (res.length === 1){
       if (res[0] == "")
-        return[]
+        return false
       else
         useValue = true
     }
     else if (res.length !== 2  || res[1] == "")
-      return[]
+      return false
     var [path, forwardVal] = res
     path = path.split('.')
 
@@ -128,4 +128,5 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
   } else {
     fnEval(bindName, bindArgsStr, scope, prefixes, negate, onChange)
   }
+  return true
 }
