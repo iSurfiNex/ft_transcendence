@@ -22,7 +22,7 @@ class PongChat extends Component {
 			</div>
 		</div>
 
-		<div class="chat-desktop" hidden="{this.getHiddenStatus()}">
+		<div class="chat-desktop" hidden="{this.getHiddenStatus(isMobile, isChatBubbleChecked)}">
 			<div class="channels" repeat="channels" as="channel">
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
@@ -606,8 +606,8 @@ class PongChat extends Component {
 		return (word[0]);
 	}
 
-	getHiddenStatus() {
-		return !(!state.isMobile || (state.isMobile && !state.isChatBubbleChecked));
+	getHiddenStatus(isMobile, isChatBubbleChecked) {
+		return !(!isMobile || (isMobile && !isChatBubbleChecked));
 	}
 
 	isActiveChannel(channelName) {
