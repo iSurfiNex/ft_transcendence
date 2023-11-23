@@ -89,7 +89,7 @@ const fnEval = (bindName,bindArgsStr, scope, prefixes, negate, onChange) => {
 }
 
 export const bracketEval = (query, scope, prefixes, onChange) => {
-  const [bindName, bindArgsStr] = matchVariable(query)
+  let [bindName, bindArgsStr] = matchVariable(query)
 
   if (!bindName)
     return
@@ -123,7 +123,8 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
 
     let initialUseAttr = get_prop(localScope, path)
     onChange(initialUseAttr, negate, useValue, forwardVal)
-    addPathObserver(path, onChange)
+    let handleChange = (newVal) => onChange(newVal, negate, useValue, forwardVal)
+    addPathObserver(path, handleChange)
   } else {
     fnEval(bindName, bindArgsStr, scope, prefixes, negate, onChange)
   }
