@@ -42,29 +42,74 @@ export const isIterable = (obj) =>{
   return obj != null && typeof obj[Symbol.iterator] === 'function';
 }
 
+// TODO rename extractBinding
 export const matchVariable = str => {
-  const regexPattern = /^\{(!?[a-zA-Z0-9_.?]+)\}$/;
+  const regexPattern = /^\{(!?[a-zA-Z0-9_.?]+)(?:\(([^)]*)\))?\}$/;
   const matches = str.split(regexPattern);
-  if (matches.length != 3)
+  if (matches.length < 3)
     return
-  return matches[1]
+  // items 0 and n-1 contains empty string
+  // if one element is return, it's a variable path, otherwise, first item is a function name, and the rest are the arguments
+  return matches.slice(1, -1)
+}
+
+const fnEval = (bindName,bindArgsStr, scope, prefixes) => {
+
+  let argsPath = []
+    //function evaluation
+    if (bindArgsStr == "") {
+      // no argument
+    } else {
+      argsPath = bindArgsStr.split(',').map(str => str.trim())
+    }
+
+    const fnPath = bindName.split('.')
+    const fnLocalScope = extractPathScope(fnPath, scope, prefixes)
+    let fn = get_prop(fnLocalScope,  fnPath)
+    const args = []
+    const callFn = () => fn(...args)
+
+    let onFnChange = newFn => {
+      fn = newFn
+      callFn()
+    }
+    addPathObserver(fnPath, onFnChange)
+
+    argsPath.forEach((pathStr, i) =>{
+      const varPath = pathStr.split('.')
+      const argLocalScope = extractPathScope(varPath, scope, prefixes)
+      args[i] = get_prop(argLocalScope, varPath)
+      const onArgChange = newArg => {
+        args[i] = newArg
+        callFn()
+      }
+      addPathObserver(varPath, onArgChange)
+    })
+      callFn()
 }
 
 export const bracketEval = (query, scope, prefixes) => {
-  let attrVal = matchVariable(query)
+  const [bindName, bindArgsStr] = matchVariable(query)
+  if (bindArgsStr == undefined){
+    //variable evaluation
+  } else {
+    fnEval(bindName, bindArgsStr, scope, prefixes)
+  }
+  //let bindName = matchVariable(query)
 
-  if (!attrVal)
+
+  if (!bindName)
     return[]
   let negate
 
-  if (attrVal[0]==='!'){
+  if (bindName[0]==='!'){
     negate = true
-    attrVal = attrVal.substring(1);
+    bindName = bindName.substring(1);
   } else {
     negate = false
   }
 
-  let res = attrVal.split('?');
+  let res = bindName.split('?');
   let useValue = false
 
   if (res.length === 1){
