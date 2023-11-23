@@ -25,7 +25,7 @@ class PongChat extends Component {
 		<div class="chat-desktop" hidden="{this.getHiddenStatus(isMobile, isChatBubbleChecked)}">
 			<div class="channels" repeat="channels" as="channel">
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
+					<input @click="this.updateActiveChannel(channel.name)" type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
 					<label class="btn btn-secondary channels-bubble" style="{this.getUserPictureFromString(channel.name)}" for="{channel.id}">{this.getFirstLetter(channel.name)}
 						<div class ="channels-bubble-notif"></div>
 					</label>
@@ -33,7 +33,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" repeat="messages" as="message">
-				<div class="message" hidden="{this.isMessageInChannel(message.channel, channel.name)}">
+				<div class="message" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
 					<a href="/profile" onClick="navigateTo('/profile'); return false;">
 						<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
 						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
@@ -61,7 +61,18 @@ class PongChat extends Component {
 
 			<div class="chat-player-list" hidden="{isPlayerListChecked}">
 				<span class="chat-player-list-header-text">Player list</span>
-				<PlayerList />
+				<div class="chat-list-player" repeat="users" as="user">
+					<div class="chat-player">
+						<a class="chat-player-link" href="/profile" onClick="navigateTo('/'); return false;">
+							<img class="chat-player-img" src={this.getProfilePicture(user)} alt="profile"/>
+							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
+						</a>
+						<button class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/src/img/message.svg" alt="send message"/></button>
+						<button class="chat-player-invite btn btn-success" title="Invite"><img class="chat-player-button-img" src="/src/img/plus.svg" alt="invite"/></button>
+						<button class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/src/img/block.svg" alt="block"/></button>
+						<div class="chat-player-seperator"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -651,7 +662,11 @@ class PongChat extends Component {
 	}
 
 	isMessageInChannel(message, channelName) {
-		return (message == channelName);
+		return !(message == channelName);
+	}
+
+	updateActiveChannel(channelName) {
+		state.activeChannel = channelName;
 	}
 }
 
