@@ -1,7 +1,7 @@
 import {setup} from "./pouic/state.js"
 
 var state_base = {
-	isMobile: undefined,
+	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
 	users: [
@@ -45,11 +45,8 @@ var state_base = {
 
 const state = setup(state_base)
 
-state.isMobile = (window.innerWidth < 768 || window.innerHeight < 524);
-
 function checkScreenWidth() {
 	state.isMobile = (window.innerWidth < 768 || window.innerHeight < 524);
 }
 
-checkScreenWidth();
 window.addEventListener('resize', checkScreenWidth);
