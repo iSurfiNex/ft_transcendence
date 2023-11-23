@@ -40,16 +40,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		let chat = document.createElement("pong-chat");
 		let content = document.createElement("pong-content-separator");
 
-		body.appendChild(topbar);
-		body.appendChild(chat);
-		body.appendChild(content);
+		body.append(topbar);
+		body.append(chat);
+		body.append(content);
 	}
 
 	function displayElement(element) {
 		let tmp = document.createElement(element);
 
 		tmp.classList.add("pong-content");
-		body.appendChild(tmp);
+		body.append(tmp);
 	}
 
 	function displayNotFound() {
