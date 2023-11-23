@@ -14,8 +14,9 @@ const attach_class_obs = (scope, prefixes, query, i, classList) => {
     }
     oldVal = newVal
   }
-  bracketEval(query, scope, prefixes, onClassBindingChange)
-  classList.toggle(query, false)
+  let hasBinding = bracketEval(query, scope, prefixes, onClassBindingChange)
+  if (hasBinding)
+    classList.toggle(query, false)
 }
 
 export const attach_classes_obs = (node, scope, prefixes) => node.classList.forEach(attach_class_obs.bind(null, scope, prefixes))
