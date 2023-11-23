@@ -53,7 +53,7 @@ export const matchVariable = str => {
   return matches.slice(1, -1)
 }
 
-const fnEval = (bindName,bindArgsStr, scope, prefixes) => {
+const fnEval = (bindName,bindArgsStr, scope, prefixes, negate, onChange) => {
 
   let argsPath = []
     //function evaluation
@@ -67,7 +67,7 @@ const fnEval = (bindName,bindArgsStr, scope, prefixes) => {
     const fnLocalScope = extractPathScope(fnPath, scope, prefixes)
     let fn = get_prop(fnLocalScope,  fnPath)
     const args = []
-    const callFn = () => fn(...args)
+    const callFn = () => onChange(fn(...args), negate, true, undefined)
 
     let onFnChange = newFn => {
       fn = newFn
@@ -88,18 +88,11 @@ const fnEval = (bindName,bindArgsStr, scope, prefixes) => {
       callFn()
 }
 
-export const bracketEval = (query, scope, prefixes) => {
+export const bracketEval = (query, scope, prefixes, onChange) => {
   const [bindName, bindArgsStr] = matchVariable(query)
-  if (bindArgsStr == undefined){
-    //variable evaluation
-  } else {
-    fnEval(bindName, bindArgsStr, scope, prefixes)
-  }
-  //let bindName = matchVariable(query)
-
 
   if (!bindName)
-    return[]
+    return
   let negate
 
   if (bindName[0]==='!'){
@@ -109,20 +102,29 @@ export const bracketEval = (query, scope, prefixes) => {
     negate = false
   }
 
-  let res = bindName.split('?');
-  let useValue = false
+  if (bindArgsStr == undefined){
+    //variable evaluation
 
-  if (res.length === 1){
-    if (res[0] == "")
+    let res = bindName.split('?');
+    let useValue = false
+
+    if (res.length === 1){
+      if (res[0] == "")
+        return[]
+      else
+        useValue = true
+    }
+    else if (res.length !== 2  || res[1] == "")
       return[]
-    else
-      useValue = true
-  }
-  else if (res.length !== 2  || res[1] == "")
-    return[]
-  var [path, forwardVal] = res
-  path = path.split('.')
+    var [path, forwardVal] = res
+    path = path.split('.')
 
-  scope = extractPathScope(path, scope, prefixes)
-  return [path, negate, useValue, forwardVal, scope]
+    scope = extractPathScope(path, scope, prefixes)
+
+    let initialUseAttr = get_prop(localScope, path)
+    onchange(initialUseAttr, negate, useValue, forwardVal)
+    addPathObserver(path, onchange)
+  } else {
+    fnEval(bindName, bindArgsStr, scope, prefixes, negate, onChange)
+  }
 }

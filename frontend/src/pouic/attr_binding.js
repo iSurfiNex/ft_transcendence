@@ -1,12 +1,8 @@
-import { bracketEval, get_prop, addPathObserver} from './utils.js'
-import {attach_event_obs} from './event_binding.js'
-
+import { bracketEval, get_prop, addPathObserver } from './utils.js'
+import { attach_event_obs } from './event_binding.js'
 
 const attach_attr_obs = (attrName, query, node, scope, prefixes) => {
-  let [path, negate, useValue, forwardVal, localScope] = bracketEval(query, scope, prefixes)
-  if (path === undefined)
-    return
-  let onchange = (newVal) => {
+  const onAttrBindingChange = (newVal, negate, useValue, forwardVal) => {
     if (negate)
       newVal = !newVal
     if (useValue) {
@@ -14,14 +10,9 @@ const attach_attr_obs = (attrName, query, node, scope, prefixes) => {
     } else {
       newVal ? node.setAttribute(attrName, forwardVal) : node.removeAttribute(attrName)
     }
+  }
+  bracketEval(query, scope, prefixes, onAttrBindingChange)
 }
-
-  let initialUseAttr = get_prop(localScope, path)
-  onchange(initialUseAttr)
-  //updateAttr(node, initialUseAttr, attrName, forwardVal)
-  addPathObserver(path, onchange)
-}
-
 
 export const attach_attributes_obs = (node, scope, prefixes) => [...node.attributes].forEach(attr => {
   if (attr.name == "class") return
@@ -31,7 +22,6 @@ export const attach_attributes_obs = (node, scope, prefixes) => [...node.attribu
     node.removeAttribute(attr.name)
     return
   }
-
 
   attach_attr_obs(attr.name, attr.value, node, scope, prefixes)
 })
