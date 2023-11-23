@@ -25,8 +25,6 @@ RUN pip3 install -r requirements.txt
 
 RUN mkdir -p /var/lib/postgresql/data
 
-EXPOSE 5432
-
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 

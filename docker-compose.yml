@@ -7,6 +7,7 @@ services:
     image: backend
     ports:
      - "5432:5432"
+     - "8000:8000"
     volumes:
      - backend:/volumes/backend
     networks:
