@@ -26,12 +26,22 @@ class PongChat extends Component {
 			<div class="channels" repeat="channels" as="channel">
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
-					<label class="btn btn-secondary channels-bubble" for="{channel.id}">{this.getFirstLetter(channel.name)}
+					<label class="btn btn-secondary channels-bubble" style="{this.getUserPictureFromString(channel.name)}" for="{channel.id}">{this.getFirstLetter(channel.name)}
 						<div class ="channels-bubble-notif"></div>
 					</label>
 				</div>
 			</div>
-			<messages></messages>
+
+			<div class="messages" repeat="messages" as="message">
+				<div class="message" hidden="{this.isMessageInChannel(message.channel, channel.name)}">
+					<a href="/profile" onClick="navigateTo('/profile'); return false;">
+						<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
+						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
+					</a>
+					<div class="message-player-date">{message.date}</div>
+					<div class="message-player-content">{message.text}</div>
+				</div>
+			</div>
 
 			<div class="bottom-bar">
 				<input placeholder="Ecrivez votre message ici" class="chat-input"/>
@@ -597,11 +607,51 @@ class PongChat extends Component {
 	}
 
 	getHiddenStatus() {
-		return (isMobile || isChatBubbleChecked);
+		return !(!state.isMobile || (state.isMobile && !state.isChatBubbleChecked));
 	}
 
 	isActiveChannel(channelName) {
-		return ({channelName} == {activeChannel});
+		return (channelName == state.activeChannel);
+	}
+
+	getUserPictureFromString(string) {
+		const user = state.users.find(user => user.nickname === string);
+
+		if (user) {
+			const backgroundImage = 'url(/src/' + user.picture + ')';
+			const backgroundSize = 'cover';
+
+			return ('background-image: ' + backgroundImage + '; background-size: ' + backgroundSize + ';');
+		}
+		else {
+			return ('');
+		}
+	}
+
+	getProfilePicture(whoAmI) {
+		const user = state.users.find(user => user.nickname === whoAmI);
+
+		if (user) {
+			return ("/src/" + user.picture);
+		}
+		else {
+			return '/src/img/list.svg';
+		}
+	}
+
+	getUserFullNameFromString(string) {
+		const user = state.users.find(user => user.nickname === string);
+
+		if (user) {
+			return (user.fullname)
+		}
+		else {
+			return ('');
+		}
+	}
+
+	isMessageInChannel(message, channelName) {
+		return (message == channelName);
 	}
 }
 
