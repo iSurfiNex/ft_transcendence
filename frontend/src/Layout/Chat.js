@@ -22,11 +22,11 @@ class PongChat extends Component {
 			</div>
 		</div>
 
-		<div class="chat-desktop" hidden="{isMobile}">
+		<div class="chat-desktop" hidden="{this.getHiddenStatus()}">
 			<div class="channels" repeat="channels" as="channel">
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="({channel.name} === {activeChannel})"/>
-					<label class="btn btn-secondary channels-bubble" id="{channel.id}" for="{channel.id}">{channel.name[0]}
+					<input type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
+					<label class="btn btn-secondary channels-bubble" for="{channel.id}">{this.getFirstLetter(channel.name)}
 						<div class ="channels-bubble-notif"></div>
 					</label>
 				</div>
@@ -590,6 +590,18 @@ class PongChat extends Component {
 
 	playerListCheckHandler() {
 		state.isPlayerListChecked = !state.isPlayerListChecked;
+	}
+
+	getFirstLetter(word) {
+		return (word[0]);
+	}
+
+	getHiddenStatus() {
+		return (isMobile || isChatBubbleChecked);
+	}
+
+	isActiveChannel(channelName) {
+		return ({channelName} == {activeChannel});
 	}
 }
 
