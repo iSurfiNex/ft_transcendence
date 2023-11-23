@@ -27,8 +27,7 @@ state_base = {
 const state = setup(state_base)
 ```
 
-Declare a component by creating a class that inherit `Component` then call `register` to transform them into WebComponent
-In the component template, you can use binding to synchronize the DOM with a state variable. Binding goes this way `{pages.home.title}`, inside the brackets, provide the dot-separated path to your variable.
+Declare a component by creating a class that inherit `Component` then call `register` to transform them into WebComponent. In the component template, you can use binding to synchronize the DOM with a state variable. Binding goes this way `{pages.home.title}`, inside the brackets, provide the dot-separated path to your variable.
 
 ``` js
 // HelloWorld.js
@@ -66,7 +65,7 @@ You class `MyPage` has been transform to `my-page`.
 
 ## Create a component
 
-The spec impose webcomponent to have a name made of at least 2 words, dash-separated; The first word should be your namespace. So make your class have 2 words minimum.
+The spec impose webcomponent to have a name made of at least 2 words, dash-separated. The first word should be your namespace. So make your class have 2 words minimum.
 
 There is 3 special type of static property you'll want to use:
 - `template`: becomes the DOM content of your component
@@ -99,7 +98,7 @@ class MyPage extends Component {
   static css = `span { background: red; }`
   static sheets = [mySharedSheet]
   observers = {
-	my.var: newValue => console.log("value changed: ", newValue)
+	'my.var': newValue => console.log("value changed: ", newValue)
   }
 }
 
@@ -166,4 +165,8 @@ will call fn any time the `click` event is received on this node
 </div>
 ```
 You can use any binding feature inside the repeat on either text, attribute or class
-Nested repeat are not yet supported
+
+### Limitations
+
+- Nested repeat are not yet supported
+- binding with with local variable such as `<h1>{this.myComponentVar}</h1>` will work at initialization but the DOM will not update when the value changes
