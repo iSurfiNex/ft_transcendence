@@ -63,7 +63,7 @@ class PongChat extends Component {
 				<span class="chat-player-list-header-text">Player list</span>
 				<div class="chat-list-player" repeat="users" as="user">
 					<div class="chat-player">
-						<a class="chat-player-link" href="/profile" onClick="navigateTo('/'); return false;">
+						<a class="chat-player-link" href="/profile" onClick="navigateTo('/profile'); return false;">
 							<img class="chat-player-img" src={this.getProfilePicture(user)} alt="profile"/>
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
