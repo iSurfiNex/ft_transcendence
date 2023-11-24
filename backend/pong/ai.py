@@ -33,10 +33,8 @@ class PongAI:
     def choose_goal_pos(self) -> Vec:
         line = self.opponent.camp_line
         p = line.project(self.opponent.pad.p)
-        opponent_progression_vec = p - line[0]
-        a = Vec(line[0])
-        b = Vec(line[1])
-        opponent_line_vec = b - a
+        opponent_progression_vec = p - line.a
+        opponent_line_vec = line.vec
 
         opponent_progression_ration = (
             opponent_progression_vec.len / opponent_line_vec.len
@@ -65,12 +63,12 @@ class PongAI:
         pad_shift = self.pad_shift_for_angle(
             angleACB,
             math.pi / 4,
-            self.opponent.pad.dim.y,  # TODO simplify player access
+            self.opponent.pad.dim.y,
         )
-        target_pos = next_impact + pad_shift
+        target_pos = next_impact + (0, pad_shift)
         pos = self.opponent.pad.p
         vec = pos - target_pos
-        dir = Vec.fromPoints(*self.player.camp_line) @ vec  # TODO Line class or Segment
+        dir = self.player.camp_line.vec @ vec  # TODO Line class or Segment
         duration = vec.len / self.opponent.pad.s
         self.pad_actions = [(dir, time() + duration)]
         self.goal_pos = goal_pos
