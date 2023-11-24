@@ -7,7 +7,6 @@ services:
     image: backend
     ports:
      - "5432:5432"
-     - "8000:8000"
     volumes:
      - backend:/volumes/backend
     networks:
@@ -21,7 +20,7 @@ services:
      build: ./nginx
      image: nginx
      ports:
-      - "443:443"
+      - "8000:443"
      volumes:
       - backend:/volumes/backend
      networks:
