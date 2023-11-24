@@ -6,9 +6,9 @@ from time import time
 from pong.engine import PongEngine
 from pong.entities import Ball, Pad, Player
 from pong.ai import PongAI
-from pong.types import Vec, Pos, Line
+from pong.types import DrawDebug, Vec, Pos, Line
 
-from pong.test.draw import draw_contours, draw_arrow, draw_obstacles
+from pong.test.draw import draw_contours, draw_arrow, draw_obstacles, draw_text
 
 W, H = 800, 800
 WHITE = (255, 255, 255)
@@ -81,8 +81,8 @@ class PyPong:
             BALL_RADIUS,
         )
 
-        player1PadLine = (Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
-        player2PadLine = (Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
+        player1PadLine = Line(Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
+        player2PadLine = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
         lines_obstacles = [contour_to_lines(contour) for contour in [wall_contours]]
         padPlayer1 = Pad(
             pos=(PAD_SHIFT, H / 2 + 30),
@@ -96,8 +96,8 @@ class PyPong:
             clamp_line=player2PadLine,
             speed=100,  # FIXME decide on speed / Base speed
         )
-        player1 = Player(pad=padPlayer1, camp_line=lines_obstacles[0][3])
-        player2 = Player(pad=padPlayer2, camp_line=lines_obstacles[0][1])
+        player1 = Player(pad=padPlayer1, camp_line=player1PadLine)
+        player2 = Player(pad=padPlayer2, camp_line=player2PadLine)
         self.ai = PongAI(speed=ball.s, player=player2, opponent=player1)
 
         self.engine = PongEngine(
@@ -155,12 +155,16 @@ class PyPong:
         for i in range(len(path) - 1):
             draw_arrow(tuple(path[i]), tuple(path[i + 1]), self.screen)
 
-        if self.ai.goal_pos:
-            pygame.draw.circle(self.screen, CYAN, tuple(self.ai.goal_pos), 8)
-        if self.ai.target_pos:
-            pygame.draw.circle(self.screen, RED, tuple(self.ai.target_pos), 8)
-        if self.ai.goal_pos_proj:
-            pygame.draw.circle(self.screen, GREY, tuple(self.ai.goal_pos_proj), 8)
+        for class_name, instance_list in DrawDebug.saved.items():
+            if class_name == "Line":
+                for label, (instance, color) in instance_list.items():
+                    pygame.draw.line(
+                        self.screen, color, tuple(instance.a), tuple(instance.b), 2
+                    )
+            if class_name == "Vec":
+                for label, (instance, color) in instance_list.items():
+                    pygame.draw.circle(self.screen, color, tuple(instance), 4)
+                    draw_text(label, instance, self.screen, color)
 
     def draw(self):
         self.screen.fill(WHITE)
