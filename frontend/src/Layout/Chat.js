@@ -64,7 +64,7 @@ class PongChat extends Component {
 				<div class="chat-list-player" repeat="users" as="user">
 					<div class="chat-player">
 						<a class="chat-player-link" href="/profile" onClick="navigateTo('/profile'); return false;">
-							<img class="chat-player-img" src={this.getProfilePicture(user)} alt="profile"/>
+							<img class="chat-player-img" src={this.getProfilePicture(user.nickname)} alt="profile"/>
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
 						<button class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/src/img/message.svg" alt="send message"/></button>
@@ -643,7 +643,7 @@ class PongChat extends Component {
 		const user = state.users.find(user => user.nickname === whoAmI);
 
 		if (user) {
-			return ("/src/" + user.picture);
+			return '/src/' + user.picture;
 		}
 		else {
 			return '/src/img/list.svg';
