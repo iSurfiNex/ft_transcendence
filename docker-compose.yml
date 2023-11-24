@@ -16,6 +16,20 @@ services:
       - backend/.env
     restart: on-failure
 
+  nginx:
+     container_name: nginx
+     build: ./nginx
+     image: nginx
+     ports:
+      - "443:443"
+     volumes:
+      - backend:/volumes/backend
+     networks:
+       - ft_transcendence
+     env_file:
+       - backend/.env
+     restart: on-failure
+
 volumes:
   backend:
     name:   backend
