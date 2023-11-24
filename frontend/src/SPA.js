@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
 	window.addEventListener("popstate", function (event) {
-        const path = event.state.path || window.location.pathname;
-        displayContent(path);
-    });
+		const path = event.state?.path || window.location.pathname;
+		displayContent(path);
+	});
 
 	const initialPath = window.location.pathname;
 	navigateTo(initialPath);
