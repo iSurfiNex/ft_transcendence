@@ -6,11 +6,9 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/11/22 17:38:12 by tlarraze         ###   ########.fr        #
+#    Updated: 2023/11/24 17:17:10 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-#http://10.11.6.6:8000/game.html
 
 import asyncio
 import websockets
@@ -27,14 +25,17 @@ def move_paddle_ball(jfile):
 
 	if jfile["paddleL"]["up"] == 1:
 		jfile["paddleL"]["y"] += 5
+		jfile["ball"]["x"] += 5
+		jfile["ball"]["color"] = "l"
 	if jfile["paddleL"]["down"] == 1:
 		jfile["paddleL"]["y"] -= 5
 	if jfile["paddleR"]["up"] == 1:
 		jfile["paddleR"]["y"] += 5
+		jfile["ball"]["x"] -= 5
+		jfile["ball"]["color"] = "r"
 	if jfile["paddleR"]["down"] == 1:
 		jfile["paddleR"]["y"] -= 5
 	return jfile
-
 
 def update_jfile(jfile, jfile2):
 	if 'key' in jfile2 and (jfile2['key'] == 'w'):
@@ -51,7 +52,7 @@ def update_jfile(jfile, jfile2):
 jfile = {
 	"paddleL": {"x": 10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"paddleR": {"x": -10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
-	"ball": {"x": 0, "y": 0, "z": 0, "w": "r", "s": 0.1}
+	"ball": {"x": 0, "y": 0, "z": 0, "color": "l", "s": 0.1}
 }
 
 users = set()
@@ -60,9 +61,9 @@ async def send_pos_to_all(websocket, jfile):
 	
 	while True:
 		# Send the jfile data to all connected clients
-		jfile["ball"]["y"] = game_phy.engine.ball.p.y
-		jfile["ball"]["x"] = game_phy.engine.ball.p.x
-		#game_phy.update() waiting to be fixed
+		#jfile["ball"]["y"] = game_phy.engine.ball.p.y	#
+		#jfile["ball"]["x"] = game_phy.engine.ball.p.x	# Need to be fixed
+		#game_phy.update()								#
 		jfile = move_paddle_ball(jfile)
 		for client in users:
 			await websocket.send(json.dumps(jfile))
