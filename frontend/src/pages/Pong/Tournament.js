@@ -7,7 +7,7 @@ class PongTournament extends Component {
 	static template = `
 	<div class="pong">
 		<div class="content">
-			<div class="pong-title">TOURNAMENT</div>
+			<div class="pong-title">PONG POWERUPS</div>
 			<div class="pong-content">
 				<div class="pong-create">
 					<button id="pong-button" class="pushable">
@@ -16,13 +16,13 @@ class PongTournament extends Component {
 				</div>
 				<div class="pong-list">
 					<div repeat="games" as="game">
-						<div class="pong-desc" hidden="{this.isGameHidden(game.type, game.status)}">
+						<div class="pong-desc" hidden="{this.isGameHidden(game)}">
 							<div class="pong-type">ID:{game.id}</div>
 							<div class="pong-players" repeat="players" as="player">
 								<div class="pong-player">{player}</div>
 							</div>
 							<div class="pong-player-count">{game.players.length}/{game.maxPlayer}</div>
-							<a href="/play/waiting-room" @click="{this.navigateIfNotFull(game))" class="pong-player-join btn btn-primary btn-lg {this.isFull(game)}" title="Join">
+							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
 								<img class="pong-player-img" src="/src/img/share.svg" alt="join"/>
 							</a>
 						</div>
@@ -212,27 +212,21 @@ class PongTournament extends Component {
 		initPopover(this);
 	}
 
-	isGameHidden(type, gameStatus) {
-		if (type != "tournament")
+	isGameHidden(game) {
+		if (game.type != "tournament")
 			return (true);
-		if (gameStatus == "done")
+		if (game.status != "waiting")
+			return (true);
+		if (game.players.length >= game.maxPlayer)
 			return (true);
 		return (false);
 	}
 
-	navigateIfNotFull(game) {
-		if (game.players.length >= game.maxPlayer)
-			return ;
-		else {
-			state.currentGame = id;
-			navigateTo('/play/waiting-room');
-			return (false);
-		}
-	}
-
-	isFull(game) {
-		if (game.players.length >= game.maxPlayer)
-			return ('disabled');
+	navigateUpdate(game) {
+		state.currentGame = game.id;
+		console.log(state.currentGame + ' ' + game.id);
+		navigateTo('/play/waiting-room');
+		return (false);
 	}
 }
 
