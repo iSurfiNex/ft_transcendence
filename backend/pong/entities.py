@@ -68,11 +68,9 @@ class Pad(Moving):
 
     # Update the pad center position line constraint which accounts for pad height
     def update_clamp_line_constrained(self):
-        a, b = self._clamp_line
-        v = Vec.fromPoints(a, b)
-        shift = v.normalized * self.dim.y / 2
-        new_a = a + shift
-        new_b = b - shift
+        shift = self._clamp_line.vec.normalized * self.dim.y / 2
+        new_a = self._clamp_line.a + shift
+        new_b = self._clamp_line.b - shift
         self._clamp_line_constrained = Line(new_a, new_b)
 
     def get_next_pos(self, delta: float):

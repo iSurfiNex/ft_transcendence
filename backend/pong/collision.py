@@ -14,8 +14,6 @@ class Collision:
         self.ts = ts
 
 
-
-
 def compute_collision(
     pos: Vec, vec: Vec, obstacles: list[Obstacle], ignore
 ) -> tuple[Collision | None, Vec | None]:
@@ -33,7 +31,7 @@ def compute_collision(
                 # TODO improve datetime
                 return (
                     Collision(pos=coll_pos, obstacle=obstacle, ts=datetime.now()),
-                    Vec(r_dir),
+                    r_dir,
                     line,
                 )
     return None, None, None
