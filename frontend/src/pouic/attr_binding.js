@@ -18,7 +18,7 @@ export const attach_attributes_obs = (node, scope, prefixes) => [...node.attribu
   if (attr.name == "class") return
 
   if (attr.name[0] === '@') {
-    attach_event_obs(attr.name.substring(1), attr.value, node, scope)
+    attach_event_obs(attr.name.substring(1), attr.value, node, scope, prefixes)
     node.removeAttribute(attr.name)
     return
   }

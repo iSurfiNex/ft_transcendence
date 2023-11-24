@@ -1,5 +1,6 @@
+import { get_prop, extractPathScope } from './utils.js'
 
-export const attach_event_obs = (eventName, fnStr, node, scope) => {
+export const attach_event_obs = (eventName, fnStr, node, scope, prefixes) => {
   if (fnStr.startsWith("this."))
     fnStr = fnStr.substring(5);
   else
@@ -13,10 +14,22 @@ export const attach_event_obs = (eventName, fnStr, node, scope) => {
   const fnName = match[1];
   const argsStr = match[2];
   const args = argsStr.split(',').map(arg => arg.trim());
-  node.addEventListener(eventName, () => {
+  node.addEventListener(eventName, e => {
     if (typeof scope[fnName] !== 'function')
       console.warn(scope, " has no \"" + fnName + "\" function")
-    else
+    else {
+      args.forEach((val, i) => {
+        if (val == "event") {
+          args[i] = e
+          return
+        }
+        const path = val.split('.')
+        const localScope = extractPathScope(path, scope, prefixes)
+        const prop = get_prop(localScope, path)
+        if (prop !== undefined)
+            args[i] = prop
+      })
       scope[fnName](...args)
+    }
   })
 }
