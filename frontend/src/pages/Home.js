@@ -417,59 +417,59 @@ class PongHome extends Component {
 	}
 
 	pongHandler() {
-		document.getElementById("pong").style.zIndex=50;
-		document.getElementById("pong-content").classList.add("hidden");
-		document.getElementById("other-game").classList.add("hidden");
-		document.getElementById("tournament").classList.add("hidden");
-		document.getElementById("pong").style.borderRadius=0;
-		document.getElementById("pong").style.left=0;
-		document.getElementById("pong").style.top=0;
-		document.getElementById("pong").style.width="100%";
-		document.getElementById("pong").style.height="100%";
-		if (isMobile) {
-			document.getElementById("home").style.height="calc(90% - 8px)";
-			document.getElementById("home").style.bottom="0";
+		this.shadowRoot.getElementById("pong").style.zIndex=50;
+		this.shadowRoot.getElementById("pong-content").classList.add("hidden");
+		this.shadowRoot.getElementById("other-game").classList.add("hidden");
+		this.shadowRoot.getElementById("tournament").classList.add("hidden");
+		this.shadowRoot.getElementById("pong").style.borderRadius=0;
+		this.shadowRoot.getElementById("pong").style.left=0;
+		this.shadowRoot.getElementById("pong").style.top=0;
+		this.shadowRoot.getElementById("pong").style.width="100%";
+		this.shadowRoot.getElementById("pong").style.height="100%";
+		if (state.isMobile) {
+			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
+			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-			navigateTo("play/pong");
+			navigateTo("/play/pong");
 		}, 400);
 	}
 
 	othergameHandler() {
-		document.getElementById("other-game").style.zIndex=50;
-		document.getElementById("other-game-content").classList.add("hidden");
-		document.getElementById("pong").classList.add("hidden");
-		document.getElementById("tournament").classList.add("hidden");
-		document.getElementById("other-game").style.borderRadius=0;
-		document.getElementById("other-game").style.left=0;
-		document.getElementById("other-game").style.top=0;
-		document.getElementById("other-game").style.width="100%";
-		document.getElementById("other-game").style.height="100%";
-		if (isMobile) {
-			document.getElementById("home").style.height="calc(90% - 8px)";
-			document.getElementById("home").style.bottom="0";
+		this.shadowRoot.getElementById("other-game").style.zIndex=50;
+		this.shadowRoot.getElementById("other-game-content").classList.add("hidden");
+		this.shadowRoot.getElementById("pong").classList.add("hidden");
+		this.shadowRoot.getElementById("tournament").classList.add("hidden");
+		this.shadowRoot.getElementById("other-game").style.borderRadius=0;
+		this.shadowRoot.getElementById("other-game").style.left=0;
+		this.shadowRoot.getElementById("other-game").style.top=0;
+		this.shadowRoot.getElementById("other-game").style.width="100%";
+		this.shadowRoot.getElementById("other-game").style.height="100%";
+		if (state.isMobile) {
+			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
+			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-			navigateTo("play/pong-powerup");
+			navigateTo("/play/pong-powerup");
 		}, 400);
 	}
 
 	tournamentHandler() {
-		document.getElementById("tournament").style.zIndex=50;
-		document.getElementById("tournament-content").classList.add("hidden");
-		document.getElementById("pong").classList.add("hidden");
-		document.getElementById("other-game").classList.add("hidden");
-		document.getElementById("tournament").style.borderRadius=0;
-		document.getElementById("tournament").style.left=0;
-		document.getElementById("tournament").style.top=0;
-		document.getElementById("tournament").style.width="100%";
-		document.getElementById("tournament").style.height="100%";
-		if (isMobile) {
-			document.getElementById("home").style.height="calc(90% - 8px)";
-			document.getElementById("home").style.bottom="0";
+		this.shadowRoot.getElementById("tournament").style.zIndex=50;
+		this.shadowRoot.getElementById("tournament-content").classList.add("hidden");
+		this.shadowRoot.getElementById("pong").classList.add("hidden");
+		this.shadowRoot.getElementById("other-game").classList.add("hidden");
+		this.shadowRoot.getElementById("tournament").style.borderRadius=0;
+		this.shadowRoot.getElementById("tournament").style.left=0;
+		this.shadowRoot.getElementById("tournament").style.top=0;
+		this.shadowRoot.getElementById("tournament").style.width="100%";
+		this.shadowRoot.getElementById("tournament").style.height="100%";
+		if (state.isMobile) {
+			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
+			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-			navigateTo("play/tournament");
+			navigateTo("/play/tournament");
 		}, 400);
 	}
 }
