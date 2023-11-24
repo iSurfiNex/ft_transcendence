@@ -4,15 +4,26 @@ import math
 #    return lambda *args, **kwargs: Vec(func(*args, **kwargs))
 
 Pos = tuple[float, float]
-Line = tuple[Pos, Pos]
 Contour = list[Pos]
-Obstacle = list[Line]
 
 
-class Vec:
+class DrawDebug:
+    saved = {}
+
+    def __init__(self, class_name):
+        self.class_name = class_name
+        if not class_name in DrawDebug.saved:
+            DrawDebug.saved[class_name] = {}
+
+    def draw(self, label: str = "", color: tuple = (255, 0, 0)):
+        DrawDebug.saved[self.class_name][label] = (self, color)
+
+
+class Vec(DrawDebug):
     _t: tuple
 
     def __init__(self, *args):
+        super().__init__("Vec")
         if len(args) == 1:
             self._t = tuple(args[0])
         else:
@@ -22,82 +33,85 @@ class Vec:
     #    return iter(self._t)
 
     @staticmethod
-    def fromPoints(p1, p2):
+    def fromPoints(p1: "Vec", p2: "Vec") -> "Vec":
         return Vec(p2[0] - p1[0], p2[1] - p1[1])
 
     @property
-    def x(self):
+    def x(self) -> float:
         return self._t[0]
 
     @x.setter
-    def x(self, value):
+    def x(self, value: float) -> None:
         self._t = (value, self.y)
 
     @property
-    def y(self):
+    def y(self) -> float:
         return self._t[1]
 
     @y.setter
-    def y(self, value):
+    def y(self, value: float) -> None:
         self = (self.x, value)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> float:
         return self._t[index]
 
-    def __add__(self, other):
+    def __iter__(self):
+        return iter(self._t)
+
+    def __add__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x + other for x in self._t)
         return Vec(x + y for x, y in zip(self._t, other))
 
-    def __radd__(self, other):
+    def __radd__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x + other for x in self._t)
         return Vec(x + y for x, y in zip(self._t, other))
 
-    def __sub__(self, other):
+    def __sub__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x - other for x in self._t)
         return Vec(x - y for x, y in zip(self._t, other))
 
-    def __rsub__(self, other):
+    def __rsub__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x - other for x in self._t)
         return Vec(x - y for x, y in zip(self._t, other))
 
-    def __mul__(self, other):
+    def __mul__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x * other for x in self._t)
         return Vec(x * y for x, y in zip(self._t, other))
 
-    def __rmul__(self, other):
+    def __rmul__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x * other for x in self._t)
         return Vec(x * y for x, y in zip(self._t, other))
 
     # Dot product
-    def __matmul__(self, other):
+    def __matmul__(self, other: "Vec" or tuple) -> float:
         return sum(x * y for x, y in zip(self._t, other))
 
     # Dot product
-    def __rmatmul__(self, other):
+    def __rmatmul__(self, other: "Vec" or tuple) -> float:
         return sum(x * y for x, y in zip(self._t, other))
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x / other for x in self._t)
         return Vec(x / y for x, y in zip(self._t, other))
 
-    def __rtruediv__(self, other):
+    def __rtruediv__(self, other: "float | Vec | tuple") -> "Vec":
         if isinstance(other, (int, float)):
             return Vec(x / other for x in self._t)
         return Vec(x / y for x, y in zip(self._t, other))
 
     # other mus be iterable
-    def __pow__(self, rhs):
-        return rhs.y * self.x - rhs.x * self.y
+    def __pow__(self, rhs: "Vec" or tuple) -> float:
+        return rhs[1] * self.x - rhs[0] * self.y
 
-    def __rpow__(self, lhs):
-        return lhs.y * self.x - lhs.x * self.y
+    def __rpow__(self, lhs: "Vec" or tuple) -> float:
+        return lhs[1] * self.x - lhs[0] * self.y
 
     @property
     def len2(self) -> float:
@@ -112,11 +126,11 @@ class Vec:
         return self / self.len
 
     @property
-    def normal(self):
+    def normal(self) -> "Vec":
         return Vec(-self.y, self.x).normalized
 
     # Assums the normal is normalized
-    def reflect(self, normal_dir) -> "Vec":
+    def reflect(self, normal_dir: "Vec") -> "Vec":
         normalized = self.normalized
         normal_dir = Vec(normal_dir)
         dot_product = normalized @ normal_dir
@@ -126,44 +140,69 @@ class Vec:
     def __str__(self) -> str:
         return str(self._t)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Vec({self._t})"
 
 
-def get_distance(p1: Vec, p2: Vec):
-    return Vec(p2 - p1).len
+class Line(DrawDebug):
+    a: Vec
+    b: Vec
+
+    def __init__(self, a: Vec or tuple, b: Vec or tuple):
+        super().__init__("Line")
+        self.a = a if isinstance(a, Vec) else Vec(a)
+        self.b = b if isinstance(b, Vec) else Vec(b)
+
+    def __getitem__(self, index: int) -> Vec:
+        if index == 0:
+            return self.a
+        if index == 1:
+            return self.b
+        raise IndexError("Index out of array bounds.")
+
+    @property
+    def vec(self) -> Vec:
+        return self.b - self.a
+
+    @property
+    def len(self):
+        return self.vec.len
+
+    # Project point p on line
+    def project(self, p: Vec):
+        vec = self.vec
+        ap = p - self.a
+        aq = ((ap @ vec) / vec.len2) * vec
+        q = self.a + aq
+        return q
+
+    def project_clamped(self, p: Vec):
+        q = self.project(p)
+        aq_len = Vec.fromPoints(self.a, q).len
+        bq_len = Vec.fromPoints(self.b, q).len
+        ab_len = self.len
+        if aq_len > ab_len or bq_len > ab_len:
+            if aq_len > bq_len:
+                return self.b
+            return self.a
+        return q
+
+    @property
+    def normal(self) -> Vec:
+        return self.vec.normal
+
+    def intersect(self, line: "Line"):
+        v1 = self.vec
+        v2 = line.vec
+        v3 = self.a - line.a
+        det = v1**v2
+        if det == 0:
+            return None
+        uA = v2**v3 / det
+        uB = v1**v3 / det
+        if uA >= 0 and uA <= 1 and uB >= 0 and uB <= 1:
+            return self.a + uA * v1
+        return None
 
 
-def compute_line_normal(p1: Vec, p2: Vec):
-    v = p2 - p1
-    return v.normal
-
-
-# Project point p on line
-def projection(line: Line, p: Vec):
-    a, b = line
-    a = Vec(a)
-    b = Vec(b)  # FIXME cleanup
-    ab = b - a
-    ap = p - a
-    aq = ((ap @ ab) / ab.len2) * ab
-    q = a + aq
-    return q
-
-
-def clamp_projection(line: Line, p: Vec):
-    a, b = line
-    a = Vec(a)
-    b = Vec(b)  # FIXME cleanup
-    q = projection(line, p)
-    aq = Vec.fromPoints(a, q)
-    bq = Vec.fromPoints(b, q)
-    ab = Vec.fromPoints(a, b)  # TODO line method
-    aq_len = aq.len
-    bq_len = bq.len
-    ab_len = ab.len
-    if aq_len > ab_len or bq_len > ab_len:
-        if aq_len > bq_len:
-            return b
-        return a
-    return q
+Obstacle = list[Line]

@@ -1,7 +1,7 @@
 from time import time
 import math
 from pong.collision import ai_collisions_check
-from pong.types import Vec, Line, projection
+from pong.types import Vec, Line
 from pong.entities import Player
 
 # def ai_periodic_function(game):
@@ -30,17 +30,9 @@ class PongAI:
         self.target_pos = None
         self.goal_pos_proj = None
 
-    @property
-    def pad_line(self):
-        half_height = self.player.pad.dim.y / 2
-        tip_shift = self.player.pad.d * half_height
-        top = self.player.pad.p + tip_shift
-        bottom = self.player.pad.p - tip_shift
-        return (top, bottom)
-
-    def choose_goal_pos(self):
+    def choose_goal_pos(self) -> Vec:
         line = self.opponent.camp_line
-        p = projection(line, self.opponent.pad.p)
+        p = line.project(self.opponent.pad.p)
         opponent_progression_vec = p - line[0]
         a = Vec(line[0])
         b = Vec(line[1])
@@ -60,13 +52,13 @@ class PongAI:
     ) -> float:
         return angle / bounce_angle_on_side * (pad_width / 2)
 
-    def update_target(self, last_coll: Vec):
+    def update_target(self, next_impact: Vec):
+        next_impact.draw("impact")
         goal_pos = self.choose_goal_pos()
-        pad_line = self.pad_line
-        goal_pos_proj = projection(pad_line, goal_pos)
+        goal_pos_proj = self.player.pad.line.project(goal_pos)
         c = goal_pos
         b = goal_pos_proj
-        a = last_coll
+        a = next_impact
         ab = (b - a).len
         bc = (c - b).len
         angleACB = math.tan(ab / bc)
@@ -75,24 +67,24 @@ class PongAI:
             math.pi / 4,
             self.opponent.pad.dim.y,  # TODO simplify player access
         )
-        target_pos = last_coll + pad_shift
+        target_pos = next_impact + pad_shift
         pos = self.opponent.pad.p
-        vec = target_pos - pos
+        vec = pos - target_pos
         dir = Vec.fromPoints(*self.player.camp_line) @ vec  # TODO Line class or Segment
         duration = vec.len / self.opponent.pad.s
         self.pad_actions = [(dir, time() + duration)]
         self.goal_pos = goal_pos
         self.target_pos = target_pos
         self.goal_pos_proj = goal_pos_proj
+        goal_pos.draw("goal")
+        self.target_pos.draw("target")
 
     def update(self):
         now = time()
-        # print(self.pad_actions, "=")
         if not self.pad_actions:
             return
         next_pad_action = self.pad_actions[0]  # TODO class
         dir, until = next_pad_action
-        # print(dir, until)
         if until > now:
             del self.pad_actions[0]
             self.update()  # TODO loop instead

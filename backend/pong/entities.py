@@ -1,4 +1,4 @@
-from pong.types import Line, Vec, clamp_projection
+from pong.types import Line, Vec
 
 
 class Moving:
@@ -35,6 +35,7 @@ class Pad(Moving):
         super().__init__(pos, speed, direction)
         self._dim = Vec(dim)
         self.clamp_line = clamp_line
+        self.line = self._get_pad_line()
 
     @property
     def dim(self):
@@ -54,6 +55,17 @@ class Pad(Moving):
         self._clamp_line = line
         self.update_clamp_line_constrained()
 
+    def _get_pad_line(self):
+        half_height = self.dim.y / 2
+        tip_shift = self.d * half_height
+        top = self.p + tip_shift
+        bottom = self.p - tip_shift
+        return Line(top, bottom)
+
+    # This method should be called every time the height, direction or posiiton of the pad changes
+    def update_pad_line(self):
+        self.line = self._get_pad_line()
+
     # Update the pad center position line constraint which accounts for pad height
     def update_clamp_line_constrained(self):
         a, b = self._clamp_line
@@ -61,11 +73,11 @@ class Pad(Moving):
         shift = v.normalized * self.dim.y / 2
         new_a = a + shift
         new_b = b - shift
-        self._clamp_line_constrained = (new_a, new_b)
+        self._clamp_line_constrained = Line(new_a, new_b)
 
     def get_next_pos(self, delta: float):
         pos = super().get_next_pos(delta)
-        pos = clamp_projection(self._clamp_line_constrained, pos)
+        pos = self._clamp_line_constrained.project_clamped(pos)
         return pos
 
     def update_pos(self, delta):
