@@ -2,12 +2,6 @@ import { Component, register } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
-//  <div @click="this.fn(o, f)" class="{this.playr.active?hey}" a="{this.player.active?yop}">Player</div>
-//<div class="toast">dsfsfd<div/>
-//		<div repeat="players" as="player">
-//			<span>THIS {player.name}!<span>
-//		</div>`
-
 class PongChat extends Component {
 	static sheets = [bootstrapSheet]
 	static template = `
