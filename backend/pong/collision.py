@@ -5,6 +5,7 @@ from pong.types import (
     Line,
 )
 from datetime import datetime
+from time import time
 
 
 class Collision:
@@ -35,6 +36,13 @@ def compute_collision(
                     line,
                 )
     return None, None, None
+
+
+def update_collisions_ts(prev_pos, prev_ts, collisions, speed):
+    for c in collisions:
+        c.ts = prev_ts + Vec(c.pos - prev_pos).len * speed
+        prev_ts = c.ts
+        prev_pos = c.pos
 
 
 def ai_collisions_check(
@@ -92,29 +100,3 @@ def collisions_check(
 
     pos += vec
     return collisions, pos, r_dir, line
-
-
-# def collisions_check_generator(
-#    pos: Vec, vec: Vec, obstacles: list[Obstacle], max_coll=100, until_coll_with=None
-# ) -> tuple[list[Collision], Vec, Vec | None]:
-#    remaining_dist: float = vec.len
-#    collisions: list[Collision] = []
-#    r_dir = None
-#    line = None
-#    while len(collisions) < max_coll:
-#        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
-#
-#        if not coll or not next_dir:
-#            break
-#        seg_dist = get_distance(pos, coll.pos)
-#        pos = coll.pos
-#        remaining_dist -= seg_dist
-#        vec = next_dir * remaining_dist
-#        collisions.append(coll)
-#        r_dir = next_dir
-#        yield (coll, pos, r_dir)
-#        if until_coll_with and line == until_coll_with:
-#            break
-#
-#    pos += vec
-#    return collisions, pos, r_dir

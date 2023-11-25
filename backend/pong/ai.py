@@ -1,13 +1,9 @@
 from time import time
 import math
-from pong.collision import ai_collisions_check
+from pong.collision import ai_collisions_check, update_collisions_ts
 from pong.types import Vec, Line
 from pong.entities import Player
-
-# def ai_periodic_function(game):
-#    while game["running"]:
-#        game.ai.update(game)
-#        sleep(1)
+from pong.collision import Collision
 
 
 class PongAI:
@@ -50,13 +46,30 @@ class PongAI:
     ) -> float:
         return angle / bounce_angle_on_side * (pad_width / 2)
 
-    def update_target(self, next_impact: Vec):
-        next_impact.draw("impact")
+    def add_pad_goto(self, target_pos: Vec, dir=None, until=None):
+        if self.pad_actions:
+            prev_dir, prev_time, prev_pos = self.pad_actions[-1]
+        else:
+            prev_time = time()
+            prev_pos = self.player.pad.p
+        vec = prev_pos - target_pos
+        if dir == None:
+            dir = self.player.camp_line.vec @ vec
+
+        if until == None:
+            duration = vec.len / self.player.pad.s
+            until = prev_time + duration
+
+        self.pad_actions.append((dir, until, target_pos))
+
+    def update_target(self, next_impact: Collision):
+        next_impact_pos = next_impact.pos
+        next_impact_pos.draw("impact")
         goal_pos = self.choose_goal_pos()
         goal_pos_proj = self.player.pad.line.project(goal_pos)
         c = goal_pos
         b = goal_pos_proj
-        a = next_impact
+        a = next_impact_pos
         ab = (b - a).len
         bc = (c - b).len
         angleACB = math.tan(ab / bc)
@@ -65,12 +78,12 @@ class PongAI:
             math.pi / 4,
             self.opponent.pad.dim.y,
         )
-        target_pos = next_impact + (0, pad_shift)
-        pos = self.opponent.pad.p
-        vec = pos - target_pos
-        dir = self.player.camp_line.vec @ vec  # TODO Line class or Segment
-        duration = vec.len / self.opponent.pad.s
-        self.pad_actions = [(dir, time() + duration)]
+        target_pos = next_impact_pos + (0, pad_shift)
+        self.pad_actions = []
+        self.add_pad_goto(next_impact_pos)
+        self.add_pad_goto(target_pos, dir=0, until=next_impact.ts)
+        self.add_pad_goto(self.player.camp_line.center)
+        self.player.camp_line.center
         self.goal_pos = goal_pos
         self.target_pos = target_pos
         self.goal_pos_proj = goal_pos_proj
@@ -80,16 +93,25 @@ class PongAI:
     def update(self):
         now = time()
         if not self.pad_actions:
+            self.stay_still()
             return
-        next_pad_action = self.pad_actions[0]  # TODO class
-        dir, until = next_pad_action
-        if until > now:
+        next_pad_action = self.pad_actions[0]
+        dir, until, target_pos = next_pad_action
+        if now > until:
             del self.pad_actions[0]
-            self.update()  # TODO loop instead
-        if dir > 0:
+            self.update()
+        if dir == 0:
+            self.stay_still()
+        elif dir > 0:
             self.go_up()
         else:
             self.go_down()
+
+    def stay_still(self):
+        if "down" in self.keypressed:
+            self.keypressed.remove("down")
+        if "up" in self.keypressed:
+            self.keypressed.remove("up")
 
     def go_up(self):
         self.keypressed.add("up")
@@ -103,8 +125,8 @@ class PongAI:
 
     def update_data(self, game):
         self.game = game
-        camp = game.lines_obstacles[0][1]
-        opponent_camp = game.lines_obstacles[0][3]
+        camp = self.player.camp_line
+        opponent_camp = self.opponent.camp_line
         self.ball_path.clear()
         self.ball_path.append(game.ball.p)
         if not self.frames_data:
@@ -112,11 +134,6 @@ class PongAI:
             return
 
         self.frames_data.append(game.ball.p)
-
-        # prev_ball_pos = self.frames_data[-1]
-        # if not self.speed:
-        #    self.speed = get_distance(prev_ball_pos, game.ball.p)
-        # v = Vec.fromPoints(prev_ball_pos, game.ball.p).normalized
 
         v = game.ball.d * self.speed
 
@@ -126,17 +143,11 @@ class PongAI:
             game.lines_obstacles,
             until_coll_with=[camp, opponent_camp],
         )
+
+        update_collisions_ts(game.ball.p, time(), collisions, game.ball.s)
         if line == opponent_camp and collisions:
             return
         if line == camp and collisions:
-            self.update_target(collisions[-1].pos)
-        # if not last_coll:
-        #    return
+            self.update_target(collisions[-1])
         self.ball_path += [collision.pos for collision in collisions]
         self.frames_data.append(last_coll)
-        # last_coll = Vec(last_coll)  # FIXME
-        # if line == camp:
-        #    self.update_target(last_coll)
-        # elif line == opponent_camp:
-        #    pass
-        # self.ball_path.append(next_pos)

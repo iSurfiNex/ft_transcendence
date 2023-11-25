@@ -56,4 +56,4 @@ def draw_arrow(p1, p2, screen):
 def draw_obstacles(obstacles: list[Obstacle], screen):
     for obstacle in obstacles:
         for line in obstacle:
-            pygame.draw.line(screen, ARROW_COLOR, line[0], line[1], 1)
+            pygame.draw.line(screen, ARROW_COLOR, tuple(line[0]), tuple(line[1]), 1)
