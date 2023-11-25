@@ -46,7 +46,6 @@ class PongTopBar extends Component {
 			overflow: hidden;
 		}
 
-
 		.logo-text {
 			font-size: 2.5vh;
 			color: white;
