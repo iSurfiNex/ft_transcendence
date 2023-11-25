@@ -45,15 +45,19 @@ wall_contours = [
 # ball_image = pygame.image.load(ball_path)
 
 
-def contour_to_lines(contour: list[Pos]) -> list[Line]:
-    lines = []
+# def contour_to_lines(contour: list[Pos]) -> list[Line]:
+#    lines = []
+#
+#    pt_count = len(contour)
+#    for i, _ in enumerate(contour):
+#        p1 = contour[i]
+#        p2 = contour[(i + 1) % pt_count]
+#        lines.append((p1, p2))
+#    return lines
 
-    pt_count = len(contour)
-    for i, _ in enumerate(contour):
-        p1 = contour[i]
-        p2 = contour[(i + 1) % pt_count]
-        lines.append((p1, p2))
-    return lines
+
+player1_pad_line = Line()
+player2_pad_line = Line()
 
 
 # thread = threading.Thread(target=ai_periodic_function, args=(game,))
@@ -79,23 +83,34 @@ class PyPong:
         player2_camp_line = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
         topLine = Line(wall_contours[0], wall_contours[1])
         bottomLine = Line(wall_contours[2], wall_contours[3])
-        lines_obstacles = [[player1_camp_line, player2_camp_line, topLine, bottomLine]]
+        # lines_obstacles = [[player1_camp_line, player2_camp_line, topLine, bottomLine]]
+        lines_obstacles = [[player1_pad_line, player2_pad_line, topLine, bottomLine]]
+        ai_collision_lines = [
+            [player1_camp_line, player2_camp_line, topLine, bottomLine]
+        ]
 
         padPlayer1 = Pad(
             pos=(PAD_SHIFT, H / 2 + 30),
             dim=(PAD_W, PAD_H),
             clamp_line=player1_camp_line,
+            pad_line=player1_pad_line,
             speed=100,
         )
         padPlayer2 = Pad(
             pos=(W - PAD_SHIFT, H / 2),
             dim=(PAD_W, PAD_H),
             clamp_line=player2_camp_line,
+            pad_line=player2_pad_line,
             speed=100,
         )
         player1 = Player(pad=padPlayer1, camp_line=player1_camp_line)
         player2 = Player(pad=padPlayer2, camp_line=player2_camp_line)
-        self.ai = PongAI(speed=ball.s, player=player2, opponent=player1)
+        self.ai = PongAI(
+            speed=ball.s,
+            player=player2,
+            opponent=player1,
+            collision_lines=ai_collision_lines,
+        )
 
         self.engine = PongEngine(
             lines_obstacles=lines_obstacles,

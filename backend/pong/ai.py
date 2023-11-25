@@ -11,12 +11,7 @@ class PongAI:
     ball_path = []
     keypressed = {"yoo"}
 
-    def __init__(
-        self,
-        speed: float,
-        player: Player,
-        opponent: Player,
-    ):
+    def __init__(self, speed: float, player: Player, opponent: Player, collision_lines):
         self.frames_data
         self.speed = speed
         self.pad_actions = []
@@ -25,6 +20,7 @@ class PongAI:
         self.goal_pos = None
         self.target_pos = None
         self.goal_pos_proj = None
+        self.collision_lines = collision_lines
 
     def choose_goal_pos(self) -> Vec:
         line = self.opponent.camp_line
@@ -140,7 +136,7 @@ class PongAI:
         collisions, last_coll, line = ai_collisions_check(
             game.ball.p,
             v,
-            game.lines_obstacles,
+            self.collision_lines,
             until_coll_with=[camp, opponent_camp],
         )
 

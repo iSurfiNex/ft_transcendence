@@ -29,13 +29,17 @@ class Pad(Moving):
         pos,
         dim,
         clamp_line: Line,
+        pad_line: Line,
         speed=100,
         direction=(0, 1),
+        orientation=Vec(0, 1),
     ):
+        self.orientation = orientation
         super().__init__(pos, speed, direction)
         self._dim = Vec(dim)
         self.clamp_line = clamp_line
-        self.line = self._get_pad_line()
+        self.line = pad_line
+        self.update_pad_line()
 
     @property
     def dim(self):
@@ -57,7 +61,7 @@ class Pad(Moving):
 
     def _get_pad_line(self):
         half_height = self.dim.y / 2
-        tip_shift = self.d * half_height
+        tip_shift = self.orientation * half_height
         top = self.p + tip_shift
         bottom = self.p - tip_shift
         return Line(top, bottom)
@@ -65,6 +69,10 @@ class Pad(Moving):
     # This method should be called every time the height, direction or posiiton of the pad changes
     def update_pad_line(self):
         a, b = self._get_pad_line()
+        # self.line.a.x = a.x
+        # self.line.a.y = a.y
+        # self.line.b.x = b.x
+        # self.line.b.y = b.y
         self.line.a = a
         self.line.b = b
 
@@ -82,6 +90,7 @@ class Pad(Moving):
 
     def update_pos(self, delta):
         self.p = self.get_next_pos(delta)
+        self.update_pad_line()
 
 
 class Player:

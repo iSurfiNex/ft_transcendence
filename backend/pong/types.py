@@ -140,9 +140,12 @@ class Vec(DrawDebug):
 
 class Line(DrawDebug):
     a: Vec
-    b: Vec
+    b: Vec = Vec(0, 0)
 
-    def __init__(self, a: Vec or tuple, b: Vec or tuple):
+    def __repr__(self) -> str:
+        return f"Line({self.a}, {self.b})"
+
+    def __init__(self, a: Vec or tuple = Vec(0, 0), b: Vec or tuple = Vec(0, 0)):
         super().__init__("Line")
         self.a = a if isinstance(a, Vec) else Vec(a)
         self.b = b if isinstance(b, Vec) else Vec(b)
