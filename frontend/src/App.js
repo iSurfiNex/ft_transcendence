@@ -13,10 +13,10 @@ var state_base = {
 	whoAmI: 'rsterin',
 	isLoggedIn: true,
 	profiles: [
-		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2, gamesId: [] },
-		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20},
-		{ name: 'jtoulous', win: 32, lose: 16, ballHit: 128, goal: 32, tournamentWin: 200},
-		{ name: 'tlarraze', win: 64, lose: 8, ballHit: 512, goal: 64, tournamentWin: 2000},
+		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
+		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
+		{ name: 'jtoulous', win: 32, lose: 16, ballHit: 128, goal: 32, tournamentWin: 200 },
+		{ name: 'tlarraze', win: 64, lose: 8, ballHit: 512, goal: 64, tournamentWin: 2000 },
 	],
 	profileLooking: 'rsterin',
 	channels: [
