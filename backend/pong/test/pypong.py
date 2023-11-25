@@ -29,12 +29,6 @@ d = Vec(6, 5).normalized
 ball = Ball(pos=ball_reset_pos, speed=100, radius=25, direction=d)
 
 
-# wall_contours = [
-#    (PAD_SHIFT + BALL_RADIUS + 100 + PAD_W / 2, BALL_RADIUS),
-#    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2 - 20, BALL_RADIUS),
-#    (W - PAD_SHIFT - BALL_RADIUS - PAD_W / 2, H - 70 - BALL_RADIUS),
-#    (PAD_SHIFT + BALL_RADIUS + PAD_W / 2, H - BALL_RADIUS),
-# ]
 wall_contours = [
     (PAD_SHIFT / 2 + BALL_RADIUS + PAD_W / 2, BALL_RADIUS),
     (W - PAD_SHIFT / 2 - BALL_RADIUS - PAD_W / 2, BALL_RADIUS),
@@ -81,23 +75,26 @@ class PyPong:
             BALL_RADIUS,
         )
 
-        player1PadLine = Line(Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
-        player2PadLine = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
-        lines_obstacles = [contour_to_lines(contour) for contour in [wall_contours]]
+        player1_camp_line = Line(Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
+        player2_camp_line = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
+        topLine = Line(wall_contours[0], wall_contours[1])
+        bottomLine = Line(wall_contours[2], wall_contours[3])
+        lines_obstacles = [[player1_camp_line, player2_camp_line, topLine, bottomLine]]
+
         padPlayer1 = Pad(
             pos=(PAD_SHIFT, H / 2 + 30),
             dim=(PAD_W, PAD_H),
-            clamp_line=player1PadLine,
+            clamp_line=player1_camp_line,
             speed=100,
         )
         padPlayer2 = Pad(
             pos=(W - PAD_SHIFT, H / 2),
             dim=(PAD_W, PAD_H),
-            clamp_line=player2PadLine,
-            speed=100,  # FIXME decide on speed / Base speed
+            clamp_line=player2_camp_line,
+            speed=100,
         )
-        player1 = Player(pad=padPlayer1, camp_line=player1PadLine)
-        player2 = Player(pad=padPlayer2, camp_line=player2PadLine)
+        player1 = Player(pad=padPlayer1, camp_line=player1_camp_line)
+        player2 = Player(pad=padPlayer2, camp_line=player2_camp_line)
         self.ai = PongAI(speed=ball.s, player=player2, opponent=player1)
 
         self.engine = PongEngine(
@@ -128,6 +125,8 @@ class PyPong:
             self.ai.player.go_up()
         elif "down" in self.ai.keypressed:
             self.ai.player.go_down()
+        else:
+            self.ai.player.stay_still()
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -147,11 +146,7 @@ class PyPong:
     def draw_ai_debug(self):
         path = self.ai.ball_path
         for it in self.ai.ball_path:
-            pygame.draw.circle(
-                self.screen, RED, tuple(it), 5
-            )  # Change 20 to adjust the radius
-        # path = deepcopy(ball_path)
-        # path.insert(0, ball.center)
+            pygame.draw.circle(self.screen, RED, tuple(it), 5)
         for i in range(len(path) - 1):
             draw_arrow(tuple(path[i]), tuple(path[i + 1]), self.screen)
 
@@ -175,7 +170,6 @@ class PyPong:
 
         # self.screen.blit(ball_image, ball.topleft)
         pygame.draw.circle(self.screen, GREY, self.ball.center, BALL_RADIUS)
-        # pygame.draw.circle(self.screen, RED, ball.center, 5)
         draw_obstacles(self.engine.lines_obstacles, self.screen)
         self.draw_ai_debug()
 
@@ -195,7 +189,6 @@ class PyPong:
         delta = 1 / FPS
         last_call_time = time() - 1
         while True:
-            # self.ai.update(self.engine)
             self.handle_quit()
             self.handle_keypress()
             if self.pause:

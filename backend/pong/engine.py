@@ -4,13 +4,6 @@ from pong.ai import PongAI
 from pong.entities import Player
 
 
-# class Bounce:
-#    def __init__(self, ts, entity, pos):
-#        self.ts = ts
-#        self.entity = entity
-#        self.pos = pos
-
-
 # def obstacles_to_lines(contours: list[Contour]) -> list[Line]:
 #    contours_as_lines = map(contour_to_lines, contours)
 #    lines = list(chain(*contours_as_lines))  # Flatten to get an array of lines
@@ -23,7 +16,6 @@ class PongEngine:
     ):
         self.dim = Vec(dim)
         self.pause = False
-        # self.obstacles_contours = obstacles_contours
         self.lines_obstacles = lines_obstacles
         self.ball = ball
         self.running = True

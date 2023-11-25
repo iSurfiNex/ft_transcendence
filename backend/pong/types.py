@@ -1,8 +1,5 @@
 import math
 
-# def as_vec(func: callable):
-#    return lambda *args, **kwargs: Vec(func(*args, **kwargs))
-
 Pos = tuple[float, float]
 Contour = list[Pos]
 
@@ -28,9 +25,6 @@ class Vec(DrawDebug):
             self._t = tuple(args[0])
         else:
             self._t = tuple(args)
-
-    # def __iter__(self):
-    #    return iter(self._t)
 
     @staticmethod
     def fromPoints(p1: "Vec", p2: "Vec") -> "Vec":
@@ -203,6 +197,10 @@ class Line(DrawDebug):
         if uA >= 0 and uA <= 1 and uB >= 0 and uB <= 1:
             return self.a + uA * v1
         return None
+
+    @property
+    def center(self) -> Vec:
+        return (self.a + self.b) / 2
 
 
 Obstacle = list[Line]

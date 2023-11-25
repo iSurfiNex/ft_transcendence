@@ -64,7 +64,9 @@ class Pad(Moving):
 
     # This method should be called every time the height, direction or posiiton of the pad changes
     def update_pad_line(self):
-        self.line = self._get_pad_line()
+        a, b = self._get_pad_line()
+        self.line.a = a
+        self.line.b = b
 
     # Update the pad center position line constraint which accounts for pad height
     def update_clamp_line_constrained(self):
@@ -79,7 +81,6 @@ class Pad(Moving):
         return pos
 
     def update_pos(self, delta):
-        # print(self.p)
         self.p = self.get_next_pos(delta)
 
 
