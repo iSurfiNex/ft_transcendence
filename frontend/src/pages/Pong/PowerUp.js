@@ -217,7 +217,7 @@ class PongPowerUp extends Component {
 			return (true);
 		if (game.status != "waiting")
 			return (true);
-		if (game.creator != "tournament")
+		if (game.creator == "tournament")
 			return (true);
 		if (game.players.length >= game.maxPlayer)
 			return (true);
