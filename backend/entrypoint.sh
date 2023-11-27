@@ -11,5 +11,3 @@ ALTER ROLE my_postgres_user WITH PASSWORD 'my_postgres_pw';" | sudo -u postgres 
 python3 manage.py migrate
 python3 manage.py createsuperuser --noinput
 python3 manage.py runserver 0.0.0.0:8000
-
-tail -f

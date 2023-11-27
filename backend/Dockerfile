@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
 RUN mkdir -p /var/run/postgresql/
 
