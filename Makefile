@@ -19,12 +19,12 @@ down:
 	@echo "Downing containers ..."
 	@docker compose down -v
 
-clean: stop
-	@docker system prune -af --volumes
-
-fclean: clean down
+clean: down
 	@echo "Deleting folder for volumes ..."
-	@rm -rf ${VOLUME_PATH} || true
+	-@rm -rf ${VOLUME_PATH}
+
+fclean: clean
+	@docker system prune -af --volumes
 
 re: fclean all
 
