@@ -66,52 +66,46 @@ class PongProfile extends Component {
 				</div>
 				<div class="profile-chart-desc">
 					<div class="profile-bar-desc">WIN</div>
-					<div class="profile-bar-desc">LOOSE</div>
+					<div class="profile-bar-desc">LOSE</div>
 					<div class="profile-bar-desc">TOTAL</div>
 				</div>
 			</div>
 
 			<div class="profile-game-history">
 				<div class="profile-title">Game history</div>
-				<div class="profile-games">
-					<div class="profile-game">
-						<span class="profile-game-date">11/11/2023 18:05</span>
+				<div class="profile-games" repeat="games" as="game">
+					<div class="profile-game" hidden={this.getHiddenStatus(game)}>
+						<span class="profile-game-date">{game.date}</span>
 						<div class="profile-game-score">
-							<span class="profile-game-score-name">Player-1</span>
-							<span class="profile-game-score">(5)</span>
+							<span class="profile-game-score-name">{this.getPlayerName(game)}</span>
+							<span class="profile-game-score">{this.getPlayerScore(game)}</span>
 							<span class="profile-game-versus">VS</span>
-							<span class="profile-game-score">(2)</span>
-							<span class="profile-game-score-name">Player-2</span>
+							<span class="profile-game-score">{this.getOtherPlayerScore(game)}</span>
+							<span class="profile-game-score-name">{this.getOtherPlayerName(game)}</span>
 						</div>
-						<span class="profile-game-status win">WIN</span>
-					</div>
-					<div class="profile-game">
-						<span class="profile-game-date">11/11/2023 18:05</span>
-						<div class="profile-game-score">
-							<span class="profile-game-score-name">Player-1</span>
-							<span class="profile-game-score">(2)</span>
-							<span class="profile-game-versus">VS</span>
-							<span class="profile-game-score">(5)</span>
-							<span class="profile-game-score-name">Player-2</span>
-						</div>
-						<span class="profile-game-status loose">LOOSE</span>
-					</div>
-					<div class="profile-game">
-						<span class="profile-game-date">11/11/2023 18:05</span>
-						<div class="profile-game-score">
-							<span class="profile-game-score-name">Player-1</span>
-							<span class="profile-game-score">(5)</span>
-							<span class="profile-game-versus">VS</span>
-							<span class="profile-game-score">(2)</span>
-							<span class="profile-game-score-name">Player-2</span>
-						</div>
-						<span class="profile-game-status win">WIN</span>
+						<span class="profile-game-status {this.getGameStatus(game)}">{this.getGameStatus(game)}</span>
 					</div>
 				</div>
 			</div>
 
 			<div class="profile-tournament-history">
 				<div class="profile-title">Tournament history</div>
+				<div class="profile-tournament" repeat="games" as="tournament">
+					<div class="profile-game" hidden={this.getHiddenStatusTournament(tournament)}>
+						<span class="profile-game-date">{tournament.date} - </span><span class="profile-game-status {this.getTournamentStatus(tournament)}">{this.getTournamentStatus(tournament)}</span>
+						<div class="profile-tournament-games" repeat="games" as="game">
+							<div class="profile-tournament-game">
+								<div class="profile-game-score">
+									<span class="profile-game-score-name">{this.getTournamentPlayerName(game)}</span>
+									<span class="profile-game-score">{this.getTournamentPlayerScore(game)}</span>
+									<span class="profile-game-versus">VS</span>
+									<span class="profile-game-score">{this.getTournamentOtherPlayerScore(game)}</span>
+									<span class="profile-game-score-name">{this.getTournamentOtherPlayerName(game)}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -136,7 +130,7 @@ class PongProfile extends Component {
 			height: 100%;
 			right: 25%;
 			top: 0;
-			font-size: 17px;
+			font-size: 30px;
 			display: flex;
 			justify-content: center;
 			flex-direction: column;
@@ -302,9 +296,9 @@ class PongProfile extends Component {
 			color: #9F9F9F;
 			width: 50%;
 			height: 100%;
-			right: 25%;
+			right: 20%;
 			top: 0;
-			font-size: 30x;
+			font-size: 25px;
 			display: flex;
 			justify-content: center;
 			flex-direction: column;
@@ -435,9 +429,22 @@ class PongProfile extends Component {
 		top: 10px;
 		font-size: 13px;
 		display: flex;
-		align-items: center;
 		flex-direction: column;
 		margin-bottom: 15px;
+	}
+
+	.profile-tournament-game {
+		font-size: 11px;
+		margin-top: 3px;
+		margin-bottom: 3px;
+	}
+
+	.profile-tournament-games {
+		position: relative;
+		left: 5%;
+		width: 90%;
+		height: 80%;
+		background-color: rgb(97, 97, 97);
 	}
 
 	.profile-game-date {
@@ -446,10 +453,17 @@ class PongProfile extends Component {
 
 	.win {
 		color: green;
+		text-transform: uppercase;
 	}
 
-	.loose {
+	.lose {
 		color: rgb(178, 0, 0);
+		text-transform: uppercase;
+	}
+
+	.tie {
+		color: rgb(208, 102, 0);
+		text-transform: uppercase;
 	}
 
 	.profile-game-score {
@@ -472,6 +486,7 @@ class PongProfile extends Component {
 	}
 
 	.profile-bar {
+		overflow-y: hidden;
 		overflow-x: auto;
 		margin-left: 5px;
 		width: 28%;
@@ -509,7 +524,7 @@ class PongProfile extends Component {
 
 	::-webkit-scrollbar {
 		height: 10px;
-		width: 0;
+		width: 10px;
 		background-color: #424242;
 	}
 
@@ -597,7 +612,6 @@ class PongProfile extends Component {
 	getBallHit() {
 		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
 
-		console.log(profile);
 		if (!profile)
 			return '';
 		return profile.ballHit;
@@ -652,6 +666,177 @@ class PongProfile extends Component {
 		let finalValue = 90;
 
 		return 'height: ' + finalValue + '%';
+	}
+
+	getHiddenStatus(game) {
+		const player = game.players.find(player => player === state.whoAmI);
+
+		if (!player)
+			return (true);
+		if (game.type == "tournament")
+			return (true);
+		if (game.status != "done")
+			return (true);
+		if (game.creator == "tournament")
+			return (true);
+		return (false);
+	}
+
+	getPlayerName(game) {
+		const player1 = game.players.find(player => player === state.whoAmI);
+
+		return player1;
+	}
+
+	getOtherPlayerName(game) {
+		const player2 = game.players.find(player => player !== state.whoAmI);
+
+		return player2;
+	}
+
+	getPlayerScore(game) {
+		const player = game.players.find(player => player === state.whoAmI);
+
+		if (!player)
+			return ;
+		if (game.type == "tournament")
+			return ;
+		if (game.status != "done")
+			return ;
+		if (game.creator == "tournament")
+			return ;
+		const score = game.score.find(score => score.name === player);
+		return '(' + score.points + ')';
+	}
+
+	getOtherPlayerScore(game) {
+		const player = game.players.find(player => player !== state.whoAmI);
+
+		if (!player)
+			return ;
+		if (game.type == "tournament")
+			return ;
+		if (game.status != "done")
+			return ;
+		if (game.creator == "tournament")
+			return ;
+		const score = game.score.find(score => score.name === player);
+		return '(' + score.points + ')';
+	}
+
+	getGameStatus(game) {
+		const player1 = game.players.find(player => player === state.whoAmI);
+		const player2 = game.players.find(player => player !== state.whoAmI);
+
+		if (!player1)
+			return ;
+		if (game.type == "tournament")
+			return ;
+		if (game.status != "done")
+			return ;
+		if (game.creator == "tournament")
+			return ;
+		const score1 = game.score.find(score => score.name === player1);
+		const score2 = game.score.find(score => score.name === player2);
+		if (score1.points == score2.points)
+			return 'tie';
+		else
+			return score1.points > score2.points ? 'win' : 'lose'
+	}
+
+	getHiddenStatusTournament(game) {
+		const player = game.players.find(player => player === state.whoAmI);
+
+		if (!player)
+			return (true);
+		if (game.type != "tournament")
+			return (true);
+		if (game.status != "done")
+			return (true);
+		return (false);
+	}
+
+	getTournamentStatus(game) {
+		if (game.type != "tournament")
+			return ;
+		if (game.status != "done")
+			return ;
+
+		const gameId = Math.max(...game.gamesId);
+		if (!gameId)
+			return ;
+
+		const finalGame = state.games.find(game => game.id === gameId);
+		if (!finalGame)
+			return ;
+
+		const player1 = finalGame.players.find(player => player == state.whoAmI);
+		const player2 = finalGame.players.find(player => player !== state.whoAmI);
+		if (!player1)
+			return 'lose';
+		if (!player2)
+			return ;
+
+		const score1 = finalGame.score.find(score => score.name === player1);
+		const score2 = finalGame.score.find(score => score.name === player2);
+		if (score1.points == score2.points)
+			return 'tie';
+		else
+			return score1.points > score2.points ? 'win' : 'lose'
+
+	}
+
+	getTournamentPlayerName(game) {
+		/*
+		const player1 = game.players.find(player => player === state.whoAmI);
+
+		return player1;
+		*/
+	}
+
+	getTournamentOtherPlayerName(game) {
+		/*
+		const player2 = game.players.find(player => player !== state.whoAmI);
+
+		return player2;
+		*/
+	}
+
+	getTournamentPlayerScore(game) {
+		/*
+		let player = game.players.find(player => player === state.whoAmI);
+
+		if (!player)
+			player = game.players[0];
+		if (game.type == "tournament")
+			return ;
+		if (game.status != "done")
+			return ;
+		if (game.creator != "tournament")
+			return ;
+		const score = game.score.find(score => score.name === player);
+		return '(' + score.points + ')';
+		*/
+	}
+
+	getTournamentOtherPlayerScore(game) {
+		/*
+		let player1 = game.players.find(player => player === state.whoAmI);
+		let player2 = game.players.find(player => player !== state.whoAmI);
+
+		if (!player1)
+			player2 = game.players[1];
+		if (!player2)
+			return ;
+		if (game.type == "tournament")
+			return ;
+		if (game.status != "done")
+			return ;
+		if (game.creator != "tournament")
+			return ;
+		const score = game.score.find(score => score.name === player2);
+		return '(' + score.points + ')';
+		*/
 	}
 }
 
