@@ -167,11 +167,33 @@ will call fn any time the `click` event is received on this node
 ```
 You can use any binding feature inside the repeat on either text, attribute or class
 
+Nested repeats are supported.
+
+``` html
+<div repeat="users" as="user">
+    <div repeat="user.friends" as="friend">
+      <span>{user.name} has friend {friend}</span>
+    </div>
+</div>
+```
+
+Note: only the first child is considered inside the repeat node
+
+``` html
+<div repeat="users" as="user">
+    <div>
+        <span>{user.name}</span>
+        <h1>I will appear</h1>
+    </div>
+    <h1>I will NOT appear</h1>
+    <h1>I will NOT appear</h1>
+</div>
+```
+
 ### IDE configuration
 
 For syntax hightlighting and autocompletion of inline html and css string on vscode, install 'lit-plugin'. Lit-html is a frontend binding library with similar feature.
 
 ### Limitations
 
-- Nested repeat are not yet supported
 - binding with with local variable such as `<h1>{this.myComponentVar}</h1>` will work at initialization but the DOM will not update when the value changes
