@@ -22,12 +22,12 @@ export const bindTextNode = (scope, prefixes, textNode) => {
       parentNode.insertAdjacentText("beforeend", "")
       let newTextNode = parentNode.lastChild
       let onTextChange = (varVal) => { newTextNode.nodeValue = varVal; }
-      bracketEval(part, scope, prefixes, onTextChange)
+      // if bracketEval returns false, the variable could not be found in the state, continue to the fallback value
+      if (bracketEval(part, scope, prefixes, onTextChange))
+        return
     }
-    else {
-      parentNode.insertAdjacentText("beforeend", part);
-    }
-
+    // fallback to just inserting the text
+    parentNode.insertAdjacentText("beforeend", part);
   });
 
   // Remove the original text node

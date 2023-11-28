@@ -1,8 +1,9 @@
 import {extractPathScope, get_prop, isIterable, addPathObserver } from './utils.js'
 import {bindText, bindAttr } from './binding.js'
 
-export const evalRepeat = (node, scope) => {
-  let elements = node.querySelectorAll("[repeat]")
+export const evalRepeat = (node, scope, prefixes = {}) => {
+  // Select all nodes with attribute "repeat" that does not have an ansestor with attribute repeat
+  let elements = node.querySelectorAll("[repeat]:not([repeat] [repeat])")
 
   for (const el of elements) {
     let arrayPath = el.getAttribute("repeat")
@@ -10,7 +11,7 @@ export const evalRepeat = (node, scope) => {
 
     arrayPath = arrayPath.split('.')
     let path = arrayPath.slice();
-    let localScope = extractPathScope(path, scope)
+    let localScope = extractPathScope(path, scope, prefixes)
     el.removeAttribute("repeat")
     el.removeAttribute("as")
 
@@ -19,6 +20,8 @@ export const evalRepeat = (node, scope) => {
     el.removeChild(templateNode);
     let nodePool = []
     let onchange = (newVal) => {
+      if (newVal === undefined)
+        return
       if (!isIterable(newVal)) {
         console.warn(newVal, "Value is not iterable")
         return
@@ -36,8 +39,10 @@ export const evalRepeat = (node, scope) => {
           let c = clone.cloneNode(true)
           el.appendChild(c)
           nodePool.push(c)
-          bindText(c, scope, { [as]: [...arrayPath, nodePool.length - 1] })
-          bindAttr(c, scope, true, { [as]: [...arrayPath, nodePool.length - 1] })
+          const next_prefixes = {...prefixes, [as]: [...arrayPath, nodePool.length - 1]}
+          bindText(c, scope, next_prefixes)
+          bindAttr(c, scope, true, next_prefixes)
+          evalRepeat(c, scope, next_prefixes)
         }
       }
       else {

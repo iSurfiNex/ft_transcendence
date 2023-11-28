@@ -26,11 +26,11 @@ export const addPathObserver = (path, onChange) => {
 }
 
 export const extractPathScope = (path, scope, prefixes = {}) => {
-  for (const [key, value] of Object.entries(prefixes)) {
-    if (path[0] != key)
-      continue
+  let prefixValue = prefixes[path[0]]
+  while (prefixValue !== undefined) {
     path.shift()
-    path.unshift(...value)
+    path.unshift(...prefixValue)
+    prefixValue = prefixes[path[0]]
   }
   if (path[0] != "this")
     return window.state
@@ -122,6 +122,8 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
     let localScope = extractPathScope(path, scope, prefixes)
 
     let initialUseAttr = get_prop(localScope, path)
+    if (initialUseAttr === undefined)
+      return false
     onChange(initialUseAttr, negate, useValue, forwardVal)
     let handleChange = (newVal) => onChange(newVal, negate, useValue, forwardVal)
     addPathObserver(path, handleChange)
