@@ -1,6 +1,6 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
-import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
+import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
+import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongChat extends Component {
 	static sheets = [bootstrapSheet]
@@ -10,8 +10,8 @@ class PongChat extends Component {
 			<div class="chat-bubble">
 				<label class="btn btn-primary chat-bubble-label" for="btn-check">
 					<input @click="this.chatCheckHandler()" checked="{isChatBubbleChecked}" type="checkbox" class="btn-check chat-bubble-check" id="btn-check" autoComplete="off"/>
-					<img class="chat-bubble-unchecked" src="/src/img/bubble.svg" alt="bubble"/>
-					<img class="chat-bubble-checked" src='/src/img/close.svg' alt="close"/>
+					<img class="chat-bubble-unchecked" src="/static/img/bubble.svg" alt="bubble"/>
+					<img class="chat-bubble-checked" src='/static/img/close.svg' alt="close"/>
 				</label>
 			</div>
 		</div>
@@ -41,14 +41,14 @@ class PongChat extends Component {
 				<input placeholder="Ecrivez votre message ici" class="chat-input"/>
 				<label class="btn btn-primary chat-send" for="btn-check">
 					<div class="chat-send-button">
-						<input class="chat-send-img" alt="send" type="image" src="/src/img/send.svg" name="submit"/>
+						<input class="chat-send-img" alt="send" type="image" src="/static/img/send.svg" name="submit"/>
 					</div>
 				</label>
 				<div class="player-list">
 					<label class="btn btn-primary player-list-label" for="btn-check-list">
 						<input class="btn-check player-list-input" @click="this.playerListCheckHandler()" checked={isPlayerListChecked} type="checkbox" id="btn-check-list" autoComplete="off"/>
-						<img class="player-list-unchecked" src="/src/img/list.svg" alt="list"/>
-						<img class="player-list-checked" src="/src/img/close.svg" alt="close"/>
+						<img class="player-list-unchecked" src="/static/img/list.svg" alt="list"/>
+						<img class="player-list-checked" src="/static/img/close.svg" alt="close"/>
 					</label>
 				</div>
 			</div>
@@ -61,9 +61,9 @@ class PongChat extends Component {
 							<img class="chat-player-img" src="{this.getProfilePicture(user.nickname)}" alt="profile"/>
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
-						<button class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/src/img/message.svg" alt="send message"/></button>
-						<button class="chat-player-invite btn btn-success" title="Invite"><img class="chat-player-button-img" src="/src/img/plus.svg" alt="invite"/></button>
-						<button class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/src/img/block.svg" alt="block"/></button>
+						<button class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+						<button class="chat-player-invite btn btn-success" title="Invite"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="invite"/></button>
+						<button class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
 						<div class="chat-player-seperator"></div>
 					</div>
 				</div>
@@ -623,7 +623,7 @@ class PongChat extends Component {
 		const user = state.users.find(user => user.nickname === string);
 
 		if (user) {
-			const backgroundImage = 'url(/src/' + user.picture + ')';
+			const backgroundImage = 'url(/static/' + user.picture + ')';
 			const backgroundSize = 'cover';
 
 			return ('background-image: ' + backgroundImage + '; background-size: ' + backgroundSize + ';');
@@ -637,10 +637,10 @@ class PongChat extends Component {
 		const user = state.users.find(user => user.nickname === whoAmI);
 
 		if (user) {
-			return '/src/' + user.picture;
+			return '/static/' + user.picture;
 		}
 		else {
-			return '/src/img/list.svg';
+			return '/static/img/list.svg';
 		}
 	}
 

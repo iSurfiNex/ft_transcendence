@@ -1,6 +1,6 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
-import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
+import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
+import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongProfile extends Component {
 	static sheets = [bootstrapSheet]
@@ -15,9 +15,9 @@ class PongProfile extends Component {
 				<span class="profile-topbar-nickname">({this.getNickName(profileLooking)})</span>
 			</div>
 			<div class="profile-topbar-button">
-				<button class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/src/img/message.svg" alt="send message"></img></button>
-				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Invite"><img class="profile-topbar-img" src="/src/img/plus.svg" alt="invite"></img></button>
-				<button class="profile-topbar-button-block btn btn-danger btn-lg" title="Block"><img class="profile-topbar-img" src="/src/img/block.svg" alt="block"></img></button>
+				<button class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
+				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Invite"><img class="profile-topbar-img" src="/static/img/plus.svg" alt="invite"></img></button>
+				<button class="profile-topbar-button-block btn btn-danger btn-lg" title="Block"><img class="profile-topbar-img" src="/static/img/block.svg" alt="block"></img></button>
 			</div>
 		</div>
 
@@ -548,10 +548,10 @@ class PongProfile extends Component {
 		const user = state.users.find(user => user.nickname === whoAmI);
 
 		if (user) {
-			return '/src/' + user.picture;
+			return '/static/' + user.picture;
 		}
 		else {
-			return '/src/img/list.svg';
+			return '/static/img/list.svg';
 		}
 	}
 

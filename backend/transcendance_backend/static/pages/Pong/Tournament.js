@@ -1,8 +1,8 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
-import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
+import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
+import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
-class PongPowerUp extends Component {
+class PongTournament extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<div class="pong">
@@ -23,7 +23,7 @@ class PongPowerUp extends Component {
 							</div>
 							<div class="pong-player-count">{game.players.length}/{game.maxPlayer}</div>
 							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
-								<img class="pong-player-img" src="/src/img/share.svg" alt="join"/>
+								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 							</a>
 						</div>
 					</div>
@@ -213,7 +213,7 @@ class PongPowerUp extends Component {
 	}
 
 	isGameHidden(game) {
-		if (game.type != "powerup")
+		if (game.type != "tournament")
 			return (true);
 		if (game.status != "waiting")
 			return (true);
@@ -232,4 +232,4 @@ class PongPowerUp extends Component {
 	}
 }
 
-register(PongPowerUp);
+register(PongTournament);

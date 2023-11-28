@@ -1,6 +1,6 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
-import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
+import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
+import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongTopBar extends Component {
 	static sheets = [bootstrapSheet]
@@ -289,10 +289,10 @@ class PongTopBar extends Component {
 		const user = state.users.find(user => user.nickname === whoAmI);
 
 		if (user) {
-			return ("/src/" + user.picture);
+			return ("/static/" + user.picture);
 		}
 		else {
-			return '/src/img/list.svg';
+			return '/static/img/list.svg';
 		}
 	}
 }

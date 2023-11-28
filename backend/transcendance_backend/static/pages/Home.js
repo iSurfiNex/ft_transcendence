@@ -1,6 +1,6 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
-import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
+import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
+import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongHome extends Component {
 	static sheets = [bootstrapSheet]
