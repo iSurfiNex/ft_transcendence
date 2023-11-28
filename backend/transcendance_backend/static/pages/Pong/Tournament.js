@@ -7,7 +7,7 @@ class PongTournament extends Component {
 	static template = html`
 	<div class="pong">
 		<div class="content">
-			<div class="pong-title">PONG POWERUPS</div>
+			<div class="pong-title">TOURNAMENTS</div>
 			<div class="pong-content">
 				<div class="pong-create">
 					<button id="pong-button" class="pushable">
@@ -15,7 +15,7 @@ class PongTournament extends Component {
 					</button>
 				</div>
 				<div class="pong-list">
-					<div repeat="games" as="game">
+					<div repeat="tournaments" as="game">
 						<div class="pong-desc" hidden="{this.isGameHidden(game)}">
 							<div class="pong-type">ID:{game.id}</div>
 							<div class="pong-players" repeat="players" as="player">

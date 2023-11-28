@@ -5,13 +5,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	const initialPath = window.location.pathname;
-	navigateTo(initialPath);
+	displayContent(initialPath);
 });
 
 const body = document.body;
 let topbar, chat, contentSeparator;
 
 function navigateTo(path) {
+	console.log("=++++++++++++++++++++++++++++++++++++", window.location.href, document.URL)
 	history.pushState({ path: path }, "", path);
 
 	displayContent(path);
@@ -21,11 +22,17 @@ function displayContent(path) {
 	if (!window.state.isLoggedIn) {
 		displayElement("login");
 	}
+	else if (path === "/login/") {
+		displayElement("pong-login");
+	}
 	else {
 		Layout();
 
 		if (path === "/") {
 			displayElement("pong-home");
+		}
+		else if (path === "/login") {
+			displayElement("pong-login");
 		}
 		else if (path === "/profile") {
 			displayElement("pong-profile");
@@ -46,7 +53,7 @@ function displayContent(path) {
 			displayElement("tournament-waiting-room");
 		}
 		else {
-			navigateTo("/");
+			displayElement("pong-404");
 		}
 	}
 }
