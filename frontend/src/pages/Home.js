@@ -1,10 +1,10 @@
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 class PongHome extends Component {
 	static sheets = [bootstrapSheet]
-	static template = `
+	static template = html`
 	<div id="home" class="home">
 		<div id="pong" class="pong-pannel">
 			<div id="pong-content" class="content">
@@ -56,7 +56,7 @@ class PongHome extends Component {
 	</div>
 `
 
-	static css = `
+	static css = css`
 	@media only screen and (max-width: 768px) {
 		.home {
 			position: absolute;
