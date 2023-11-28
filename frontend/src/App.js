@@ -33,6 +33,13 @@ var state_base = {
 		{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' },
 		{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' },
 	],
+	tournaments: [
+		{ type: 'tournament', id: 1, status: 'done', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11, 12], date: '11/11/2023 04:38' },
+		{ type: 'tournament', id: 2, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15, 16], date: '11/11/2023 04:38' },
+
+		{ type: 'tournament', id: 3, status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' },
+		{ type: 'tournament', id: 4, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '' },
+	],
 	games: [
 		{ type: 'normal', id: 1, status: 'done', creator: 'rsterin', players: ['rsterin', 'tlarraze'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 2, status: 'waiting', creator: 'fjullien', players: ['fjullien'], maxPlayer: '2', score: [], date: '' },
@@ -44,18 +51,14 @@ var state_base = {
 		{ type: 'powerup', id: 7, status: 'waiting', creator: 'fjullien', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [], date: '' },
 		{ type: 'powerup', id: 8, status: 'running', creator: 'fjullien', players: ['fjullien', 'rsterin'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'rsterin', points: 3 }], date: '11/11/2023 04:38' },
 
-		{ type: 'tournament', id: 9, status: 'done', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11, 12], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 10, status: 'done', creator: 'tournament', players: ['rsterin', 'jtoulous'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'jtoulous', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 11, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 12, status: 'done', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
-		{ type: 'tournament', id: 13, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15, 16], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 14, status: 'done', creator: 'tournament', players: ['rsterin', 'jtoulous'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'jtoulous', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 15, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
-		{ type: 'tournament', id: 10, status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' },
-		{ type: 'tournament', id: 12, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '' },
 	],
 	currentGame: -1,
 }
