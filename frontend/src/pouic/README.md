@@ -31,11 +31,11 @@ Declare a component by creating a class that inherit `Component` then call `regi
 
 ``` js
 // HelloWorld.js
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 
 class MyPage extends Component {
-  static template = `<h1>{pages.home.title}</h1>`
-  static css = `span { background: red; }`
+  static template = html`<h1>{pages.home.title}</h1>`
+  static css = css`span { background: red; }`
 }
 
 register(MyPage)
@@ -89,13 +89,13 @@ export const mySharedSheet = sheet.replace(styles);
 
 ``` js
 // HelloWorld.js
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import {mySharedSheet} from './my_shared_sheet.js'
 
 
 class MyPage extends Component {
-  static template = `<h1>{pages.home.title}</h1>`
-  static css = `span { background: red; }`
+  static template = html`<h1>{pages.home.title}</h1>`
+  static css = css`span { background: red; }`
   static sheets = [mySharedSheet]
   observers = {
 	'my.var': newValue => console.log("value changed: ", newValue)
@@ -166,6 +166,10 @@ will call fn any time the `click` event is received on this node
 </div>
 ```
 You can use any binding feature inside the repeat on either text, attribute or class
+
+### IDE configuration
+
+For syntax hightlighting and autocompletion of inline html and css string on vscode, install 'lit-plugin'. Lit-html is a frontend binding library with similar feature.
 
 ### Limitations
 
