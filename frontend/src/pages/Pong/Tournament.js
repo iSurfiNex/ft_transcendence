@@ -1,10 +1,10 @@
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 class PongTournament extends Component {
 	static sheets = [bootstrapSheet]
-	static template = `
+	static template = html`
 	<div class="pong">
 		<div class="content">
 			<div class="pong-title">PONG POWERUPS</div>
@@ -33,7 +33,7 @@ class PongTournament extends Component {
 	</div>
 `
 
-	static css = `
+	static css = css`
 	@keyframes fadeIn {
 		0% { opacity: 0; }
 		100% { opacity: 1; }

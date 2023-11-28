@@ -1,17 +1,17 @@
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 class PongContentSeparator extends Component {
 	static sheets = [bootstrapSheet]
-	static template = `
+	static template = html`
 	<div class="layout">
 		<div class="vertical-separator"></div>
 		<div class="horizontal-separator"></div>
 	</div>
 `
 
-	static css = `
+	static css = css`
 	@media only screen and (max-width: 768px) {
 		.horizontal-separator {
 			position: fixed;

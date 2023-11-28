@@ -1,10 +1,10 @@
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 class PongChat extends Component {
 	static sheets = [bootstrapSheet]
-	static template = `
+	static template = html`
 	<div class="chat">
 		<div class="chat-mobile">
 			<div class="chat-bubble">
@@ -72,7 +72,7 @@ class PongChat extends Component {
 	</div>
 `
 
-	static css = `
+	static css = css`
 	@media only screen and (max-width: 768px) {
 		.chat-bubble {
 			display: block;
