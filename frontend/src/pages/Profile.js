@@ -77,7 +77,7 @@ class PongProfile extends Component {
 					<div class="profile-game" hidden={this.getHiddenStatus(game)}>
 						<span class="profile-game-date">{game.date}</span>
 						<div class="profile-game-score">
-							<span class="profile-game-score-name">{this.getPlayerName(game)}</span>
+ 							<span class="profile-game-score-name">{this.getPlayerName(game)}</span>
 							<span class="profile-game-score">{this.getPlayerScore(game)}</span>
 							<span class="profile-game-versus">VS</span>
 							<span class="profile-game-score">{this.getOtherPlayerScore(game)}</span>
@@ -90,17 +90,17 @@ class PongProfile extends Component {
 
 			<div class="profile-tournament-history">
 				<div class="profile-title">Tournament history</div>
-				<div class="profile-tournament" repeat="games" as="tournament">
+				<div class="profile-tournament" repeat="tournaments" as="tournament">
 					<div class="profile-game" hidden={this.getHiddenStatusTournament(tournament)}>
 						<span class="profile-game-date">{tournament.date} - </span><span class="profile-game-status {this.getTournamentStatus(tournament)}">{this.getTournamentStatus(tournament)}</span>
-						<div class="profile-tournament-games" repeat="games" as="game">
+						<div class="profile-tournament-games" repeat="tournament.gamesId" as="gameId">
 							<div class="profile-tournament-game">
 								<div class="profile-game-score">
-									<span class="profile-game-score-name">{this.getTournamentPlayerName(game)}</span>
-									<span class="profile-game-score">{this.getTournamentPlayerScore(game)}</span>
+									<span class="profile-game-score-name">{this.getTournamentPlayerName(gameId)}</span>
+									<span class="profile-game-score">{this.getTournamentPlayerScore(gameId)}</span>
 									<span class="profile-game-versus">VS</span>
-									<span class="profile-game-score">{this.getTournamentOtherPlayerScore(game)}</span>
-									<span class="profile-game-score-name">{this.getTournamentOtherPlayerName(game)}</span>
+									<span class="profile-game-score">{this.getTournamentOtherPlayerScore(gameId)}</span>
+									<span class="profile-game-score-name">{this.getTournamentOtherPlayerName(gameId)}</span>
 								</div>
 							</div>
 						</div>
@@ -786,24 +786,33 @@ class PongProfile extends Component {
 
 	}
 
-	getTournamentPlayerName(game) {
-		/*
-		const player1 = game.players.find(player => player === state.whoAmI);
+	getTournamentPlayerName(gameId) {
+		const game = state.games.find(game => game.id === gameId);
+		if (!game)
+			return ;
+		let player1 = game.players.find(player => player === state.whoAmI);
+		if (!player1)
+			player1 = game.players[0];
 
 		return player1;
-		*/
 	}
 
-	getTournamentOtherPlayerName(game) {
-		/*
-		const player2 = game.players.find(player => player !== state.whoAmI);
+	getTournamentOtherPlayerName(gameId) {
+		const game = state.games.find(game => game.id === gameId);
+		if (!game)
+			return ;
+		let player2 = game.players.find(player => player !== state.whoAmI);
+		const player1 = game.players.find(player => player === state.whoAmI);
+		if (!player1)
+			player2 = game.players[1];
 
 		return player2;
-		*/
 	}
 
-	getTournamentPlayerScore(game) {
-		/*
+	getTournamentPlayerScore(gameId) {
+		const game = state.games.find(game => game.id === gameId);
+		if (!game)
+			return ;
 		let player = game.players.find(player => player === state.whoAmI);
 
 		if (!player)
@@ -816,11 +825,12 @@ class PongProfile extends Component {
 			return ;
 		const score = game.score.find(score => score.name === player);
 		return '(' + score.points + ')';
-		*/
 	}
 
-	getTournamentOtherPlayerScore(game) {
-		/*
+	getTournamentOtherPlayerScore(gameId) {
+		const game = state.games.find(game => game.id === gameId);
+		if (!game)
+			return ;
 		let player1 = game.players.find(player => player === state.whoAmI);
 		let player2 = game.players.find(player => player !== state.whoAmI);
 
@@ -836,7 +846,6 @@ class PongProfile extends Component {
 			return ;
 		const score = game.score.find(score => score.name === player2);
 		return '(' + score.points + ')';
-		*/
 	}
 }
 
