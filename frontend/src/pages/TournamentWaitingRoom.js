@@ -1,19 +1,19 @@
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 class TournamentWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
-	static template = `
+	static template = html`
     <div class="background-waiting-room">
-		<div class="rectangle-waiting-room">	
+		<div class="rectangle-waiting-room">
 			<div class="title-waiting-room"> Waiting Room </div>
             <div class="counter-waiting-room"> STARTING IN n  </div>
             <div class="match">  </div>
 		</div>
 	</div>
 `
-    static css= `
+    static css= css`
 	@media only screen and (max-width: 768px) {
         .background-waiting-room {
             position: absolute;
@@ -23,7 +23,7 @@ class TournamentWaitingRoom extends Component {
             height: calc(90% - 6px);
             background-color: rgba(255, 255, 255, 0.5);
         }
-    
+
         .rectangle-waiting-room {
             position: absolute;
             bottom: 10%;
@@ -33,7 +33,7 @@ class TournamentWaitingRoom extends Component {
             background-color: rgb(54, 54, 54);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
         }
-    
+
         .title-waiting-room {
             color: rgb(254, 254, 254);
             font-size: 22px;
@@ -44,8 +44,8 @@ class TournamentWaitingRoom extends Component {
             text-align: center;
         }
     }
-    
-    
+
+
     @media (hover: hover) {
         .background-waiting-room {
             position: absolute;
@@ -55,7 +55,7 @@ class TournamentWaitingRoom extends Component {
             height: calc(90% - 10px);
             background-color: rgba(255, 255, 255, 0.5);
         }
-    
+
         .rectangle-waiting-room {
             position: absolute;
             bottom: 10%;
@@ -67,7 +67,7 @@ class TournamentWaitingRoom extends Component {
             display: flex;
             align-items: center;
         }
-    
+
         .title-waiting-room {
             position: absolute;
             color: rgb(254, 254, 254);
@@ -79,11 +79,11 @@ class TournamentWaitingRoom extends Component {
             overflow: hidden;
             text-align: center;
         }
-        
+
         .players-list-waiting-room {
             position: absolute;
             width: 70%;
-            height: 70%; 
+            height: 70%;
             left: 20%;
             bottom: 5%;
             overflow: auto;

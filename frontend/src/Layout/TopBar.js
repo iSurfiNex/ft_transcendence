@@ -1,10 +1,10 @@
-import { Component, register } from 'pouic'
+import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
 class PongTopBar extends Component {
 	static sheets = [bootstrapSheet]
-	static template = `
+	static template = html`
 	<div class="topbar">
 		<a href="/" onClick="navigateTo('/'); return false;" class="logo">
 			<div class="logo-text">PONG</div>
@@ -21,7 +21,7 @@ class PongTopBar extends Component {
 	</div>
 `
 
-	static css = `
+	static css = css`
 	@media only screen and (max-width: 768px) {
 		.topbar {
 			display: block;
