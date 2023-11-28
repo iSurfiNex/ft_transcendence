@@ -73,19 +73,22 @@ const fnEval = (bindName,bindArgsStr, scope, prefixes, negate, onChange) => {
       fn = newFn
       callFn()
     }
-    addPathObserver(fnPath, onFnChange)
 
-    argsPath.forEach((pathStr, i) =>{
+    for (let [i,pathStr] of Object.entries(argsPath)) {
       const varPath = pathStr.split('.')
       const argLocalScope = extractPathScope(varPath, scope, prefixes)
       args[i] = get_prop(argLocalScope, varPath)
+      if (args[i] ==undefined)
+        return false
       const onArgChange = newArg => {
         args[i] = newArg
         callFn()
       }
       addPathObserver(varPath, onArgChange)
-    })
+    }
+    addPathObserver(fnPath, onFnChange)
       callFn()
+      return true
 }
 
 export const bracketEval = (query, scope, prefixes, onChange) => {
@@ -128,7 +131,7 @@ export const bracketEval = (query, scope, prefixes, onChange) => {
     let handleChange = (newVal) => onChange(newVal, negate, useValue, forwardVal)
     addPathObserver(path, handleChange)
   } else {
-    fnEval(bindName, bindArgsStr, scope, prefixes, negate, onChange)
+    return fnEval(bindName, bindArgsStr, scope, prefixes, negate, onChange)
   }
   return true
 }

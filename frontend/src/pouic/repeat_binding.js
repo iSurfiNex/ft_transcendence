@@ -43,6 +43,7 @@ export const evalRepeat = (node, scope, prefixes = {}) => {
           bindText(c, scope, next_prefixes)
           bindAttr(c, scope, true, next_prefixes)
           evalRepeat(c, scope, next_prefixes)
+
         }
       }
       else {
