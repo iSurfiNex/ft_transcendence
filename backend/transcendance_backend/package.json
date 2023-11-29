@@ -7,7 +7,7 @@
     "connect-history-api-fallback": "^2.0.0"
   },
   "scripts": {
-    "start": "browser-sync start --server --files \"**/*\" --exclude \"./node_modules\" --config bs-config.js --index \"./index.html\""
+    "start": "browser-sync start --server --files \"**/*\" --exclude \"./node_modules\" --config bs-config.js --index \"./templates/index.html\" --port 8000 --https"
   },
   "browserslist": {
     "development": [
