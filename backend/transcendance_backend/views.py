@@ -3,6 +3,7 @@ from django.db.utils import IntegrityError
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from urllib.parse import urlencode
 import json
 
 import requests
@@ -22,7 +23,7 @@ class RequestLogin(View):
             'redirect_uri': 'https://localhost:8000/login/'
         }
         response = requests.post(url, json=data, headers={'Content-Type': 'application/json'})
-        return JsonResponse({"yolo": response.json()})
+        return JsonResponse(response.json())
 
 def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
     @method_decorator(csrf_exempt, name="dispatch")
