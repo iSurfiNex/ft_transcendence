@@ -1,0 +1,7 @@
+Bouton connexion sur page /login/
+-> redirection sur api 42
+-> redirection sur /login/ avec code fournit par 42
+	- requete vers notre api avec le code fournit par 42
+		- reauete du back pour avoir le token final
+	- reponse du token
+	- le front sauvegarde le token et l'inclu ds toutes les reauetes suivantes
