@@ -5,13 +5,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 
+import requests
+
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
 from typing import Type
 
 class RequestLogin(View):
     def get(self, request):
-        return JsonResponse({"yolo": request.GET["code"]})
+        url = 'https://api.intra.42.fr/oauth/token'
+        data = {
+            'grant_type': 'authorization_code',
+            'client_id': 'u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080',
+            'client_secret': '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',
+            'code': request.GET["code"],
+            'redirect_uri': 'https://localhost:8000/login/'
+        }
+        response = requests.post(url, json=data, headers={'Content-Type': 'application/json'})
+        return JsonResponse({"yolo": response.json()})
 
 def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
     @method_decorator(csrf_exempt, name="dispatch")
