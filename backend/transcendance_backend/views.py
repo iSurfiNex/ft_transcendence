@@ -9,6 +9,9 @@ from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
 from typing import Type
 
+class RequestLogin(View):
+    def get(self, request):
+        return JsonResponse({"yolo": request.GET["code"]})
 
 def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
     @method_decorator(csrf_exempt, name="dispatch")

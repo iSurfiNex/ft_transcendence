@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
-from .views import PlayerView, TournamentView, GameView
+from .views import PlayerView, TournamentView, GameView, RequestLogin
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,6 +26,9 @@ urlpatterns = [
     path("api/tournaments/", TournamentView.as_view(), name="tournament-list"),
     path(
         "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
+    ),
+    path(
+        "api/requestlogin/", RequestLogin.as_view(), name="request-login"
     ),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
