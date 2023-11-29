@@ -35,7 +35,7 @@ class PongLogin extends Component {
 	}
 
 	handleClick() {
-		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=https%3A%2F%2Flocalhost%3A8000%2Flogin%2F&response_type=code&state=trucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbidule';
+		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=https%3A%2F%2Flocalhost%3A8000%2Flogin%2F&response_type=code';
 
 		window.location.href = apiUrl;
 	}
@@ -48,7 +48,6 @@ class PongLogin extends Component {
 			client_id: 'u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080',
 			client_secret: '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',
 			code: type, // Replace {type} with the actual value
-			state: 'trucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbidule',
 			redirect_uri: 'https://localhost:8000/login/',
 		};
 		const formData = new FormData();
@@ -56,19 +55,19 @@ class PongLogin extends Component {
 		formData.append("client_id", "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080");
 		formData.append("client_secret", "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");
 		formData.append("code", type);
-		formData.append("state", "trucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbiduletrucbidule");
 		formData.append("redirect_uri", "https://localhost:8000/login/");
 		try {
 				const response = await fetch('https://api.intra.42.fr/oauth/token', {
 				method: 'POST',
 				headers: {
-					//'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+					// 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
 					'Access-Control-Allow-Origin': 'https://api.intra.42.fr',
 				},
-				mode: 'no-cors',
+				mode: 'cors',
 				body: formData,
 			});
 
+			console.log(response)
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
 			}

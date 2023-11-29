@@ -20,7 +20,7 @@ function navigateTo(path) {
 
 function displayContent(path) {
 	if (!window.state.isLoggedIn) {
-		displayElement("login");
+		navigateTo("/login/");
 	}
 	else if (path === "/login/") {
 		displayElement("pong-login");
@@ -30,9 +30,6 @@ function displayContent(path) {
 
 		if (path === "/") {
 			displayElement("pong-home");
-		}
-		else if (path === "/login") {
-			displayElement("pong-login");
 		}
 		else if (path === "/profile") {
 			displayElement("pong-profile");
