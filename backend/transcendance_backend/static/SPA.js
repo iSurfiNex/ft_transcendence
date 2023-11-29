@@ -12,18 +12,20 @@ const body = document.body;
 let topbar, chat, contentSeparator;
 
 function navigateTo(path) {
-	console.log("=++++++++++++++++++++++++++++++++++++", window.location.href, document.URL)
 	history.pushState({ path: path }, "", path);
 
 	displayContent(path);
 }
 
 function displayContent(path) {
-	if (!window.state.isLoggedIn) {
-		navigateTo("/login/");
+	if (window.state.isLoggedIn && path === "/login/") {
+		navigateTo("/");
 	}
 	else if (path === "/login/") {
 		displayElement("pong-login");
+	}
+	else if (!window.state.isLoggedIn) {
+		navigateTo("/login/");
 	}
 	else {
 		Layout();
