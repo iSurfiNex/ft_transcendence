@@ -5,5 +5,6 @@ module.exports = {
 		baseDir: "./static/", // ou spécifie le chemin vers ton dossier racine
 	},
 	files: [ "**/*" ],
+	notify: false,
 	middleware: [historyFallback()], // Enable SPA routing
 };
