@@ -168,19 +168,6 @@ var state_base = {
 		writeHere: 'Schreiben Sie ihre Nachricht hier',
 		playerList: 'Spielerliste',
 	},
-
-	getLocaleTranslation(enString, lang) {
-		const newTransledString = state.locale.find(string => string.en === enString)
-
-		if (!newTransledString)
-			return ;
-
-		if (lang === 'fr')
-			return newTransledString.fr;
-		else if (lang === 'de')
-			return newTransledString.de;
-		return newTransledString.en
-	}
 }
 
 state_base.language = state_base.en
