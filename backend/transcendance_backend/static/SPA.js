@@ -39,6 +39,9 @@ function displayContent(path) {
 		else if (path === "/play/waiting-room") {
 			displayElement("pong-waiting-room");
 		}
+		else if (path === "/play/tournament-waiting-room") {
+			displayElement("tournament-waiting-room");
+		}
 		else if (path === "/play/pong") {
 			displayElement("pong-classic");
 		}
@@ -48,8 +51,8 @@ function displayContent(path) {
 		else if (path === "/play/tournament") {
 			displayElement("pong-tournament");
 		}
-		else if (path === "/play/tournament-waiting-room") {
-			displayElement("tournament-waiting-room");
+		else if (path === "/play/create-game") {
+			displayElement("pong-create-game");
 		}
 		else {
 			displayElement("pong-not-found");
