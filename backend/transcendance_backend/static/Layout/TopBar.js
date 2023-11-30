@@ -6,15 +6,38 @@ class PongTopBar extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<div class="topbar">
-		<a href="/" onClick="navigateTo('/'); return false;" class="logo">
+		<a href="/" onclick="navigateTo('/'); return false;" class="logo">
 			<div class="logo-text">PONG</div>
 		</a>
 
 		<div class="notifications">
 		</div>
 
+		<div class="language">
+			<div class="btn-group language-button" role="group" aria-label="Basic radio toggle button group">
+				<input @click="this.updateActiveLanguage(en)" type="radio" class="btn-check" id="en" name="btnradio" autoComplete="off" checked="{this.selectedLanguage(en)}"/>
+				<label class="btn btn-secondary channels-bubble"for="en">
+					EN
+				</label>
+			</div>
+			<div class="btn-group language-button" role="group" aria-label="Basic radio toggle button group">
+				<input @click="this.updateActiveLanguage(fr)" type="radio" class="btn-check" id="fr" name="btnradio" autoComplete="off" checked="{this.selectedLanguage(fr)}"/>
+				<label class="btn btn-secondary channels-bubble" for="fr">
+					FR
+				</label>
+			</div>
+			<div class="btn-group language-button" role="group" aria-label="Basic radio toggle button group">
+				<input @click="this.updateActiveLanguage(de)" type="radio" class="btn-check" id="de" name="btnradio" autoComplete="off" checked="{this.selectedLanguage(de)}"/>
+				<label class="btn btn-secondary channels-bubble"for="de">
+					DE
+				</label>
+			</div>
+			<!-- <button class="btn btn-secondary language-button active" onclick="state.language = state.en">EN</button>
+			<button class="btn btn-secondary language-button" onclick="state.language = state.fr">FR</button>
+			<button class="btn btn-secondary language-button" onclick="state.language = state.de">DE</button> -->
+		</div>
 		<div class="profile-picture">
-			<a class="profile-picture-div" href="/profile" onClick="navigateTo('/profile'); return false;">
+			<a class="profile-picture-div" href="/profile" onclick="navigateTo('/profile'); return false;">
 				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
 			</a>
 		</div>
@@ -60,17 +83,27 @@ class PongTopBar extends Component {
 			background-color: #424242;
 		}
 
-		.notification {
+		.language {
 			position: fixed;
-			width: 50%;
+			width: 55%;
 			height: 10%;
 			top: 0;
-			left: 25%;
+			right: 20%;
+			border-right: 8px solid #424242;
+			border-left: 8px solid #424242;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			overflow: hidden;
+		}
+
+		.language-button {
+			margin: auto;
 		}
 
 		.profile-picture {
 			position: fixed;
-			width: 25%;
+			width: 20%;
 			height: 10%;
 			top: 0;
 			right: 0;
@@ -137,17 +170,27 @@ class PongTopBar extends Component {
 			background-color: #424242;
 		}
 
-		.notification {
+		.language {
 			position: fixed;
-			width: 50%;
+			width: 250px;
 			height: 10%;
 			top: 0;
-			left: 25%;
+			right: 10%;
+			border-right: 10px solid #424242;
+			border-left: 10px solid #424242;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			overflow: hidden;
+		}
+
+		.language-button {
+			margin: auto;
 		}
 
 		.profile-picture {
 			position: fixed;
-			width: 25%;
+			width: 10%;
 			height: 10%;
 			top: 0;
 			right: 0;
@@ -204,23 +247,21 @@ class PongTopBar extends Component {
 			color: white;
 		}
 
-		.notifications {
+		.language {
 			position: fixed;
-			width: 65%;
+			width: 250px;
 			height: 10%;
 			top: 0;
-			left: 25%;
+			right: 10%;
 			border-right: 10px solid #424242;
-			overflow: auto;
-		}
-
-		.notifications::-webkit-scrollbar {
-			display: none;
-		}
-
-		.notifications-container {
+			border-left: 10px solid #424242;
 			display: flex;
-			font-size: 5px;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.language-button {
+			margin: auto;
 		}
 
 		.profile-picture {
@@ -294,6 +335,20 @@ class PongTopBar extends Component {
 		else {
 			return '/static/img/list.svg';
 		}
+	}
+
+	changeLanguage(value) {
+		state.language = value;
+	}
+
+	selectedLanguage(language) {
+		if (state.language.username == language.username)
+			return true;
+		return false;
+	}
+
+	updateActiveLanguage(language) {
+		state.language = language;
 	}
 }
 

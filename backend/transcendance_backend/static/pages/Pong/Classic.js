@@ -11,7 +11,7 @@ class PongClassic extends Component {
 			<div class="pong-content">
 				<div class="pong-create">
 					<button id="pong-button" class="pushable">
-						<span class="front">CREATE GAME</span>
+						<span class="front">{language.createGame}</span>
 					</button>
 				</div>
 				<div class="pong-list">

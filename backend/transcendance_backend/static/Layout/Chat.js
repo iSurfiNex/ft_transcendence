@@ -38,7 +38,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="bottom-bar">
-				<input placeholder="Ecrivez votre message ici" class="chat-input"/>
+				<input placeholder="{language.writeHere}" class="chat-input"/>
 				<label class="btn btn-primary chat-send" for="btn-check">
 					<div class="chat-send-button">
 						<input class="chat-send-img" alt="send" type="image" src="/static/img/send.svg" name="submit"/>
@@ -54,7 +54,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="chat-player-list" hidden="{isPlayerListChecked}">
-				<span class="chat-player-list-header-text">Player list</span>
+				<span class="chat-player-list-header-text">{language.playerList}</span>
 				<div class="chat-list-player" repeat="users" as="user">
 					<div class="chat-player">
 						<a class="chat-player-link" href="/profile" onClick="navigateTo('/profile'); return false;">

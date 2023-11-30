@@ -25,31 +25,31 @@ class PongProfile extends Component {
 			<div class="profile-stats">
 				<div class="profile-title">Stats</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Win:</span>
+					<span class="profile-stat-name">{language.winLow}:</span>
 					<span class="profile-stat-value">{this.getWin()}</span>
 				</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Lose:</span>
+					<span class="profile-stat-name">{language.loseLow}:</span>
 					<span class="profile-stat-value">{this.getLose()}</span>
 				</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Total game:</span>
+					<span class="profile-stat-name">{language.totalLow}:</span>
 					<span class="profile-stat-value">{this.getTotal()}</span>
 				</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Win rate:</span>
+					<span class="profile-stat-name">{language.winRate}:</span>
 					<span class="profile-stat-value">{this.getWinRate()}%</span>
 				</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Ball hit:</span>
+					<span class="profile-stat-name">{language.ballHit}:</span>
 					<span class="profile-stat-value">{this.getBallHit()}</span>
 				</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Goal:</span>
+					<span class="profile-stat-name">{language.goal}:</span>
 					<span class="profile-stat-value">{this.getGoal()}</span>
 				</div>
 				<div class="profile-stat">
-					<span class="profile-stat-name">Tournament win:</span>
+					<span class="profile-stat-name">{language.tournamentWin}:</span>
 					<span class="profile-stat-value">{this.getTournamentWin()}</span>
 				</div>
 
@@ -65,14 +65,14 @@ class PongProfile extends Component {
 					</div>
 				</div>
 				<div class="profile-chart-desc">
-					<div class="profile-bar-desc">WIN</div>
-					<div class="profile-bar-desc">LOSE</div>
-					<div class="profile-bar-desc">TOTAL</div>
+					<div class="profile-bar-desc">{language.win}</div>
+					<div class="profile-bar-desc">{language.lose}</div>
+					<div class="profile-bar-desc">{language.total}</div>
 				</div>
 			</div>
 
 			<div class="profile-game-history">
-				<div class="profile-title">Game history</div>
+				<div class="profile-title">{language.gameHistory}</div>
 				<div class="profile-games" repeat="games" as="game">
 					<div class="profile-game" hidden={this.getHiddenStatus(game)}>
 						<span class="profile-game-date">{game.date}</span>
@@ -89,7 +89,7 @@ class PongProfile extends Component {
 			</div>
 
 			<div class="profile-tournament-history">
-				<div class="profile-title">Tournament history</div>
+				<div class="profile-title">{language.tournamentHistory}</div>
 				<div class="profile-tournament" repeat="tournaments" as="tournament">
 					<div class="profile-game" hidden={this.getHiddenStatusTournament(tournament)}>
 						<span class="profile-game-date">{tournament.date} - </span><span class="profile-game-status {this.getTournamentStatus(tournament)}">{this.getTournamentStatus(tournament)}</span>

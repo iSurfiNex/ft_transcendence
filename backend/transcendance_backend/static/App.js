@@ -61,8 +61,129 @@ var state_base = {
 
 	],
 	currentGame: -1,
+	language: undefined,
+
+	en: {
+		// LOGIN
+		username: 'Username',
+		password: 'Password',
+		login: 'Login',
+		register: 'Register',
+		connectionWith: 'Connection with 42',
+
+		// HOME
+		play: 'PLAY',
+		tournament: 'TOURNAMENT',
+		playerInQueue: 'player(s) currently in game and/or in waiting-room.',
+
+		// GAME LIST
+		createGame: 'CREATE GAME',
+		createTournament: 'CREATE TOURNAMENT',
+
+		// PROFILE
+		winLow: 'Win',
+		loseLow: 'Lose',
+		totalLow: 'Total',
+		winRate: 'Win rate',
+		ballHit: 'Ball hit',
+		goal: 'Goal',
+		tournamentWin: 'Tournaments win',
+		win: 'WIN',
+		lose: 'LOSE',
+		total: 'TOTAL',
+		gameHistory: 'Game history',
+		tournamentHistory: 'Tournament history',
+
+		// CHAT
+		writeHere: 'Type your message here',
+		playerList: 'Player List',
+	},
+	fr: {
+		// LOGIN
+		username: 'Nom d\'utilisateur',
+		password: 'Mot de passe',
+		login: 'Se connecter',
+		register: 'S\'inscrire',
+		connectionWith: 'Connexion avec 42',
+
+		// HOME
+		play: 'JOUER',
+		tournament: 'TOURNOI',
+		playerInQueue: 'joueur(s) dans une partie et/ou dans une salle d\'attente.',
+
+		// GAME LIST
+		createGame: 'CREER UNE PARTIE',
+		createTournament: 'CREER UN TOURNOI',
+
+		// PROFILE
+		winLow: 'Gagner',
+		loseLow: 'Perdu',
+		totalLow: 'Total',
+		winRate: 'Ratio gagner/perdu',
+		ballHit: 'Balles touchées',
+		goal: 'But',
+		tournamentWin: 'Tournois gagnés',
+		win: 'GAGNER',
+		lose: 'PERDU',
+		total: 'TOTAL',
+		gameHistory: 'Historique des parties',
+		tournamentHistory: 'Historique des tournois',
+
+		// CHAT
+		writeHere: 'Ecrivez votre message ici',
+		playerList: 'Liste des joueurs',
+	},
+	de: {
+		// LOGIN
+		username: 'Nutzername',
+		password: 'Passwort',
+		login: 'Anmeldung',
+		register: 'Registrieren',
+		connectionWith: 'Verbindung mit 42',
+
+		// HOME
+		play: 'SPIELEN',
+		tournament: 'TURNIER',
+		playerInQueue: 'Spieler sind derzeit im Spiel und/oder im Wartezimmer.',
+
+		// GAME LIST
+		createGame: 'SPIEL ERSTELLEN',
+		createTournament: 'TURNIER ERSTELLEN',
+
+		// PROFILE
+		winLow: 'Gewinnen',
+		loseLow: 'Verlieren',
+		totalLow: 'Gesamt',
+		winRate: 'Gewinnrate',
+		ballHit: 'Balltreffer',
+		goal: 'Ziel',
+		tournamentWin: 'Turniersieg',
+		win: 'GEWINNEN',
+		lose: 'VERLIEREN',
+		total: 'GESAMT',
+		gameHistory: 'Spielgeschichte',
+		tournamentHistory: 'Turniergeschichte',
+
+		// CHAT
+		writeHere: 'Schreiben Sie ihre Nachricht hier',
+		playerList: 'Spielerliste',
+	},
+
+	getLocaleTranslation(enString, lang) {
+		const newTransledString = state.locale.find(string => string.en === enString)
+
+		if (!newTransledString)
+			return ;
+
+		if (lang === 'fr')
+			return newTransledString.fr;
+		else if (lang === 'de')
+			return newTransledString.de;
+		return newTransledString.en
+	}
 }
 
+state_base.language = state_base.en
 const state = setup(state_base)
 
 function checkScreenWidth() {

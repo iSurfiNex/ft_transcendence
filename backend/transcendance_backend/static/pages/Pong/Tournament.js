@@ -7,11 +7,11 @@ class PongTournament extends Component {
 	static template = html`
 	<div class="pong">
 		<div class="content">
-			<div class="pong-title">TOURNAMENTS</div>
+			<div class="pong-title">{language.tournament}</div>
 			<div class="pong-content">
 				<div class="pong-create">
 					<button id="pong-button" class="pushable">
-						<span class="front">CREATE GAME</span>
+						<span class="front">{language.createTournament}</span>
 					</button>
 				</div>
 				<div class="pong-list">

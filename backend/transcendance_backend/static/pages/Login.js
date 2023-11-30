@@ -9,23 +9,23 @@ class PongLogin extends Component {
 		<div class="input">
 			<div class="login-register">
 				<form class="form-login">
-					<input type="text" placeholder="Username" class="input-field">
-					<input type="password" placeholder="Password" class="input-field">
+					<input type="text" placeholder="{language.username}" class="input-field">
+					<input type="password" placeholder="{language.password}" class="input-field">
 					<button id="login-button" class="input-button pushable">
-						<span class="front">Login</span>
+						<span class="front">{language.login}</span>
 					</button>
 				</form>
 				<form class="form-register">
-					<input type="text" placeholder="Username" class="input-field">
-					<input type="password" placeholder="Password" class="input-field">
+					<input type="text" placeholder="{language.username}" class="input-field">
+					<input type="password" placeholder="{language.password}" class="input-field">
 					<button id="register-button" class="input-button pushable">
-						<span class="front">Register</span>
+						<span class="front">{language.register}</span>
 					</button>
 				</form>
 			</div>
 			<span class="separator">―――――――――――――――――</span>
 			<button id="pong-button" @click="this.handleClick()" class="pushable">
-				<span class="front">Connexion with 42</span>
+				<span class="front">{language.connectionWith}</span>
 			</button>
 		</div>
 	</div>
@@ -128,14 +128,12 @@ class PongLogin extends Component {
 		initPopover(this)
 
 		const type = new URLSearchParams(window.location.search).get("code");
-		console.log(type);
 		if (type) {
 			const hostname = window.location.origin + '/api/requestlogin/?code=' + type
 			const response = fetch(hostname, {
 				method: 'GET',
 			}).then(async (response)=>{
 				const resp = await response.json()
-				console.log(resp)
 				sessionStorage.setItem("access_token", resp.access_token);
 			})
 		}

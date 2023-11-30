@@ -12,11 +12,11 @@ class PongHome extends Component {
 					<div id="pong-title" class="title">PONG</div>
 					<div class="button">
 						<button id="pong-button" @click="this.pongHandler()" class="pushable">
-							<span class="front">PLAY</span>
+							<span class="front">{language.play}</span>
 						</button>
 					</div>
 					<div class="queue">
-						<span class="player-nb">7</span><span class="player-text"> player(s) currently in game and/or in waiting-room.</span>
+						<span class="player-nb">7</span><span class="player-text"> {language.playerInQueue}</span>
 					</div>
 				</div>
 			</div>
@@ -28,11 +28,11 @@ class PongHome extends Component {
 					<div id="other-game-title" class="title">PONG POWERUP</div>
 					<div class="button">
 						<button id="other-game-button" @click="this.othergameHandler()" class="pushable">
-							<span class="front">PLAY</span>
+							<span class="front">{language.play}</span>
 						</button>
 					</div>
 					<div class="queue">
-						<span class="player-nb">0</span><span class="player-text"> player(s) currently in game and/or in waiting-room.</span>
+						<span class="player-nb">0</span><span class="player-text"> {language.playerInQueue}</span>
 					</div>
 				</div>
 			</div>
@@ -41,14 +41,14 @@ class PongHome extends Component {
 		<div id="tournament" class="tournament">
 			<div id="tournament-content" class="content">
 				<div class="content-main">
-					<div id="tournament-title" class="title">TOURNAMENT</div>
+					<div id="tournament-title" class="title">{language.tournament}</div>
 					<div class="button">
 						<button id="tournament-button" @click="this.tournamentHandler()" class="pushable">
-							<span class="front">PLAY</span>
+							<span class="front">{language.play}</span>
 						</button>
 					</div>
 					<div class="queue">
-						<span class="player-nb">8.462</span><span class="player-text"> player(s) currently in game and/or in waiting-room.</span>
+						<span class="player-nb">8.462</span><span class="player-text"> {language.playerInQueue}</span>
 					</div>
 				</div>
 			</div>
