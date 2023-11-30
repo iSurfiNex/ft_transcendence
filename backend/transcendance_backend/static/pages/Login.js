@@ -33,15 +33,41 @@ class PongLogin extends Component {
 
 	static css = css`
 	@media only screen and (max-width: 768px) {
+		.login-register {
+			display: flex;
+			flex-direction: column;
+		}
 
+		.form-register {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 
 	@media only screen and (max-height: 524px) {
+		.login-register {
+			display: flex;
+			flex-direction: row;
+		}
 
+		.form-register {
+			display: flex;
+			flex-direction: column;
+			margin-left: 25px;
+		}
 	}
 
 	@media only screen and (min-width: 768px) and (min-height: 524px) {
+		.login-register {
+			display: flex;
+			flex-direction: row;
+		}
 
+		.form-register {
+			display: flex;
+			flex-direction: column;
+			margin-left: 25px;
+		}
 	}
 
 	.login {
@@ -61,20 +87,9 @@ class PongLogin extends Component {
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	}
 
-	.login-register {
-		display: flex;
-		flex-direction: row;
-	}
-
 	.form-login {
 		display: flex;
 		flex-direction: column;
-	}
-
-	.form-register {
-		display: flex;
-		flex-direction: column;
-		margin-left: 25px;
 	}
 
 	.input-field {
