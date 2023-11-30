@@ -97,6 +97,10 @@ var state_base = {
 		// CHAT
 		writeHere: 'Type your message here',
 		playerList: 'Player List',
+
+		// 404
+		pageNotFound: 'Page not found',
+		returnToHome: 'Return to home',
 	},
 	fr: {
 		// LOGIN
@@ -132,6 +136,10 @@ var state_base = {
 		// CHAT
 		writeHere: 'Ecrivez votre message ici',
 		playerList: 'Liste des joueurs',
+
+		// 404
+		pageNotFound: 'Page non trouvée',
+		returnToHome: 'Revenir à l\'accueil',
 	},
 	de: {
 		// LOGIN
@@ -167,6 +175,10 @@ var state_base = {
 		// CHAT
 		writeHere: 'Schreiben Sie ihre Nachricht hier',
 		playerList: 'Spielerliste',
+
+		// 404
+		pageNotFound: 'Seite nicht gefunden',
+		returnToHome: 'Nach Hause zurückkehren',
 	},
 }
 

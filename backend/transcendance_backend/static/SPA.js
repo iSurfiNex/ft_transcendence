@@ -52,7 +52,7 @@ function displayContent(path) {
 			displayElement("tournament-waiting-room");
 		}
 		else {
-			displayElement("pong-404");
+			displayElement("pong-not-found");
 		}
 	}
 }
