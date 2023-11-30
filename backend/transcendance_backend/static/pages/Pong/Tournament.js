@@ -10,7 +10,7 @@ class PongTournament extends Component {
 			<div class="pong-title">{language.tournament}</div>
 			<div class="pong-content">
 				<div class="pong-create">
-					<button id="pong-button" class="pushable">
+					<button id="pong-button" class="pushable" onclick="navigateTo('/play/create-game'); return false;">
 						<span class="front">{language.createTournament}</span>
 					</button>
 				</div>
