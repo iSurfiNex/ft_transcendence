@@ -32,9 +32,6 @@ class PongTopBar extends Component {
 					DE
 				</label>
 			</div>
-			<!-- <button class="btn btn-secondary language-button active" onclick="state.language = state.en">EN</button>
-			<button class="btn btn-secondary language-button" onclick="state.language = state.fr">FR</button>
-			<button class="btn btn-secondary language-button" onclick="state.language = state.de">DE</button> -->
 		</div>
 		<div class="profile-picture">
 			<a class="profile-picture-div" href="/profile" onclick="navigateTo('/profile'); return false;">
