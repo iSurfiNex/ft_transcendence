@@ -19,9 +19,9 @@ class PongChat extends Component {
 		<div class="chat-desktop" hidden="{this.getHiddenStatus(isMobile, isChatBubbleChecked)}">
 			<div class="channels" repeat="channels" as="channel">
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-					<input @click="this.updateActiveChannel(channel)" type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
+					<input @click="this.updateActiveChannel(channel,channel.notifications)" type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
 					<label class="btn btn-secondary channels-bubble" style="{this.getUserPictureFromString(channel.name)}" for="{channel.id}">{this.getFirstLetter(channel.name)}
-						<div class ="channels-bubble-notif {this.getActiveStatus(channel)}">{this.getNumberNotifications(channel)}</div>
+						<div hidden="{!channel.notifications}" class ="channels-bubble-notif {channel.notifications?active}">{channel.notifications}</div>
 					</label>
 				</div>
 			</div>
@@ -659,25 +659,9 @@ class PongChat extends Component {
 		return !(message == channelName);
 	}
 
-	updateActiveChannel(channel) {
-		state.activeChannel = tmp.name;
-		tmp.notifications = 0;
-	}
-
-	getActiveStatus(channel) {
-		if (channel.notifications === 0)
-			return ;
-		else if (channel.name == state.activeChannel)
-			return ;
-		return 'active';
-	}
-
-	getNumberNotifications(channel) {
-		if (channel.notifications === 0)
-			return '';
-		else if (channel.name == state.activeChannel)
-			return '';
-		return channel.notifications;
+	updateActiveChannel(channel, notifications) {
+		state.activeChannel = channel.name;
+		channel.notifications = 0;
 	}
 }
 

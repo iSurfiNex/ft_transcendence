@@ -20,7 +20,7 @@ var state_base = {
 	],
 	profileLooking: 'rsterin',
 	channels: [
-		{ name: 'Global', id: 1, notifications: 3 },
+		{ name: 'Global', id: 1, notifications: 0 },
 		{ name: 'rsterin', id: 2, notifications: 0 },
 		{ name: 'fjullien', id: 3, notifications: 1 },
 		{ name: 'jtoulous', id: 4, notifications: 0 },
@@ -182,7 +182,7 @@ var state_base = {
 	},
 }
 
-state_base.language = state_base.en
+state_base.language = {...state_base.en}
 const state = setup(state_base)
 
 function checkScreenWidth() {
