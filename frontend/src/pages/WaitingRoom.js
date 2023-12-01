@@ -2,27 +2,29 @@ import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
-//<a class="link-wr" key={item} href="/profile">
-//									<div class="player-waiting-room">
-//
-//										<img class="profil-pic-wr" src={process.env.PUBLIC_URL + '/' + picture} alt="profil pic"/>
-//										{item}
-//
-//									</div>
-//							</a>);
-
-//<div class="players-list-waiting-room" repeat="games[9].players" as "player">
-//<a class="link-player-profil" href="/profile" onClick="navigateTo('/profile')> {player} </a>
-//</div>
-
 
 class PongWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <div class="background-waiting-room">
 		<div class="rectangle-waiting-room">
-			<div class="title-waiting-room"> Waiting Room </div>
-		</div>
+			
+            <div class="title-waiting-room"> Waiting Room </div>
+            
+            <div class="game-room" repeat="games" as="game"> 
+                <div class="player-list" hidden="{this.IsCurrentGame(game.id, currentGame)}"> 
+                    <div class="player" repeat="game.players" as="player">
+                        <div class="profil">
+                            <a href="/profile">
+                                <div class="profil-nick"> {player} </div>
+                                <img class="profil-pic" src="{this.getPlayerPic(player)}"></img>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		
+        </div>
 	</div>
     `
 
@@ -84,22 +86,68 @@ class PongWaitingRoom extends Component {
         .title-waiting-room {
             position: absolute;
             color: rgb(254, 254, 254);
-            font-size: 250%;
+            font-size: 300%;
             width: 100%;
+            height: 20%;
             left: 0%;
             right: 15%;
-            top: 5%;
+            top: 0%;
             overflow: hidden;
             text-align: center;
         }
 
-        .players-list-waiting-room {
+        .game-room {
             position: absolute;
-            width: 70%;
-            height: 70%;
-            left: 20%;
-            bottom: 5%;
+            top: 20%;
+            width: 50%;
+            height: 80%;
+            left: 25%;
             overflow: auto;
+        }
+
+        .player-list{
+            position: absolute;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .player {
+            position: relative;
+            flex-direction: column;
+            width: 100%;
+            height: 15%;
+        }
+
+        .profil {
+            position: relative;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            margin: 10%;
+        }
+
+        .profil-pic {
+            position: absolute;
+            left: 0%;
+            height: 100%;
+            width 25%;
+            margin: 5%;
+        }
+
+        .profil-nick {
+            position: absolute;
+            width: 40%;
+            height: 50%;
+            top: 25%;
+            left: 35%;
+            margin: 5%;
+        }
+
+        a {
+            color: white;
             text-decoration: none;
         }
     }
@@ -112,6 +160,22 @@ class PongWaitingRoom extends Component {
 	connectedCallback() {
 		initPopover(this)
 	}
+
+    IsCurrentGame(gameId, currentGameId) {
+        return !(gameId == currentGameId);
+    }
+
+    getPlayerPic(nickname) {
+        const user = state.users.find(elem => elem.nickname === nickname);
+
+        if (user) {
+            return '/src/' + user.picture;
+        }
+
+        else {
+            return '/src/img/list.svg';
+        }
+    }
 }
 
 register(PongWaitingRoom)

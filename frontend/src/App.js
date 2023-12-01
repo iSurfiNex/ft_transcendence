@@ -57,7 +57,7 @@ var state_base = {
 		{ type: 'tournament', id: 10, status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' },
 		{ type: 'tournament', id: 12, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '' },
 	],
-	currentGame: -1,
+	currentGame: 9,
 }
 
 const state = setup(state_base)
