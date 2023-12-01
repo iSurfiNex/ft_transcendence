@@ -5,7 +5,7 @@ all: volumes up
 volumes:
 	@echo "Creating folder for volumes ..."
 	@mkdir -p ${VOLUME_PATH}/backend
-	@mkdir -p ${VOLUME_PATH}/frontend
+	@mkdir -p ${VOLUME_PATH}/prometheus
 
 up:
 	@echo "Building containers ..."

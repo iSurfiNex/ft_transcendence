@@ -6,34 +6,69 @@ services:
     build: ./backend
     image: backend
     ports:
-     - "5432:5432"
+      - "5432:5432"
     volumes:
-     - backend:/volumes/backend
+      - backend:/volumes/backend
     networks:
       - ft_transcendence
     env_file:
       - backend/.env
     restart: on-failure
   nginx:
-     container_name: nginx
-     build: ./nginx
-     image: nginx
-     ports:
+    container_name: nginx
+    build: ./nginx
+    image: nginx
+    ports:
       - "8000:443"
-     volumes:
+    volumes:
       - backend:/volumes/backend
-     networks:
-       - ft_transcendence
-     env_file:
-       - backend/.env
-     restart: on-failure
+    networks:
+      - ft_transcendence
+    env_file:
+      - backend/.env
+    restart: on-failure
+
+  prometheus:
+    container_name: prometheus
+    build: ./prometheus
+    image: prometheus
+    volumes:
+      - prometheus:/etc/prometheus
+    ports:
+      - '9090:9090'
+    networks:
+      - ft_transcendence
+    restart: unless-stopped
+  grafana:
+    container_name: grafana
+    build: ./grafana
+    image: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - prometheus:/etc/grafana/provisioning/datasources
+    networks:
+      - ft_transcendence
+    restart: unless-stopped
 
 volumes:
   backend:
-    name:   backend
+    name: backend
     driver: local
     driver_opts:
       device: /sgoinfre/goinfre/Perso/rsterin/data/backend
+      o: bind
+      type: none
+  prometheus:
+    name: prometheus
+    driver: local
+    driver_opts:
+      device: /sgoinfre/goinfre/Perso/rsterin/data/prometheus
       o: bind
       type: none
 
