@@ -334,10 +334,6 @@ class PongTopBar extends Component {
 		}
 	}
 
-	changeLanguage(value) {
-		state.language = value;
-	}
-
 	selectedLanguage(language) {
 		if (state.language.username == language.username)
 			return true;
