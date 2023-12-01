@@ -14,22 +14,25 @@ export const attach_event_obs = (eventName, fnStr, node, scope, prefixes) => {
   const fnName = match[1];
   const argsStr = match[2];
   const args = argsStr.split(',').map(arg => arg.trim());
+  const toto = []
   node.addEventListener(eventName, e => {
     if (typeof scope[fnName] !== 'function')
       console.warn(scope, " has no \"" + fnName + "\" function")
     else {
       args.forEach((val, i) => {
         if (val == "event") {
-          args[i] = e
+          toto[i] = e
           return
         }
         const path = val.split('.')
         const localScope = extractPathScope(path, scope, prefixes)
         const prop = get_prop(localScope, path)
         if (prop !== undefined)
-            args[i] = prop
+            toto[i] = prop
+        else
+            toto[i] = args[i]
       })
-      scope[fnName](...args)
+      scope[fnName](...toto)
     }
   })
 }
