@@ -28,10 +28,10 @@ var state_base = {
 	],
 	activeChannel: 'Global',
 	messages: [
-		{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' },
-		{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' },
-		{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' },
 		{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' },
+		{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' },
+		{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' },
+		{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' },
 	],
 	tournaments: [
 		{ type: 'tournament', id: 1, status: 'done', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11, 12], date: '11/11/2023 04:38' },
