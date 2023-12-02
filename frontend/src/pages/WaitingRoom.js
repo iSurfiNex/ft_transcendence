@@ -86,7 +86,7 @@ class PongWaitingRoom extends Component {
         .title-waiting-room {
             position: absolute;
             color: rgb(254, 254, 254);
-            font-size: 6vh;
+            font-size: 8vh;
             width: 100%;
             height: 20%;
             left: 0%;
@@ -134,7 +134,6 @@ class PongWaitingRoom extends Component {
             left: 0%;
             height: 100%;
             width 25%;
-            margin: 5%;
         }
 
         .profil-nick {
@@ -144,7 +143,6 @@ class PongWaitingRoom extends Component {
             height: 50%;
             top: 25%;
             left: 35%;
-            margin: 5%;
         }
 
         a {
