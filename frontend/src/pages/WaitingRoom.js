@@ -229,14 +229,21 @@ class PongWaitingRoom extends Component {
 
         .title-waiting-room {
             position: absolute;
-            color: rgb(254, 254, 254);
-            font-size: 8vh;
             width: 100%;
             height: 20%;
             left: 0%;
             right: 15%;
             top: 0%;
             overflow: hidden;
+            text-align: center;
+            
+            font-family: 'Courier New', monospace;
+            font-size: 8vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
             text-align: center;
         }
 
@@ -283,11 +290,19 @@ class PongWaitingRoom extends Component {
 
         .profil-nick {
             position: absolute;
-            font-size: 2.5vh;
             width: 40%;
             height: 50%;
             top: 25%;
             left: 35%;
+
+            font-family: 'Courier New', monospace;
+            font-size: 2.5vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
         }
 
         a {

@@ -5,15 +5,16 @@ import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 class TournamentWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-    <div class="background-waiting-room">
-		<div class="rectangle-waiting-room">
-			<div class="title-waiting-room"> Waiting Room </div>
-            <div class="counter-waiting-room"> STARTING IN n  </div>
-            <div class="match">  </div>
+    <div class="background">
+		<img class="background-img" src="/src/img/background.svg" >
+        <div class="rectangle-waiting-room">
+			<div class="title"> Waiting Room </div>
+            <div class="countdown"> STARTING IN n  </div>
 		</div>
 	</div>
 `
     static css= css`
+
 	@media only screen and (max-width: 768px) {
         .background-waiting-room {
             position: absolute;
@@ -34,19 +35,22 @@ class TournamentWaitingRoom extends Component {
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
         }
 
-        .title-waiting-room {
+        .title {
             color: rgb(254, 254, 254);
-            font-size: 22px;
+            font-size: 4vh;
             width: 90%;
             left: 5%;
             top: 10%;
             position: absolute;
             text-align: center;
         }
+
+        .countdown {
+
+        }
     }
 
-
-    @media (hover: hover) {
+    @media only screen and (max-height: 524px) {
         .background-waiting-room {
             position: absolute;
             right: 0;
@@ -68,28 +72,108 @@ class TournamentWaitingRoom extends Component {
             align-items: center;
         }
 
-        .title-waiting-room {
+        .title {
             position: absolute;
             color: rgb(254, 254, 254);
-            font-size: 250%;
+            font-size: 8vh;
             width: 100%;
+            height: 20%;
             left: 0%;
             right: 15%;
-            top: 5%;
+            top: 0%;
             overflow: hidden;
             text-align: center;
         }
 
-        .players-list-waiting-room {
+        .countdown {
+            
+        }
+
+    }
+
+
+    @media only screen and (min-width: 768px) and (min-height: 524px) { 
+        .background {
             position: absolute;
-            width: 70%;
-            height: 70%;
-            left: 20%;
-            bottom: 5%;
-            overflow: auto;
-            text-decoration: none;
+            right: 0;
+            bottom: 0;
+            width: calc(75% - 10px);
+            height: calc(90% - 10px);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .background-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(50%); 
+          }
+          
+
+        .rectangle-waiting-room {
+            position: absolute;
+            bottom: 10%;
+            width: 50%;
+            height: 80%;
+            left: 25%;
+            background-color: rgba(54, 54, 54, 0.5);
+            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .title {
+            position: absolute;
+            font-size: 8vh;
+            width: 100%;
+            height: 20%;
+            left: 0%;
+            right: 15%;
+            top: 0%;
+            overflow: hidden;
+            text-align: center;
+            
+            font-family: 'Courier New', monospace;
+            font-size: 8vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
+        }
+
+        .countdown {
+            position: absolute;
+            height: 10%;
+            width: 100%;
+            top: 20%;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5em;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
         }
     }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        display: none;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        display: none;
+    }
+
 	`
 
     observers = {
