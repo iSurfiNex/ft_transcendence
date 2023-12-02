@@ -7,7 +7,8 @@ class PongWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <div class="background-waiting-room">
-		<div class="rectangle-waiting-room">
+        <img class="background-img" src="/src/img/background-5.svg" >
+        <div class="rectangle-waiting-room">
 			
             <div class="title-waiting-room"> Waiting Room </div>
             
@@ -45,8 +46,9 @@ class PongWaitingRoom extends Component {
             width: 70%;
             height: 80%;
             left: 15%;
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
         }
 
         .title-waiting-room {
@@ -131,8 +133,9 @@ class PongWaitingRoom extends Component {
             width: 50%;
             height: 80%;
             left: 25%;
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
         }
@@ -215,14 +218,25 @@ class PongWaitingRoom extends Component {
             background-color: rgba(255, 255, 255, 0.5);
         }
 
+        .background-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(50%); 
+        }
+
         .rectangle-waiting-room {
             position: absolute;
             bottom: 10%;
             width: 50%;
             height: 80%;
             left: 25%;
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
         }

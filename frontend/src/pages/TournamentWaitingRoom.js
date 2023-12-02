@@ -6,7 +6,7 @@ class TournamentWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <div class="background">
-		<img class="background-img" src="/src/img/background.svg" >
+		<img class="background-img" src="/src/img/background-4.svg" >
         <div class="rectangle-waiting-room">
 			<div class="title"> Waiting Room </div>
             <div class="countdown"> STARTING IN n  </div>
@@ -31,8 +31,9 @@ class TournamentWaitingRoom extends Component {
             width: 70%;
             height: 80%;
             left: 15%;
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
         }
 
         .title {
@@ -66,8 +67,9 @@ class TournamentWaitingRoom extends Component {
             width: 50%;
             height: 80%;
             left: 25%;
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
         }
@@ -110,8 +112,7 @@ class TournamentWaitingRoom extends Component {
             height: 100%;
             object-fit: cover;
             filter: brightness(50%); 
-          }
-          
+        }
 
         .rectangle-waiting-room {
             position: absolute;
@@ -119,8 +120,9 @@ class TournamentWaitingRoom extends Component {
             width: 50%;
             height: 80%;
             left: 25%;
-            background-color: rgba(54, 54, 54, 0.5);
+            background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
         }
