@@ -2,21 +2,31 @@ import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/src/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/src/bootstrap/bootstrap_css.js'
 
+//<div class="games-list" repeat="games" as="game">
+//<div class="match-list" repeat="gamesId" as="matchId" hidden="{this.IsCurrentTournament(game.id, currentGame)}>
+//<div class="match" repeat="games" as="gameInfo"> 
+//<div class="match-profil" hidden="{this.IsTournamentGame(gameInfo.id, matchId)}">
+//    <div class="players" repeat="gameInfo.players" as="player">
+//        <div class="player-nick"> {player} </div>
+//    </div>
+//    <div class="logo-VS"> VS </div>
+//
+//</div>
+//</div>
+
 class TournamentWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <div class="background">
-		<img class="background-img" src="/src/img/background-4.svg" >
+		<img class="background-img" src="/src/img/background-4.svg">
         <div class="rectangle-waiting-room">
 			<div class="title"> Waiting Room </div>
             <div class="countdown"> STARTING IN n  </div>
-            
-            <div class="match-list"> </div>
-            </div>                
-		
-            </div>
+
+        </div>
 	</div>
-`
+    `
+
     static css= css`
 
 	@media only screen and (max-width: 768px) {
@@ -122,7 +132,8 @@ class TournamentWaitingRoom extends Component {
             text-align: center;
             
             font-family: 'Press Start 2P', sans-serif;
-            font-size: 8vh;
+            font-size: 5vh;
+            font-size: min(5vw, 5vh);
             color: #FFA500;
             text-shadow: 
                 2px 2px 3px #000000,
@@ -146,6 +157,22 @@ class TournamentWaitingRoom extends Component {
             text-align: center;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @media only screen and (min-width: 768px) and (min-height: 524px) { 
@@ -191,7 +218,7 @@ class TournamentWaitingRoom extends Component {
             overflow: hidden;
             
             font-family: 'Press Start 2P', sans-serif;
-            font-size: 7vh;
+            font-size: 5vh;
             color: #FFA500;
             text-shadow: 
                 2px 2px 3px #000000,
@@ -215,12 +242,19 @@ class TournamentWaitingRoom extends Component {
             text-align: center;
         }
 
-        .match-list {
+        .games-list {
             position: absolute;
             height: 65%;
             width: 100%;
             top: 35%;
         }
+
+        .match-list {
+            position: relative;
+            left: 20%;
+        }
+
+
     }
 
     ::-webkit-scrollbar {
@@ -237,6 +271,14 @@ class TournamentWaitingRoom extends Component {
 
 	`
 
+//    game-list
+//    match-list
+//    match
+//    match-profil
+//    players
+//    player-nick
+//    logo-VS
+
     observers = {
 		'player.active': active => console.log("active?: ", active)
 	}
@@ -244,6 +286,15 @@ class TournamentWaitingRoom extends Component {
 	connectedCallback() {
 		initPopover(this)
 	}
+
+    IsCurrentTournament(gameId, currentGame) {
+        return !(gameId == currentGame);
+    }
+
+    IsTournamentGame(gameId, tournamentGameId) {
+        return !(gameId == tournamentGameId);
+    }
+    
 }
 
 register(TournamentWaitingRoom)
