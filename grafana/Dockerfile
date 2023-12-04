@@ -13,6 +13,6 @@ RUN apt -y install grafana
 RUN rm -rf /var/lib/apt/lists/*
 
 COPY config.ini /usr/share/grafana/conf/
-COPY datasources.yml /ect/grafana/provisioning/datasources/
+COPY datasources.yml /usr/share/grafana/conf/provisioning/datasources/
 
 CMD ["grafana-server", "--config=/usr/share/grafana/conf/config.ini --homepath /usr/share/grafana"]
