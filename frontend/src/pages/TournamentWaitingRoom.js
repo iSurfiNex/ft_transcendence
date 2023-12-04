@@ -22,6 +22,9 @@ class TournamentWaitingRoom extends Component {
         <div class="rectangle-waiting-room">
 			<div class="title"> Waiting Room </div>
             <div class="countdown"> STARTING IN n  </div>
+            
+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\           <div class="games-list" repeat="games" as="game">  </div>
+
 
         </div>
 	</div>

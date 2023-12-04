@@ -7,7 +7,7 @@ var state_base = {
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
 		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
-		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
+		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/jtoulous.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: 'rsterin',
