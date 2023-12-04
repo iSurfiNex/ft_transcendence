@@ -39,19 +39,32 @@ services:
     networks:
       - ft_transcendence
     restart: unless-stopped
+  node_exporter:
+    container_name: node_exporter
+    build: ./node_exporter
+    image: node_exporter
+    volumes:
+      - prometheus:/etc/prometheus
+    ports:
+      - '9100:9100'
+    depends_on:
+      - prometheus
+    networks:
+      - ft_transcendence
+    restart: unless-stopped
   grafana:
     container_name: grafana
     build: ./grafana
     image: grafana
     ports:
       - 3000:3000
-    depends_on:
-      - prometheus
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=grafana
     volumes:
       - prometheus:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
     networks:
       - ft_transcendence
     restart: unless-stopped
