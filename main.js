@@ -20,7 +20,7 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
 	document.body.appendChild(renderer.domElement);
 	
-	const light = new THREE.DirectionalLight(0xffffff, 1);
+	const light = new THREE.DirectionalLight(0x00fff7, 100);
 	const geometry_ligne = new THREE.BoxGeometry(2, 1000, 1);
 	const geometry_paddle = new THREE.BoxGeometry(20, 100, 20, 5, 5, 5); 
 	const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
@@ -54,11 +54,11 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 
 // Load a glTF resource
 	loader.load(
-		'abstract_ball.glb',
+		'abstract_ball.glb', //or abstract_2.glb   need to choose
 		(gltf) => {
 			ball = gltf.scene.children[0];
 			if (ball) {
-				ball.scale.multiplyScalar(16);
+				ball.scale.multiplyScalar(20);
 				ball.position.set(0, 0, 600);
 				ball.renderOrder = 4;
 				scene.add(ball);
@@ -195,14 +195,21 @@ renderer.render(scene, camera);
 				scale = Math.random() * 100 % 1.5;
 				time = actual_time.getTime();
 				if (jfile["ball"]['color'] == 'l')
+				{
+					light.color.set(0xb50202);
+					light.intensity = 10;
 					paint = new THREE.Mesh( paint_geo, material_paint_L);
+				}
 				if (jfile["ball"]['color'] == 'r' || ball.position.x > jfile['ball']['x'])
+				{
+					light.color.set(0x00fff7);
+					light.intensity = 10;
 					paint = new THREE.Mesh( paint_geo, material_paint_R); 
+				}
 				paint.position.x = ball.position.x + Math.round(Math.random() * 100 % 15);
 				paint.position.y = ball.position.y + Math.round(Math.random() * 100 % 15);
 				paint.position.z = paint_z;
 				paint.scale.set(scale, scale, scale);
-				paint_z += 0.01;
 				//paint.scale(Math.round(Math.random() * 100 % 25) + 5, 128)
 				paint.material.opacity = Math.random();
 				scene.add(paint);
