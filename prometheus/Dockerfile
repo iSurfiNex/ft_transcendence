@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt -y update
 RUN apt -y upgrade
-RUN apt -y install prometheus
+RUN apt -y install prometheus vim
 
 RUN rm -rf /var/lib/apt/lists/*
 
