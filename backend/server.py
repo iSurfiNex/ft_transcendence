@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/11/24 17:17:10 by tlarraze         ###   ########.fr        #
+#    Updated: 2023/12/04 14:33:31 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,10 @@ def move_paddle_ball(jfile):
 
 	if jfile["paddleL"]["up"] == 1:
 		jfile["paddleL"]["y"] += 5
-		jfile["ball"]["x"] += 5
-		jfile["ball"]["color"] = "l"
 	if jfile["paddleL"]["down"] == 1:
 		jfile["paddleL"]["y"] -= 5
 	if jfile["paddleR"]["up"] == 1:
 		jfile["paddleR"]["y"] += 5
-		jfile["ball"]["x"] -= 5
-		jfile["ball"]["color"] = "r"
 	if jfile["paddleR"]["down"] == 1:
 		jfile["paddleR"]["y"] -= 5
 	return jfile
@@ -61,9 +57,9 @@ async def send_pos_to_all(websocket, jfile):
 	
 	while True:
 		# Send the jfile data to all connected clients
-		#jfile["ball"]["y"] = game_phy.engine.ball.p.y	#
-		#jfile["ball"]["x"] = game_phy.engine.ball.p.x	# Need to be fixed
-		#game_phy.update()								#
+		jfile["ball"]["y"] = game_phy.engine.ball.p.y	# Need to be fixed
+		jfile["ball"]["x"] = game_phy.engine.ball.p.x	# Need to be fixed
+		game_phy.update()								# Need to be fixed
 		jfile = move_paddle_ball(jfile)
 		for client in users:
 			await websocket.send(json.dumps(jfile))

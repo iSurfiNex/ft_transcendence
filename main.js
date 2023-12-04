@@ -2,50 +2,54 @@ import * as THREE from 'three';
 import './node_modules/three/src/geometries/SphereGeometry.js';
 import './node_modules/three/src/lights/Light.js';
 import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-////////////////////////////splatoon trace ?
-		let i = 0.00;
-		let ball;
-		let paint_z = 1;
-		// Set up scene
-		const scene = new THREE.Scene();
 
-		// Set up camera
-		const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-		camera.position.set(0, 0, 600);
-
-		const renderer = new THREE.WebGLRenderer();
-		renderer.setSize(800, 800);
-		renderer.outputColorSpace = THREE.SRGBColorSpace;
-		document.body.appendChild(renderer.domElement);
+	let i = 0.00;
+	let ball;
+	let paint_z = 1;
+	let time = (new Date().getTime());
 	
-		const light = new THREE.DirectionalLight(0xffffff, 1);
-		const geometry_ligne = new THREE.BoxGeometry(2, 1000, 1);
-		const geometry_paddle = new THREE.BoxGeometry(20, 100, 20, 5, 5, 5); 
-		const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
-		const material_paddleR = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
-		const material_ligne = new THREE.MeshBasicMaterial( {color: 0xffffff,opacity:0.1} );
-		const ligne = new THREE.Mesh( geometry_ligne, material_ligne);
-		const paddleL = new THREE.Mesh( geometry_paddle, material_paddleL ); 
-		const paddleR = new THREE.Mesh( geometry_paddle, material_paddleR ); 
-		const paint_geo = new THREE.CircleGeometry(15, 128);
+	// Set up scene
+	const scene = new THREE.Scene();
+
+	// Set up camera
+	const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+	camera.position.set(0, 0, 600);
+
+	const renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer.setSize(800, 600);
+	renderer.outputColorSpace = THREE.SRGBColorSpace;
+	document.body.appendChild(renderer.domElement);
+	
+	const light = new THREE.DirectionalLight(0xffffff, 1);
+	const geometry_ligne = new THREE.BoxGeometry(2, 1000, 1);
+	const geometry_paddle = new THREE.BoxGeometry(20, 100, 20, 5, 5, 5); 
+	const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
+	const material_paddleR = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
+	const material_paint_L = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
+	const material_paint_R = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
+	const material_ligne = new THREE.MeshBasicMaterial( {color: 0xffffff,opacity:0.1} );
+	const ligne = new THREE.Mesh( geometry_ligne, material_ligne);
+	const paddleL = new THREE.Mesh( geometry_paddle, material_paddleL ); 
+	const paddleR = new THREE.Mesh( geometry_paddle, material_paddleR ); 
+	const paint_geo = new THREE.CircleGeometry(15, 128);
 
 
-		material_paddleL.depthTest = false;
-		material_paddleR.depthTest = false;
-		material_ligne.depthTest = false;
+	material_paddleL.depthTest = false;
+	material_paddleR.depthTest = false;
+	material_ligne.depthTest = false;
 
-		paddleL.renderOrder = 2;
-		paddleR.renderOrder = 1;
-		ligne.renderOrder = 3;
+	paddleL.renderOrder = 2;
+	paddleR.renderOrder = 1;
+	ligne.renderOrder = 3;
 		
-		light.position.set(0, 0, 610);
-		paddleL.position.set(-290, 0, 0);
-		paddleR.position.set(290, 0, 0);
-		ligne.position.set(0, 0, 0);
-		ligne.position.set(0, 0, 0);
+	light.position.set(0, 0, 610);
+	paddleL.position.set(-290, 0, 0);
+	paddleR.position.set(290, 0, 0);
+	ligne.position.set(0, 0, 0);
+	ligne.position.set(0, 0, 0);
 
-		// instantiate a loader
-		const loader = new GLTFLoader();
+	// instantiate a loader
+	const loader = new GLTFLoader();
 
 
 // Load a glTF resource
@@ -54,8 +58,8 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 		(gltf) => {
 			ball = gltf.scene.children[0];
 			if (ball) {
-				ball.scale.multiplyScalar(20);
-				ball.position.set(0, 0, 50);
+				ball.scale.multiplyScalar(16);
+				ball.position.set(0, 0, 600);
 				ball.renderOrder = 4;
 				scene.add(ball);
 			}
@@ -155,7 +159,7 @@ renderer.render(scene, camera);
 		}
 		function handleResize(){
 			const newWidth =  800;
-			const newHeight = 800;
+			const newHeight = 600;
 
 			renderer.setSize(newWidth, newHeight);
 		}
@@ -174,37 +178,39 @@ renderer.render(scene, camera);
 		const message = event.data;
 		jfile = JSON.parse(event.data)
 
-		paddleR.position.set(290, jfile['paddleR']['y'], 0);
+		paddleR.position.set(390, jfile['paddleR']['y'], 0);
 		//paddleR.position.y = jfile['paddleR']['y'];
-		paddleL.position.set(-290, jfile['paddleL']['y'], 0);
+		paddleL.position.set(-390, jfile['paddleL']['y'], 0);
 		
 		//paddleR.scale.set(jfile["paddleR"]["sizeX"], jfile["paddleR"]["sizeY"], 1);
 		//paddleL.scale.set(jfile["paddleL"]["sizeX"], jfile["paddleL"]["sizeY"], 1);
 		if (ball)
 		{
+			let actual_time = new Date();
 			let paint;
-			if (ball.position.x != jfile["ball"]["x"])
-			{
-				console.log("moved /");
-				if (jfile["ball"]['color'] == 'l')
-				{
-					paint = new THREE.Mesh( paint_geo, material_paddleL);
-					console.log(jfile["ball"]["color"]);
-				}
-				if (jfile["ball"]['color'] == 'r')
-				{
-					paint = new THREE.Mesh( paint_geo, material_paddleR); 
-					console.log(jfile["ball"]["color"]);
-				}
-				paint.position.x = ball.position.x;
-				paint.position.y = ball.position.y;
-				paint.position.z = paint_z;
-				paint_z += 0.03;
-				paint.renderOrder = 0;
-				scene.add(paint);
-			}
+			let	scale;
 
-			ball.position.set(jfile['ball']['x'], jfile['ball']['y'], 50);
+			if (ball.position.x != jfile["ball"]["x"] && actual_time.getTime() > time + 150)
+			{
+				scale = Math.random() * 100 % 1.5;
+				time = actual_time.getTime();
+				if (jfile["ball"]['color'] == 'l')
+					paint = new THREE.Mesh( paint_geo, material_paint_L);
+				if (jfile["ball"]['color'] == 'r' || ball.position.x > jfile['ball']['x'])
+					paint = new THREE.Mesh( paint_geo, material_paint_R); 
+				paint.position.x = ball.position.x + Math.round(Math.random() * 100 % 15);
+				paint.position.y = ball.position.y + Math.round(Math.random() * 100 % 15);
+				paint.position.z = paint_z;
+				paint.scale.set(scale, scale, scale);
+				paint_z += 0.01;
+				//paint.scale(Math.round(Math.random() * 100 % 25) + 5, 128)
+				paint.material.opacity = Math.random();
+				scene.add(paint);
+				console.log(scene.children.length)
+			}
+			actual_time = null;
+
+			ball.position.set(jfile['ball']['x'], jfile['ball']['y'], 0);
 			ball.rotation.x += 0.01;
 			ball.rotation.y += 0.01;
 		}

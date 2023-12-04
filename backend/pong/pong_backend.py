@@ -8,10 +8,10 @@ from pong.types import Vec
 
 from pong.test.draw import draw_contours, draw_arrow, draw_obstacles
 
-W, H = 800, 800
+W, H = 1000, 900
 WHITE = (255, 255, 255)
 GREY = (150, 150, 150)
-BALL_RADIUS = 25
+BALL_RADIUS = 10
 PAD_W, PAD_H = 20, 120
 FPS = 60
 PAD_SHIFT = 50
@@ -22,9 +22,15 @@ RED = (255, 50, 50)
 
 ball_reset_pos = Vec(0, 0)
 d = Vec(6, 5).normalized
-ball = Ball(pos=ball_reset_pos, speed=100, radius=25, direction=d)
+ball = Ball(pos=ball_reset_pos, speed=100, radius=10, direction=d)
 
 
+wall_contours = [
+	(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
+	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2  + W / 2, -BALL_RADIUS + H / 2),
+	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
+	(PAD_SHIFT + BALL_RADIUS + PAD_W / 2- W / 2, BALL_RADIUS - H / 2),
+]
 
 class PongBackend:
 	def __init__(self):
@@ -39,19 +45,11 @@ class PongBackend:
 		player1 = Player(pad=padPlayer1)
 		player2 = Player(pad=padPlayer2)
 
-
-		wall_contours = [
-			(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
-			player2,
-			(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
-			player1,
-		]
-
 		self.engine = PongEngine(
-		obstacles_contours=[wall_contours],
-		ball=ball,
-		players=[player1, player2],
-		dim=(W, H),
+			obstacles_contours=[wall_contours],
+			ball=ball,
+			players=[player1, player2],
+			dim=(W, H),
 		)
 
 	def handle_keypress(self):
