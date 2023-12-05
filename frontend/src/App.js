@@ -7,7 +7,7 @@ var state_base = {
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
 		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
-		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/jtoulous.svg' },
+		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/mia.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: 'rsterin',
@@ -57,7 +57,7 @@ var state_base = {
 		{ type: 'tournament', id: 10, status: 'waiting', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' },
 		{ type: 'tournament', id: 12, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '' },
 	],
-	currentGame: 9,
+	currentGame: 10,
 }
 
 const state = setup(state_base)

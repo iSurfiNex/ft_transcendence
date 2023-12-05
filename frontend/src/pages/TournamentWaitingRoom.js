@@ -23,7 +23,18 @@ class TournamentWaitingRoom extends Component {
 			<div class="title"> Waiting Room </div>
             <div class="countdown"> STARTING IN n  </div>
             
- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\           <div class="games-list" repeat="games" as="game">  </div>
+            <div class="games-list" repeat="games" as="game">
+                <div class="match-list" repeat="gamesId" as="matchId" hidden="{this.IsCurrentTournament(game.id, currentGame)}">
+                    <div class="match" repeat="games" as="gameInfo">
+                        <div class="match-profil" hidden="{this.IsTournamentGame(gameInfo.id, matchId)}">
+                            <div class="players" repeat="gameInfo.players" as="player">
+                                <div class="player-nick"> {player} </div>
+                            </div>
+                            <div class="logo-VS"> VS </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
 
 
         </div>
@@ -253,11 +264,49 @@ class TournamentWaitingRoom extends Component {
         }
 
         .match-list {
-            position: relative;
+            position: absolute;
             left: 20%;
+            width: 60%;
+            height: 100%;
         }
 
+        .match {
+            position: relative;
+            height: 15%;
+            width: 100%;
+        }
 
+        .match-profil {
+            display: flex;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .players {
+            position: absolute;
+            height: 100%;
+            width: 30%;
+            left: 0%;
+            margin-left: 10%;
+            margin-right 10%;
+        }
+
+        .player-nick {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-VS {
+            height: 100%;
+            width: 8%;
+            position: relative;
+            left: 10%;
+            margin-left: 3%;
+            margin-right: 3%;
+        }
     }
 
     ::-webkit-scrollbar {
