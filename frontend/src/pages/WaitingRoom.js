@@ -30,7 +30,7 @@ class PongWaitingRoom extends Component {
 
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
-                <h1 class="title-N">Mia VS Abella</h1>
+                <h1 class="title-N"> <a href="/profile"> Mia </a>VS<a href="/profile"> Abella </a></h1>
             </div>
 
             <div class="profil-pics-N">
@@ -46,93 +46,6 @@ class PongWaitingRoom extends Component {
 
     static css = css`
     @media only screen and (max-width: 768px) {
-        .available-space {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: calc(90% - 6px);
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .rectangle-waitingRoom-T {
-            position: absolute;
-            bottom: 10%;
-            width: 70%;
-            height: 80%;
-            left: 15%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
-            backdrop-filter: blur(1px);
-        }
-
-        .title-waitingRoom-T {
-            color: rgb(254, 254, 254);
-            font-size: 4vh;
-            width: 90%;
-            left: 5%;
-            top: 10%;
-            position: absolute;
-            text-align: center;
-        }
-
-        .game-room-T {
-            position: absolute;
-            top: 30%;
-            width: 70%;
-            height: 70%;
-            left: 15%;
-            overflow-y: auto;
-        }
-
-        .player-list-T{
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .player-T {
-            position: relative;
-            flex-direction: column;
-            width: 100%;
-            height: 7%;
-        }
-
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            margin: 10%;
-        }
-
-        .profil-pic-T {
-            position: absolute;
-            left: 0%;
-            height: 100%;
-            width 25%;
-        }
-
-        .profil-nick-T {
-            position: absolute;
-            font-size: 2.5vh;
-            width: 40%;
-            height: 50%;
-            top: 25%;
-            left: 35%;
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
-        }
-    }
-
-
-    @media only screen and (max-height: 524px) {
         .available-space {
             position: absolute;
             right: 0;
@@ -173,7 +86,6 @@ class PongWaitingRoom extends Component {
             right: 15%;
             top: 0%;
             overflow: hidden;
-            text-align: center;
             
             font-family: 'Courier New', monospace;
             font-size: 8vh;
@@ -243,8 +155,6 @@ class PongWaitingRoom extends Component {
             text-align: center;
         }
 
-
-
         .nicknames-N {
             position: absolute;
             width: 100%;
@@ -254,15 +164,15 @@ class PongWaitingRoom extends Component {
 
         .title-N {
             position: absolute;
+            overflow: hidden;
             text-align: center;
-            font-size: 8vh;
             word-spacing: .8em;
             width: 100%;
             height: 100%;
             margin-left: 40px;
             margin-top: 20px;
-            overflow: hidden;
 
+            font-size: 8vh;
             font-family: 'Courier New', monospace;
             color: #00ff00;
             text-shadow: 
@@ -270,7 +180,7 @@ class PongWaitingRoom extends Component {
                 4px 4px 6px #006600,
                 6px 6px 9px #003300;
         }
-         
+
         .profil-pics-N {
             position: absolute;
             width: 100%;
@@ -330,8 +240,211 @@ class PongWaitingRoom extends Component {
         }
 
         a {
-            color: white;
+            color: currentColor;
             text-decoration: none;
+            display: inline-block;
+        }
+    }
+
+
+    @media only screen and (max-height: 524px) {
+        .available-space {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: calc(75% - 10px);
+            height: calc(90% - 10px);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .background-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(50%); 
+        }
+
+        .rectangle-waitingRoom-T {
+            position: absolute;
+            bottom: 10%;
+            width: 50%;
+            height: 80%;
+            left: 25%;
+            background-color: rgba(200, 200, 200, 0.1);
+            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            backdrop-filter: blur(1px);
+            display: flex;
+            align-items: center;
+        }
+
+        .title-waitingRoom-T {
+            position: absolute;
+            width: 100%;
+            height: 20%;
+            left: 0%;
+            right: 15%;
+            top: 0%;
+            overflow: hidden;
+            
+            font-family: 'Courier New', monospace;
+            font-size: 8vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
+        }
+
+        .game-room-T {
+            position: absolute;
+            top: 20%;
+            width: 50%;
+            height: 80%;
+            left: 25%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .player-list-T{
+            position: absolute;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .player-T {
+            position: relative;
+            flex-direction: column;
+            width: 100%;
+            height: 15%;
+        }
+
+        .profil-T {
+            position: relative;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            margin: 10%;
+        }
+
+        .profil-pic-T {
+            position: absolute;
+            left: 0%;
+            height: 100%;
+            width 25%;
+        }
+
+        .profil-nick-T {
+            position: absolute;
+            width: 40%;
+            height: 50%;
+            top: 25%;
+            left: 35%;
+
+            font-family: 'Courier New', monospace;
+            font-size: 2.5vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
+        }
+
+        .nicknames-N {
+            position: absolute;
+            width: 100%;
+            height: 10%;
+            top: 0%;
+        }
+
+        .title-N {
+            position: absolute;
+            overflow: hidden;
+            text-align: center;
+            word-spacing: .8em;
+            width: 100%;
+            height: 100%;
+            margin-left: 40px;
+            margin-top: 20px;
+
+            font-size: 8vh;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+        .profil-pics-N {
+            position: absolute;
+            width: 100%;
+            height: 85%;
+            top: 15%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .gallery-N {
+            --z: 32px;
+            --s: 360px;
+            --g: 8px;
+            
+            display: grid;
+            gap: var(--g);
+            width: calc(2*var(--s) + var(--g));
+            grid-auto-flow: column;
+            height: 100%;
+        }
+
+        .gallery-N > img {
+            width: 0;
+            min-width: calc(100% + var(--z)/2);
+            height: var(--s);
+            object-fit: cover;
+            object-position: center top;
+            -webkit-mask: var(--mask);
+                    mask: var(--mask);
+            cursor: pointer;
+            transition: .5s;
+            height: 100%;
+            opacity: 0.6;
+            filter: brightness(100%);
+        }
+          
+        .gallery-N > img:hover {
+            width: calc(var(--s)/2);
+            opacity: 1;
+            filter: brightness(120%);
+        }
+
+        .gallery-N > img:first-child {
+            place-self: center start;
+            clip-path: polygon(calc(2*var(--z)) 0,100% 0,100% 100%,0 100%);
+            --mask: 
+              conic-gradient(from -135deg at right,#0000,#000 1deg 89deg,#0000 90deg) 
+                50%/100% calc(2*var(--z)) repeat-y;
+        }
+
+        .gallery-N > img:last-child {
+            place-self: center end;
+            clip-path: polygon(0 0,100% 0,calc(100% - 2*var(--z)) 100%,0 100%);
+            --mask: 
+              conic-gradient(from   45deg at left ,#0000,#000 1deg 89deg,#0000 90deg) 
+                50% calc(50% - var(--z))/100% calc(2*var(--z)) repeat-y;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            display: inline;
         }
     }
 
@@ -530,8 +643,9 @@ class PongWaitingRoom extends Component {
         }
 
         a {
-            color: white;
+            color: inherit;
             text-decoration: none;
+            display: inline;
         }
     }
 
