@@ -12,7 +12,7 @@ services:
     networks:
       - ft_transcendence
     env_file:
-      - backend/.env
+      - .env
     restart: on-failure
   nginx:
     container_name: nginx
@@ -25,7 +25,7 @@ services:
     networks:
       - ft_transcendence
     env_file:
-      - backend/.env
+      - .env
     restart: on-failure
 
   prometheus:
@@ -38,6 +38,8 @@ services:
       - '9090:9090'
     networks:
       - ft_transcendence
+    env_file:
+      - .env
     restart: unless-stopped
   node_exporter:
     container_name: node_exporter
@@ -67,6 +69,8 @@ services:
       - prometheus
     networks:
       - ft_transcendence
+    env_file:
+      - .env
     restart: unless-stopped
 
 volumes:
