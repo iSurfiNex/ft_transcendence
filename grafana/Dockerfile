@@ -12,7 +12,13 @@ RUN apt -y install grafana
 
 RUN rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /usr/share/grafana/conf/provisioning/datasources/
+RUN mkdir -p /usr/share/grafana/conf/provisioning/dashboards/
+RUN mkdir -p /usr/share/grafana/dashboards/
+
 COPY config.ini /usr/share/grafana/conf/
 COPY datasources.yml /usr/share/grafana/conf/provisioning/datasources/
+COPY dashboard.yml /usr/share/grafana/conf/provisioning/dashboards/
+COPY default.json /usr/share/grafana/dashboards/
 
 CMD ["grafana-server", "--config=/usr/share/grafana/conf/config.ini --homepath /usr/share/grafana"]
