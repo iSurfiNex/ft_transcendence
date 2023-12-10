@@ -9,12 +9,12 @@ class PongWaitingRoom extends Component {
     <div class="available-space">
         <img class="background-img" src="/src/img/background-5.svg">
         
-        <div hidden="{this.IsTournament()}">
+        <div hidden="{this.IsTournamentWaiting()}">
             <div class="rectangle-waitingRoom-T">
                 <div class="title-waitingRoom-T"> Waiting Room </div>
 
                 <div class="game-room-T" repeat="games" as="game"> 
-                    <div class="player-list-T" hidden="{this.IsCurrentGame(game.id, currentGame)}"> 
+                    <div class="player-list-T" hidden="{this.IsCurrentGame(game.id)}"> 
                         <div class="player-T" repeat="game.players" as="player">
                             <div class="profil-T">
                                 <a href="/profile">
@@ -27,6 +27,23 @@ class PongWaitingRoom extends Component {
                 </div>
             </div>
         </div>
+
+
+        <div hidden="{this.IsTournamentRunning()}">
+            <div class="rectangle-waitingRoom-T">
+                
+                <div class="title-waitingRoom-T"> Waiting Room </div>
+                <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> STARTING IN {this.getCountdown()} </div>
+                
+                <div class="games-list" repeat="games" as="game">
+                    <div hidden="IsCurrentGame(game.id)">
+                        <div class="match" repeat="game.gamesId" as="matchId"> {this.getPlayerOne(matchId)} VS {this.getPlayerTwo(matchId)} </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
 
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
@@ -247,6 +264,7 @@ class PongWaitingRoom extends Component {
     }
 
 
+
     @media only screen and (max-height: 524px) {
         .available-space {
             position: absolute;
@@ -284,8 +302,6 @@ class PongWaitingRoom extends Component {
             position: absolute;
             width: 100%;
             height: 20%;
-            left: 0%;
-            right: 15%;
             top: 0%;
             overflow: hidden;
             
@@ -448,6 +464,12 @@ class PongWaitingRoom extends Component {
         }
     }
 
+
+
+
+
+
+
 	@media only screen and (min-width: 768px) and (min-height: 524px) {
         .available-space {
             position: absolute;
@@ -557,6 +579,35 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #003300;
             text-align: center;
         }
+
+
+
+
+
+        .countdown-T {
+            position: absolute;
+            width: 100%;
+            height: 7%;
+            top: 20%;
+
+            font-family: 'Courier New', monospace;
+            font-size: 3vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
+        }
+
+        .games-list {
+            position: absolute;
+            width: 100%;
+            height: 73%;
+            top: 27%;
+        }
+
+
 
         .nicknames-N {
             position: absolute;
@@ -671,19 +722,66 @@ class PongWaitingRoom extends Component {
 		initPopover(this)
 	}
 
-    IsCurrentGame(gameId, currentGameId) {
-        return !(gameId == currentGameId);
+    getPlayerOne(matchId) {
+        console.log(matchId);
+        
+        //const playerOne = state.games[matchId].players[0];
+
+        //if (playerOne)
+        //    return (playerOne);
+        return ("Unknown");
     }
 
-    IsTournament() {
+    getPlayerTwo(matchId) {
+        console.log(matchId);
+        //const playerTwo = state.games[matchId].players[1];
+
+        //if (playerTwo)
+        //    return (playerTwo);
+        return ("Unknown");
+
+    }
+
+    getCountdown() {
+        const gameId = state.currentGame - 1;
+        
+        return state.games[gameId].countdown;
+    }
+
+    hasCountdownStarted() {
+        const gameId = state.currentGame - 1;
+        
+        if (state.games[gameId].countdown == -1)
+            return (!false);
+        return (!true);
+    }
+
+    IsCurrentGame(gameId) {
+        return !(gameId == state.currentGame);
+    }
+
+    IsTournamentWaiting() {
         const gameId = state.currentGame - 1;
         const type = state.games[gameId].type;
+        const status = state.games[gameId].status;
 
         console.log(type);
-        if (type == "tournament")
+        if (type == "tournament" && status == "waiting")
             return !(true);
         return (!false);
     }
+
+    IsTournamentRunning() {
+        const gameId = state.currentGame - 1;
+        const type = state.games[gameId].type;
+        const status = state.games[gameId].status;
+
+        console.log(type);
+        if (type == "tournament" && status == "running")
+            return !(true);
+        return (!false);
+    }
+
 
     IsNormal() {
         const gameId = state.currentGame - 1;
@@ -696,6 +794,7 @@ class PongWaitingRoom extends Component {
     
     getPlayerPic(nickname) {
         const user = state.users.find(elem => elem.nickname === nickname);
+		console.log(nickname);	
 
         if (user) {
             return '/src/' + user.picture;
@@ -704,6 +803,14 @@ class PongWaitingRoom extends Component {
         else {
             return '/src/img/list.svg';
         }
+    }
+
+    IsCurrentTournament(gameId, currentGame) {
+        return !(gameId == currentGame);
+    }
+
+    IsTournamentGame(gameId, tournamentGameId) {
+        return !(gameId == tournamentGameId);
     }
 }
 
