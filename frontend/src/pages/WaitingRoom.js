@@ -9,13 +9,14 @@ class PongWaitingRoom extends Component {
     <div class="available-space">
         <img class="background-img" src="/src/img/background-5.svg">
         
+
         <div hidden="{this.IsTournamentWaiting()}">
             <div class="rectangle-waitingRoom-T">
                 <div class="title-waitingRoom-T"> Waiting Room </div>
 
-                <div class="game-room-T" repeat="games" as="game"> 
-                    <div class="player-list-T" hidden="{this.IsCurrentGame(game.id)}"> 
-                        <div class="player-T" repeat="game.players" as="player">
+                <div class="tournament-room" repeat="tournaments" as="tournament"> 
+                    <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
+                        <div class="player-T" repeat="tournament.players" as="player">
                             <div class="profil-T">
                                 <a href="/profile">
                                     <div class="profil-nick-T"> {player} </div>
@@ -26,28 +27,31 @@ class PongWaitingRoom extends Component {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>    
+
 
 
         <div hidden="{this.IsTournamentRunning()}">
             <div class="rectangle-waitingRoom-T">
-                
+
                 <div class="title-waitingRoom-T"> Waiting Room </div>
                 <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> STARTING IN {this.getCountdown()} </div>
-                
-                <div class="games-list" repeat="games" as="game">
-                    <div hidden="IsCurrentGame(game.id)">
-                        <div class="match" repeat="game.gamesId" as="matchId"> {this.getPlayerOne(matchId)} VS {this.getPlayerTwo(matchId)} </div>
+
+                <div class="tournament-list" repeat="tournaments" as="tournament">
+                    <div hidden="{this.IsCurrentTournament(tournament.id)}">
+                        <div class="match" repeat="tournament.gamesId" as="matchId"> player-1 VS player-2 </div>
                     </div>
                 </div>
 
             </div>
         </div>
+    
+
 
 
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
-                <h1 class="title-N"> <a href="/profile"> Mia </a>VS<a href="/profile"> Abella </a></h1>
+                <h1 class="title-N"> <a href="/profile"> {this.getPlayerOneNrml()} </a>VS<a href="/profile"> {this.getPlayerTwoNmrl()} </a></h1>
             </div>
 
             <div class="profil-pics-N">
@@ -60,6 +64,7 @@ class PongWaitingRoom extends Component {
 
     </div>
     `
+
 
     static css = css`
     @media only screen and (max-width: 768px) {
@@ -104,7 +109,7 @@ class PongWaitingRoom extends Component {
             top: 0%;
             overflow: hidden;
             
-            font-family: 'Courier New', monospace;
+            font-family: 'Courier New', mconospace;
             font-size: 8vh;
             color: #00ff00;
             text-shadow: 
@@ -522,7 +527,7 @@ class PongWaitingRoom extends Component {
             text-align: center;
         }
 
-        .game-room-T {
+        .tournament-room {
             position: absolute;
             top: 20%;
             width: 50%;
@@ -600,12 +605,68 @@ class PongWaitingRoom extends Component {
             text-align: center;
         }
 
-        .games-list {
+        .tournament-list {
             position: absolute;
             width: 100%;
-            height: 73%;
-            top: 27%;
+            height: 60%;
+            top: 40%;
         }
+
+        .match {
+            position: absolute;
+            height: 25%;
+            width: 100%;
+            word-spacing: 30px;
+        }
+
+        .test {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            overflow: hidden;
+            opacity: 0.8;   
+        }
+
+        .test img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .test img:hover {
+            transform: scale(1.5);
+        }
+
+        .player {
+            position: absolute;
+            top: 50%;
+            font-family: 'Courier New', monospace;
+            color: #ff9900;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+            transform: translateY(-50%);
+        }
+        
+        .player img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .VS-logo {
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+
 
 
 
@@ -722,20 +783,38 @@ class PongWaitingRoom extends Component {
 		initPopover(this)
 	}
 
-    getPlayerOne(matchId) {
-        console.log(matchId);
-        
-        //const playerOne = state.games[matchId].players[0];
-
+    getPlayerOneNrml() {
+        //gameId = state.currentGame;
+        //const playerOne = state.games[gameId].players[0];
+//
         //if (playerOne)
         //    return (playerOne);
         return ("Unknown");
     }
 
-    getPlayerTwo(matchId) {
-        console.log(matchId);
-        //const playerTwo = state.games[matchId].players[1];
+    getPlayerTwoNmrl() {
+        //gameId = state.currentGame;
+        //const playerTwo = state.games[gameId].players[0];
+//
+        //if (playerTwo)
+        //    return (playerTwo);
+        return ("Unknown");
+    }
 
+    getPlayerOneTnmt(matchId) {
+        //console.log(matchId);
+        //
+        //const playerOne = state.games[matchId].players[0];
+//
+        //if (playerOne)
+        //    return (playerOne);
+        return ("Unknown");
+    }
+
+    getPlayerTwoTnmt(matchId) {
+        //console.log(matchId);
+        //const playerTwo = state.games[matchId].players[1];
+//
         //if (playerTwo)
         //    return (playerTwo);
         return ("Unknown");
@@ -743,15 +822,11 @@ class PongWaitingRoom extends Component {
     }
 
     getCountdown() {
-        const gameId = state.currentGame - 1;
-        
-        return state.games[gameId].countdown;
+        return state.tournaments[state.currentTournament - 1].countdown;
     }
 
     hasCountdownStarted() {
-        const gameId = state.currentGame - 1;
-        
-        if (state.games[gameId].countdown == -1)
+        if (state.tournaments[state.currentTournament - 1].countdown == -1)
             return (!false);
         return (!true);
     }
@@ -761,35 +836,22 @@ class PongWaitingRoom extends Component {
     }
 
     IsTournamentWaiting() {
-        const gameId = state.currentGame - 1;
-        const type = state.games[gameId].type;
-        const status = state.games[gameId].status;
-
-        console.log(type);
-        if (type == "tournament" && status == "waiting")
-            return !(true);
-        return (!false);
+        if (state.currentTournament == -1 || state.tournaments[state.currentTournament - 1].status != 'waiting')
+            return !(false);
+        return !(true);
     }
 
     IsTournamentRunning() {
-        const gameId = state.currentGame - 1;
-        const type = state.games[gameId].type;
-        const status = state.games[gameId].status;
-
-        console.log(type);
-        if (type == "tournament" && status == "running")
-            return !(true);
-        return (!false);
+        if (state.currentTournament == -1 || state.tournaments[state.currentTournament - 1].status != 'running')
+            return !(false);
+        return !(true);
     }
 
 
     IsNormal() {
-        const gameId = state.currentGame - 1;
-        const type = state.games[gameId].type;
-
-        if (type == "normal")
-            return !(true);
-        return !(false);
+        if (state.currentTournament != -1)
+            return !(false);
+        return !(true);
     }
     
     getPlayerPic(nickname) {
@@ -805,8 +867,8 @@ class PongWaitingRoom extends Component {
         }
     }
 
-    IsCurrentTournament(gameId, currentGame) {
-        return !(gameId == currentGame);
+    IsCurrentTournament(tournamentId) {
+        return !(tournamentId == state.currentTournament);
     }
 
     IsTournamentGame(gameId, tournamentGameId) {
