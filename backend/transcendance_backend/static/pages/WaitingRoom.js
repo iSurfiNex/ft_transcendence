@@ -42,13 +42,13 @@ class WaitingRoom extends Component {
                         <div class="match" repeat="tournament.gamesId" as="matchId"> 
                             <div class="match-info">
                                 <div class="player-1">
-                                    <img src="/static/img/mia.svg">
-                                    <span>Player-1</span> 
+                                        <img src="{this.playerOnePic(matchId)}">
+                                        <a href="/profile">{this.getPlayerOne(matchId)}</a> 
                                 </div>
                                 <div class="VS-logo"> VS </div>
                                 <div class="player-2">
-                                    <img src="/static/img/abella.svg">
-                                    <span>Player-2</span>
+                                        <img src="{this.playerTwoPic(matchId)}">
+                                        <a href="/profile">{this.getPlayerTwo(matchId)}</a>
                                 </div> 
                             </div>
                         </div>
@@ -63,7 +63,7 @@ class WaitingRoom extends Component {
 
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
-                <h1 class="title-N"> <a href="/profile"> {this.getPlayerOneNrml()} </a>VS<a href="/profile"> {this.getPlayerTwoNmrl()} </a></h1>
+                <h1 class="title-N"> <a href="/profile"> {this.getPlayerOne(currentGame)} </a>VS<a href="/profile"> {this.getPlayerTwo(currentGame)} </a></h1>
             </div>
 
             <div class="profil-pics-N">
@@ -689,7 +689,7 @@ class WaitingRoom extends Component {
             transition: opacity 0.3s;
         }
 
-        .player-1 span {
+        .player-1 a {
             position: absolute;
         }
 
@@ -727,7 +727,7 @@ class WaitingRoom extends Component {
             transition: opacity 0.3s;
         }
 
-        .player-2 span {
+        .player-2 a {
             position: absolute;
         }
 
@@ -841,7 +841,7 @@ class WaitingRoom extends Component {
         a {
             color: inherit;
             text-decoration: none;
-            display: inline;
+            display: block;
         }
     }
 
@@ -867,42 +867,57 @@ class WaitingRoom extends Component {
 		initPopover(this)
 	}
 
-    getPlayerOneNrml() {
-        //gameId = state.currentGame;
-        //const playerOne = state.games[gameId].players[0];
-//
-        //if (playerOne)
-        //    return (playerOne);
-        return ("Unknown");
+    playerOnePic(gameId) {
+        if (!gameId || state.games[gameId - 1].players.length < 1)
+            return ("/static/img/list.svg");
+        
+        const playerNick = state.games[gameId - 1].players[0];
+        const user = state.users.find(elem => elem.nickname === playerNick);
+
+        if (user)
+            return '/static/' + user.picture;
+
+        return '/static/img/list.svg';
     }
 
-    getPlayerTwoNmrl() {
-        //gameId = state.currentGame;
-        //const playerTwo = state.games[gameId].players[0];
-//
-        //if (playerTwo)
-        //    return (playerTwo);
-        return ("Unknown");
+    playerTwoPic(gameId) {
+        if (!gameId || state.games[gameId - 1].players.length < 2)
+            return ("/static/img/list.svg");
+        
+        const playerNick = state.games[gameId - 1].players[1];
+        const user = state.users.find(elem => elem.nickname === playerNick);
+
+        if (user)
+            return '/static/' + user.picture;
+
+        return '/static/img/list.svg';
     }
 
-    getPlayerOneTnmt(matchId) {
-        //console.log(matchId);
-        //
-        //const playerOne = state.games[matchId].players[0];
-//
-        //if (playerOne)
-        //    return (playerOne);
-        return ("Unknown");
+    getPlayerOne(gameId) {
+        if (!gameId)
+            return ("Unknown");
+        
+        if (state.games[gameId - 1].players.length < 1)
+            return ("Unknown");
+
+        const playerOne = state.games[gameId - 1].players[0];
+        if (!playerOne)
+            return ("Unknown");
+        return (playerOne);
     }
 
-    getPlayerTwoTnmt(matchId) {
-        //console.log(matchId);
-        //const playerTwo = state.games[matchId].players[1];
-//
-        //if (playerTwo)
-        //    return (playerTwo);
-        return ("Unknown");
+    getPlayerTwo(gameId)
+    {
+        if (!gameId)
+            return ("Unknown");
 
+        if (state.games[gameId - 1].players.length < 2)
+            return ("Unknown");
+
+        const playerTwo = state.games[gameId - 1].players[1];
+        if (!playerTwo)
+            return ("Unknown");
+        return (playerTwo);
     }
 
     getCountdown() {
@@ -944,7 +959,6 @@ class WaitingRoom extends Component {
     
     getPlayerPic(nickname) {
         const user = state.users.find(elem => elem.nickname === nickname);
-		console.log(nickname);	
 
         if (user) {
             return '/static/' + user.picture;

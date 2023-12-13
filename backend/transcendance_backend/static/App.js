@@ -6,7 +6,7 @@ var state_base = {
 	isPlayerListChecked: true,
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
-		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
+		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/abella.svg' },
 		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/mia.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
@@ -50,10 +50,14 @@ var state_base = {
 		{ type: 'powerup', id: 6, status: 'waiting', creator: 'jtoulous', players: ['jtoulous'], maxPlayer: '2', score: [], date: '' },
 		{ type: 'powerup', id: 7, status: 'waiting', creator: 'fjullien', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [], date: '' },
 		{ type: 'powerup', id: 8, status: 'running', creator: 'fjullien', players: ['fjullien', 'rsterin'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'rsterin', points: 3 }], date: '11/11/2023 04:38' },
+		
+		{ type: 'normal', id: 9, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 		{ type: 'normal', id: 10, status: 'done', creator: 'tournament', players: ['rsterin', 'jtoulous'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'jtoulous', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 11, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 12, status: 'done', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
+
+		{ type: 'normal', id: 13, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 		{ type: 'normal', id: 14, status: 'done', creator: 'tournament', players: ['rsterin', 'jtoulous'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'jtoulous', points: 3 }], date: '11/11/2023 04:38' },
 		{ type: 'normal', id: 15, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
