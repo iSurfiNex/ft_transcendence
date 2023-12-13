@@ -37,10 +37,7 @@ function displayContent(path) {
 			displayElement("pong-profile");
 		}
 		else if (path === "/play/waiting-room") {
-			displayElement("pong-waiting-room");
-		}
-		else if (path === "/play/tournament-waiting-room") {
-			displayElement("tournament-waiting-room");
+			displayElement("waiting-room");
 		}
 		else if (path === "/play/pong") {
 			displayElement("pong-classic");
