@@ -63,13 +63,15 @@ class WaitingRoom extends Component {
 
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
-                <h1 class="title-N"> <a href="/profile"> {this.getPlayerOne(currentGame)} </a>VS<a href="/profile"> {this.getPlayerTwo(currentGame)} </a></h1>
+                <a class="playerOne-N" href="/profile"> {this.getPlayerOne(currentGame)} </a> 
+                <div class="VS-logo-N"> VS </div> 
+                <a class="playerTwo-N" href="/profile"> {this.getPlayerTwo(currentGame)} </a> 
             </div>
 
             <div class="profil-pics-N">
                 <div class="gallery-N">
-                    <img src="/static/img/mia.svg" alt="player 1">
-                    <img src="/static/img/abella.svg" alt="player 2">
+                    <img src="{this.playerOnePic(currentGame)}" alt="player 1">
+                    <img src="{this.playerTwoPic(currentGame)}" alt="player 2">
                 </div>
             </div>    
 	    </div>
@@ -121,7 +123,7 @@ class WaitingRoom extends Component {
             top: 0%;
             overflow: hidden;
             
-            font-family: 'Courier New', mconospace;
+            font-family: 'Courier New', monospace;
             font-size: 8vh;
             color: #00ff00;
             text-shadow: 
@@ -319,6 +321,8 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 100%;
             height: 20%;
+            left: 0%;
+            right: 15%;
             top: 0%;
             overflow: hidden;
             
@@ -332,7 +336,7 @@ class WaitingRoom extends Component {
             text-align: center;
         }
 
-        .game-room-T {
+        .tournament-room {
             position: absolute;
             top: 20%;
             width: 50%;
@@ -390,24 +394,213 @@ class WaitingRoom extends Component {
             text-align: center;
         }
 
+
+
+
+
+        .countdown-T {
+            position: absolute;
+            width: 100%;
+            height: 7%;
+            top: 20%;
+
+            font-family: 'Courier New', monospace;
+            font-size: 3vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+            text-align: center;
+        }
+
+        .tournament-list {
+            position: absolute;
+            width: 100%;
+            height: 65%;
+            top: 35%;
+        }
+
+        .match {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            overflow: scroll;
+        }
+
+        .match-info {
+            position: relative;
+            height: 30%;
+            width: 100%;
+            word-spacing: 30px;
+            overflow: auto;
+            justify-content: center;
+            margin-bottom: 1%;
+            transition: opacity 0.9s;
+            transition: width 1s, height 1s;
+        }
+
+        .match-info:hover {
+            height: 100%;
+            top: 0%;
+            transition: opacity 0.3s;
+            transition: width 1s, height 1s;
+        }
+
+        .match-info:hover .VS-logo {
+            font-size: 8vh;
+            transition: font-size 0.3s;
+        }
+
+        .player-1 {
+            position: absolute;
+            left: 0%;
+            width: 40%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: #ff9900;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+        }
+
+        .player-1 img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center +10%;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        } 
+
+        .player-1 img:hover {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .player-1 a {
+            position: absolute;
+        }
+
+        .player-2 {
+            position: absolute;
+            left: 60%;
+            width: 40%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: #ff9900;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+        }
+
+        .player-2 img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center +10%;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        } 
+
+        .player-2 img:hover {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .player-2 a {
+            position: absolute;
+        }
+
+        .VS-logo {
+            position: absolute;
+            height: 100%;
+            width: 20%;
+            left: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: font-size 0.3s;
+
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+
+
+
+
         .nicknames-N {
             position: absolute;
             width: 100%;
-            height: 10%;
+            height: 15%;
             top: 0%;
+            overflow: hidden;
         }
 
-        .title-N {
+        .playerOne-N {
             position: absolute;
-            overflow: hidden;
-            text-align: center;
-            word-spacing: .8em;
-            width: 100%;
+            width: 45%;
             height: 100%;
-            margin-left: 40px;
-            margin-top: 20px;
+            left: 0%;
+            text-align: right;
+            transform: translateY(10%);
 
-            font-size: 8vh;
+            font-size: 7vh;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+        .playerTwo-N {
+            position: absolute;
+            width: 45%;
+            height: 100%;
+            left: 55%;
+            text-align: left;
+            transform: translateY(10%);
+
+            font-size: 7vh;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+        .VS-logo-N {
+            position: absolute;
+            height: 100%;
+            width: 10%;
+            left: 45%;
+            text-align: center;
+
+            font-size: 9vh;
             font-family: 'Courier New', monospace;
             color: #00ff00;
             text-shadow: 
@@ -477,7 +670,7 @@ class WaitingRoom extends Component {
         a {
             color: inherit;
             text-decoration: none;
-            display: inline;
+            display: block;
         }
     }
 
@@ -757,21 +950,53 @@ class WaitingRoom extends Component {
         .nicknames-N {
             position: absolute;
             width: 100%;
-            height: 10%;
+            height: 15%;
             top: 0%;
+            overflow: hidden;
         }
 
-        .title-N {
+        .playerOne-N {
             position: absolute;
-            overflow: hidden;
-            text-align: center;
-            word-spacing: .8em;
-            width: 100%;
+            width: 45%;
             height: 100%;
-            margin-left: 40px;
-            margin-top: 20px;
+            left: 0%;
+            text-align: right;
+            transform: translateY(10%);
 
-            font-size: 8vh;
+            font-size: 7vh;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+        .playerTwo-N {
+            position: absolute;
+            width: 45%;
+            height: 100%;
+            left: 55%;
+            text-align: left;
+            transform: translateY(10%);
+
+            font-size: 7vh;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+        .VS-logo-N {
+            position: absolute;
+            height: 100%;
+            width: 10%;
+            left: 45%;
+            text-align: center;
+
+            font-size: 9vh;
             font-family: 'Courier New', monospace;
             color: #00ff00;
             text-shadow: 
@@ -868,7 +1093,7 @@ class WaitingRoom extends Component {
 	}
 
     playerOnePic(gameId) {
-        if (!gameId || state.games[gameId - 1].players.length < 1)
+        if (!gameId || state.games[gameId - 1].players.length < 1 || gameId == -1)
             return ("/static/img/list.svg");
         
         const playerNick = state.games[gameId - 1].players[0];
@@ -881,7 +1106,7 @@ class WaitingRoom extends Component {
     }
 
     playerTwoPic(gameId) {
-        if (!gameId || state.games[gameId - 1].players.length < 2)
+        if (!gameId || state.games[gameId - 1].players.length < 2 || gameId == -1)
             return ("/static/img/list.svg");
         
         const playerNick = state.games[gameId - 1].players[1];
