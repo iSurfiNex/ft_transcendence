@@ -16,13 +16,12 @@ class WaitingRoom extends Component {
 
                 <div class="tournament-room" repeat="tournaments" as="tournament"> 
                     <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
+                        <a type="button" class="btn btn-startGame-T" hidden="{this.isTournamentCreator()}">LET'S GO</a>
                         <div class="player-T" repeat="tournament.players" as="player">
-                            <div class="profil-T">
-                                <a href="/profile">
-                                    <div class="profil-nick-T"> {player} </div>
-                                    <img class="profil-pic-T" src="{this.getPlayerPic(player)}">
-                                </a>
-                            </div>
+                            <a href="/profile" class="profil-T">
+                                <img src="{this.getPlayerPic(player)}">
+                                <div class="profil-nick-T"> {player} </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -60,12 +59,13 @@ class WaitingRoom extends Component {
     
 
 
-
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
+                <a type="button" class="btn btn-startGame" hidden="{this.isGameCreator()}">LET'S GO</a>
                 <a class="playerOne-N" href="/profile"> {this.getPlayerOne(currentGame)} </a> 
                 <div class="VS-logo-N"> VS </div> 
-                <a class="playerTwo-N" href="/profile"> {this.getPlayerTwo(currentGame)} </a> 
+                <a class="playerTwo-N" href="/profile"> {this.getPlayerTwo(currentGame)} </a>
+                <a href="/" type="button" class="btn btn-giveUp">GIVE UP</a>
             </div>
 
             <div class="profil-pics-N">
@@ -171,7 +171,7 @@ class WaitingRoom extends Component {
             position: absolute;
             left: 0%;
             height: 100%;
-            width 25%;
+            width: 25%;
         }
 
         .profil-nick-T {
@@ -734,10 +734,10 @@ class WaitingRoom extends Component {
 
         .tournament-room {
             position: absolute;
-            top: 20%;
-            width: 50%;
-            height: 80%;
-            left: 25%;
+            top: 25%;
+            width: 100%;
+            height: 75%;
+            left: 0%;
             overflow-y: auto;
             overflow-x: hidden;
         }
@@ -751,42 +751,77 @@ class WaitingRoom extends Component {
             overflow-y: auto;
         }
 
+        .btn-startGame-T {
+            position: absolute;
+            left: 2%;
+            width: 20%;
+            height: 10%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+            font-size: 2vh;
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #00ff00;
+            border: 1px solid #00c7d6;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-startGame-T:hover {
+            background-color: #00ff00;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
         .player-T {
             position: relative;
             flex-direction: column;
-            width: 100%;
-            height: 15%;
+            width: 50%;
+            left: 25%;
+            height: 20%;
         }
 
         .profil-T {
             position: relative;
             flex-direction: column;
+            left: 0%;
             width: 100%;
             height: 100%;
-            margin: 10%;
+            margin-bottom: 5%;
         }
 
-        .profil-pic-T {
+        .profil-T img {
             position: absolute;
-            left: 0%;
-            height: 100%;
-            width 25%;
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center +10%;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .profil-T:hover {
+            height: 450%;
+            opacity: 1;
+            transition: all 1s ease;
         }
 
         .profil-nick-T {
             position: absolute;
-            width: 40%;
+            width: 50%;
             height: 50%;
             top: 25%;
-            left: 35%;
+            left: 25%;
 
             font-family: 'Courier New', monospace;
             font-size: 2.5vh;
-            color: #00ff00;
+            color: #ff9900;
             text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
             text-align: center;
         }
 
@@ -955,38 +990,108 @@ class WaitingRoom extends Component {
             overflow: hidden;
         }
 
+        .btn-startGame {
+            position: absolute;
+            width: 13%;
+            height: 50%;
+            left: 7%;
+            top: 30%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #00c7d6;
+            border: 1px solid #00c7d6;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-startGame:hover {
+            background-color: #00c7d6;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
+        .btn-giveUp {
+            position: absolute;
+            width: 13%;
+            height: 50%;
+            right: 7%;
+            top: 30%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-giveUp:hover {
+            background-color: #00c7d6;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
+        
+
+        .match-info {
+            position: relative;
+            height: 30%;
+            width: 100%;
+            word-spacing: 30px;
+            overflow: auto;
+            justify-content: center;
+            margin-bottom: 1%;
+            transition: opacity 0.9s;
+            transition: width 1s, height 1s;
+        }
+
+        .match-info:hover {
+            height: 100%;
+            top: 0%;
+            transition: opacity 0.3s;
+            transition: width 1s, height 1s;
+        }
+
+
+
+
         .playerOne-N {
             position: absolute;
-            width: 45%;
+            width: 20%;
             height: 100%;
-            left: 0%;
+            left: 25%;
             text-align: right;
-            transform: translateY(10%);
+            line-height: 2;
 
             font-size: 7vh;
             font-family: 'Courier New', monospace;
-            color: #00ff00;
+            color: #ff9900;
             text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
         }
 
         .playerTwo-N {
             position: absolute;
-            width: 45%;
+            width: 20%;
             height: 100%;
             left: 55%;
             text-align: left;
-            transform: translateY(10%);
+            line-height: 2;
 
             font-size: 7vh;
             font-family: 'Courier New', monospace;
-            color: #00ff00;
+            color: #ff9900;
             text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
         }
 
         .VS-logo-N {
@@ -995,8 +1100,9 @@ class WaitingRoom extends Component {
             width: 10%;
             left: 45%;
             text-align: center;
+            line-height: 2;
 
-            font-size: 9vh;
+            font-size: 7vh;
             font-family: 'Courier New', monospace;
             color: #00ff00;
             text-shadow: 
@@ -1192,6 +1298,24 @@ class WaitingRoom extends Component {
         else {
             return '/static/img/list.svg';
         }
+    }
+
+    isGameCreator() {
+        if (state.currentGame == -1)
+            return !(false);
+
+        if (state.whoAmI == state.games[state.currentGame - 1].creator)
+            return !(true);
+        return !(false);
+    }
+
+    isTournamentCreator() {
+        if (state.currentTournament == -1 )
+            return !(false);
+
+        if (state.whoAmI == state.tournaments[state.currentTournament - 1].creator)
+            return !(true);
+        return !(false);
     }
 
     IsCurrentTournament(tournamentId) {
