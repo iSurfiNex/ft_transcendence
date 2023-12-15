@@ -1094,11 +1094,6 @@
 				"type": "query"
 			},
 			{
-				"current": {
-					"selected": false,
-					"text": "192.168.1.28:9100",
-					"value": "192.168.1.28:9100"
-				},
 				"datasource": {
 					"type": "prometheus",
 					"uid": "PBFA97CFB590B2093"
