@@ -64,7 +64,7 @@ var state_base = {
 		{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	],
-	currentTournament: -1,
+	currentTournament: 3,
 	currentGame: 3,
 	language: undefined,
 
@@ -106,6 +106,12 @@ var state_base = {
 		// 404
 		pageNotFound: 'Page not found',
 		returnToHome: 'Return to home',
+		
+		//waiting-room
+		WaitingRoom: 'Waiting Room',
+		GoButton: 'LET\'S GO',
+		ByeButton: 'GIVE UP',
+		Start: 'STARTING IN',
 	},
 	fr: {
 		// LOGIN
@@ -145,6 +151,12 @@ var state_base = {
 		// 404
 		pageNotFound: 'Page non trouvée',
 		returnToHome: 'Revenir à l\'accueil',
+
+		//Waiting-room
+		WaitingRoom: 'Salle d\'attente',
+		GoButton: 'GO',
+		ByeButton: 'ABANDON',
+		Start: 'DEBUT DANS',
 	},
 	de: {
 		// LOGIN
@@ -184,6 +196,12 @@ var state_base = {
 		// 404
 		pageNotFound: 'Seite nicht gefunden',
 		returnToHome: 'Nach Hause zurückkehren',
+
+		//Waiting-room
+		WaitingRoom: 'Wartezimmer',
+		GoButton: 'GO',
+		ByeButton: 'AUFGEBEN',
+		Start: 'BEGINN IN',
 	},
 }
 

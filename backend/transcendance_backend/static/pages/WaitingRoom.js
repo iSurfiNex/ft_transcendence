@@ -7,12 +7,11 @@ class WaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <div class="available-space">
-        <img class="background-img" src="/static/img/background-5.svg">
         
 
         <div hidden="{this.IsTournamentWaiting()}">
             <div class="rectangle-waitingRoom-T">
-                <div class="title-waitingRoom-T"> Waiting Room </div>
+                <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
                 
                 <div class="player-count">
                     <a type="button" class="btn btn-startGame-T" hidden="{this.isTournamentCreator()}">LET'S GO</a>
@@ -37,8 +36,8 @@ class WaitingRoom extends Component {
         <div hidden="{this.IsTournamentRunning()}">
             <div class="rectangle-waitingRoom-T">
 
-                <div class="title-waitingRoom-T"> Waiting Room </div>
-                <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> STARTING IN {this.getCountdown()} </div>
+                <div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
+                <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
 
                 <div class="tournament-list" repeat="tournaments" as="tournament">
                     <div hidden="{this.IsCurrentTournament(tournament.id)}">
@@ -65,11 +64,11 @@ class WaitingRoom extends Component {
 
         <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
-                <a type="button" class="btn btn-startGame" hidden="{this.isGameCreator()}">LET'S GO</a>
+                <a type="button" class="btn btn-startGame" hidden="{this.isGameCreator()}">{language.GoButton}</a>
                 <a class="playerOne-N" href="/profile"> {this.getPlayerOne(currentGame)} </a> 
                 <div class="VS-logo-N"> VS </div> 
                 <a class="playerTwo-N" href="/profile"> {this.getPlayerTwo(currentGame)} </a>
-                <a href="/" type="button" class="btn btn-giveUp">GIVE UP</a>
+                <a href="/" type="button" class="btn btn-giveUp">{language.ByeButton}</a>
             </div>
 
             <div class="profil-pics-N">
@@ -90,9 +89,9 @@ class WaitingRoom extends Component {
             position: absolute;
             right: 0;
             bottom: 0;
-            width: calc(75% - 10px);
+            width: 100%;
             height: calc(90% - 10px);
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgb(54, 54, 54);
         }
 
         .background-img {
@@ -107,10 +106,9 @@ class WaitingRoom extends Component {
 
         .rectangle-waitingRoom-T {
             position: absolute;
-            bottom: 10%;
-            width: 50%;
-            height: 80%;
-            left: 25%;
+            width: 100%;
+            height: 100%;
+            left: 0%;
             background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
             backdrop-filter: blur(1px);
@@ -121,14 +119,14 @@ class WaitingRoom extends Component {
         .title-waitingRoom-T {
             position: absolute;
             width: 100%;
-            height: 20%;
+            height: 15%;
             left: 0%;
             right: 15%;
             top: 0%;
             overflow: hidden;
             
             font-family: 'Courier New', monospace;
-            font-size: 8vh;
+            font-size: 6vh;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -137,12 +135,29 @@ class WaitingRoom extends Component {
             text-align: center;
         }
 
-        .game-room-T {
+        .player-count {
             position: absolute;
-            top: 20%;
-            width: 50%;
-            height: 80%;
-            left: 25%;
+            width: 100%;
+            height: 10%;
+            top: 15%;
+            text-align: center;
+            line-height: 2.5;
+
+            font-family: 'Courier New', monospace;
+            font-size: 3vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+        .tournament-room {
+            position: absolute;
+            top: 30%;
+            width: 100%;
+            height: 70%;
+            left: 0%;
             overflow-y: auto;
             overflow-x: hidden;
         }
@@ -156,37 +171,88 @@ class WaitingRoom extends Component {
             overflow-y: auto;
         }
 
+        .btn-startGame-T {
+            position: absolute;
+            left: 2%;
+            top: 15%;
+            width: 20%;
+            height: 70%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+            font-size: 2vh;
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #00ff00;
+            border: 1px solid #00c7d6;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+            backdrop-filter: blur(1px);
+        }
+
+        .btn-startGame-T:hover {
+            background-color: #00ff00;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
         .player-T {
             position: relative;
             flex-direction: column;
-            width: 100%;
-            height: 15%;
+            width: 50%;
+            left: 25%;
+            height: 20%;
         }
 
         .profil-T {
             position: relative;
             flex-direction: column;
+            left: 0%;
             width: 100%;
             height: 100%;
-            margin: 10%;
+            margin-bottom: 5%;
         }
 
-        .profil-pic-T {
+        .profil-T img {
             position: absolute;
-            left: 0%;
-            height: 100%;
-            width: 25%;
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center +10%;
+            opacity: 0.7;
+            transition: opacity 0.3s;
         }
 
         .profil-nick-T {
             position: absolute;
-            width: 40%;
+            width: 50%;
             height: 50%;
             top: 25%;
-            left: 35%;
+            left: 25%;
 
             font-family: 'Courier New', monospace;
             font-size: 2.5vh;
+            color: white;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+            text-align: center;
+        }
+
+
+
+
+
+        .countdown-T {
+            position: absolute;
+            width: 100%;
+            height: 7%;
+            top: 20%;
+
+            font-family: 'Courier New', monospace;
+            font-size: 3vh;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -195,24 +261,254 @@ class WaitingRoom extends Component {
             text-align: center;
         }
 
+        .tournament-list {
+            position: absolute;
+            width: 100%;
+            height: 65%;
+            top: 35%;
+        }
+
+        .match {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            overflow: scroll;
+        }
+
+        .match-info {
+            position: relative;
+            height: 30%;
+            width: 100%;
+            word-spacing: 30px;
+            overflow: auto;
+            justify-content: center;
+            margin-bottom: 1%;
+            transition: opacity 0.9s;
+            transition: width 1s, height 1s;
+        }
+
+
+        .player-1 {
+            position: absolute;
+            left: 0%;
+            width: 40%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: white;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+        }
+
+        .player-1 img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center +10%;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        } 
+
+        .player-1 img:hover {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .player-1 a {
+            position: absolute;
+        }
+
+        .player-2 {
+            position: absolute;
+            left: 60%;
+            width: 40%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: white;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+        }
+
+        .player-2 img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center +10%;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        } 
+
+        .player-2 img:hover {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .player-2 a {
+            position: absolute;
+        }
+
+        .VS-logo {
+            position: absolute;
+            height: 100%;
+            width: 20%;
+            left: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: font-size 0.3s;
+
+            font-family: 'Courier New', monospace;
+            font-size: 5vh;
+            color: #00ff00;
+            text-shadow: 
+                2px 2px 3px #009900,
+                4px 4px 6px #006600,
+                6px 6px 9px #003300;
+        }
+
+
+
+
+
         .nicknames-N {
             position: absolute;
             width: 100%;
-            height: 10%;
+            height: 15%;
             top: 0%;
+            overflow: hidden;
+            color: white;
         }
 
-        .title-N {
+        .btn-startGame {
             position: absolute;
-            overflow: hidden;
-            text-align: center;
-            word-spacing: .8em;
-            width: 100%;
-            height: 100%;
-            margin-left: 40px;
-            margin-top: 20px;
+            width: 13%;
+            height: 50%;
+            left: 0%;
+            top: 30%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 8vh;
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-startGame:hover {
+            background-color: #00ff00;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
+        .btn-giveUp {
+            position: absolute;
+            width: 13%;
+            height: 50%;
+            right: 0%;
+            top: 30%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-giveUp:hover {
+            background-color: #ff0000;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
+        .match-info {
+            position: relative;
+            height: 30%;
+            width: 100%;
+            word-spacing: 30px;
+            overflow: auto;
+            justify-content: center;
+            margin-bottom: 1%;
+            transition: opacity 0.9s;
+            transition: width 1s, height 1s;
+        }
+
+        .match-info:hover {
+            height: 100%;
+            top: 0%;
+            transition: opacity 0.3s;
+            transition: width 1s, height 1s;
+        }
+
+
+
+
+
+
+        .playerOne-N {
+            position: absolute;
+            width: 27%;
+            height: 100%;
+            left: 15%;
+            text-align: right;
+            line-height: 5;
+
+            font-size: 3vh;
+            font-family: 'Courier New', monospace;
+            color: white;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+        }
+
+        .playerTwo-N {
+            position: absolute;
+            width: 27%;
+            height: 100%;
+            right: 15%;
+            text-align: left;
+            line-height: 5;
+
+            font-size: 3vh;
+            font-family: 'Courier New', monospace;
+            color: white;
+            text-shadow: 
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
+        }
+
+        .VS-logo-N {
+            position: absolute;
+            height: 100%;
+            width: 10%;
+            left: 45%;
+            text-align: center;
+            line-height: 3;
+
+            font-size: 5vh;
             font-family: 'Courier New', monospace;
             color: #00ff00;
             text-shadow: 
@@ -280,9 +576,9 @@ class WaitingRoom extends Component {
         }
 
         a {
-            color: currentColor;
+            color: inherit;
             text-decoration: none;
-            display: inline-block;
+            display: block;
         }
     }
 
@@ -295,7 +591,7 @@ class WaitingRoom extends Component {
             bottom: 0;
             width: calc(75% - 10px);
             height: calc(90% - 10px);
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgb(54, 54, 54);
         }
 
         .background-img {
@@ -444,7 +740,7 @@ class WaitingRoom extends Component {
 
             font-family: 'Courier New', monospace;
             font-size: 2.5vh;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -522,7 +818,7 @@ class WaitingRoom extends Component {
 
             font-family: 'Courier New', monospace;
             font-size: 5vh;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -560,7 +856,7 @@ class WaitingRoom extends Component {
 
             font-family: 'Courier New', monospace;
             font-size: 5vh;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -615,6 +911,7 @@ class WaitingRoom extends Component {
             height: 15%;
             top: 0%;
             overflow: hidden;
+            color: white;
         }
 
         .btn-startGame {
@@ -628,14 +925,14 @@ class WaitingRoom extends Component {
             display: flex;
 
             background-color: rgba(42, 42, 42, 0.2);
-            color: #00c7d6;
-            border: 1px solid #00c7d6;
+            color: #00ff00;
+            border: 1px solid #00ff00;
             transition: background-color 0.3s, color 0.3s;
             opacity: 0.6;
         }
 
         .btn-startGame:hover {
-            background-color: #00c7d6;
+            background-color: #00ff00;
             color: #2a2a2a;
             opacity: 1;
         }
@@ -658,7 +955,7 @@ class WaitingRoom extends Component {
         }
 
         .btn-giveUp:hover {
-            background-color: #00c7d6;
+            background-color: #ff0000;
             color: #2a2a2a;
             opacity: 1;
         }
@@ -697,7 +994,7 @@ class WaitingRoom extends Component {
 
             font-size: 7vh;
             font-family: 'Courier New', monospace;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -714,7 +1011,7 @@ class WaitingRoom extends Component {
 
             font-size: 7vh;
             font-family: 'Courier New', monospace;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -816,7 +1113,7 @@ class WaitingRoom extends Component {
             bottom: 0;
             width: calc(75% - 10px);
             height: calc(90% - 10px);
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgb(54, 54, 54);
         }
 
         .background-img {
@@ -965,7 +1262,7 @@ class WaitingRoom extends Component {
 
             font-family: 'Courier New', monospace;
             font-size: 2.5vh;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -1043,7 +1340,7 @@ class WaitingRoom extends Component {
 
             font-family: 'Courier New', monospace;
             font-size: 5vh;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -1081,7 +1378,7 @@ class WaitingRoom extends Component {
 
             font-family: 'Courier New', monospace;
             font-size: 5vh;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -1136,6 +1433,7 @@ class WaitingRoom extends Component {
             height: 15%;
             top: 0%;
             overflow: hidden;
+            color: white;
         }
 
         .btn-startGame {
@@ -1218,7 +1516,7 @@ class WaitingRoom extends Component {
 
             font-size: 7vh;
             font-family: 'Courier New', monospace;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
@@ -1235,7 +1533,7 @@ class WaitingRoom extends Component {
 
             font-size: 7vh;
             font-family: 'Courier New', monospace;
-            color: #ff9900;
+            color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
                 4px 4px 6px #cc3300,
