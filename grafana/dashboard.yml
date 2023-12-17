@@ -1,13 +1,15 @@
 apiVersion: 1
 
-dashboards:
-  - name: "Pong"
-    uid: fa05bf7b-f9a1-4383-9a98-7545a21a73e5
+providers:
+  - name: 'default'
     orgId: 1
-    folder: ""
-    overwrite: false
+    folder: ''
     type: file
     disableDeletion: false
-    updateIntervalSeconds: 10
+    editable: true
+    allowUiUpdates: true
     options:
-      path: /usr/share/grafana/dashboards/defaults.json
+      path: /usr/share/grafana/dashboards
+
+folderId: 0
+overwrite: false
