@@ -1041,7 +1041,7 @@
 			"type": "timeseries"
 		}
 	],
-	"refresh": "",
+	"refresh": "15s",
 	"schemaVersion": 38,
 	"tags": [],
 	"templating": {
@@ -1140,15 +1140,15 @@
 		]
 	},
 	"time": {
-		"from": "now-1h",
+		"from": "now-30m",
 		"to": "now"
 	},
 	"timepicker": {
 		"refresh_intervals": [
-			"5s"
+			"15s"
 		]
 	},
-	"timezone": "",
+	"timezone": "browser",
 	"title": "Pong",
 	"uid": "fa05bf7b-f9a1-4383-9a98-7545a21a73e5",
 	"version": 3,
