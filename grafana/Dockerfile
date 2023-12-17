@@ -16,9 +16,12 @@ RUN mkdir -p /usr/share/grafana/conf/provisioning/datasources/
 RUN mkdir -p /usr/share/grafana/conf/provisioning/dashboards/
 RUN mkdir -p /usr/share/grafana/dashboards/
 
-COPY config.ini /usr/share/grafana/conf/
+COPY defaults.ini /usr/share/grafana/conf/
 COPY datasources.yml /usr/share/grafana/conf/provisioning/datasources/
 COPY dashboard.yml /usr/share/grafana/conf/provisioning/dashboards/
 COPY default.json /usr/share/grafana/dashboards/
 
-CMD ["grafana-server", "--config=/usr/share/grafana/conf/config.ini --homepath /usr/share/grafana"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
