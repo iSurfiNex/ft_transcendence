@@ -30,7 +30,7 @@ scrape_configs:
     scheme: http
     static_configs:
     - targets:
-      - 192.168.1.28:9100
+      - ${LOCAL_IP:localhost}:9100
 
 remote_write:
-  - url: 'http://192.168.1.28:9100/metrics'
+  - url: 'http://${LOCAL_IP:localhost}:9100/metrics'

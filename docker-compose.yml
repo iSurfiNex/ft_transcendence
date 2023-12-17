@@ -41,19 +41,6 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-  node_exporter:
-    container_name: node_exporter
-    build: ./node_exporter
-    image: node_exporter
-    volumes:
-      - prometheus:/etc/prometheus
-    ports:
-      - '9100:9100'
-    depends_on:
-      - prometheus
-    networks:
-      - ft_transcendence
-    restart: unless-stopped
   grafana:
     container_name: grafana
     build: ./grafana
