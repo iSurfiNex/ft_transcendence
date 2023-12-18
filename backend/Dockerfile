@@ -25,6 +25,9 @@ RUN pip3 install -r requirements.txt
 
 RUN mkdir -p /var/lib/postgresql/data
 
+RUN  echo "listen_addresses = '*'" >> /etc/postgresql/13/main/postgresql.conf
+RUN echo "host    all             all             0.0.0.0/0            md5" >> /etc/postgresql/13/main/pg_hba.conf
+
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
