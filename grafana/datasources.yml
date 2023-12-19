@@ -6,3 +6,15 @@ datasources:
     access: proxy
     url: http://${LOCAL_IP}:9090
     isDefault: true
+
+  - name: PostgreSQL
+    type: postgres
+    access: proxy
+    url: ${LOCAL_IP}:${DB_PORT}
+    user: ${DB_USER}
+    secureJsonData:
+      password: ${DB_PASSWORD}
+    jsonData:
+      database: ${DB_NAME}
+      sslmode: disable
+    isDefault: false
