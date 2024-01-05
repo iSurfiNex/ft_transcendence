@@ -7,13 +7,13 @@ class PongCreateGame extends Component {
 	static template = html`
 	<div class="available-space">
 		<div class="create-game">
-			<div class="top-bar"><span class="title">1 VS 1</span></div>
+			<div class="top-bar"><span class="title">Game Editor</span></div>
 			<div class="options-list"> 
 				
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-Powerups-1v1">
+        				    <input type="checkbox" id="toggle-Powerups">
         				    <span class="slider"></span>
         				</label>
 					</span>	
@@ -23,13 +23,23 @@ class PongCreateGame extends Component {
 				<div class="option"> 
 					<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-Private-1v1">
+        				    <input type="checkbox" id="toggle-Private">
         				    <span class="slider"></span>
         				</label>
 					</span>
 					<span class="mode">Private game</span>
 				</div>
 				
+				<div class="option">   
+			    	<span class="switch">
+        				<label class="slider">
+        				    <input type="checkbox" id="toggle-Tournament">
+        				    <span class="slider"></span>
+        				</label>
+					</span>	
+					<span class="mode">Tournament</span>
+				</div>
+
 				<div class="button-space"> 
 					<button class="btn create-button" @click="this.createGame()">Create Game</button>
 					<button class="btn cancel-button" @click="this.cancelGame()">Cancel</button>
@@ -126,9 +136,9 @@ class PongCreateGame extends Component {
 
 	.options-list {
 		position: absolute;
-		top: 30%;
+		top: 25%;
 		width: 100%;
-		height: 70%;
+		height: 75%;
 	}
 
 	.option {
@@ -261,9 +271,18 @@ class PongCreateGame extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
+	//eventListener() {
+	//	this.shadowRoot.addEventListener("change", toggleTournament);
+	//}
+//
+	//toggleTournament() {
+//
+	//}
+
 	createGame() {
-		var switchPowerup = this.shadowRoot.getElementById("toggle-Powerups-1v1");
-		var switchPrivate = this.shadowRoot.getElementById("toggle-Private-1v1")
+		var switchPowerup = this.shadowRoot.getElementById("toggle-Powerups");
+		var switchPrivate = this.shadowRoot.getElementById("toggle-Private")
+		var switchPrivate = this.shadowRoot.getElementById("toggle-Tounament")
 
 		//requete vers db, etc..  mettre la game dans le state 
 
