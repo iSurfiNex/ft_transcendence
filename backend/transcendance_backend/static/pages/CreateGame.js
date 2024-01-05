@@ -9,10 +9,11 @@ class PongCreateGame extends Component {
 		<div class="create-game">
 			<div class="top-bar"><span class="title">1 VS 1</span></div>
 			<div class="options-list"> 
+				
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox">
+        				    <input type="checkbox" id="toggle-Powerups-1v1">
         				    <span class="slider"></span>
         				</label>
 					</span>	
@@ -22,12 +23,18 @@ class PongCreateGame extends Component {
 				<div class="option"> 
 					<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox">
+        				    <input type="checkbox" id="toggle-Private-1v1">
         				    <span class="slider"></span>
         				</label>
 					</span>
 					<span class="mode">Private game</span>
 				</div>
+				
+				<div class="button-space"> 
+					<button class="btn create-button" @click="this.createGame()">Create Game</button>
+					<button class="btn cancel-button" @click="this.cancelGame()">Cancel</button>
+				</div>
+			
 			</div>
 		</div>
 	</div>
@@ -119,9 +126,9 @@ class PongCreateGame extends Component {
 
 	.options-list {
 		position: absolute;
-		top: 25%;
+		top: 30%;
 		width: 100%;
-		height: 75%;
+		height: 70%;
 	}
 
 	.option {
@@ -129,7 +136,7 @@ class PongCreateGame extends Component {
 		display: flex;
 		align-items: center;
 		top: 8%;
-		left: 20%;
+		left: 25%;
 		width: 60%;
 		height: 10%;
 		margin-bottom: 6.5%;
@@ -202,10 +209,73 @@ class PongCreateGame extends Component {
 	    transform: translateX(26px);
 	}
 
+	.create-button {
+        position: absolute;
+        width: 20%;
+		height: 10%;
+        left: 15%;
+		bottom: 10%;
+        align-items: center;
+		white-space: nowrap;
+		overflow: hidden;
+
+        background-color: transparent;
+        color: #00ff00;
+        border: 1px solid #00ff00;
+        transition: background-color 0.3s, color 0.3s;
+        opacity: 0.6;
+    }
+
+    .create-button:hover {
+        background-color: #00ff00;
+        color: #2a2a2a;
+        opacity: 1;
+    }
+
+	.cancel-button {
+        position: absolute;
+        width: 20%;
+		height: 10%;
+        right: 15%;
+		bottom: 10%;
+        align-items: center;
+		white-space: nowrap;
+		overflow: hidden;
+
+        background-color: transparent;
+        color: #ff0019;
+        border: 1px solid #ff0019;
+        transition: background-color 0.3s, color 0.3s;
+        opacity: 0.6;
+    }
+
+    .cancel-button:hover {
+        background-color: #ff0019;
+        color: #2a2a2a;
+        opacity: 1;
+    }
+
 `
 
 	observers = {
 		'player.active': active => console.log("active?: ", active)
+	}
+
+	createGame() {
+		var switchPowerup = this.shadowRoot.getElementById("toggle-Powerups-1v1");
+		var switchPrivate = this.shadowRoot.getElementById("toggle-Private-1v1")
+
+		//requete vers db, etc..  mettre la game dans le state 
+
+		console.log(switchPowerup);
+		console.log(switchPrivate);
+		navigateTo('/play/waiting-room');
+		return (false);
+	}
+
+	cancelGame() {
+		navigateTo('/play/pong'); 
+		return false;
 	}
 
 	connectedCallback() {
