@@ -41,7 +41,7 @@ class PongCreateGame extends Component {
 				</div>
 
 				<div class="button-space"> 
-					<button class="btn create-button" @click="this.createGame()">Create Game</button>
+					<button class="btn create-button" @click="this.createGame()">Create</button>
 					<button class="btn cancel-button" @click="this.cancelGame()">Cancel</button>
 				</div>
 			
@@ -229,6 +229,8 @@ class PongCreateGame extends Component {
 		white-space: nowrap;
 		overflow: hidden;
 
+		font-family: 'Press Start 2P', sans-serif;
+		font-size: 2vh;
         background-color: transparent;
         color: #00ff00;
         border: 1px solid #00ff00;
@@ -252,6 +254,7 @@ class PongCreateGame extends Component {
 		white-space: nowrap;
 		overflow: hidden;
 
+		font-family: 'Press Start 2P', sans-serif;
         background-color: transparent;
         color: #ff0019;
         border: 1px solid #ff0019;
