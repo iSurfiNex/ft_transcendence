@@ -14,7 +14,7 @@ class WaitingRoom extends Component {
                 <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
                 
                 <div class="player-count">
-                    <a type="button" class="btn btn-startGame-T" hidden="{this.isTournamentCreator()}">LET'S GO</a>
+                    <a type="button" class="btn btn-startGame-T" hidden="{this.isTournamentCreator()}">START</a>
                     {this.getPlayerCount()}/{this.getMaxPlayers()}
                 </div>
 
@@ -84,7 +84,7 @@ class WaitingRoom extends Component {
 
 
     static css = css`
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 370px) {
         .available-space {
             position: absolute;
             right: 0;
@@ -112,8 +112,9 @@ class WaitingRoom extends Component {
             background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
             backdrop-filter: blur(1px);
-            display: flex;
             align-items: center;
+            white-space: nowrap;
+            font-family: 'Press Start 2P', sans-serif;
         }
 
         .title-waitingRoom-T {
@@ -125,14 +126,13 @@ class WaitingRoom extends Component {
             top: 0%;
             overflow: hidden;
             
-            font-family: 'Courier New', monospace;
-            font-size: 6vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-            text-align: center;
+            font-size: 8vw;
+        	color: white;
+        	text-shadow: 
+        	    2px 2px 3px #ff6600,
+        	    4px 4px 6px #cc3300,
+        	    6px 6px 9px #993300;
+        	text-align: center;
         }
 
         .player-count {
@@ -143,13 +143,8 @@ class WaitingRoom extends Component {
             text-align: center;
             line-height: 2.5;
 
-            font-family: 'Courier New', monospace;
             font-size: 3vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
+            color: white;
         }
 
         .tournament-room {
@@ -181,7 +176,7 @@ class WaitingRoom extends Component {
             align-items: center;
             display: flex;
 
-            font-size: 2vh;
+            font-size: 3vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #00ff00;
             border: 1px solid #00c7d6;
@@ -228,11 +223,10 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 50%;
             height: 50%;
-            top: 25%;
-            left: 25%;
+            top: 40%;
+            left: 20%;
 
-            font-family: 'Courier New', monospace;
-            font-size: 2.5vh;
+            font-size: 4vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -251,7 +245,6 @@ class WaitingRoom extends Component {
             height: 7%;
             top: 20%;
 
-            font-family: 'Courier New', monospace;
             font-size: 3vh;
             color: #00ff00;
             text-shadow: 
@@ -298,7 +291,6 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-family: 'Courier New', monospace;
             font-size: 5vh;
             color: white;
             text-shadow: 
@@ -475,7 +467,6 @@ class WaitingRoom extends Component {
             line-height: 5;
 
             font-size: 3vh;
-            font-family: 'Courier New', monospace;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -492,7 +483,6 @@ class WaitingRoom extends Component {
             line-height: 5;
 
             font-size: 3vh;
-            font-family: 'Courier New', monospace;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -509,525 +499,6 @@ class WaitingRoom extends Component {
             line-height: 3;
 
             font-size: 5vh;
-            font-family: 'Courier New', monospace;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-        .profil-pics-N {
-            position: absolute;
-            width: 100%;
-            height: 85%;
-            top: 15%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .gallery-N {
-            --z: 32px;
-            --s: 360px;
-            --g: 8px;
-            
-            display: grid;
-            gap: var(--g);
-            width: calc(2*var(--s) + var(--g));
-            grid-auto-flow: column;
-            height: 100%;
-        }
-
-        .gallery-N > img {
-            width: 0;
-            min-width: calc(100% + var(--z)/2);
-            height: var(--s);
-            object-fit: cover;
-            object-position: center top;
-            -webkit-mask: var(--mask);
-                    mask: var(--mask);
-            cursor: pointer;
-            transition: .5s;
-            height: 100%;
-            opacity: 0.6;
-            filter: brightness(100%);
-        }
-          
-        .gallery-N > img:hover {
-            width: calc(var(--s)/2);
-            opacity: 1;
-            filter: brightness(120%);
-        }
-
-        .gallery-N > img:first-child {
-            place-self: center start;
-            clip-path: polygon(calc(2*var(--z)) 0,100% 0,100% 100%,0 100%);
-            --mask: 
-              conic-gradient(from -135deg at right,#0000,#000 1deg 89deg,#0000 90deg) 
-                50%/100% calc(2*var(--z)) repeat-y;
-        }
-
-        .gallery-N > img:last-child {
-            place-self: center end;
-            clip-path: polygon(0 0,100% 0,calc(100% - 2*var(--z)) 100%,0 100%);
-            --mask: 
-              conic-gradient(from   45deg at left ,#0000,#000 1deg 89deg,#0000 90deg) 
-                50% calc(50% - var(--z))/100% calc(2*var(--z)) repeat-y;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-        }
-    }
-
-
-
-    @media only screen and (max-height: 524px) {
-        .available-space {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: calc(75% - 10px);
-            height: calc(90% - 10px);
-            background-color: rgb(54, 54, 54);
-        }
-
-        .background-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(50%); 
-        }
-
-        .rectangle-waitingRoom-T {
-            position: absolute;
-            bottom: 10%;
-            width: 50%;
-            height: 80%;
-            left: 25%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
-            backdrop-filter: blur(1px);
-            display: flex;
-            align-items: center;
-        }
-
-        .title-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            left: 0%;
-            right: 15%;
-            top: 0%;
-            overflow: hidden;
-            
-            font-family: 'Courier New', monospace;
-            font-size: 8vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-            text-align: center;
-        }
-
-        .player-count {
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            top: 15%;
-            text-align: center;
-            line-height: 2.5;
-
-            font-family: 'Courier New', monospace;
-            font-size: 3vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-        .tournament-room {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            height: 70%;
-            left: 0%;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .player-list-T{
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .btn-startGame-T {
-            position: absolute;
-            left: 2%;
-            top: 15%;
-            width: 20%;
-            height: 70%;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-
-            font-size: 2vh;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00c7d6;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
-            backdrop-filter: blur(1px);
-        }
-
-        .btn-startGame-T:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .player-T {
-            position: relative;
-            flex-direction: column;
-            width: 50%;
-            left: 25%;
-            height: 20%;
-        }
-
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            margin-bottom: 5%;
-        }
-
-        .profil-T img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        .profil-T:hover {
-            height: 450%;
-            opacity: 1;
-            transition: all 1s ease;
-        }
-
-        .profil-nick-T {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 25%;
-            left: 25%;
-
-            font-family: 'Courier New', monospace;
-            font-size: 2.5vh;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
-        }
-
-
-
-
-
-        .countdown-T {
-            position: absolute;
-            width: 100%;
-            height: 7%;
-            top: 20%;
-
-            font-family: 'Courier New', monospace;
-            font-size: 3vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-            text-align: center;
-        }
-
-        .tournament-list {
-            position: absolute;
-            width: 100%;
-            height: 65%;
-            top: 35%;
-        }
-
-        .match {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            overflow: scroll;
-        }
-
-        .match-info {
-            position: relative;
-            height: 30%;
-            width: 100%;
-            word-spacing: 30px;
-            overflow: auto;
-            justify-content: center;
-            margin-bottom: 1%;
-            transition: opacity 0.9s;
-            transition: width 1s, height 1s;
-        }
-
-        .match-info:hover {
-            height: 100%;
-            top: 0%;
-            transition: opacity 0.3s;
-            transition: width 1s, height 1s;
-        }
-
-        .match-info:hover .VS-logo {
-            font-size: 8vh;
-            transition: font-size 0.3s;
-        }
-
-        .player-1 {
-            position: absolute;
-            left: 0%;
-            width: 40%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            font-family: 'Courier New', monospace;
-            font-size: 5vh;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .player-1 img {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        } 
-
-        .player-1 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
-
-        .player-1 a {
-            position: absolute;
-        }
-
-        .player-2 {
-            position: absolute;
-            left: 60%;
-            width: 40%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            font-family: 'Courier New', monospace;
-            font-size: 5vh;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .player-2 img {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        } 
-
-        .player-2 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
-
-        .player-2 a {
-            position: absolute;
-        }
-
-        .VS-logo {
-            position: absolute;
-            height: 100%;
-            width: 20%;
-            left: 40%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: font-size 0.3s;
-
-            font-family: 'Courier New', monospace;
-            font-size: 5vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-
-
-
-
-        .nicknames-N {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            top: 0%;
-            overflow: hidden;
-            color: white;
-        }
-
-        .btn-startGame {
-            position: absolute;
-            width: 13%;
-            height: 50%;
-            left: 7%;
-            top: 30%;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
-        }
-
-        .btn-startGame:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .btn-giveUp {
-            position: absolute;
-            width: 13%;
-            height: 50%;
-            right: 7%;
-            top: 30%;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #ff0000;
-            border: 1px solid #ff0000;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
-        }
-
-        .btn-giveUp:hover {
-            background-color: #ff0000;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .match-info {
-            position: relative;
-            height: 30%;
-            width: 100%;
-            word-spacing: 30px;
-            overflow: auto;
-            justify-content: center;
-            margin-bottom: 1%;
-            transition: opacity 0.9s;
-            transition: width 1s, height 1s;
-        }
-
-        .match-info:hover {
-            height: 100%;
-            top: 0%;
-            transition: opacity 0.3s;
-            transition: width 1s, height 1s;
-        }
-
-
-
-
-
-
-        .playerOne-N {
-            position: absolute;
-            width: 20%;
-            height: 100%;
-            left: 25%;
-            text-align: right;
-            line-height: 2;
-
-            font-size: 7vh;
-            font-family: 'Courier New', monospace;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .playerTwo-N {
-            position: absolute;
-            width: 20%;
-            height: 100%;
-            left: 55%;
-            text-align: left;
-            line-height: 2;
-
-            font-size: 7vh;
-            font-family: 'Courier New', monospace;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .VS-logo-N {
-            position: absolute;
-            height: 100%;
-            width: 10%;
-            left: 45%;
-            text-align: center;
-            line-height: 2;
-
-            font-size: 7vh;
-            font-family: 'Courier New', monospace;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -1105,8 +576,7 @@ class WaitingRoom extends Component {
 
 
 
-
-	@media only screen and (min-width: 768px) and (min-height: 524px) {
+	@media only screen and (min-width: 370px){
         .available-space {
             position: absolute;
             right: 0;
@@ -1114,6 +584,7 @@ class WaitingRoom extends Component {
             width: calc(75% - 10px);
             height: calc(90% - 10px);
             background-color: rgb(54, 54, 54);
+            font-family: 'Press Start 2P', sans-serif;
         }
 
         .background-img {
@@ -1128,15 +599,17 @@ class WaitingRoom extends Component {
 
         .rectangle-waitingRoom-T {
             position: absolute;
-            bottom: 10%;
+            bottom: 0;
             width: 50%;
-            height: 80%;
+            height: 90%;
             left: 25%;
             background-color: rgba(200, 200, 200, 0.1);
             box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
             backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
+            white-space: nowrap;
+            font-family: 'Press Start 2P', sans-serif;
         }
 
         .title-waitingRoom-T {
@@ -1147,9 +620,9 @@ class WaitingRoom extends Component {
             right: 15%;
             top: 0%;
             overflow: hidden;
-            
-            font-family: 'Courier New', monospace;
-            font-size: 8vh;
+            white-space: nowrap;
+
+            font-size: 2.5vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -1166,8 +639,7 @@ class WaitingRoom extends Component {
             text-align: center;
             line-height: 2.5;
 
-            font-family: 'Courier New', monospace;
-            font-size: 3vh;
+            font-size: 1.3vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -1204,7 +676,7 @@ class WaitingRoom extends Component {
             align-items: center;
             display: flex;
 
-            font-size: 2vh;
+            font-size: 1vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #00ff00;
             border: 1px solid #00c7d6;
@@ -1260,8 +732,7 @@ class WaitingRoom extends Component {
             top: 25%;
             left: 25%;
 
-            font-family: 'Courier New', monospace;
-            font-size: 2.5vh;
+            font-size: 1.2vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -1338,7 +809,6 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-family: 'Courier New', monospace;
             font-size: 5vh;
             color: white;
             text-shadow: 
@@ -1376,7 +846,6 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-family: 'Courier New', monospace;
             font-size: 5vh;
             color: white;
             text-shadow: 
@@ -1414,7 +883,6 @@ class WaitingRoom extends Component {
             justify-content: center;
             transition: font-size 0.3s;
 
-            font-family: 'Courier New', monospace;
             font-size: 5vh;
             color: #00ff00;
             text-shadow: 
@@ -1438,14 +906,17 @@ class WaitingRoom extends Component {
 
         .btn-startGame {
             position: absolute;
-            width: 13%;
+            width: 8%;
             height: 50%;
-            left: 7%;
+            left: 3%;
             top: 30%;
             justify-content: center;
             align-items: center;
             display: flex;
+            white-space: nowrap;
+            overflow: hidden;
 
+            font-size: 1vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #00ff00;
             border: 1px solid #00ff00;
@@ -1461,14 +932,17 @@ class WaitingRoom extends Component {
 
         .btn-giveUp {
             position: absolute;
-            width: 13%;
+            width: 8%;
             height: 50%;
-            right: 7%;
+            right: 3%;
             top: 30%;
             justify-content: center;
             align-items: center;
             display: flex;
+            white-space: nowrap;
+            overflow: hidden;
 
+            font-size: 0.8vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #ff0000;
             border: 1px solid #ff0000;
@@ -1510,12 +984,11 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 20%;
             height: 100%;
-            left: 25%;
+            left: 15%;
             text-align: right;
             line-height: 2;
 
-            font-size: 7vh;
-            font-family: 'Courier New', monospace;
+            font-size: 2.5vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -1527,12 +1000,11 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 20%;
             height: 100%;
-            left: 55%;
+            left: 58%;
             text-align: left;
             line-height: 2;
 
-            font-size: 7vh;
-            font-family: 'Courier New', monospace;
+            font-size: 2.5vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -1548,8 +1020,7 @@ class WaitingRoom extends Component {
             text-align: center;
             line-height: 2;
 
-            font-size: 7vh;
-            font-family: 'Courier New', monospace;
+            font-size: 3vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
