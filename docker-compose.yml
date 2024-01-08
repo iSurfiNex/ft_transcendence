@@ -41,6 +41,19 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+  alertmanager:
+    container_name: alertmanager
+    build: ./alertmanager
+    image: alertmanager
+    volumes:
+      - prometheus:/etc/alertmanager
+    ports:
+      - '9093:9093'
+    networks:
+      - ft_transcendence
+    env_file:
+      - .env
+    restart: unless-stopped
   grafana:
     container_name: grafana
     build: ./grafana
