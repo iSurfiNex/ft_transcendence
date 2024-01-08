@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2023/12/04 14:33:31 by tlarraze         ###   ########.fr        #
+#    Updated: 2024/01/04 15:20:59 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,13 +48,13 @@ def update_jfile(jfile, jfile2):
 jfile = {
 	"paddleL": {"x": 10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"paddleR": {"x": -10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
-	"ball": {"x": 0, "y": 0, "z": 0, "color": "l", "s": 0.1}
+	"ball": {"x": 0, "y": 0, "z": 0, "color": "n", "s": 0.1}
 }
 
 users = set()
 
 async def send_pos_to_all(websocket, jfile):
-	
+
 	while True:
 		# Send the jfile data to all connected clients
 		jfile["ball"]["y"] = game_phy.engine.ball.p.y	# Need to be fixed

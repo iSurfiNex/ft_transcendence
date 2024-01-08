@@ -12,8 +12,11 @@
   "dependencies": {
     "asyncio": "^0.0.2",
     "browser-sync": "^2.23.7",
+    "esm": "^3.2.25",
     "http-server": "^14.1.1",
     "three": "^0.158.0",
-    "three-gltf-loader": "^1.111.0"
+    "three-bmfont-text": "^3.0.1",
+    "three-gltf-loader": "^1.111.0",
+    "three-text2d": "^0.5.3"
   }
 }

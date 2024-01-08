@@ -11,7 +11,7 @@ from pong.test.draw import draw_contours, draw_arrow, draw_obstacles
 W, H = 1000, 900
 WHITE = (255, 255, 255)
 GREY = (150, 150, 150)
-BALL_RADIUS = 10
+BALL_RADIUS = 20
 PAD_W, PAD_H = 20, 120
 FPS = 60
 PAD_SHIFT = 50
@@ -24,13 +24,6 @@ ball_reset_pos = Vec(0, 0)
 d = Vec(6, 5).normalized
 ball = Ball(pos=ball_reset_pos, speed=100, radius=10, direction=d)
 
-
-wall_contours = [
-	(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
-	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2  + W / 2, -BALL_RADIUS + H / 2),
-	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
-	(PAD_SHIFT + BALL_RADIUS + PAD_W / 2- W / 2, BALL_RADIUS - H / 2),
-]
 
 class PongBackend:
 	def __init__(self):
@@ -60,3 +53,11 @@ class PongBackend:
 		FPS=60
 		delta = 1 / FPS
 		self.engine.update(delta)
+
+
+wall_contours = [
+	(PAD_SHIFT + BALL_RADIUS  + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
+	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2  + W / 2, -BALL_RADIUS + H / 2),
+	(- PAD_SHIFT - BALL_RADIUS - PAD_W / 2 +W / 2, BALL_RADIUS - H / 2),
+	(PAD_SHIFT + BALL_RADIUS + PAD_W / 2- W / 2, BALL_RADIUS - H / 2),
+]

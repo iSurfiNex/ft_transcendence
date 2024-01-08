@@ -2,10 +2,13 @@ import * as THREE from 'three';
 import './node_modules/three/src/geometries/SphereGeometry.js';
 import './node_modules/three/src/lights/Light.js';
 import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-
+//import { MeshText2D } from 'three-text2d'
+//import	'./node_modules/three-text2d/src/index.js'
+//import { MeshText2D, textAlign } from './node_modules/three-text2d/dist/three-text2d.js';
+//////////////si on part sur un match avec un temps definis, se serai cool d'avoir une prolongation en cas d'egaliter et de mettre la ball couleur gold ?
 	let i = 0.00;
 	let ball;
-	let paint_z = 1;
+	let paint_z = -50;
 	let time = (new Date().getTime());
 	
 	// Set up scene
@@ -20,9 +23,13 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 	renderer.outputColorSpace = THREE.SRGBColorSpace;
 	document.body.appendChild(renderer.domElement);
 	
-	const light = new THREE.DirectionalLight(0x00fff7, 100);
+//	const textMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+//	const textMesh = new  TEXT.MeshText2D();
+//	scene.add(textMesh);
+
+	const light = new THREE.DirectionalLight(0xffffff, 10);
 	const geometry_ligne = new THREE.BoxGeometry(2, 1000, 1);
-	const geometry_paddle = new THREE.BoxGeometry(20, 100, 20, 5, 5, 5); 
+	const geometry_paddle = new THREE.BoxGeometry(10, 150, 20, 5, 5, 5); 
 	const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
 	const material_paddleR = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
 	const material_paint_L = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
@@ -194,7 +201,7 @@ renderer.render(scene, camera);
 			{
 				scale = Math.random() * 100 % 1.5;
 				time = actual_time.getTime();
-				if (jfile["ball"]['color'] == 'l')
+				if (jfile["ball"]['color'] == 'l' || ball.position.x < jfile['ball']['x'])
 				{
 					light.color.set(0xb50202);
 					light.intensity = 10;
@@ -209,8 +216,8 @@ renderer.render(scene, camera);
 				paint.position.x = ball.position.x + Math.round(Math.random() * 100 % 15);
 				paint.position.y = ball.position.y + Math.round(Math.random() * 100 % 15);
 				paint.position.z = paint_z;
-				paint.scale.set(scale, scale, scale);
-				//paint.scale(Math.round(Math.random() * 100 % 25) + 5, 128)
+				paint_z += 0.01;
+				paint.scale.set(scale, scale);
 				paint.material.opacity = Math.random();
 				scene.add(paint);
 				console.log(scene.children.length)
