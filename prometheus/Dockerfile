@@ -10,6 +10,7 @@ RUN mkdir -p /etc/prometheus/
 RUN mkdir -p /prometheus
 
 COPY prometheus.yml /etc/prometheus/
+COPY alertmanager.yml /etc/prometheus/
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
