@@ -67,7 +67,9 @@ class Game(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     ia = models.BooleanField(default=False)
-
+    #power-ups = models.BooleanField(default=False)
+    #private = models.BooleanField(default=False)
+    
     def serialize(self):
         return {
             "id": self.id,

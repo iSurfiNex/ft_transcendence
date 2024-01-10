@@ -3,13 +3,19 @@ import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongCreateGame extends Component {
+	//onSwitchChange(event) {this.shadowRoot.getElementById("input-players").hidden = false;}
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<div class="available-space">
 		<div class="create-game">
-			<div class="top-bar"><span class="title">Game Editor</span></div>
+			<div class="top-bar"><span class="title">{language.GameEditor}</span></div>
 			<div class="options-list"> 
 				
+				<div class="option">
+					<input class="input-score" id="max-score" type="number" min="1" max="100" step="1">
+					<span class="mode">Max Score</span>
+				</div>
+
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
@@ -17,7 +23,7 @@ class PongCreateGame extends Component {
         				    <span class="slider"></span>
         				</label>
 					</span>	
-					<span class="mode">Power-up</span>
+					<span class="mode">{language.PowerUp}</span>
 				</div> 
 				
 				<div class="option"> 
@@ -27,34 +33,42 @@ class PongCreateGame extends Component {
         				    <span class="slider"></span>
         				</label>
 					</span>
-					<span class="mode">Private game</span>
+					<span class="mode">{language.PrivateGame}</span>
+				</div>
+
+				<div class="option"> 
+					<span class="switch">
+        				<label class="slider">
+        				    <input type="checkbox" id="toggle-IA">
+        				    <span class="slider"></span>
+        				</label>
+					</span>
+					<span class="mode">IA</span>
 				</div>
 				
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-Tournament">
+        				    <input type="checkbox" id="toggle-Tournament" @change="this.toggleTournament()">
         				    <span class="slider"></span>
         				</label>
 					</span>	
-					<span class="mode">Tournament</span>
+					<span class="mode">{language.Tournament}</span>
 				</div>
-				<div class="nb-players" hidden>
-					Size:
-					<input class="input-players" type="number" min="4" max="100" step="2">
-				</div>
-
-				<div class="button-space"> 
-					<button class="btn create-button" @click="this.createGame()">Create</button>
-					<button class="btn cancel-button" @click="this.cancelGame()">Cancel</button>
-				</div>
-			
 			</div>
+			
+			<div class="bottom-bar">
+				<input class="input-players" id="player-count" placeholder="number of players" type="number" min="4" max="100" step="2" hidden>
+				<div class="button-space"> 
+					<button class="btn create-button" @click="this.createGame()">{language.Create}</button>
+					<button class="btn cancel-button" @click="this.cancelGame()">{language.Cancel}</button>
+				</div>
+			</div>
+			
 		</div>
-	</div>
+</div>
 `
-//<input class="input-players" type="number" min="4" max="100" step="2">
-
+//@change="this.onSwitchChange(event)"
 
 	static css = css`
 	@keyframes fadeIn {
@@ -258,31 +272,9 @@ class PongCreateGame extends Component {
 
 
 
-	//@media only screen and (max-height: 524px) {
-	//	.available-space {
-	//		position: absolute;
-	//		right: 0;
-	//		bottom: 0;
-	//		width: 100%;
-	//		height: calc(90% - 6px);
-	//		background-color: rgba(255, 255, 255, 0.5);
-	//	}
-//
-	//	.create-game {
-	//		position: absolute;
-	//		bottom: 0;
-	//		left: 25%;
-	//		width: 50%;
-	//		height: calc(100% - 70px);
-	//		background-color: rgb(112, 112, 112);
-	//		overflow: hidden;
-	//		display: flex;
-	//		align-items: center;
-	//	}
-	//}
 
 
-	@media only screen and (min-width: 370px) /*and (min-height: 524px) */{
+	@media only screen and (min-width: 370px){
 		.available-space {
 			position: absolute;
 			right: 0;
@@ -334,11 +326,19 @@ class PongCreateGame extends Component {
 			white-space: nowrap;
 		}
 
+		.bottom-bar {
+			position: absolute;
+			bottom: 0;
+			height: 10%;
+			width: 100%;
+		}
+
 		.options-list {
 			position: absolute;
-			top: 25%;
+			top: 15%;
 			width: 100%;
 			height: 75%;
+			background-color: rgb(86, 86, 86);
 		}
 
 		.option {
@@ -346,16 +346,16 @@ class PongCreateGame extends Component {
 			display: flex;
 			align-items: center;
 			top: 8%;
-			left: 25%;
-			width: 60%;
+			left: 0%;
+			width: 100%;
 			height: 10%;
-			margin-bottom: 6.5%;
+			margin-bottom: 4%;
 			white-space: nowrap;
 		}
 	
 		.mode {
 			position: absolute;
-			left: calc(30% + 10px);
+			left: calc(40% + 10px);
 			font-family: 'Press Start 2P', sans-serif;
 			font-size: 1vw;
 			overflow: hidden; 
@@ -364,12 +364,12 @@ class PongCreateGame extends Component {
 
 		.switch {
     		position: absolute;
-    		left: 5%;
+    		left: 30%;
     		top: 50%;
     		transform: translate(0%, -50%);
     		display: inline-block;
-    		width: 14%;
-    		height: 70%;
+    		width: 7%;
+    		height: 45%;
 			margin-right: 10px;
 		}
 
@@ -396,9 +396,9 @@ class PongCreateGame extends Component {
 		    position: absolute;
 		    content: "";
 		    height: 80%;
-		    width: 40%;
+		    width: 45%;
 		    left: 4px;
-		    bottom: 4px;
+		    bottom: 2.5px;
 		    background-color: white;
 		    -webkit-transition: .4s;
 		    transition: .4s;
@@ -414,17 +414,17 @@ class PongCreateGame extends Component {
 		}
 
 		.switch input:checked + .slider:before {
-		    -webkit-transform: translateX(26px);
-		    -ms-transform: translateX(26px);
-		    transform: translateX(26px);
+		    -webkit-transform: translateX(15px);
+		    -ms-transform: translateX(15px);
+		    transform: translateX(15px);
 		}
 
 		.create-button {
     	    position: absolute;
     	    width: 20%;
-			height: 10%;
-    	    left: 15%;
-			bottom: 10%;
+			height: 60%;
+    	    left: 3%;
+			top: 27%;
     	    align-items: center;
 			white-space: nowrap;
 			overflow: hidden;
@@ -447,9 +447,9 @@ class PongCreateGame extends Component {
 		.cancel-button {
         	position: absolute;
         	width: 20%;
-			height: 10%;
-        	right: 15%;
-			bottom: 10%;
+			height: 60%;
+        	right: 3%;
+			top: 27%;
         	align-items: center;
 			white-space: nowrap;
 			overflow: hidden;
@@ -483,6 +483,25 @@ class PongCreateGame extends Component {
 			color: white;
 
 		}
+
+		.input-players {
+			position: absolute;
+			top: 27%;
+			left: 33%;
+			width: 35%;
+			height: 60%;
+			white-space: nowrap;
+
+			font-family: 'Press Start 2P', sans-serif;
+			font-size: 0.7vw;
+			color: gray;
+		}
+
+		.input-score {
+			position: absolute;
+			left: 30%;
+			width: 7%;
+		}
 	}
 
 
@@ -496,20 +515,72 @@ class PongCreateGame extends Component {
 	//eventListener() {
 	//	this.shadowRoot.addEventListener("change", toggleTournament);
 	//}
-//
-	//toggleTournament() {
-//
-	//}
+
+	toggleTournament() {
+		const switchValue = this.shadowRoot.getElementById("toggle-Tournament").checked;
+
+		if (switchValue === true)
+			this.shadowRoot.getElementById("player-count").hidden = false;
+		
+		else
+			this.shadowRoot.getElementById("player-count").hidden = true;
+	}
+
+	$id(str) {
+		return this.shadowRoot.getElementById(str);
+	}
 
 	createGame() {
-		var switchPowerup = this.shadowRoot.getElementById("toggle-Powerups");
-		var switchPrivate = this.shadowRoot.getElementById("toggle-Private")
-		var switchPrivate = this.shadowRoot.getElementById("toggle-Tounament")
+		//const maxScore = this.shadowRoot.getElementById("max-score").value;
+		//const powerUp = this.shadowRoot.getElementById("toggle-Powerups").checked;
+		//const privateGame = this.shadowRoot.getElementById("toggle-Private").checked;
+		//const IA = this.shadowRoot.getElementById("IA").checked;
+		//const tournament = this.shadowRoot.getElementById("toggle-Tournament").checked;
+ 
+		const currentDatetime = new Date();
+		const formatedDatetime = currentDatetime.toISOString();
 
-		//requete vers db, etc..  mettre la game dans le state 
 
-		console.log(switchPowerup);
-		console.log(switchPrivate);
+		//if (this.shadowRoot.getElementById("toggle-Tournament").checked == true)
+		//{
+		//	const url = 'api/tournaments/';
+		//	nbPlayers = this.shadowRoot.getElementById("player-count");
+		//	const dataToSend = {
+		//	}
+//
+		//}
+		//
+		//else
+		//{	
+		//	const url = 'api/games/';
+		//	const dataToSend = {
+		//		state: 'waiting',
+		//		started_at: formatedDatetime,
+		//		players: state.whoAmI,
+		//		goal_objective: this.shadowRoot.getElementById("max-score").value,
+		//		ia: this.shadowRoot.getElementById("IA").checked,
+		//		//power-ups: this.shadowRoot.getElementById("toggle-Powerups").checked,
+		//		//private: this.shadowRoot.getElementById("toggle-Private").checked, 
+		//	}
+//
+		//	fetch(url, {
+		//		method: 'POST',
+		//		headers: {
+		//			'Content-Type': 'application/json',
+		//		},
+		//		body: JSON.stringify(dataToSend),
+		//	});
+		//	 
+		//	.then(response => {
+		//		if (!response.ok)
+		//			throw new Error('Problem creating Game');
+		//		navigateTo('/play/waiting-room');
+		//	 })
+		//	 
+		//	.catch(error => {console.error(error)})
+		//}
+
+
 		navigateTo('/play/waiting-room');
 		return (false);
 	}
@@ -525,3 +596,15 @@ class PongCreateGame extends Component {
 }
 
 register(PongCreateGame)
+
+
+const dataToSend = {
+	key1: 'value1',
+	key2: 'value2',
+	// ... autres données
+  };
+
+const datatToSend = {
+	value1,
+	value2,
+}

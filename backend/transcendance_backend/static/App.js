@@ -37,8 +37,8 @@ var state_base = {
 		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11, 12], date: '11/11/2023 04:38', countdown: 5 },
 		{ type: 'tournament', id: 2, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15, 16], date: '11/11/2023 04:38', countdown: 5},
 
-		{ type: 'tournament', id: 3, status: 'waiting', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' , countdown: 5},
-		{ type: 'tournament', id: 4, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '', countdown: 5 },
+		{ type: 'tournament', id: 3, status: 'waiting', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' , countdown: -1},
+		{ type: 'tournament', id: 4, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '', countdown: -1},
 	],
 	games: [
 		{ type: 'normal', id: 1, status: 'done', creator: 'rsterin', players: ['rsterin', 'tlarraze'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
@@ -64,7 +64,7 @@ var state_base = {
 		{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	],
-	currentTournament: -1,
+	currentTournament: 2,
 	currentGame: 3,
 	language: undefined,
 
@@ -112,6 +112,15 @@ var state_base = {
 		GoButton: 'START',
 		ByeButton: 'GIVE UP',
 		Start: 'STARTING IN',
+
+		//create-game
+		GameEditor: 'Game Editor',
+		PowerUp: 'Power-Ups',
+		PrivateGame: 'Private game',
+		Tournament: 'Tournament',
+		Size: 'Size:',
+		Create: 'Create',
+		Cancel: 'Cancel'
 	},
 	fr: {
 		// LOGIN
@@ -157,6 +166,15 @@ var state_base = {
 		GoButton: 'GO',
 		ByeButton: 'ABANDON',
 		Start: 'DEBUT DANS',
+
+		//Create-game
+		GameEditor: 'Editeur',
+		PowerUp: 'Power-Ups',
+		PrivateGame: 'Partie privée',
+		Tournament: 'Tournoi',
+		Size: 'Taille:',
+		Create: 'Creer',
+		Cancel: 'Annuler'
 	},
 	de: {
 		// LOGIN
@@ -202,6 +220,15 @@ var state_base = {
 		GoButton: 'GO',
 		ByeButton: 'AUFGEBEN',
 		Start: 'BEGINN IN',
+
+		//Create-game
+		GameEditor: 'Spiel-Editor',
+		PowerUp: 'Power-Ups',
+		PrivateGame: 'Privates Spiel',
+		Tournament: 'Turnier',
+		Size: 'Größe:',
+		Create: 'anlegen',
+		Cancel: 'abbrechen'
 	},
 }
 

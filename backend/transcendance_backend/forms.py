@@ -20,6 +20,8 @@ class GameForm(forms.ModelForm):
             "winner",
             "goal_objective",
             "ia",
+            #"power-ups",
+            #"private",
         ]
 
 

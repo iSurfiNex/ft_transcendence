@@ -91,7 +91,7 @@ class WaitingRoom extends Component {
             bottom: 0;
             width: 100%;
             height: calc(90% - 10px);
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(255, 255, 255, 0.5);
         }
 
         .background-img {
@@ -181,7 +181,7 @@ class WaitingRoom extends Component {
             color: #00ff00;
             border: 1px solid #00c7d6;
             transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
+            opacity: 1;
             backdrop-filter: blur(1px);
         }
 
@@ -478,7 +478,7 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 27%;
             height: 100%;
-            right: 15%;
+            right: 12%;
             text-align: left;
             line-height: 5;
 
@@ -498,7 +498,7 @@ class WaitingRoom extends Component {
             text-align: center;
             line-height: 3;
 
-            font-size: 5vh;
+            font-size: 10vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -538,13 +538,13 @@ class WaitingRoom extends Component {
             cursor: pointer;
             transition: .5s;
             height: 100%;
-            opacity: 0.6;
+            //opacity: 1;
             filter: brightness(100%);
         }
           
         .gallery-N > img:hover {
             width: calc(var(--s)/2);
-            opacity: 1;
+            //opacity: 1;
             filter: brightness(120%);
         }
 
@@ -583,18 +583,8 @@ class WaitingRoom extends Component {
             bottom: 0;
             width: calc(75% - 10px);
             height: calc(90% - 10px);
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(255, 255, 255, 0.5);
             font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .background-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(50%); 
         }
 
         .rectangle-waitingRoom-T {
@@ -603,8 +593,7 @@ class WaitingRoom extends Component {
             width: 50%;
             height: 90%;
             left: 25%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            background-color: rgb(86, 86, 86);
             backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
@@ -621,13 +610,13 @@ class WaitingRoom extends Component {
             top: 0%;
             overflow: hidden;
             white-space: nowrap;
-
+            background-color: rgb(112, 112, 112);
             font-size: 2.5vw;
-            color: #00ff00;
+            color: white;
             text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
             text-align: center;
         }
 
@@ -669,7 +658,7 @@ class WaitingRoom extends Component {
         .btn-startGame-T {
             position: absolute;
             left: 2%;
-            top: 15%;
+            bottom: 0;
             width: 20%;
             height: 70%;
             justify-content: center;
@@ -751,8 +740,7 @@ class WaitingRoom extends Component {
             height: 7%;
             top: 20%;
 
-            font-family: 'Courier New', monospace;
-            font-size: 3vh;
+            font-size: 1vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -809,7 +797,7 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-size: 5vh;
+            font-size: 1vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -823,14 +811,12 @@ class WaitingRoom extends Component {
             max-height: 100%;
             object-fit: cover;
             object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
         } 
 
-        .player-1 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
+        //.player-1 img:hover {
+        //    opacity: 1;
+        //    transition: opacity 0.3s;
+        //}
 
         .player-1 a {
             position: absolute;
@@ -846,7 +832,7 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-size: 5vh;
+            font-size: 1vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -860,14 +846,12 @@ class WaitingRoom extends Component {
             max-height: 100%;
             object-fit: cover;
             object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
         } 
 
-        .player-2 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
+        //.player-2 img:hover {
+        //    opacity: 1;
+        //    transition: opacity 0.3s;
+        //}
 
         .player-2 a {
             position: absolute;
@@ -978,8 +962,6 @@ class WaitingRoom extends Component {
 
 
 
-
-
         .playerOne-N {
             position: absolute;
             width: 20%;
@@ -987,6 +969,7 @@ class WaitingRoom extends Component {
             left: 15%;
             text-align: right;
             line-height: 2;
+            transform: translateY(10px);
 
             font-size: 2.5vw;
             color: white;
@@ -1003,6 +986,7 @@ class WaitingRoom extends Component {
             left: 58%;
             text-align: left;
             line-height: 2;
+            transform: translateY(10px);
 
             font-size: 2.5vw;
             color: white;
@@ -1060,13 +1044,11 @@ class WaitingRoom extends Component {
             cursor: pointer;
             transition: .5s;
             height: 100%;
-            opacity: 0.6;
             filter: brightness(100%);
         }
           
         .gallery-N > img:hover {
             width: calc(var(--s)/2);
-            opacity: 1;
             filter: brightness(120%);
         }
 
