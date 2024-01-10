@@ -62,8 +62,6 @@ services:
       - 3000:3000
     volumes:
       - prometheus:/etc/grafana/provisioning/datasources
-    depends_on:
-      - prometheus
     networks:
       - ft_transcendence
     env_file:

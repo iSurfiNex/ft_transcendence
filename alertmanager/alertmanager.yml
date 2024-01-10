@@ -1,18 +1,16 @@
-route:
-  receiver: 'email-notifications'
-  repeat_interval: 4h
-  group_by: ['severity']
-  group_wait: 10s
-  group_interval: 5m
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'prout@gmail.com'
+  smtp_auth_username: 'prout@gmail.com'
+  smtp_auth_password: 'prout'
+  smtp_require_tls: true
 
+route:
+  group_by: ['alertname']
+  receiver: 'email-notifications'
 
 receivers:
-  - name: 'email-notifications'
-    email_configs:
-      - to: 'prout@gmail.com'
-        from: 'prout@gmail.com'
-        smarthost: 'smtp.gmail.com:465'
-        auth_username: 'prout@gmail.com'
-        auth_password: 'prout'
-        send_resolved: true
-        require_tls: true
+- name: 'email-notifications'
+  email_configs:
+  - to: 'prout@gmail.com'
+    send_resolved: true

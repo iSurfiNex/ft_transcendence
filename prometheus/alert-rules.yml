@@ -2,8 +2,8 @@ groups:
   - name: HighCPU
     rules:
       - alert: HighCPUUsage
-        expr: node_cpu_seconds_total / node_uptime_seconds > 0.05
-        for: 10m
+        expr: avg(irate(node_cpu_seconds_total{mode="idle"}[1m]) * 100) < 100
+        for: 10s
         labels:
           severity: critical
         annotations:

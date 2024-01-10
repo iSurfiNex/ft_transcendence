@@ -18,3 +18,11 @@ datasources:
       database: ${DB_NAME}
       sslmode: disable
     isDefault: false
+
+  - name: Alertmanager
+    type: alertmanager
+    access: proxy
+    url: ${LOCAL_IP}:9093
+    jsonData:
+      implementation: prometheus
+      handleGrafanaManagedAlerts: false

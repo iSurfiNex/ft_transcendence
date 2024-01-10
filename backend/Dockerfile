@@ -9,7 +9,6 @@ RUN apt -y install sudo
 RUN apt -y install systemctl
 RUN apt -y install python3 python3-pip graphviz graphviz-dev
 RUN apt -y install postgresql postgresql-contrib
-RUN apt -y install vim iproute2
 
 RUN rm -rf /var/lib/apt/lists/*
 
