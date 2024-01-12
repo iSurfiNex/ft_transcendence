@@ -9,55 +9,51 @@ class WaitingRoom extends Component {
     <div class="available-space">
         
 
-        <div hidden="{this.IsTournamentWaiting()}">
-            <div class="rectangle-waitingRoom-T">
-                <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
+        
+        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentWaiting()}">
+            <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
                 
-                <div class="player-count">
-                    <a type="button" class="btn btn-startGame-T" hidden="{this.isTournamentCreator()}">START</a>
-                    {this.getPlayerCount()}/{this.getMaxPlayers()}
-                </div>
+            <div class="player-count">
+                <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
+                {this.getPlayerCount()}/4
+            </div>
 
-                <div class="tournament-room" repeat="tournaments" as="tournament"> 
-                    <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
-                        <div class="player-T" repeat="tournament.players" as="player">
-                            <a href="/profile" class="profil-T">
-                                <img src="{this.getPlayerPic(player)}">
-                                <div class="profil-nick-T"> {player} </div>
-                            </a>
-                        </div>
+            <div class="tournament-room" repeat="tournaments" as="tournament"> 
+                <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
+                    <div class="player-T" repeat="tournament.players" as="player">
+                        <a href="/profile" class="profil-T">
+                            <img src="{this.getPlayerPic(player)}">
+                            <div class="profil-nick-T"> {player} </div>
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
 
 
 
-        <div hidden="{this.IsTournamentRunning()}">
-            <div class="rectangle-waitingRoom-T">
+        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentRunning()}">
+            <div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
+            <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
 
-                <div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
-                <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
-
-                <div class="tournament-list" repeat="tournaments" as="tournament">
-                    <div hidden="{this.IsCurrentTournament(tournament.id)}">
-                        <div class="match" repeat="tournament.gamesId" as="matchId"> 
-                            <div class="match-info">
-                                <div class="player-1">
-                                        <img src="{this.playerOnePic(matchId)}">
-                                        <a href="/profile">{this.getPlayerOne(matchId)}</a> 
-                                </div>
-                                <div class="VS-logo"> VS </div>
-                                <div class="player-2">
-                                        <img src="{this.playerTwoPic(matchId)}">
-                                        <a href="/profile">{this.getPlayerTwo(matchId)}</a>
-                                </div> 
+            <div class="tournament-list" repeat="tournaments" as="tournament">
+                <div hidden="{this.IsCurrentTournament(tournament.id)}">
+                    <div class="match" repeat="tournament.gamesId" as="matchId"> 
+                        <div class="match-info">
+                            <div class="player-1">
+                                    <img src="{this.playerOnePic(matchId)}">
+                                    <a href="/profile">{this.getPlayerOne(matchId)}</a> 
                             </div>
+                            <div class="VS-logo"> VS </div>
+                            <div class="player-2">
+                                    <img src="{this.playerTwoPic(matchId)}">
+                                    <a href="/profile">{this.getPlayerTwo(matchId)}</a>
+                            </div> 
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     
 
@@ -92,16 +88,6 @@ class WaitingRoom extends Component {
             width: 100%;
             height: calc(90% - 10px);
             background-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .background-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(50%); 
         }
 
         .rectangle-waitingRoom-T {
@@ -1236,6 +1222,65 @@ class WaitingRoom extends Component {
             return (0);
         return (state.tournaments[state.currentTournament - 1].maxPlayer);
     }
+
+    mixUp(playerList) {
+        return playerList.sort(func() { return Math.random() - 0.5;});
+    }
+
+    startTournament() {
+        const nb_players = state.tournaments[state.currentTournament].players.size;
+        const requiredPlayers = state.tournaments[state.currentTournament].maxPlayer;
+
+        if (nb_players != requiredPlayers)
+        {    
+            console.error("not enought players");
+            return ;
+        }
+
+        var playerList = mixUp(state.tournaments[currentTournament].players);
+        //requete put
+        createTournamentGame(playerList[0], playerList[1]);
+        createTournamentGame(playerList[2], playerList[3]);
+
+        dataToPut = {
+
+        }
+        
+        
+    }
+
+    newGame() {
+		const currentDatetime = new Date();
+		const formatedDatetime = currentDatetime.toISOString();
+
+		const url = 'api/games/';
+		
+		const dataToSend = {
+			state: 'waiting',
+			started_at: formatedDatetime,
+			players: state.whoAmI,
+			goal_objective: this.$id("max-score").value,
+			ia: this.$id("IA").checked,
+			//power-ups: this.$id("toggle-Powerups").checked,
+			//private: this.$id("toggle-Private").checked, 
+		}
+
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(dataToSend),
+		});
+		.then(response => {
+			if (!response.ok)
+				throw new Error('Problem creating Game');
+			navigateTo('/play/waiting-room');
+		 })
+		.catch(error => {console.error(error)})
+	}
+
+
 }
 
 register(WaitingRoom)

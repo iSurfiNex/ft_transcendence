@@ -49,7 +49,7 @@ class PongCreateGame extends Component {
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-Tournament" @change="this.toggleTournament()">
+        				    <input type="checkbox" id="toggle-Tournament">
         				    <span class="slider"></span>
         				</label>
 					</span>	
@@ -58,7 +58,6 @@ class PongCreateGame extends Component {
 			</div>
 			
 			<div class="bottom-bar">
-				<input class="input-players" id="player-count" placeholder="number of players" type="number" min="4" max="100" step="2" hidden>
 				<div class="button-space"> 
 					<button class="btn create-button" @click="this.createGame()">{language.Create}</button>
 					<button class="btn cancel-button" @click="this.cancelGame()">{language.Cancel}</button>
@@ -68,6 +67,8 @@ class PongCreateGame extends Component {
 		</div>
 </div>
 `
+//<input class="input-players" id="player-count" placeholder="number of players" type="number" min="4" max="100" step="2" hidden>
+
 //@change="this.onSwitchChange(event)"
 
 	static css = css`
@@ -339,6 +340,7 @@ class PongCreateGame extends Component {
 			width: 100%;
 			height: 75%;
 			background-color: rgb(86, 86, 86);
+			overflow: auto;
 		}
 
 		.option {
@@ -501,9 +503,14 @@ class PongCreateGame extends Component {
 			position: absolute;
 			left: 30%;
 			width: 7%;
+			height: 55%;
 		}
 	}
 
+	::-webkit-scrollbar {
+		width: 0;
+		background: transparent;
+	}
 
 
 `
@@ -516,74 +523,83 @@ class PongCreateGame extends Component {
 	//	this.shadowRoot.addEventListener("change", toggleTournament);
 	//}
 
-	toggleTournament() {
-		const switchValue = this.shadowRoot.getElementById("toggle-Tournament").checked;
-
-		if (switchValue === true)
-			this.shadowRoot.getElementById("player-count").hidden = false;
-		
-		else
-			this.shadowRoot.getElementById("player-count").hidden = true;
-	}
+	//toggleTournament() {
+	//	const switchValue = this.shadowRoot.getElementById("toggle-Tournament").checked;
+//
+	//	if (switchValue === true)
+	//		this.shadowRoot.getElementById("player-count").hidden = false;
+	//	
+	//	else
+	//		this.shadowRoot.getElementById("player-count").hidden = true;
+	//}
 
 	$id(str) {
 		return this.shadowRoot.getElementById(str);
 	}
 
 	createGame() {
-		//const maxScore = this.shadowRoot.getElementById("max-score").value;
-		//const powerUp = this.shadowRoot.getElementById("toggle-Powerups").checked;
-		//const privateGame = this.shadowRoot.getElementById("toggle-Private").checked;
-		//const IA = this.shadowRoot.getElementById("IA").checked;
-		//const tournament = this.shadowRoot.getElementById("toggle-Tournament").checked;
- 
-		const currentDatetime = new Date();
-		const formatedDatetime = currentDatetime.toISOString();
-
-
 		//if (this.shadowRoot.getElementById("toggle-Tournament").checked == true)
-		//{
-		//	const url = 'api/tournaments/';
-		//	nbPlayers = this.shadowRoot.getElementById("player-count");
-		//	const dataToSend = {
-		//	}
-//
-		//}
-		//
+		//	this.newTournament();
 		//else
-		//{	
-		//	const url = 'api/games/';
-		//	const dataToSend = {
-		//		state: 'waiting',
-		//		started_at: formatedDatetime,
-		//		players: state.whoAmI,
-		//		goal_objective: this.shadowRoot.getElementById("max-score").value,
-		//		ia: this.shadowRoot.getElementById("IA").checked,
-		//		//power-ups: this.shadowRoot.getElementById("toggle-Powerups").checked,
-		//		//private: this.shadowRoot.getElementById("toggle-Private").checked, 
-		//	}
-//
-		//	fetch(url, {
-		//		method: 'POST',
-		//		headers: {
-		//			'Content-Type': 'application/json',
-		//		},
-		//		body: JSON.stringify(dataToSend),
-		//	});
-		//	 
-		//	.then(response => {
-		//		if (!response.ok)
-		//			throw new Error('Problem creating Game');
-		//		navigateTo('/play/waiting-room');
-		//	 })
-		//	 
-		//	.catch(error => {console.error(error)})
-		//}
-
+		//	this.newGame();
 
 		navigateTo('/play/waiting-room');
 		return (false);
 	}
+
+	//newGame() {
+	//	const currentDatetime = new Date();
+	//	const formatedDatetime = currentDatetime.toISOString();
+//
+	//	const url = 'api/games/';
+	//	
+	//	const dataToSend = {
+	//		state: 'waiting',
+	//		started_at: formatedDatetime,
+	//		players: state.whoAmI,
+	//		goal_objective: this.$id("max-score").value,
+	//		ia: this.$id("IA").checked,
+	//		//power-ups: this.$id("toggle-Powerups").checked,
+	//		//private: this.$id("toggle-Private").checked, 
+	//	}
+//
+	//	fetch(url, {
+	//		method: 'POST',
+	//		headers: {
+	//			'Content-Type': 'application/json',
+	//		},
+	//		body: JSON.stringify(dataToSend),
+	//	});
+	//	.then(response => {
+	//		if (!response.ok)
+	//			throw new Error('Problem creating Game');
+	//		navigateTo('/play/waiting-room');
+	//	 })
+	//	.catch(error => {console.error(error)})
+	//}
+
+	//newTournament() {
+	//	const url = 'api/tournaments/';
+	//	const dataToSend = {
+	//		created_by: state.whoAmI,
+	//		required_player_number: this.$id("player-count").value,
+	//		players: state.whoAmI,
+	//	}
+//
+	//	fetch(url, {
+	//		method: 'POST',
+	//		headers: {
+	//			'Content-Type': 'application/json',
+	//		},
+	//		body: JSON.stringify(dataToSend),
+	//	});
+	//	.then(response => {
+	//		if (!response.ok)
+	//			throw new Error('Problem creating Tournament');
+	//		navigateTo('/play/waiting-room');
+	//	})
+	//	.catch(error => {console.error(error)})
+	//}
 
 	cancelGame() {
 		navigateTo('/play/pong'); 

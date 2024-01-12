@@ -99,7 +99,8 @@ class Pool(models.Model):
 
 
 class Tournament(models.Model):
-    pools = models.ManyToManyField(Pool, related_name="tournaments", blank=True)
+    #pools = models.ManyToManyField(Pool, related_name="tournaments", blank=True)
+    matches_id = 
     created_by = models.ForeignKey(
         "Player", on_delete=models.CASCADE, related_name="created_tournaments"
     )

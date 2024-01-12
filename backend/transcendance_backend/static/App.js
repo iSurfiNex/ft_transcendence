@@ -64,7 +64,7 @@ var state_base = {
 		{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	],
-	currentTournament: 2,
+	currentTournament: 3,
 	currentGame: 3,
 	language: undefined,
 

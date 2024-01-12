@@ -29,7 +29,8 @@ class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
         fields = [
-            "pools",
+            #"pools",
+            "matches_id",
             "created_by",
             "required_player_number",
             "players",
