@@ -33,7 +33,7 @@ volumes:
     name:   backend
     driver: local
     driver_opts:
-      device: /sgoinfre/goinfre/Perso/rsterin/data/backend
+      device: /sgoinfre/goinfre/Perso/jtoulous/data/backend
       o: bind
       type: none
 

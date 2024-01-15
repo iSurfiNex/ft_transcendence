@@ -8,8 +8,6 @@ class WaitingRoom extends Component {
 	static template = html`
     <div class="available-space">
         
-
-        
         <div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentWaiting()}">
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
                 
@@ -1223,13 +1221,18 @@ class WaitingRoom extends Component {
         return (state.tournaments[state.currentTournament - 1].maxPlayer);
     }
 
-    mixUp(playerList) {
-        return playerList.sort(func() { return Math.random() - 0.5;});
-    }
+	getCSRF() {
+		const token = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('csrftoken='))
+			.split('=')[1];
+		return (token);
+	}
 
     startTournament() {
         const nb_players = state.tournaments[state.currentTournament].players.size;
         const requiredPlayers = state.tournaments[state.currentTournament].maxPlayer;
+        const tokenCSRF = this.getCSRF();
 
         if (nb_players != requiredPlayers)
         {    
@@ -1237,16 +1240,25 @@ class WaitingRoom extends Component {
             return ;
         }
 
-        var playerList = mixUp(state.tournaments[currentTournament].players);
-        //requete put
-        createTournamentGame(playerList[0], playerList[1]);
-        createTournamentGame(playerList[2], playerList[3]);
-
         dataToPut = {
-
+            use = "start-tournament"
         }
-        
-        
+
+    //    fetch("api/tournaments/create_tournament", {
+    //        method: 'PUT',
+    //        headers: {
+    //            'Content-Type': 'application/json',
+	//			'X-CSRFToken': tokenCSRF,
+    //        },
+    //        body: JSON.stringify(dataToPut), 
+    //    })
+    //    .then (response => {
+    //        if (!response.ok)
+	//			throw new Error('Problem starting Tournament');
+    //        return (response.json());	
+    //    })
+    //    .then ()
+    //    .catch(error => {console.error(error)})
     }
 
     newGame() {

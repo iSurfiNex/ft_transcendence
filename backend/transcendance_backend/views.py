@@ -4,9 +4,11 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from urllib.parse import urlencode
+from django.shortcuts import get_object_or_404
 import json
 
 import requests
+import random
 
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
@@ -59,40 +61,98 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
             except json.JSONDecodeError as e:
                 return JsonResponse({"errors": str(e)}, status=400)
 
-            def put(self, request, id):
-                try:
-                    player = model.objects.get(id=id)
-                    put_data = json.loads(request.body)
-                    # Merge the current player attribute with the put data
-                    updated_player_data = player.__dict__ | put_data
-                    # By giving the instance, we prevent running into "already exist" validation error
-                    form = modelForm(updated_player_data, instance=player)
-                    if not form.is_valid():
-                        return JsonResponse({"errors": form.errors})
-                    for key, value in form.cleaned_data.items():
-                        setattr(player, key, value)
-                        player.save()
-                        updated_player = model.objects.get(id=player.id)
-                        response = updated_player.serialize()
-                        return JsonResponse(response, status=200)
-                except model.DoesNotExist:
-                    return JsonResponse({"errors": f"{name} not found"}, status=404)
-                except IntegrityError as e:
-                    return JsonResponse({"errors": str(e)}, status=400)
-                except KeyError:
-                    return JsonResponse({"errors": "Invalid data"}, status=400)
-                except json.JSONDecodeError as e:
-                    return JsonResponse({"errors": str(e)}, status=400)
+        def put(self, request, id):
+            try:
+                player = model.objects.get(id=id)
+                put_data = json.loads(request.body)
+                # Merge the current player attribute with the put data
+                updated_player_data = player.__dict__ | put_data
+                # By giving the instance, we prevent running into "already exist" validation error
+                form = modelForm(updated_player_data, instance=player)
+                if not form.is_valid():
+                    return JsonResponse({"errors": form.errors})
+                for key, value in form.cleaned_data.items():
+                    setattr(player, key, value)
+                    player.save()
+                    updated_player = model.objects.get(id=player.id)
+                    response = updated_player.serialize()
+                    return JsonResponse(response, status=200)
+            except model.DoesNotExist:
+                return JsonResponse({"errors": f"{name} not found"}, status=404)
+            except IntegrityError as e:
+                return JsonResponse({"errors": str(e)}, status=400)
+            except KeyError:
+                return JsonResponse({"errors": "Invalid data"}, status=400)
+            except json.JSONDecodeError as e:
+                return JsonResponse({"errors": str(e)}, status=400)
 
-                def delete(self, request, id):
-                    try:
-                        player = model.objects.get(id=id)
-                        player.delete()
-                        return JsonResponse({}, status=204)
-                    except model.DoesNotExist:
-                        return JsonResponse({"errors": f"{name} not found"}, status=404)
+        def delete(self, request, id):
+            try:
+                player = model.objects.get(id=id)
+                player.delete()
+                return JsonResponse({}, status=204)
+            except model.DoesNotExist:
+                return JsonResponse({"errors": f"{name} not found"}, status=404)
 
     return EndpointView
+
+@csrf_exempt
+class CreateTournamentView(View):
+    def post(self, request):    
+        try:
+            data = json.loads(request.body)
+
+            game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'])
+            game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'])
+            player = get_object_or_404(Player, name=data['created_by'])
+
+            tournament = Tournament.objects.create(created_by=data['created_by']) 
+            tournament.games.add(game1, game2)
+            tournament.players.add(player)
+            response = tournament.serialize()
+            return JsonResponse(response, status=200)
+
+        except KeyError:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
+        except Http404:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
+    
+    def put(self, request, id):
+        try:
+            data = json.loads(request.body)
+            tournament = get_object_or_404(Tournament, id=id)
+            
+            if (data["use"] == "start-tournament"):
+                players = list(tournament.players.all())
+                random.shuffle(players)
+                #METTRE A JOUR LES DEUX GAME AVEC LE TIRAGE AU SORT DJA EFFECTUER
+
+            elif (data["use"] == "add-player"):
+                new_player = get_object_or_404(Player, name=data['name'])
+                tournament.players.add(new_player)
+                
+            response = tournament.serialize()
+            return response
+
+        except KeyError:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
+        except Http404:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
+
+    def delete(self, request, id):
+        try:
+            data = json.loads(request.body)
+            tournament = get_object_or_404(Tournament, id=id)
+            gone_player = get_object_or_404(Player, name=data['name'])
+            
+            tournament.players.remove(gone_player)
+            response = tournament.serialize()
+            return response 
+        
+        except KeyError:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
+        except Http404:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
 
 
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")

@@ -17,13 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
-from .views import PlayerView, TournamentView, GameView, RequestLogin
+from .views import PlayerView, TournamentView, GameView, RequestLogin, CreateTournamentView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/players/", PlayerView.as_view(), name="player-list"),
     path("api/players/<int:id>/", PlayerView.as_view(), name="player-detail"),
     path("api/tournaments/", TournamentView.as_view(), name="tournament-list"),
+    path("api/tournaments/create-tournament/", CreateTournamentView.as_view(), name="create-tournament"),
     path(
         "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
     ),
@@ -32,5 +33,7 @@ urlpatterns = [
     ),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
+    
     re_path(r"^.*", TemplateView.as_view(template_name="index.html")),
+
 ]

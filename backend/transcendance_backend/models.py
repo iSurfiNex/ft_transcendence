@@ -67,7 +67,7 @@ class Game(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     ia = models.BooleanField(default=False)
-    #power-ups = models.BooleanField(default=False)
+    power_ups = models.BooleanField(default=False)
     #private = models.BooleanField(default=False)
     
     def serialize(self):
@@ -88,19 +88,19 @@ class Game(models.Model):
         }
 
 
-class Pool(models.Model):
-    tournament = models.ForeignKey(
-        "Tournament", on_delete=models.CASCADE, related_name="tournaments"
-    )
-    games = models.ManyToManyField(Game)
-
-    def serialize(self):
-        return {"id": self.id, "games": [game.serialize() for game in self.games.all()]}
+#class Pool(models.Model):
+#    tournament = models.ForeignKey(
+#        "Tournament", on_delete=models.CASCADE, related_name="tournaments"
+#    )
+#    games = models.ManyToManyField(Game)
+#
+#    def serialize(self):
+#        return {"id": self.id, "games": [game.serialize() for game in self.games.all()]}
 
 
 class Tournament(models.Model):
     #pools = models.ManyToManyField(Pool, related_name="tournaments", blank=True)
-    matches_id = 
+    games = models.ManyToManyField(Game, related_name="Game", blank=True)
     created_by = models.ForeignKey(
         "Player", on_delete=models.CASCADE, related_name="created_tournaments"
     )
@@ -113,7 +113,7 @@ class Tournament(models.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "pools": [pool.serialize() for pool in self.pools.all()],
+            "games": [game.serialize() for game in self.game.all()],
             "created_by": self.created_by.serialize_summary(),
             "created_at": self.created_at,
             "players": [player.serialize_summary() for player in self.players.all()],

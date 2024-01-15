@@ -20,8 +20,7 @@ class GameForm(forms.ModelForm):
             "winner",
             "goal_objective",
             "ia",
-            #"power-ups",
-            #"private",
+            "power_ups",
         ]
 
 
@@ -30,7 +29,7 @@ class TournamentForm(forms.ModelForm):
         model = Tournament
         fields = [
             #"pools",
-            "matches_id",
+            "games",
             "created_by",
             "required_player_number",
             "players",

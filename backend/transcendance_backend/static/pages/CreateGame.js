@@ -12,7 +12,7 @@ class PongCreateGame extends Component {
 			<div class="options-list"> 
 				
 				<div class="option">
-					<input class="input-score" id="max-score" type="number" min="1" max="100" step="1">
+					<input class="input-score" id="max-score" type="number" min="1" max="100" step="1" value="10">
 					<span class="mode">Max Score</span>
 				</div>
 
@@ -26,15 +26,6 @@ class PongCreateGame extends Component {
 					<span class="mode">{language.PowerUp}</span>
 				</div> 
 				
-				<div class="option"> 
-					<span class="switch">
-        				<label class="slider">
-        				    <input type="checkbox" id="toggle-Private">
-        				    <span class="slider"></span>
-        				</label>
-					</span>
-					<span class="mode">{language.PrivateGame}</span>
-				</div>
 
 				<div class="option"> 
 					<span class="switch">
@@ -67,9 +58,6 @@ class PongCreateGame extends Component {
 		</div>
 </div>
 `
-//<input class="input-players" id="player-count" placeholder="number of players" type="number" min="4" max="100" step="2" hidden>
-
-//@change="this.onSwitchChange(event)"
 
 	static css = css`
 	@keyframes fadeIn {
@@ -519,87 +507,89 @@ class PongCreateGame extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
-	//eventListener() {
-	//	this.shadowRoot.addEventListener("change", toggleTournament);
-	//}
-
-	//toggleTournament() {
-	//	const switchValue = this.shadowRoot.getElementById("toggle-Tournament").checked;
-//
-	//	if (switchValue === true)
-	//		this.shadowRoot.getElementById("player-count").hidden = false;
-	//	
-	//	else
-	//		this.shadowRoot.getElementById("player-count").hidden = true;
-	//}
-
 	$id(str) {
 		return this.shadowRoot.getElementById(str);
 	}
 
-	createGame() {
-		//if (this.shadowRoot.getElementById("toggle-Tournament").checked == true)
-		//	this.newTournament();
-		//else
-		//	this.newGame();
+	getCSRF() {
+		const token = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('csrftoken='))
+			.split('=')[1];
+		return (token);
+	}
 
-		navigateTo('/play/waiting-room');
+	createGame() {
+		if (this.shadowRoot.getElementById("toggle-Tournament").checked == true)
+			this.newTournament();
+		else
+			this.newGame();
 		return (false);
 	}
 
-	//newGame() {
-	//	const currentDatetime = new Date();
-	//	const formatedDatetime = currentDatetime.toISOString();
-//
-	//	const url = 'api/games/';
-	//	
-	//	const dataToSend = {
-	//		state: 'waiting',
-	//		started_at: formatedDatetime,
-	//		players: state.whoAmI,
-	//		goal_objective: this.$id("max-score").value,
-	//		ia: this.$id("IA").checked,
-	//		//power-ups: this.$id("toggle-Powerups").checked,
-	//		//private: this.$id("toggle-Private").checked, 
-	//	}
-//
-	//	fetch(url, {
-	//		method: 'POST',
-	//		headers: {
-	//			'Content-Type': 'application/json',
-	//		},
-	//		body: JSON.stringify(dataToSend),
-	//	});
-	//	.then(response => {
-	//		if (!response.ok)
-	//			throw new Error('Problem creating Game');
-	//		navigateTo('/play/waiting-room');
-	//	 })
-	//	.catch(error => {console.error(error)})
-	//}
+	newGame() {
+		const currentDatetime = new Date();
+		const formatedDatetime = currentDatetime.toISOString();
 
-	//newTournament() {
-	//	const url = 'api/tournaments/';
-	//	const dataToSend = {
-	//		created_by: state.whoAmI,
-	//		required_player_number: this.$id("player-count").value,
-	//		players: state.whoAmI,
-	//	}
-//
-	//	fetch(url, {
-	//		method: 'POST',
-	//		headers: {
-	//			'Content-Type': 'application/json',
-	//		},
-	//		body: JSON.stringify(dataToSend),
-	//	});
-	//	.then(response => {
-	//		if (!response.ok)
-	//			throw new Error('Problem creating Tournament');
-	//		navigateTo('/play/waiting-room');
-	//	})
-	//	.catch(error => {console.error(error)})
-	//}
+		const dataToSend = {
+			state: 'waiting',
+			started_at: formatedDatetime,
+			goal_objective: this.$id("max-score").value,
+			ia: this.$id("IA").checked,
+			power_ups: this.$id("toggle-Powerups").checked,
+		}
+
+		fetch("api/games/", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(dataToSend),
+		})
+		.then(response => {
+			if (!response.ok)
+				throw new Error('Problem creating Game');
+			return (response.json());
+		})
+		.then(data => {
+			state.currentGame = data.id;
+			navigateTo('/play/waiting-room');
+		})
+		.catch(error => {console.error(error)})
+	}
+
+
+
+	newTournament() {
+		
+		const tokenCSRF = this.getCSRF();
+		const dataToSend = {
+			state: "waiting",
+			goal_objective: this.$id("max-score").value,
+			power_ups: this.$id("toggle-Powerups").checked, 
+		}
+
+		fetch("https://localhost:8000/api/tournaments/create_tournament", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': tokenCSRF,
+			},
+			body: JSON.stringify(dataToSend),
+		})
+		.then(response => {
+			if (!response.ok)
+				throw new Error('Problem creating Tournament');
+			return (response.json());	
+		})
+		.then(data => {
+			state.currentTournament = data.id;
+			navigateTo('/play/waiting-room');
+		})
+		.catch(error => {console.error(error)})
+	}	
+
+
 
 	cancelGame() {
 		navigateTo('/play/pong'); 
@@ -612,15 +602,3 @@ class PongCreateGame extends Component {
 }
 
 register(PongCreateGame)
-
-
-const dataToSend = {
-	key1: 'value1',
-	key2: 'value2',
-	// ... autres données
-  };
-
-const datatToSend = {
-	value1,
-	value2,
-}
