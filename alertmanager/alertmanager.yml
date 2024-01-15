@@ -14,3 +14,7 @@ receivers:
   email_configs:
   - to: 'prout@gmail.com'
     send_resolved: true
+
+http_config:
+  tls_config:
+    insecure_skip_verify: true
