@@ -46,7 +46,7 @@ services:
     build: ./alertmanager
     image: alertmanager
     volumes:
-      - prometheus:/etc/alertmanager
+      - alertmanager:/etc/alertmanager
     ports:
       - '9093:9093'
     networks:
@@ -61,7 +61,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - prometheus:/etc/grafana/provisioning/datasources
+      - grafana:/etc/grafana/provisioning/datasources
     networks:
       - ft_transcendence
     env_file:
@@ -81,6 +81,20 @@ volumes:
     driver: local
     driver_opts:
       device: /sgoinfre/goinfre/Perso/rsterin/data/prometheus
+      o: bind
+      type: none
+  grafana:
+    name: grafana
+    driver: local
+    driver_opts:
+      device: /sgoinfre/goinfre/Perso/rsterin/data/grafana
+      o: bind
+      type: none
+  alertmanager:
+    name: alertmanager
+    driver: local
+    driver_opts:
+      device: /sgoinfre/goinfre/Perso/rsterin/data/alertmanager
       o: bind
       type: none
 

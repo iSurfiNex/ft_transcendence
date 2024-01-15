@@ -6,6 +6,8 @@ volumes:
 	@echo "Creating folder for volumes ..."
 	@mkdir -p ${VOLUME_PATH}/backend
 	@mkdir -p ${VOLUME_PATH}/prometheus
+	@mkdir -p ${VOLUME_PATH}/grafana
+	@mkdir -p ${VOLUME_PATH}/alertmanager
 
 up:
 	@echo "Building containers ..."
@@ -21,10 +23,10 @@ down:
 
 clean: down
 	@echo "Deleting folder for volumes ..."
-	-@rm -rf ${VOLUME_PATH}
 
 fclean: clean
 	@docker system prune -af --volumes
+	-@rm -rf ${VOLUME_PATH}
 
 re: fclean all
 
