@@ -41,19 +41,27 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+  alertmanager:
+    container_name: alertmanager
+    build: ./alertmanager
+    image: alertmanager
+    volumes:
+      - prometheus:/etc/alertmanager
+    ports:
+      - '9093:9093'
+    networks:
+      - ft_transcendence
+    env_file:
+      - .env
+    restart: unless-stopped
   grafana:
     container_name: grafana
     build: ./grafana
     image: grafana
     ports:
       - 3000:3000
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
     volumes:
       - prometheus:/etc/grafana/provisioning/datasources
-    depends_on:
-      - prometheus
     networks:
       - ft_transcendence
     env_file:

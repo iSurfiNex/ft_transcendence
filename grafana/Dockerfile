@@ -25,6 +25,9 @@ COPY defaults.ini /usr/share/grafana/conf/
 COPY datasources.yml /usr/share/grafana/conf/provisioning/datasources/
 COPY dashboard.yml /usr/share/grafana/conf/provisioning/dashboards/
 COPY default.json /usr/share/grafana/dashboards/
+COPY notifications.yml /usr/share/grafana/conf/provisioning/alerting/
+
+RUN rm -rf /usr/share/grafana/conf/provisioning/alerting/sample.yaml
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

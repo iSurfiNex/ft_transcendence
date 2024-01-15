@@ -1,0 +1,19 @@
+apiVersion: 1
+
+contactPoints:
+    - orgId: 1
+      name: Discord Webhook
+      receivers:
+        - uid: dbded7b1-8d28-4bb2-89d3-f92fb42ca6d1
+          type: discord
+          settings:
+            url: https://discord.com/api/webhooks/1194694100016976003/quEgtiMviN2906keZYXiv_r56iRmxqHCfkZSYU9OWdgeKV7wpPRqa9iKmTwgDNMEfFSr
+            use_discord_username: true
+          disableResolveMessage: false
+
+policies:
+    - orgId: 1
+      receiver: Discord Webhook
+      group_by:
+        - grafana_folder
+        - alertname

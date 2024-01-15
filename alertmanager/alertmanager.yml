@@ -1,0 +1,20 @@
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'prout@gmail.com'
+  smtp_auth_username: 'prout@gmail.com'
+  smtp_auth_password: 'prout'
+  smtp_require_tls: true
+
+route:
+  group_by: ['alertname']
+  receiver: 'email-notifications'
+
+receivers:
+- name: 'email-notifications'
+  email_configs:
+  - to: 'prout@gmail.com'
+    send_resolved: true
+
+http_config:
+  tls_config:
+    insecure_skip_verify: true
