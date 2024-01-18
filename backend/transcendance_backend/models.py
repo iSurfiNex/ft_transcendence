@@ -67,8 +67,7 @@ class Game(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     ia = models.BooleanField(default=False)
-    power_ups = models.BooleanField(default=False)
-    #private = models.BooleanField(default=False)
+    #power_ups = models.BooleanField(default=False)
     
     def serialize(self):
         return {
@@ -109,6 +108,7 @@ class Tournament(models.Model):
         default=2, validators=[even_value_validator]
     )
     players = models.ManyToManyField(Player, blank=True)
+    #power_ups = models.BooleanField(default=False)
 
     def serialize(self):
         return {
@@ -116,8 +116,9 @@ class Tournament(models.Model):
             "games": [game.serialize() for game in self.game.all()],
             "created_by": self.created_by.serialize_summary(),
             "created_at": self.created_at,
-            "players": [player.serialize_summary() for player in self.players.all()],
             "required_player_number": self.required_player_number,
+            "players": [player.serialize_summary() for player in self.players.all()],
+            #"power_ups": self.power_ups,
         }
 
     def serialize_summary(self):

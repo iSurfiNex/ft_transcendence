@@ -6,8 +6,8 @@ var state_base = {
 	isPlayerListChecked: true,
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
-		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/abella.svg' },
-		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/mia.svg' },
+		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
+		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: 'jtoulous',
@@ -34,8 +34,8 @@ var state_base = {
 		{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' },
 	],
 	tournaments: [
-		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11, 12], date: '11/11/2023 04:38', countdown: 5 },
-		{ type: 'tournament', id: 2, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15, 16], date: '11/11/2023 04:38', countdown: 5},
+		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11], date: '11/11/2023 04:38', countdown: 5 },
+		{ type: 'tournament', id: 2, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15], date: '11/11/2023 04:38', countdown: 5},
 
 		{ type: 'tournament', id: 3, status: 'waiting', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' , countdown: -1},
 		{ type: 'tournament', id: 4, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '', countdown: -1},
@@ -64,7 +64,7 @@ var state_base = {
 		{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	],
-	currentTournament: 3,
+	currentTournament: -1,
 	currentGame: 3,
 	language: undefined,
 

@@ -2,56 +2,59 @@ import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
-    
+//<div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentRunning()}">
+//<div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
+
 class WaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <div class="available-space">
         
-        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentWaiting()}">
+        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournament()}">
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
                 
-            <div class="player-count">
-                <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
-                {this.getPlayerCount()}/4
-            </div>
-
-            <div class="tournament-room" repeat="tournaments" as="tournament"> 
-                <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
-                    <div class="player-T" repeat="tournament.players" as="player">
-                        <a href="/profile" class="profil-T">
-                            <img src="{this.getPlayerPic(player)}">
-                            <div class="profil-nick-T"> {player} </div>
-                        </a>
-                    </div>
+            <div hidden="{this.IsTournamentWaiting()}">
+                <div class="player-count">
+                    <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
+                    {this.getPlayerCount()}/4
                 </div>
-            </div>
-        </div>
 
-
-
-        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentRunning()}">
-            <div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
-            <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
-
-            <div class="tournament-list" repeat="tournaments" as="tournament">
-                <div hidden="{this.IsCurrentTournament(tournament.id)}">
-                    <div class="match" repeat="tournament.gamesId" as="matchId"> 
-                        <div class="match-info">
-                            <div class="player-1">
-                                    <img src="{this.playerOnePic(matchId)}">
-                                    <a href="/profile">{this.getPlayerOne(matchId)}</a> 
-                            </div>
-                            <div class="VS-logo"> VS </div>
-                            <div class="player-2">
-                                    <img src="{this.playerTwoPic(matchId)}">
-                                    <a href="/profile">{this.getPlayerTwo(matchId)}</a>
-                            </div> 
+                <div class="tournament-room" repeat="tournaments" as="tournament"> 
+                    <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
+                        <div class="player-T" repeat="tournament.players" as="player">
+                            <a href="/profile" class="profil-T">
+                                <img src="{this.getPlayerPic(player)}">
+                                <div class="profil-nick-T"> {player} </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
+
+
+            <div hidden="{this.IsTournamentRunning()}">
+                <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
+
+                <div class="tournament-list" repeat="tournaments" as="tournament">
+                    <div hidden="{this.IsCurrentTournament(tournament.id)}">
+                        <div class="match" repeat="tournament.gamesId" as="matchId"> 
+                            <div class="match-info">
+                                <div class="player-1">
+                                        <img src="{this.playerOnePic(matchId)}">
+                                        <a href="/profile">{this.getPlayerOne(matchId)}</a> 
+                                </div>
+                                <div class="VS-logo"> VS </div>
+                                <div class="player-2">
+                                        <img src="{this.playerTwoPic(matchId)}">
+                                        <a href="/profile">{this.getPlayerTwo(matchId)}</a>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
         </div>
     
 
@@ -86,6 +89,8 @@ class WaitingRoom extends Component {
             width: 100%;
             height: calc(90% - 10px);
             background-color: rgba(255, 255, 255, 0.5);
+            font-family: 'Press Start 2P', sans-serif;
+            
         }
 
         .rectangle-waitingRoom-T {
@@ -381,7 +386,9 @@ class WaitingRoom extends Component {
             justify-content: center;
             align-items: center;
             display: flex;
+            overflow: hidden;
 
+            font-size: 2vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #00ff00;
             border: 1px solid #00ff00;
@@ -404,7 +411,9 @@ class WaitingRoom extends Component {
             justify-content: center;
             align-items: center;
             display: flex;
+            overflow: hidden;
 
+            font-size: 2vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #ff0000;
             border: 1px solid #ff0000;
@@ -447,10 +456,11 @@ class WaitingRoom extends Component {
             width: 27%;
             height: 100%;
             left: 15%;
-            text-align: right;
-            line-height: 5;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 3vh;
+            font-size: 3vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -462,11 +472,12 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 27%;
             height: 100%;
-            right: 12%;
-            text-align: left;
-            line-height: 5;
+            left: 57%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 3vh;
+            font-size: 3vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -477,12 +488,13 @@ class WaitingRoom extends Component {
         .VS-logo-N {
             position: absolute;
             height: 100%;
-            width: 10%;
-            left: 45%;
-            text-align: center;
-            line-height: 3;
+            width: 14%;
+            left: 43%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 10vw;
+            font-size: 5vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -688,13 +700,11 @@ class WaitingRoom extends Component {
             max-height: 100%;
             object-fit: cover;
             object-position: center +10%;
-            opacity: 0.7;
-            transition: opacity 0.3s;
+            opacity: 1;
         }
 
         .profil-T:hover {
             height: 450%;
-            opacity: 1;
             transition: all 1s ease;
         }
 
@@ -866,7 +876,7 @@ class WaitingRoom extends Component {
         .nicknames-N {
             position: absolute;
             width: 100%;
-            height: 15%;
+            height: 20%;
             top: 0%;
             overflow: hidden;
             color: white;
@@ -876,8 +886,8 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 8%;
             height: 50%;
-            left: 3%;
-            top: 30%;
+            left: 1%;
+            top: 10%;
             justify-content: center;
             align-items: center;
             display: flex;
@@ -902,8 +912,8 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 8%;
             height: 50%;
-            right: 3%;
-            top: 30%;
+            right: 1%;
+            top: 10%;
             justify-content: center;
             align-items: center;
             display: flex;
@@ -948,12 +958,12 @@ class WaitingRoom extends Component {
 
         .playerOne-N {
             position: absolute;
-            width: 20%;
+            width: 30%;
             height: 100%;
-            left: 15%;
-            text-align: right;
+            left: 12%;
+            text-align: center;
             line-height: 2;
-            transform: translateY(10px);
+            //transform: translateY(10px);
 
             font-size: 2.5vw;
             color: white;
@@ -965,12 +975,12 @@ class WaitingRoom extends Component {
 
         .playerTwo-N {
             position: absolute;
-            width: 20%;
+            width: 30%;
             height: 100%;
             left: 58%;
             text-align: left;
             line-height: 2;
-            transform: translateY(10px);
+            //transform: translateY(10px);
 
             font-size: 2.5vw;
             color: white;
@@ -999,15 +1009,15 @@ class WaitingRoom extends Component {
         .profil-pics-N {
             position: absolute;
             width: 100%;
-            height: 85%;
-            top: 15%;
+            height: 80%;
+            top: 20%;
             display: flex;
             justify-content: center;
         }
 
         .gallery-N {
             --z: 32px;
-            --s: 360px;
+            --s: 440px;
             --g: 8px;
             
             display: grid;
@@ -1164,6 +1174,11 @@ class WaitingRoom extends Component {
         return !(true);
     }
 
+    IsTournament() {
+        if (state.currentTournament == -1)
+            return !(false);
+        return !(true);
+    }
 
     IsNormal() {
         if (state.currentTournament != -1)
@@ -1241,7 +1256,7 @@ class WaitingRoom extends Component {
         }
 
         dataToPut = {
-            use = "start-tournament"
+            use: "start-tournament"
         }
 
     //    fetch("api/tournaments/create_tournament", {
@@ -1283,7 +1298,7 @@ class WaitingRoom extends Component {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(dataToSend),
-		});
+		})
 		.then(response => {
 			if (!response.ok)
 				throw new Error('Problem creating Game');

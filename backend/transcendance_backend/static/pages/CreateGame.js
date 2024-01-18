@@ -6,6 +6,7 @@ class PongCreateGame extends Component {
 	//onSwitchChange(event) {this.shadowRoot.getElementById("input-players").hidden = false;}
 	static sheets = [bootstrapSheet]
 	static template = html`
+	<meta name="csrf-token" content="{% csrf_token %}">
 	<div class="available-space">
 		<div class="create-game">
 			<div class="top-bar"><span class="title">{language.GameEditor}</span></div>
@@ -271,6 +272,7 @@ class PongCreateGame extends Component {
 			width: calc(75% - 10px);
 			height: calc(90% - 10px);
 			background-color: rgba(255, 255, 255, 0.5);
+			
 		}
 
 		.create-game {
@@ -528,52 +530,52 @@ class PongCreateGame extends Component {
 	}
 
 	newGame() {
-		const currentDatetime = new Date();
-		const formatedDatetime = currentDatetime.toISOString();
-
-		const dataToSend = {
-			state: 'waiting',
-			started_at: formatedDatetime,
-			goal_objective: this.$id("max-score").value,
-			ia: this.$id("IA").checked,
-			power_ups: this.$id("toggle-Powerups").checked,
-		}
-
-		fetch("api/games/", {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(dataToSend),
-		})
-		.then(response => {
-			if (!response.ok)
-				throw new Error('Problem creating Game');
-			return (response.json());
-		})
-		.then(data => {
-			state.currentGame = data.id;
+		//const currentDatetime = new Date();
+		//const formatedDatetime = currentDatetime.toISOString();
+//
+		//const dataToSend = {
+		//	state: 'waiting',
+		//	started_at: formatedDatetime,
+		//	goal_objective: this.$id("max-score").value,
+		//	ia: this.$id("IA").checked,
+		//	power_ups: this.$id("toggle-Powerups").checked,
+		//}
+//
+		//fetch("api/games/", {
+		//	method: 'POST',
+		//	headers: {
+		//		'Content-Type': 'application/json',
+		//	},
+		//	body: JSON.stringify(dataToSend),
+		//})
+		//.then(response => {
+		//	if (!response.ok)
+		//		throw new Error('Problem creating Game');
+		//	return (response.json());
+		//})
+		//.then(data => {
+		//	state.currentGame = data.id;
 			navigateTo('/play/waiting-room');
-		})
-		.catch(error => {console.error(error)})
+		//})
+		//.catch(error => {console.error(error)})
 	}
 
 
 
 	newTournament() {
-		
 		const tokenCSRF = this.getCSRF();
+		console.log(tokenCSRF);
 		const dataToSend = {
 			state: "waiting",
 			goal_objective: this.$id("max-score").value,
-			power_ups: this.$id("toggle-Powerups").checked, 
+			//power_ups: this.$id("toggle-Powerups").checked, 
 		}
 
-		fetch("https://localhost:8000/api/tournaments/create_tournament", {
+		fetch("https://localhost:8000/api/tournaments/create-tournament/", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-CSRFToken': tokenCSRF,
+				'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1],
 			},
 			body: JSON.stringify(dataToSend),
 		})

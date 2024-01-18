@@ -96,63 +96,71 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
 
     return EndpointView
 
-@csrf_exempt
+
+#@method_decorator(csrf_exempt, name="dispatch")
 class CreateTournamentView(View):
+    def get(self, request):
+        print("I WAS HERE")
+        return JsonResponse({"message": "GET request received"})
+
     def post(self, request):    
         try:
-            data = json.loads(request.body)
+            print("I WAS HERE")
+            #data = json.loads(request.body)
 
-            game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'])
-            game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'])
-            player = get_object_or_404(Player, name=data['created_by'])
+            #game1 = Game.objects.create(state='waiting')
+            #game2 = Game.objects.create(state='waiting')
+            #player = get_object_or_404(Player, name=data['created_by'])
 
-            tournament = Tournament.objects.create(created_by=data['created_by']) 
-            tournament.games.add(game1, game2)
-            tournament.players.add(player)
-            response = tournament.serialize()
-            return JsonResponse(response, status=200)
+            #tournament = Tournament.objects.create(created_by=data['created_by']) 
+            #tournament.games.add(game1, game2)
+            #tournament.players.add(player)
+            #response = tournament.serialize_summary()
+            #return JsonResponse(response, status=200)
+            return JsonResponse({"message": "POST request received"})
+
 
         except KeyError:
             return JsonResponse({"errors": "Invalid data"}, status=404)
         except Http404:
             return JsonResponse({"errors": "Invalid data"}, status=404)
     
-    def put(self, request, id):
-        try:
-            data = json.loads(request.body)
-            tournament = get_object_or_404(Tournament, id=id)
-            
-            if (data["use"] == "start-tournament"):
-                players = list(tournament.players.all())
-                random.shuffle(players)
-                #METTRE A JOUR LES DEUX GAME AVEC LE TIRAGE AU SORT DJA EFFECTUER
-
-            elif (data["use"] == "add-player"):
-                new_player = get_object_or_404(Player, name=data['name'])
-                tournament.players.add(new_player)
-                
-            response = tournament.serialize()
-            return response
-
-        except KeyError:
-            return JsonResponse({"errors": "Invalid data"}, status=404)
-        except Http404:
-            return JsonResponse({"errors": "Invalid data"}, status=404)
-
-    def delete(self, request, id):
-        try:
-            data = json.loads(request.body)
-            tournament = get_object_or_404(Tournament, id=id)
-            gone_player = get_object_or_404(Player, name=data['name'])
-            
-            tournament.players.remove(gone_player)
-            response = tournament.serialize()
-            return response 
-        
-        except KeyError:
-            return JsonResponse({"errors": "Invalid data"}, status=404)
-        except Http404:
-            return JsonResponse({"errors": "Invalid data"}, status=404)
+    #def put(self, request, id):
+    #    try:
+    #        data = json.loads(request.body)
+    #        tournament = get_object_or_404(Tournament, id=id)
+    #        
+    #        if (data["use"] == "start-tournament"):
+    #            players = list(tournament.players.all())
+    #            random.shuffle(players)
+    #            #METTRE A JOUR LES DEUX GAME AVEC LE TIRAGE AU SORT DJA EFFECTUER
+#
+    #        elif (data["use"] == "add-player"):
+    #            new_player = get_object_or_404(Player, name=data['name'])
+    #            tournament.players.add(new_player)
+    #            
+    #        response = tournament.serialize()
+    #        return response
+#
+    #    except KeyError:
+    #        return JsonResponse({"errors": "Invalid data"}, status=404)
+    #    except Http404:
+    #        return JsonResponse({"errors": "Invalid data"}, status=404)
+#
+    #def delete(self, request, id):
+    #    try:
+    #        data = json.loads(request.body)
+    #        tournament = get_object_or_404(Tournament, id=id)
+    #        gone_player = get_object_or_404(Player, name=data['name'])
+    #        
+    #        tournament.players.remove(gone_player)
+    #        response = tournament.serialize()
+    #        return response 
+    #    
+    #    except KeyError:
+    #        return JsonResponse({"errors": "Invalid data"}, status=404)
+    #    except Http404:
+    #        return JsonResponse({"errors": "Invalid data"}, status=404)
 
 
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")
