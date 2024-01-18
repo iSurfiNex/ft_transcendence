@@ -4,6 +4,7 @@ RUN apt -y update
 RUN apt -y upgrade
 RUN apt -y install nginx
 RUN apt -y install openssl
+
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
