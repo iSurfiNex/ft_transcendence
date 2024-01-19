@@ -28,8 +28,7 @@ class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
         fields = [
-            #"pools", A TEGe?
-            #"status" A AJOUTER
+            "state"
             "games",
             "created_by",
             "required_player_number",

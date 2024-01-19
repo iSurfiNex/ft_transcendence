@@ -98,8 +98,13 @@ class Game(models.Model):
 
 
 class Tournament(models.Model):
-    #pools = models.ManyToManyField(Pool, related_name="tournaments", blank=True)
-    games = models.ManyToManyField(Game, related_name="Game", blank=True)
+    GAME_STATES = (
+        ("waiting", "Waiting"),
+        ("running", "Running"),
+        ("done", "Done"),
+    )
+    state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
+    games = models.ManyToManyField(Game, blank=True)
     created_by = models.ForeignKey(
         "Player", on_delete=models.CASCADE, related_name="created_tournaments"
     )
@@ -113,7 +118,8 @@ class Tournament(models.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "games": [game.serialize() for game in self.game.all()],
+            "state": self.state,
+            "games": [game.serialize() for game in self.games.all()],
             "created_by": self.created_by.serialize_summary(),
             "created_at": self.created_at,
             "required_player_number": self.required_player_number,

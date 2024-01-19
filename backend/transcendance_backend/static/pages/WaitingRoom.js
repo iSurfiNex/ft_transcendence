@@ -8,6 +8,7 @@ import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 class WaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
+    <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
         
         <div class="rectangle-waitingRoom-T" hidden="{this.IsTournament()}">
@@ -1245,35 +1246,37 @@ class WaitingRoom extends Component {
 	}
 
     startTournament() {
-        const nb_players = state.tournaments[state.currentTournament].players.size;
-        const requiredPlayers = state.tournaments[state.currentTournament].maxPlayer;
-        const tokenCSRF = this.getCSRF();
-
-        if (nb_players != requiredPlayers)
-        {    
-            console.error("not enought players");
-            return ;
-        }
-
-        dataToPut = {
-            use: "start-tournament"
-        }
-
-    //    fetch("api/tournaments/create_tournament", {
-    //        method: 'PUT',
-    //        headers: {
-    //            'Content-Type': 'application/json',
-	//			'X-CSRFToken': tokenCSRF,
-    //        },
-    //        body: JSON.stringify(dataToPut), 
-    //    })
-    //    .then (response => {
-    //        if (!response.ok)
-	//			throw new Error('Problem starting Tournament');
-    //        return (response.json());	
-    //    })
-    //    .then ()
-    //    .catch(error => {console.error(error)})
+        //const nb_players = state.tournaments[state.currentTournament].players.size;
+        //const tokenCSRF = this.getCSRF();
+        //const url = "api/tournaments/create_tournament/" + state.currentTournament;
+//
+        //if (nb_players != 4)
+        //{    
+        //    console.error("not enought players");
+        //    return ;
+        //}
+//
+        //dataToPut = {
+        //    use: "start-tournament"
+        //}
+//
+        //fetch(url, {
+        //    method: 'PUT',
+        //    headers: {
+        //        'Content-Type': 'application/json',
+		//		'X-CSRFToken': tokenCSRF,
+        //    },
+        //    body: JSON.stringify(dataToPut), 
+        //})
+        //.then (response => {
+        //    if (!response.ok)
+		//		throw new Error('Problem starting Tournament');
+        //    return (response.json());	
+        //})
+        //.then (data => {
+        //    
+        //})
+        //.catch(error => {console.error(error)})
     }
 
     newGame() {

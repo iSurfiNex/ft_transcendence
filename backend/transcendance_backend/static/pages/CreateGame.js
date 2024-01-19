@@ -568,6 +568,7 @@ class PongCreateGame extends Component {
 		const dataToSend = {
 			state: "waiting",
 			goal_objective: this.$id("max-score").value,
+			created_by: state.whoAmI,
 			//power_ups: this.$id("toggle-Powerups").checked, 
 		}
 
@@ -585,6 +586,7 @@ class PongCreateGame extends Component {
 			return (response.json());	
 		})
 		.then(data => {
+			console.log(data.id);
 			state.currentTournament = data.id;
 			navigateTo('/play/waiting-room');
 		})
