@@ -73,28 +73,28 @@ volumes:
     name: backend
     driver: local
     driver_opts:
-      device: /sgoinfre/goinfre/Perso/jtoulous/data/backend
+      device: ${VOLUME_PATH}/backend
       o: bind
       type: none
   prometheus:
     name: prometheus
     driver: local
     driver_opts:
-      device: /sgoinfre/goinfre/Perso/rsterin/data/prometheus
+      device: ${VOLUME_PATH}/prometheus
       o: bind
       type: none
   grafana:
     name: grafana
     driver: local
     driver_opts:
-      device: /sgoinfre/goinfre/Perso/rsterin/data/grafana
+      device: ${VOLUME_PATH}/grafana
       o: bind
       type: none
   alertmanager:
     name: alertmanager
     driver: local
     driver_opts:
-      device: /sgoinfre/goinfre/Perso/rsterin/data/alertmanager
+      device: ${VOLUME_PATH}/alertmanager
       o: bind
       type: none
 
