@@ -67,7 +67,7 @@ class Game(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     ia = models.BooleanField(default=False)
-    #power_ups = models.BooleanField(default=False)
+    power_ups = models.BooleanField(default=False)
     
     def serialize(self):
         return {
@@ -79,22 +79,13 @@ class Game(models.Model):
             "winner": self.winner,
             "goal_objective": self.goal_objective,
             "ia": self.ia,
+            "power_ups": self.power_ups,
         }
 
     def serialize_summary(self):
         return {
             "id": self.id,
         }
-
-
-#class Pool(models.Model):
-#    tournament = models.ForeignKey(
-#        "Tournament", on_delete=models.CASCADE, related_name="tournaments"
-#    )
-#    games = models.ManyToManyField(Game)
-#
-#    def serialize(self):
-#        return {"id": self.id, "games": [game.serialize() for game in self.games.all()]}
 
 
 class Tournament(models.Model):
@@ -110,10 +101,10 @@ class Tournament(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     required_player_number = models.PositiveIntegerField(
-        default=2, validators=[even_value_validator]
+        default=4, validators=[even_value_validator]
     )
     players = models.ManyToManyField(Player, blank=True)
-    #power_ups = models.BooleanField(default=False)
+    power_ups = models.BooleanField(default=False)
 
     def serialize(self):
         return {
@@ -124,7 +115,7 @@ class Tournament(models.Model):
             "created_at": self.created_at,
             "required_player_number": self.required_player_number,
             "players": [player.serialize_summary() for player in self.players.all()],
-            #"power_ups": self.power_ups,
+            "power_ups": self.power_ups,
         }
 
     def serialize_summary(self):

@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.db.utils import IntegrityError
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -100,12 +100,10 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
 #@method_decorator(csrf_exempt, name="dispatch")
 class CreateTournamentView(View):
     def get(self, request):
-        print("I WAS HERE")
         return JsonResponse({"message": "GET request received"})
 
     def post(self, request):    
         try:
-            print("I WAS HERE")
             data = json.loads(request.body)
 
             game1 = Game.objects.create(state='waiting')
@@ -121,8 +119,8 @@ class CreateTournamentView(View):
 
         except KeyError:
             return JsonResponse({"errors": "Invalid data"}, status=404)
-        except Http404:
-            return JsonResponse({"errors": "Invalid data"}, status=404)
+        #except Http404:
+        #    return JsonResponse({"errors": "Invalid data"}, status=404)
 
 
     def put(self, request, id):
@@ -130,7 +128,7 @@ class CreateTournamentView(View):
             data = json.loads(request.body)
             tournament = get_object_or_404(Tournament, id=id)
             
-            if (data["use"] == "start-tournament"):    
+            if data["use"] == "start-tournament":
                 players = list(tournament.players.all())
                 random.shuffle(players)
                 tournament.games.all()[0].players.add(players[0], players[1])
@@ -138,7 +136,7 @@ class CreateTournamentView(View):
                 tournament.state = "Running"
                 tournament.save()
 
-            elif (data["use"] == "add-player"):
+            elif data["use"] == "add-player":
                 new_player = get_object_or_404(Player, name=data['name'])
                 tournament.players.add(new_player)
                 
@@ -149,7 +147,7 @@ class CreateTournamentView(View):
             return JsonResponse({"errors": "Invalid data"}, status=404)
         except Http404:
             return JsonResponse({"errors": "Invalid data"}, status=404)
-#
+
     #def delete(self, request, id):
     #    try:
     #        data = json.loads(request.body)

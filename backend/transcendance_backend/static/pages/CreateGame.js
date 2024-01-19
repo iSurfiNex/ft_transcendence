@@ -534,7 +534,6 @@ class PongCreateGame extends Component {
 		//const formatedDatetime = currentDatetime.toISOString();
 //
 		//const dataToSend = {
-		//	state: 'waiting',
 		//	started_at: formatedDatetime,
 		//	goal_objective: this.$id("max-score").value,
 		//	ia: this.$id("IA").checked,
@@ -555,7 +554,7 @@ class PongCreateGame extends Component {
 		//})
 		//.then(data => {
 		//	state.currentGame = data.id;
-			navigateTo('/play/waiting-room');
+		//	navigateTo('/play/waiting-room');
 		//})
 		//.catch(error => {console.error(error)})
 	}
@@ -563,20 +562,18 @@ class PongCreateGame extends Component {
 
 
 	newTournament() {
-		const tokenCSRF = this.getCSRF();
-		console.log(tokenCSRF);
 		const dataToSend = {
 			state: "waiting",
 			goal_objective: this.$id("max-score").value,
 			created_by: state.whoAmI,
-			//power_ups: this.$id("toggle-Powerups").checked, 
+			power_ups: this.$id("toggle-Powerups").checked, 
 		}
 
 		fetch("https://localhost:8000/api/tournaments/create-tournament/", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1],
+				'X-CSRFToken': this.getCSRF(),
 			},
 			body: JSON.stringify(dataToSend),
 		})
@@ -586,8 +583,7 @@ class PongCreateGame extends Component {
 			return (response.json());	
 		})
 		.then(data => {
-			console.log(data.id);
-			state.currentTournament = data.id;
+			state.currentTournament = data.id;//PROB: STATE NE CHANGE PAS DE VALEUR
 			navigateTo('/play/waiting-room');
 		})
 		.catch(error => {console.error(error)})

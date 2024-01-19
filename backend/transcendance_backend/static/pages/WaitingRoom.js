@@ -1231,12 +1231,6 @@ class WaitingRoom extends Component {
         return (state.tournaments[state.currentTournament - 1].players.length);
     }
 
-    getMaxPlayers() {
-        if (state.currentTournament == -1)
-            return (0);
-        return (state.tournaments[state.currentTournament - 1].maxPlayer);
-    }
-
 	getCSRF() {
 		const token = document.cookie
 			.split('; ')
@@ -1245,71 +1239,38 @@ class WaitingRoom extends Component {
 		return (token);
 	}
 
-    startTournament() {
-        //const nb_players = state.tournaments[state.currentTournament].players.size;
-        //const tokenCSRF = this.getCSRF();
-        //const url = "api/tournaments/create_tournament/" + state.currentTournament;
+    //startTournament() {
+    //    const nb_players = state.tournaments[state.currentTournament].players.size;
+    //    const url = "api/tournaments/create_tournament/" + state.currentTournament;
 //
-        //if (nb_players != 4)
-        //{    
-        //    console.error("not enought players");
-        //    return ;
-        //}
+    //    if (nb_players != 4)
+    //    {    
+    //        console.error("not enought players");
+    //        return ;
+    //    }
 //
-        //dataToPut = {
-        //    use: "start-tournament"
-        //}
+    //    dataToPut = {
+    //        use: "start-tournament"
+    //    }
 //
-        //fetch(url, {
-        //    method: 'PUT',
-        //    headers: {
-        //        'Content-Type': 'application/json',
-		//		'X-CSRFToken': tokenCSRF,
-        //    },
-        //    body: JSON.stringify(dataToPut), 
-        //})
-        //.then (response => {
-        //    if (!response.ok)
-		//		throw new Error('Problem starting Tournament');
-        //    return (response.json());	
-        //})
-        //.then (data => {
-        //    
-        //})
-        //.catch(error => {console.error(error)})
-    }
-
-    newGame() {
-		const currentDatetime = new Date();
-		const formatedDatetime = currentDatetime.toISOString();
-
-		const url = 'api/games/';
-		
-		const dataToSend = {
-			state: 'waiting',
-			started_at: formatedDatetime,
-			players: state.whoAmI,
-			goal_objective: this.$id("max-score").value,
-			ia: this.$id("IA").checked,
-			//power-ups: this.$id("toggle-Powerups").checked,
-			//private: this.$id("toggle-Private").checked, 
-		}
-
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(dataToSend),
-		})
-		.then(response => {
-			if (!response.ok)
-				throw new Error('Problem creating Game');
-			navigateTo('/play/waiting-room');
-		 })
-		.catch(error => {console.error(error)})
-	}
-
+    //    fetch(url, {
+    //        method: 'PUT',
+    //        headers: {
+    //            'Content-Type': 'application/json',
+	//			'X-CSRFToken': this.getCSRF(),
+    //        },
+    //        body: JSON.stringify(dataToPut), 
+    //    })
+    //    .then (response => {
+    //        if (!response.ok)
+	//			throw new Error('Problem starting Tournament');
+    //        return (response.json());	
+    //    })
+    //    .then (data => {
+    //        state.tournaments[state.currentTournament].status = "running";
+    //    })
+    //    .catch(error => {console.error(error)})
+    //}
 
 }
 
