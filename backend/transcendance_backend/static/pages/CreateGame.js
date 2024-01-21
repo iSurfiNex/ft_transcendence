@@ -530,33 +530,32 @@ class PongCreateGame extends Component {
 	}
 
 	newGame() {
-		//const currentDatetime = new Date();
-		//const formatedDatetime = currentDatetime.toISOString();
-//
-		//const dataToSend = {
-		//	started_at: formatedDatetime,
-		//	goal_objective: this.$id("max-score").value,
-		//	ia: this.$id("IA").checked,
-		//	power_ups: this.$id("toggle-Powerups").checked,
-		//}
-//
-		//fetch("api/games/", {
-		//	method: 'POST',
-		//	headers: {
-		//		'Content-Type': 'application/json',
-		//	},
-		//	body: JSON.stringify(dataToSend),
-		//})
-		//.then(response => {
-		//	if (!response.ok)
-		//		throw new Error('Problem creating Game');
-		//	return (response.json());
-		//})
-		//.then(data => {
-		//	state.currentGame = data.id;
-		//	navigateTo('/play/waiting-room');
-		//})
-		//.catch(error => {console.error(error)})
+		const dataToSend = {
+			goal_objective: this.$id("max-score").value,
+			ia: this.$id("toggle-IA").checked,
+			power_ups: this.$id("toggle-Powerups").checked,
+			created_by: state.whoAmI,
+		}
+
+		fetch("https://localhost:8000/api/create-game/", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': this.getCSRF(),
+			},
+			body: JSON.stringify(dataToSend),
+		})
+		.then(response => {
+			if (!response.ok)
+				throw new Error('Problem creating Game');
+			return (response.json());
+		})
+		.then(data => {
+			console.log(data.id)
+			state.currentGame = data.id;//PROB: STATE NE CHANGE PAS DE VALEUR
+			navigateTo('/play/waiting-room');
+		})
+		.catch(error => {console.error(error)})
 	}
 
 
@@ -569,7 +568,7 @@ class PongCreateGame extends Component {
 			power_ups: this.$id("toggle-Powerups").checked, 
 		}
 
-		fetch("https://localhost:8000/api/tournaments/create-tournament/", {
+		fetch("https://localhost:8000/api/create-tournament/", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -583,6 +582,7 @@ class PongCreateGame extends Component {
 			return (response.json());	
 		})
 		.then(data => {
+			console.log(data.id)
 			state.currentTournament = data.id;//PROB: STATE NE CHANGE PAS DE VALEUR
 			navigateTo('/play/waiting-room');
 		})

@@ -1239,37 +1239,67 @@ class WaitingRoom extends Component {
 		return (token);
 	}
 
-    //startTournament() {
-    //    const nb_players = state.tournaments[state.currentTournament].players.size;
-    //    const url = "api/tournaments/create_tournament/" + state.currentTournament;
+    getGameID(data) {
+        for (const game of data.games)
+        {
+            const players = game.players;
+
+            if (players[0].name == state.whoAmI || players[1].name == state.whoAmI)
+                return (game.id);
+        }
+        return (null);
+    }
+
+    startTournament() {
+        const nb_players = state.tournaments[state.currentTournament].players.length;
+        const url = "https://localhost:8000/api/create-tournament/" + state.currentTournament + "/";
+
+        if (nb_players != 4)
+        {    
+            console.error("not enought players");
+            return ;
+        }
+
+        const dataToPut = {
+            use: "start-tournament",
+        }
+
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+				'X-CSRFToken': this.getCSRF(),
+            },
+            body: JSON.stringify(dataToPut), 
+        })
+        .then (response => {
+            if (!response.ok)
+				throw new Error('Problem starting Tournament');
+            return (response.json());	
+        })
+        .then (data => {
+            state.tournaments[state.currentTournament].status = "running";//PROB STATE
+            state.currentGame = getGameID(data);
+        })
+        .catch(error => {console.error(error)})
+    }
+
+    //startGame() {
+    //    const nb_players = state.games[state.currentGame].players.lenght;
+    //    const url = "https://localhost:8000/api/create-tournament/" + state.currentTournament + "/";
+	//	const currentDatetime = new Date();
+	//	const formatedDatetime = currentDatetime.toISOString();
 //
-    //    if (nb_players != 4)
+    //    if (nb_players != 2)
     //    {    
     //        console.error("not enought players");
     //        return ;
     //    }
 //
-    //    dataToPut = {
-    //        use: "start-tournament"
+    //    const dataToPut = {
+    //        state: "running",
+    //        started_at: formatedDatetime,
     //    }
-//
-    //    fetch(url, {
-    //        method: 'PUT',
-    //        headers: {
-    //            'Content-Type': 'application/json',
-	//			'X-CSRFToken': this.getCSRF(),
-    //        },
-    //        body: JSON.stringify(dataToPut), 
-    //    })
-    //    .then (response => {
-    //        if (!response.ok)
-	//			throw new Error('Problem starting Tournament');
-    //        return (response.json());	
-    //    })
-    //    .then (data => {
-    //        state.tournaments[state.currentTournament].status = "running";
-    //    })
-    //    .catch(error => {console.error(error)})
     //}
 
 }
