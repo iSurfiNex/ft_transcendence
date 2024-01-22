@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2024/01/04 15:20:59 by tlarraze         ###   ########.fr        #
+#    Updated: 2024/01/22 15:49:32 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,16 @@ def move_paddle_ball(jfile):
 		jfile["paddleR"]["y"] += 5
 	if jfile["paddleR"]["down"] == 1:
 		jfile["paddleR"]["y"] -= 5
+	if jfile["bonus"]['state'] == 0:
+		jfile["bonus"]['state'] = 1
+	if jfile["bonus"]['state'] == 1 and jfile["bonus"]['way'] == "d":
+		jfile["bonus"]['y'] -= 1
+	if jfile["bonus"]['state'] == 1 and jfile["bonus"]['way'] == "u":
+		jfile["bonus"]['y'] += 1
+	if jfile["bonus"]['y'] == -425:
+		jfile["bonus"]['way'] = "u"
+	if jfile["bonus"]['y'] == 425:
+		jfile["bonus"]['way'] = "d"
 	return jfile
 
 def update_jfile(jfile, jfile2):
@@ -48,7 +58,8 @@ def update_jfile(jfile, jfile2):
 jfile = {
 	"paddleL": {"x": 10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"paddleR": {"x": -10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
-	"ball": {"x": 0, "y": 0, "z": 0, "color": "n", "s": 0.1}
+	"ball": {"x": 0, "y": 0, "z": 0, "color": "n", "s": 0.1},
+	"bonus": {"x": 0, "y": 500, "z": 50, "state": 0, "way": "d"}
 }
 
 users = set()

@@ -1,6 +1,8 @@
 import * as THREE from 'three';
+import * as UNIFORMS from '/uniforms.js';
 import './node_modules/three/src/geometries/SphereGeometry.js';
 import './node_modules/three/src/lights/Light.js';
+import './node_modules/three/src/materials/ShaderMaterial.js';
 import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 //import { MeshText2D } from 'three-text2d'
 //import	'./node_modules/three-text2d/src/index.js'
@@ -8,6 +10,7 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 //////////////si on part sur un match avec un temps definis, se serai cool d'avoir une prolongation en cas d'egaliter et de mettre la ball couleur gold ?
 	let i = 0.00;
 	let ball;
+	let bonus;
 	let paint_z = -50;
 	let time = (new Date().getTime());
 	
@@ -28,32 +31,31 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 //	scene.add(textMesh);
 
 	const light = new THREE.DirectionalLight(0xffffff, 10);
-	const geometry_ligne = new THREE.BoxGeometry(2, 1000, 1);
+	const geometry_line = new THREE.BoxGeometry(2, 1000, 1);
 	const geometry_paddle = new THREE.BoxGeometry(10, 150, 20, 5, 5, 5); 
 	const material_paddleL = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
 	const material_paddleR = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
 	const material_paint_L = new THREE.MeshBasicMaterial( {color: 0xb50202} ); 
 	const material_paint_R = new THREE.MeshBasicMaterial( {color: 0x00fff7} ); 
-	const material_ligne = new THREE.MeshBasicMaterial( {color: 0xffffff,opacity:0.1} );
-	const ligne = new THREE.Mesh( geometry_ligne, material_ligne);
-	const paddleL = new THREE.Mesh( geometry_paddle, material_paddleL ); 
-	const paddleR = new THREE.Mesh( geometry_paddle, material_paddleR ); 
+	const material_line = new THREE.MeshBasicMaterial( {color: 0xffffff,opacity:0.1} );
+	const line = new THREE.Mesh( geometry_line, material_line);
+	const paddleL = new THREE.Mesh( geometry_paddle, UNIFORMS.uniform_red ); 
+	const paddleR = new THREE.Mesh( geometry_paddle, UNIFORMS.uniform_blue ); 
 	const paint_geo = new THREE.CircleGeometry(15, 128);
 
 
 	material_paddleL.depthTest = false;
 	material_paddleR.depthTest = false;
-	material_ligne.depthTest = false;
+	material_line.depthTest = false;
 
 	paddleL.renderOrder = 2;
 	paddleR.renderOrder = 1;
-	ligne.renderOrder = 3;
+	line.renderOrder = 3;
 		
 	light.position.set(0, 0, 610);
 	paddleL.position.set(-290, 0, 0);
 	paddleR.position.set(290, 0, 0);
-	ligne.position.set(0, 0, 0);
-	ligne.position.set(0, 0, 0);
+	line.position.set(0, 0, 0);
 
 	// instantiate a loader
 	const loader = new GLTFLoader();
@@ -66,13 +68,44 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 			ball = gltf.scene.children[0];
 			if (ball) {
 				ball.scale.multiplyScalar(20);
-				ball.position.set(0, 0, 600);
-				ball.renderOrder = 4;
+				ball.position.set(0, 0, 0);
+				ball.renderOrder = 10;
 				scene.add(ball);
 			}
 		},
 		(xhr) => {
-			console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+			console.log((xhr.loaded / xhr.total) * 100 + '% loaded of Ball');
+		},
+		(error) => {
+			console.error('Error loading GLTF model', error);
+		}
+	);
+
+	loader.load(
+		'power_up_box.glb',
+		(gltf) => {
+			bonus = gltf.scene.children[0];
+			if (bonus) {
+				// Make the model ignore lights by setting MeshBasicMaterial
+				bonus.traverse((child) => {
+					if (child.isMesh) {
+						const basicMaterial = new THREE.MeshBasicMaterial({
+							map: child.material.map, // You can copy other properties if needed
+							color: 0xffffff, // Set the desired color
+						});
+						child.material = basicMaterial;
+					}
+				});
+	
+				bonus.scale.multiplyScalar(25);
+				bonus.position.set(0, 500, 0);
+				bonus.renderOrder = 15; // Set a higher renderOrder for the bonus
+	
+				scene.add(bonus);
+			}
+		},
+		(xhr) => {
+			console.log((xhr.loaded / xhr.total) * 100 + '% loaded of Bonus');
 		},
 		(error) => {
 			console.error('Error loading GLTF model', error);
@@ -81,7 +114,7 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 
 	scene.add(paddleL);
 	scene.add(paddleR);
-	scene.add(ligne);
+	scene.add(line);
 	scene.add(light);
 
 renderer.render(scene, camera);
@@ -224,17 +257,24 @@ renderer.render(scene, camera);
 			}
 			actual_time = null;
 
-			ball.position.set(jfile['ball']['x'], jfile['ball']['y'], 0);
-			ball.rotation.x += 0.01;
-			ball.rotation.y += 0.01;
+			if (ball)
+			{
+				ball.position.set(jfile['ball']['x'], jfile['ball']['y'], 0);
+				ball.rotation.x += 0.01;
+				ball.rotation.y += 0.01;
+			}			
+		}
+		if (bonus)
+		{
+			bonus.position.set(0, jfile['bonus']['y'], 0);
+			bonus.rotation.z += 0.01;
 		}
 
 		renderer.render(scene, camera);
 
 	}
 		socket.onclose = (event) => {
-			const message = event.data;
 			console.log("DED");
-		};w
+		};
 
 animate();
