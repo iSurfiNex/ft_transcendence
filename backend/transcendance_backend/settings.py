@@ -33,13 +33,15 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost"]
 
-CSRF_TRUSTED_ORIGINS = ["https://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "http://localhost:8000"]
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -148,3 +150,19 @@ TEST_DATABASE_NAME = os.environ.get("TEST_DB_NAME")
 
 # Specify the test database user
 TEST_DATABASE_USER = os.environ.get("TEST_DB_USER")
+
+ASGI_APPLICATION = "transcendance_backend.asgi.application"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}

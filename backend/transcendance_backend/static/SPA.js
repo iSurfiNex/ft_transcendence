@@ -17,6 +17,53 @@ function navigateTo(path) {
 	displayContent(path);
 }
 
+function initializeWS() {
+    //const roomName = 'TOTO'
+    // Replace 'ws://your-socket-url' with the actual WebSocket URL
+const socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            //+ roomName
+            //+ '/'
+        );
+    console.log(socket)
+
+// Event handler for when the connection is opened
+socket.addEventListener('open', (event) => {
+    console.log('WebSocket connection opened:', event);
+});
+
+// Event handler for receiving messages
+socket.addEventListener('message', (event) => {
+    console.log('Received message:', event.data);
+});
+
+// Event handler for when the connection is closed
+socket.addEventListener('close', (event) => {
+    console.log('WebSocket connection closed:', event);
+});
+
+// Event handler for errors
+socket.addEventListener('error', (error) => {
+    console.error('WebSocket error:', error);
+});
+
+// Send a message to the server
+function sendMessage(message) {
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+    } else {
+        console.error('WebSocket not open. Unable to send message.');
+    }
+}
+
+// Example: Send a message after a delay
+setTimeout(() => {
+    sendMessage(JSON.stringify({message:'Hello, WebSocket yooooooo!'}));
+}, 2000);
+}
+
 function displayContent(path) {
 	if (window.state.isLoggedIn && path === "/login/") {
 		navigateTo("/");
@@ -30,8 +77,15 @@ function displayContent(path) {
 	else {
 		Layout();
 
+            console.log("YO")
 		if (path === "/") {
 			displayElement("pong-home");
+		}
+		else if (path === "/start-game") {
+            console.log("START-GAME !")
+            initializeWS()
+            //fetch("https://localhost:3000").then(res => console.log("RES", res)).catch(err => console.log("ERR", err))
+			//displayElement("start-game");
 		}
 		else if (path === "/profile") {
 			displayElement("pong-profile");

@@ -11,7 +11,8 @@ var state_base = {
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: 'jtoulous',
-	isLoggedIn: true,
+        logginError: "",
+	isLoggedIn: false,
 	profiles: [
 		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
@@ -70,11 +71,16 @@ var state_base = {
 
 	en: {
 		// LOGIN
+		email: 'Email',
 		username: 'Username',
 		password: 'Password',
+		confirmPassword: 'Confirm password', // TODO mutliling
 		login: 'Login',
 		register: 'Register',
 		connectionWith: 'Connection with 42',
+                invalidLoginCredentials: 'Invalid login credentials.',// TODO mutlilang
+                usernameAlreadyExist: 'This username already exist.',
+                errUnknown: 'An unexpected error occured.', // TODO mutlilang
 
 		// HOME
 		play: 'PLAY',
@@ -115,6 +121,7 @@ var state_base = {
 	},
 	fr: {
 		// LOGIN
+		email: 'Email',
 		username: 'Nom d\'utilisateur',
 		password: 'Mot de passe',
 		login: 'Se connecter',
@@ -160,6 +167,7 @@ var state_base = {
 	},
 	de: {
 		// LOGIN
+		email: 'Email',
 		username: 'Nutzername',
 		password: 'Passwort',
 		login: 'Anmeldung',
@@ -203,6 +211,11 @@ var state_base = {
 		ByeButton: 'AUFGEBEN',
 		Start: 'BEGINN IN',
 	},
+
+    lang(key) {
+        return state.language[key] || state.language.errUnknown
+    }
+
 }
 
 state_base.language = {...state_base.en}

@@ -8,21 +8,26 @@ class PongLogin extends Component {
 	<div class="login">
 		<div class="input">
 			<div class="login-register">
-				<form class="form-login">
-					<input type="text" placeholder="{language.username}" class="input-field">
-					<input type="password" placeholder="{language.password}" class="input-field">
-					<button id="login-button" class="input-button pushable">
+				<form class="form-login" @submit="this.onLoginFormSubmit(event)">
+					<input name="username" type="text" placeholder="{language.username}" class="input-field">
+					<input name="password" type="password" placeholder="{language.password}" class="input-field">
+					<button id="login-button" class="input-button pushable" type="submit">
 						<span class="front">{language.login}</span>
 					</button>
 				</form>
-				<form class="form-register">
-					<input type="text" placeholder="{language.username}" class="input-field">
-					<input type="password" placeholder="{language.password}" class="input-field">
-					<button id="register-button" class="input-button pushable">
+				<form class="form-register" @submit="this.onRegisterFormSubmit(event)">
+					<input name="email" type="text" placeholder="{language.email}" class="input-field">
+					<input name="username" type="text" placeholder="{language.username}" class="input-field">
+					<input name="password1" type="password" placeholder="{language.password}" class="input-field">
+					<input name="password2" type="password" placeholder="{language.confirmPassword}" class="input-field">
+					<button id="register-button" class="input-button pushable" type="submit">
 						<span class="front">{language.register}</span>
 					</button>
 				</form>
 			</div>
+			<span class="error" hidden="{!logginError}">
+ 				{lang(logginError)}
+			</span>
 			<span class="separator">―――――――――――――――――</span>
 			<button id="pong-button" @click="this.handleClick()" class="pushable">
 				<span class="front">{language.connectionWith}</span>
@@ -70,6 +75,9 @@ class PongLogin extends Component {
 		}
 	}
 
+	.error {
+		color: red;
+	}
 	.login {
 		display: flex;
 		justify-content: center;
@@ -153,6 +161,53 @@ class PongLogin extends Component {
 			})
 		}
 	}
+
+    onLoginFormSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        fetch('/api/login/', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+		if (data.status === "error") {
+            state.logginError = data.message
+        }
+        else {
+            state.logginError = null
+        }
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+        state.logginError = 'errUnknown'
+    });
+    }
+
+    onRegisterFormSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        fetch('/api/register/', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+		console.log(data)
+		if (data.status === "error") {
+            state.logginError = data.message
+        }
+        else {
+            state.logginError = null
+        }
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+        state.logginError = 'errUnknown'
+    });
+    }
 
 	handleClick() {
 		const hostname = encodeURIComponent(window.location.origin + '/login/')
