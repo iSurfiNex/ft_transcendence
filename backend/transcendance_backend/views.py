@@ -322,9 +322,11 @@ GameView = create_rest_api_endpoint(Game, GameForm, "Game")
 #        print("Thread is running...")
 #        time.sleep(1)
 
+import logging
+logger = logging.getLogger(__name__)
 
 def start_game(arg):
-    logging.debug("Debug message")
+    logger.debug("Debug message")
     print("=================starting============")
     return JsonResponse({"hello": "world"}, status=200)
     # class StartGame(View):
