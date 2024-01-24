@@ -12,8 +12,6 @@ class ChatConsumer(WebsocketConsumer):
         print(
             "=================WS CONNECT============",
             "USER: ",
-            self.channel_name,
-            self.user.username,
         )
         self.accept()
 
