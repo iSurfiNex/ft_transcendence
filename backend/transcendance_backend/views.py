@@ -322,58 +322,9 @@ GameView = create_rest_api_endpoint(Game, GameForm, "Game")
 #        print("Thread is running...")
 #        time.sleep(1)
 
-import logging
-
-logger = logging.getLogger(__name__)
-
-from channels.generic.websocket import WebsocketConsumer
-
-
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        # self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
-        self.user = self.scope["user"]
-
-        print(
-            "=================WS CONNECT============",
-            "USER: ",
-            self.channel_name,
-            self.user.username,
-        )
-        self.accept()
-
-    def disconnect(self, close_code):
-        print("=================WS DISCONNECT============")
-        pass
-
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        # if not message.to or not message.content:
-        #    print("==> Chat websocket: Malformed message received")
-
-        print("=================WS RECEIVE============", message)
-        # self.send(text_data=json.dumps({"message": message}))
-
-
-class stateUpdateConsumer(WebsocketConsumer):
-    async def connect(self):
-        try:
-            await self.accept()
-            print("=================WS CONNECT============")
-        except Exception as e:
-            print(f"Error: {e}")
-
-    def disconnect(self, close_code):
-	    print("=================WS DISCONNECT============")
-    
-    def receive(self, json_data):
-        data = json.loads(json_data)
-        print("=================WS RECEIVE============\n", data)
-
 
 def start_game(arg):
-    logger.debug("Debug message")
+    logging.debug("Debug message")
     print("=================starting============")
     return JsonResponse({"hello": "world"}, status=200)
     # class StartGame(View):

@@ -600,7 +600,7 @@ class PongCreateGame extends Component {
 		//})
 		//.catch(error => {console.error(error)})
 
-		const socket = new WebSocket("ws://localhost:8000/ws/chat/");
+		const socket = new WebSocket("ws://localhost:8000/ws/state-update/");
 
 		socket.addEventListener("open", (event) => {
 			console.log("Websocket Connected");

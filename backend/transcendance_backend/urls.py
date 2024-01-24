@@ -17,23 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
+from .consumers import ChatConsumer, StateUpdateConsumer
 from .views import (
     PlayerView,
     TournamentView,
     GameView,
     RequestLogin,
     start_game,
-    ChatConsumer,
     register_user,
     login_user,
     ManageTournamentView,
     ManageGameView,
-    stateUpdateConsumer,
 )
 
 websocket_urlpatterns = [
     # re_path(r"ws/game/(?P<room_id>\w+)/$", ChatConsumer.as_asgi()),
-    re_path("ws/state-update/", stateUpdateConsumer.as_asgi()),
+    re_path("ws/state-update/", StateUpdateConsumer.as_asgi()),
     re_path(r"ws/chat/$", ChatConsumer.as_asgi()),
 ]
 
