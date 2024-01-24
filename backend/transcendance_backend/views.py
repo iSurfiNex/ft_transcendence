@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from urllib.parse import urlencode
 from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
+from http import HTTPStatus
 import json
 
 import requests
@@ -15,23 +16,29 @@ from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
 from typing import Type
 
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
 @require_POST  # Ensure that the view only responds to POST requests
 def login_user(request):
-    # Extract user registration data from the POST request
-    username = request.POST.get("username")
-    password = request.POST.get("password")
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        # Log in the authenticated user
+    form = AuthenticationForm(request, data=request.POST)
+    if form.is_valid():
+        user = form.get_user()
         login(request, user)
-        return JsonResponse({"status": "success"})
+        return JsonResponse({"status": "success!"})
     else:
-        return JsonResponse({"status": "error", "message": "invalidLoginCredentials"})
+        return JsonResponse(
+            {
+                "status": "error",
+                "message": "invalidLoginCredentials",
+            },
+            status=HTTPStatus.FORBIDDEN,
+        )
 
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
@@ -39,17 +46,23 @@ def login_user(request):
 def register_user(request):
     # Extract user registration data from the POST request
     username = request.POST.get("username")
-    password = request.POST.get("password")
+    password = request.POST.get("password1")
     email = request.POST.get("email")
     form = UserCreationForm(request.POST)
     if not form.is_valid():
-        return JsonResponse({"errors": form.errors})
+        return JsonResponse({"errors": form.errors}, status=HTTPStatus.BAD_REQUEST)
 
     try:
         # Create a new user using create_user method
         user = User.objects.create_user(
-            username=username, password=password, email=email
+            username=username,
+            password=password,
+            email=email,
+            # username=username, password=password, email=email
         )
+        user.first_name = "first_name_unknown"
+        user.last_name = "last_name_unknown"
+        user.save()
         return JsonResponse({"status": "success"})
     except IntegrityError as e:
         # Check if the error message indicates a duplicate username violation
@@ -57,12 +70,20 @@ def register_user(request):
             'duplicate key value violates unique constraint "auth_user_username_key"'
             in str(e)
         ):
-            return JsonResponse({"status": "error", "message": "usernameAlreadyExist"})
+            return JsonResponse(
+                {"status": "error", "message": "usernameAlreadyExist"},
+                status=HTTPStatus.BAD_REQUEST,
+            )
         else:
             # Handle other IntegrityError cases if needed
-            return JsonResponse({"status": "error", "message": str(e)})
+            return JsonResponse(
+                {"status": "error", "message": str(e)}, status=HTTPStatus.BAD_REQUEST
+            )
     except Exception as e:
-        return JsonResponse({"status": "error", "message": str(e)})
+        return JsonResponse(
+            {"status": "error", "message": str(e)},
+            status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
+        )
 
 
 class RequestLogin(View):
@@ -89,13 +110,15 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
                 if id:
                     player = model.objects.get(id=id)
                     response = player.serialize()
-                    return JsonResponse(response, status=200)
+                    return JsonResponse(response, status=HTTPStatus.OK)
                 else:
                     players = model.objects.all()
                     response = [player.serialize() for player in players]
-                    return JsonResponse(response, safe=False, status=200)
+                    return JsonResponse(response, safe=False, status=HTTPStatus.OK)
             except model.DoesNotExist:
-                return JsonResponse({"errors": f"{name} not found"}, status=404)
+                return JsonResponse(
+                    {"errors": f"{name} not found"}, status=HTTPStatus.NOT_FOUND
+                )
 
         def post(self, request):
             try:
@@ -109,11 +132,13 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
                 response = created_player.serialize()
                 return JsonResponse(response, status=201)
             except KeyError:
-                return JsonResponse({"errors": "Invalid data"}, status=400)
+                return JsonResponse(
+                    {"errors": "Invalid data"}, status=HTTPStatus.BAD_REQUEST
+                )
             except IntegrityError as e:
-                return JsonResponse({"errors": str(e)}, status=400)
+                return JsonResponse({"errors": str(e)}, status=HTTPStatus.BAD_REQUEST)
             except json.JSONDecodeError as e:
-                return JsonResponse({"errors": str(e)}, status=400)
+                return JsonResponse({"errors": str(e)}, status=HTTPStatus.BAD_REQUEST)
 
             def put(self, request, id):
                 try:
@@ -130,15 +155,23 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
                         player.save()
                         updated_player = model.objects.get(id=player.id)
                         response = updated_player.serialize()
-                        return JsonResponse(response, status=200)
+                        return JsonResponse(response, status=HTTPStatus.OK)
                 except model.DoesNotExist:
-                    return JsonResponse({"errors": f"{name} not found"}, status=404)
+                    return JsonResponse(
+                        {"errors": f"{name} not found"}, status=HTTPStatus.NOT_FOUND
+                    )
                 except IntegrityError as e:
-                    return JsonResponse({"errors": str(e)}, status=400)
+                    return JsonResponse(
+                        {"errors": str(e)}, status=HTTPStatus.BAD_REQUEST
+                    )
                 except KeyError:
-                    return JsonResponse({"errors": "Invalid data"}, status=400)
+                    return JsonResponse(
+                        {"errors": "Invalid data"}, status=HTTPStatus.BAD_REQUEST
+                    )
                 except json.JSONDecodeError as e:
-                    return JsonResponse({"errors": str(e)}, status=400)
+                    return JsonResponse(
+                        {"errors": str(e)}, status=HTTPStatus.BAD_REQUEST
+                    )
 
                 def delete(self, request, id):
                     try:
@@ -146,7 +179,9 @@ def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
                         player.delete()
                         return JsonResponse({}, status=204)
                     except model.DoesNotExist:
-                        return JsonResponse({"errors": f"{name} not found"}, status=404)
+                        return JsonResponse(
+                            {"errors": f"{name} not found"}, status=HTTPStatus.NOT_FOUND
+                        )
 
     return EndpointView
 
@@ -328,7 +363,7 @@ logger = logging.getLogger(__name__)
 def start_game(arg):
     logger.debug("Debug message")
     print("=================starting============")
-    return JsonResponse({"hello": "world"}, status=200)
+    return JsonResponse({"hello": "world"}, status=HTTPStatus.OK)
     # class StartGame(View):
     #    def get(self, id=None):
     #        print("=================starting============")

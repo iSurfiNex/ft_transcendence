@@ -171,12 +171,14 @@ class PongLogin extends Component {
     })
     .then(response => response.json())
     .then(data => {
-		if (data.status === "error") {
-            state.logginError = data.message
+        const errors = data['errors']
+        if (errors !== undefined) {
+            for (const [key, errMsg] of Object.entries(errors)) {
+                state.logginError = errMsg[0]
+               return
+            }
         }
-        else {
-            state.logginError = null
-        }
+        state.logginError = null
     })
     .catch(error => {
         // Handle errors
@@ -194,13 +196,14 @@ class PongLogin extends Component {
     })
     .then(response => response.json())
     .then(data => {
-		console.log(data)
-		if (data.status === "error") {
-            state.logginError = data.message
+        const errors = data['errors']
+        if (errors !== undefined) {
+            for (const [key, errMsg] of Object.entries(errors)) {
+                state.logginError = errMsg[0]
+               return
+            }
         }
-        else {
-            state.logginError = null
-        }
+        state.logginError = null
     })
     .catch(error => {
         // Handle errors

@@ -38,6 +38,9 @@ ALLOWED_HOSTS = ["localhost"]
 CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "http://localhost:8000"]
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 INSTALLED_APPS = [
     "daphne",

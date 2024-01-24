@@ -81,6 +81,7 @@ var state_base = {
                 invalidLoginCredentials: 'Invalid login credentials.',// TODO mutlilang
                 usernameAlreadyExist: 'This username already exist.',
                 errUnknown: 'An unexpected error occured.', // TODO mutlilang
+                'A user with that username already exists.': "A user with that username already exists.", // TODO multilang
 
 		// HOME
 		play: 'PLAY',
