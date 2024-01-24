@@ -20,6 +20,7 @@ class GameForm(forms.ModelForm):
             "winner",
             "goal_objective",
             "ia",
+            "power_ups",
         ]
 
 
@@ -27,8 +28,10 @@ class TournamentForm(forms.ModelForm):
     class Meta:
         model = Tournament
         fields = [
-            "pools",
+            "state",
+            "games",
             "created_by",
             "required_player_number",
             "players",
+            "power_ups",
         ]

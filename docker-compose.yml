@@ -12,7 +12,7 @@ services:
     networks:
       - ft_transcendence
     env_file:
-      - backend/.env
+      - .env
     restart: on-failure
   nginx:
      container_name: nginx
@@ -25,7 +25,7 @@ services:
      networks:
        - ft_transcendence
      env_file:
-       - backend/.env
+       - .env
      restart: on-failure
 
 volumes:
@@ -33,7 +33,7 @@ volumes:
     name:   backend
     driver: local
     driver_opts:
-      device: /sgoinfre/goinfre/Perso/rsterin/data/backend
+      device: ${VOLUME_PATH}/backend
       o: bind
       type: none
 

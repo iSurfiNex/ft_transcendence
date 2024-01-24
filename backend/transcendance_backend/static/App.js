@@ -6,13 +6,13 @@ var state_base = {
 	isPlayerListChecked: true,
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
-		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/abella.svg' },
-		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/mia.svg' },
+		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
+		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: 'jtoulous',
         logginError: "",
-	isLoggedIn: false,
+	isLoggedIn: true,
 	profiles: [
 		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
@@ -118,6 +118,15 @@ var state_base = {
 		GoButton: 'START',
 		ByeButton: 'GIVE UP',
 		Start: 'STARTING IN',
+
+		//create-game
+		GameEditor: 'Game Editor',
+		PowerUp: 'Power-Ups',
+		PrivateGame: 'Private game',
+		Tournament: 'Tournament',
+		Size: 'Size:',
+		Create: 'Create',
+		Cancel: 'Cancel'
 	},
 	fr: {
 		// LOGIN
@@ -164,6 +173,15 @@ var state_base = {
 		GoButton: 'GO',
 		ByeButton: 'ABANDON',
 		Start: 'DEBUT DANS',
+
+		//Create-game
+		GameEditor: 'Editeur',
+		PowerUp: 'Power-Ups',
+		PrivateGame: 'Partie privée',
+		Tournament: 'Tournoi',
+		Size: 'Taille:',
+		Create: 'Creer',
+		Cancel: 'Annuler'
 	},
 	de: {
 		// LOGIN
@@ -210,6 +228,15 @@ var state_base = {
 		GoButton: 'GO',
 		ByeButton: 'AUFGEBEN',
 		Start: 'BEGINN IN',
+
+		//Create-game
+		GameEditor: 'Spiel-Editor',
+		PowerUp: 'Power-Ups',
+		PrivateGame: 'Privates Spiel',
+		Tournament: 'Turnier',
+		Size: 'Größe:',
+		Create: 'anlegen',
+		Cancel: 'abbrechen'
 	},
 
     lang(key) {

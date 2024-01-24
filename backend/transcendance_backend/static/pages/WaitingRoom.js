@@ -2,20 +2,22 @@ import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
-    
+//<div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentRunning()}">
+//<div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
+
 class WaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
+    <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
         
-
-        <div hidden="{this.IsTournamentWaiting()}">
-            <div class="rectangle-waitingRoom-T">
-                <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
+        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournament()}">
+            <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
                 
+            <div hidden="{this.IsTournamentWaiting()}">
                 <div class="player-count">
-                    <a type="button" class="btn btn-startGame-T" hidden="{this.isTournamentCreator()}">START</a>
-                    {this.getPlayerCount()}/{this.getMaxPlayers()}
+                    <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
+                    {this.getPlayerCount()}/4
                 </div>
 
                 <div class="tournament-room" repeat="tournaments" as="tournament"> 
@@ -29,14 +31,10 @@ class WaitingRoom extends Component {
                     </div>
                 </div>
             </div>
-        </div>    
 
 
 
-        <div hidden="{this.IsTournamentRunning()}">
-            <div class="rectangle-waitingRoom-T">
-
-                <div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
+            <div hidden="{this.IsTournamentRunning()}">
                 <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
 
                 <div class="tournament-list" repeat="tournaments" as="tournament">
@@ -56,8 +54,8 @@ class WaitingRoom extends Component {
                         </div>
                     </div>
                 </div>
-
             </div>
+        
         </div>
     
 
@@ -73,8 +71,8 @@ class WaitingRoom extends Component {
 
             <div class="profil-pics-N">
                 <div class="gallery-N">
-                    <img src="{this.playerOnePic(currentGame)}" alt="player 1">
-                    <img src="{this.playerTwoPic(currentGame)}" alt="player 2">
+                    <img src="{this.playerOnePic()}" alt="player 1">
+                    <img src="{this.playerTwoPic()}" alt="player 2">
                 </div>
             </div>    
 	    </div>
@@ -91,17 +89,9 @@ class WaitingRoom extends Component {
             bottom: 0;
             width: 100%;
             height: calc(90% - 10px);
-            background-color: rgb(54, 54, 54);
-        }
-
-        .background-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(50%); 
+            background-color: rgba(255, 255, 255, 0.5);
+            font-family: 'Press Start 2P', sans-serif;
+            
         }
 
         .rectangle-waitingRoom-T {
@@ -181,7 +171,7 @@ class WaitingRoom extends Component {
             color: #00ff00;
             border: 1px solid #00c7d6;
             transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
+            opacity: 1;
             backdrop-filter: blur(1px);
         }
 
@@ -397,7 +387,9 @@ class WaitingRoom extends Component {
             justify-content: center;
             align-items: center;
             display: flex;
+            overflow: hidden;
 
+            font-size: 2vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #00ff00;
             border: 1px solid #00ff00;
@@ -420,7 +412,9 @@ class WaitingRoom extends Component {
             justify-content: center;
             align-items: center;
             display: flex;
+            overflow: hidden;
 
+            font-size: 2vw;
             background-color: rgba(42, 42, 42, 0.2);
             color: #ff0000;
             border: 1px solid #ff0000;
@@ -463,10 +457,11 @@ class WaitingRoom extends Component {
             width: 27%;
             height: 100%;
             left: 15%;
-            text-align: right;
-            line-height: 5;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 3vh;
+            font-size: 3vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -478,11 +473,12 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 27%;
             height: 100%;
-            right: 15%;
-            text-align: left;
-            line-height: 5;
+            left: 57%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 3vh;
+            font-size: 3vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -493,12 +489,13 @@ class WaitingRoom extends Component {
         .VS-logo-N {
             position: absolute;
             height: 100%;
-            width: 10%;
-            left: 45%;
-            text-align: center;
-            line-height: 3;
+            width: 14%;
+            left: 43%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
 
-            font-size: 5vh;
+            font-size: 5vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -538,13 +535,13 @@ class WaitingRoom extends Component {
             cursor: pointer;
             transition: .5s;
             height: 100%;
-            opacity: 0.6;
+            //opacity: 1;
             filter: brightness(100%);
         }
           
         .gallery-N > img:hover {
             width: calc(var(--s)/2);
-            opacity: 1;
+            //opacity: 1;
             filter: brightness(120%);
         }
 
@@ -583,18 +580,8 @@ class WaitingRoom extends Component {
             bottom: 0;
             width: calc(75% - 10px);
             height: calc(90% - 10px);
-            background-color: rgb(54, 54, 54);
+            background-color: rgba(255, 255, 255, 0.5);
             font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .background-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(50%); 
         }
 
         .rectangle-waitingRoom-T {
@@ -603,8 +590,7 @@ class WaitingRoom extends Component {
             width: 50%;
             height: 90%;
             left: 25%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
+            background-color: rgb(86, 86, 86);
             backdrop-filter: blur(1px);
             display: flex;
             align-items: center;
@@ -621,13 +607,13 @@ class WaitingRoom extends Component {
             top: 0%;
             overflow: hidden;
             white-space: nowrap;
-
+            background-color: rgb(112, 112, 112);
             font-size: 2.5vw;
-            color: #00ff00;
+            color: white;
             text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
+                2px 2px 3px #ff6600,
+                4px 4px 6px #cc3300,
+                6px 6px 9px #993300;
             text-align: center;
         }
 
@@ -669,7 +655,7 @@ class WaitingRoom extends Component {
         .btn-startGame-T {
             position: absolute;
             left: 2%;
-            top: 15%;
+            bottom: 0;
             width: 20%;
             height: 70%;
             justify-content: center;
@@ -715,13 +701,11 @@ class WaitingRoom extends Component {
             max-height: 100%;
             object-fit: cover;
             object-position: center +10%;
-            opacity: 0.7;
-            transition: opacity 0.3s;
+            opacity: 1;
         }
 
         .profil-T:hover {
             height: 450%;
-            opacity: 1;
             transition: all 1s ease;
         }
 
@@ -751,8 +735,7 @@ class WaitingRoom extends Component {
             height: 7%;
             top: 20%;
 
-            font-family: 'Courier New', monospace;
-            font-size: 3vh;
+            font-size: 1vw;
             color: #00ff00;
             text-shadow: 
                 2px 2px 3px #009900,
@@ -809,7 +792,7 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-size: 5vh;
+            font-size: 1vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -823,14 +806,12 @@ class WaitingRoom extends Component {
             max-height: 100%;
             object-fit: cover;
             object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
         } 
 
-        .player-1 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
+        //.player-1 img:hover {
+        //    opacity: 1;
+        //    transition: opacity 0.3s;
+        //}
 
         .player-1 a {
             position: absolute;
@@ -846,7 +827,7 @@ class WaitingRoom extends Component {
             justify-content: center;
             overflow: hidden;
 
-            font-size: 5vh;
+            font-size: 1vw;
             color: white;
             text-shadow: 
                 2px 2px 3px #ff6600,
@@ -860,14 +841,12 @@ class WaitingRoom extends Component {
             max-height: 100%;
             object-fit: cover;
             object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
         } 
 
-        .player-2 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
+        //.player-2 img:hover {
+        //    opacity: 1;
+        //    transition: opacity 0.3s;
+        //}
 
         .player-2 a {
             position: absolute;
@@ -898,7 +877,7 @@ class WaitingRoom extends Component {
         .nicknames-N {
             position: absolute;
             width: 100%;
-            height: 15%;
+            height: 20%;
             top: 0%;
             overflow: hidden;
             color: white;
@@ -908,8 +887,8 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 8%;
             height: 50%;
-            left: 3%;
-            top: 30%;
+            left: 1%;
+            top: 10%;
             justify-content: center;
             align-items: center;
             display: flex;
@@ -934,8 +913,8 @@ class WaitingRoom extends Component {
             position: absolute;
             width: 8%;
             height: 50%;
-            right: 3%;
-            top: 30%;
+            right: 1%;
+            top: 10%;
             justify-content: center;
             align-items: center;
             display: flex;
@@ -978,15 +957,14 @@ class WaitingRoom extends Component {
 
 
 
-
-
         .playerOne-N {
             position: absolute;
-            width: 20%;
+            width: 30%;
             height: 100%;
-            left: 15%;
-            text-align: right;
+            left: 12%;
+            text-align: center;
             line-height: 2;
+            //transform: translateY(10px);
 
             font-size: 2.5vw;
             color: white;
@@ -998,11 +976,12 @@ class WaitingRoom extends Component {
 
         .playerTwo-N {
             position: absolute;
-            width: 20%;
+            width: 30%;
             height: 100%;
             left: 58%;
             text-align: left;
             line-height: 2;
+            //transform: translateY(10px);
 
             font-size: 2.5vw;
             color: white;
@@ -1031,15 +1010,15 @@ class WaitingRoom extends Component {
         .profil-pics-N {
             position: absolute;
             width: 100%;
-            height: 85%;
-            top: 15%;
+            height: 80%;
+            top: 20%;
             display: flex;
             justify-content: center;
         }
 
         .gallery-N {
             --z: 32px;
-            --s: 360px;
+            --s: 440px;
             --g: 8px;
             
             display: grid;
@@ -1060,13 +1039,11 @@ class WaitingRoom extends Component {
             cursor: pointer;
             transition: .5s;
             height: 100%;
-            opacity: 0.6;
             filter: brightness(100%);
         }
           
         .gallery-N > img:hover {
             width: calc(var(--s)/2);
-            opacity: 1;
             filter: brightness(120%);
         }
 
@@ -1115,11 +1092,13 @@ class WaitingRoom extends Component {
 		initPopover(this)
 	}
 
-    playerOnePic(gameId) {
-        if (!gameId || state.games[gameId - 1].players.length < 1 || gameId == -1)
+    playerOnePic() {
+        const game = state.games.find(game => game.id == state.currentGame);
+        
+        if (!game || game.players.length < 1 || state.currentGame == -1)
             return ("/static/img/list.svg");
         
-        const playerNick = state.games[gameId - 1].players[0];
+        const playerNick = game.players[0];
         const user = state.users.find(elem => elem.nickname === playerNick);
 
         if (user)
@@ -1128,11 +1107,13 @@ class WaitingRoom extends Component {
         return '/static/img/list.svg';
     }
 
-    playerTwoPic(gameId) {
-        if (!gameId || state.games[gameId - 1].players.length < 2 || gameId == -1)
+    playerTwoPic() {
+        const game = state.games.find(game => game.id == state.currentGame);
+
+        if (!game || game.players.length < 2 || state.currentGame == -1)
             return ("/static/img/list.svg");
         
-        const playerNick = state.games[gameId - 1].players[1];
+        const playerNick = game.players[1];
         const user = state.users.find(elem => elem.nickname === playerNick);
 
         if (user)
@@ -1141,30 +1122,24 @@ class WaitingRoom extends Component {
         return '/static/img/list.svg';
     }
 
-    getPlayerOne(gameId) {
-        if (!gameId)
-            return ("Unknown");
+    getPlayerOne() {
+        const game = state.games.find(game => game.id == state.currentGame);
+        const playerOne = game.players[0];
         
-        if (state.games[gameId - 1].players.length < 1)
+        if (!game || game.players.length < 1 || !playerOne)
             return ("Unknown");
 
-        const playerOne = state.games[gameId - 1].players[0];
-        if (!playerOne)
-            return ("Unknown");
         return (playerOne);
     }
 
-    getPlayerTwo(gameId)
+    getPlayerTwo()
     {
-        if (!gameId)
+        const game = state.games.find(game => game.id == state.currentGame);
+        const playerTwo = game.players[1];
+
+        if (!game || game.players.length < 2 || !playerTwo)
             return ("Unknown");
 
-        if (state.games[gameId - 1].players.length < 2)
-            return ("Unknown");
-
-        const playerTwo = state.games[gameId - 1].players[1];
-        if (!playerTwo)
-            return ("Unknown");
         return (playerTwo);
     }
 
@@ -1198,6 +1173,11 @@ class WaitingRoom extends Component {
         return !(true);
     }
 
+    IsTournament() {
+        if (state.currentTournament == -1)
+            return !(false);
+        return !(true);
+    }
 
     IsNormal() {
         if (state.currentTournament != -1)
@@ -1218,12 +1198,12 @@ class WaitingRoom extends Component {
     }
 
     isGameCreator() {
-        if (state.currentGame == -1)
+        const game = state.games.find(game => game.id == state.currentGame);
+
+        if (!game || state.whoAmI != game.creator)
             return !(false);
 
-        if (state.whoAmI == state.games[state.currentGame - 1].creator)
-            return !(true);
-        return !(false);
+        return !(true);
     }
 
     isTournamentCreator() {
@@ -1249,11 +1229,78 @@ class WaitingRoom extends Component {
         return (state.tournaments[state.currentTournament - 1].players.length);
     }
 
-    getMaxPlayers() {
-        if (state.currentTournament == -1)
-            return (0);
-        return (state.tournaments[state.currentTournament - 1].maxPlayer);
+	getCSRF() {
+		const token = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('csrftoken='))
+			.split('=')[1];
+		return (token);
+	}
+
+    getGameID(data) {
+        for (const game of data.games)
+        {
+            const players = game.players;
+
+            if (players[0].name == state.whoAmI || players[1].name == state.whoAmI)
+                return (game.id);
+        }
+        return (null);
     }
+
+    startTournament() {
+        const nb_players = state.tournaments[state.currentTournament].players.length;
+        const url = "https://localhost:8000/api/manage-tournament/" + 1 + "/";
+
+        if (nb_players != 4)
+        {    
+            console.error("not enought players");
+            return ;
+        }
+
+        const dataToPut = {
+            action: "start-tournament",
+        }
+
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+				'X-CSRFToken': this.getCSRF(),
+            },
+            body: JSON.stringify(dataToPut), 
+        })
+        .then (response => {
+            if (!response.ok)
+				throw new Error('Problem starting Tournament');
+            return (response.json());	
+        })
+        .then (data => {
+            state.tournaments[state.currentTournament].status = "running";//PROB STATE
+            //CHANGER LES STATUS DES DEUX GAME DU TOURNOI
+            state.currentGame = this.getGameID(data);
+        })
+        .catch(error => {console.error(error)})
+    }
+
+    //startGame() {
+    //    const nb_players = state.games[state.currentGame].players.lenght;
+    //    const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+	//	const currentDatetime = new Date();
+	//	const formatedDatetime = currentDatetime.toISOString();
+//
+    //    if (nb_players != 2)
+    //    {    
+    //        console.error("not enought players");
+    //        return ;
+    //    }
+//
+    //    const dataToPut = {
+    //        use: 'start-game'
+    //        started_at: formatedDatetime,
+    //    }
+    //}
+
 }
 
 register(WaitingRoom)

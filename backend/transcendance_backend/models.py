@@ -67,7 +67,8 @@ class Game(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     ia = models.BooleanField(default=False)
-
+    power_ups = models.BooleanField(default=False)
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -78,6 +79,7 @@ class Game(models.Model):
             "winner": self.winner,
             "goal_objective": self.goal_objective,
             "ia": self.ia,
+            "power_ups": self.power_ups,
         }
 
     def serialize_summary(self):
@@ -86,35 +88,34 @@ class Game(models.Model):
         }
 
 
-class Pool(models.Model):
-    tournament = models.ForeignKey(
-        "Tournament", on_delete=models.CASCADE, related_name="tournaments"
-    )
-    games = models.ManyToManyField(Game)
-
-    def serialize(self):
-        return {"id": self.id, "games": [game.serialize() for game in self.games.all()]}
-
-
 class Tournament(models.Model):
-    pools = models.ManyToManyField(Pool, related_name="tournaments", blank=True)
+    GAME_STATES = (
+        ("waiting", "Waiting"),
+        ("running", "Running"),
+        ("done", "Done"),
+    )
+    state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
+    games = models.ManyToManyField(Game, blank=True)
     created_by = models.ForeignKey(
         "Player", on_delete=models.CASCADE, related_name="created_tournaments"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     required_player_number = models.PositiveIntegerField(
-        default=2, validators=[even_value_validator]
+        default=4, validators=[even_value_validator]
     )
     players = models.ManyToManyField(Player, blank=True)
+    power_ups = models.BooleanField(default=False)
 
     def serialize(self):
         return {
             "id": self.id,
-            "pools": [pool.serialize() for pool in self.pools.all()],
+            "state": self.state,
+            "games": [game.serialize() for game in self.games.all()],
             "created_by": self.created_by.serialize_summary(),
             "created_at": self.created_at,
-            "players": [player.serialize_summary() for player in self.players.all()],
             "required_player_number": self.required_player_number,
+            "players": [player.serialize_summary() for player in self.players.all()],
+            "power_ups": self.power_ups,
         }
 
     def serialize_summary(self):
