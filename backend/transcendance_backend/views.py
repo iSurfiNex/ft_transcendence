@@ -27,18 +27,12 @@ User = get_user_model()
 @require_POST  # Ensure that the view only responds to POST requests
 def login_user(request):
     form = AuthenticationForm(request, data=request.POST)
-    if form.is_valid():
+    if not form.is_valid():
+        return JsonResponse({"errors": form.errors}, status=HTTPStatus.FORBIDDEN)
+    else:
         user = form.get_user()
         login(request, user)
         return JsonResponse({"status": "success!"})
-    else:
-        return JsonResponse(
-            {
-                "status": "error",
-                "message": "invalidLoginCredentials",
-            },
-            status=HTTPStatus.FORBIDDEN,
-        )
 
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
