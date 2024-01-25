@@ -27,12 +27,14 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" repeat="messages" as="message">
-				<div class="message" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
-					<a href="/profile" onClick="navigateTo('/profile'); return false;">
-						<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
+				<div class="message" is-my-msg="{this.equals(message.sender, username)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
+					<div class="msg-heading">
+						<a href="/profile" onClick="navigateTo('/profile'); return false;">
+							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
+						</a>
 						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
-					</a>
-					<div class="message-player-date">{this.formatDatetime(message.date)}</div>
+						<div class="message-player-date">{this.formatDatetime(message.date)}</div>
+					</div>
 					<div class="message-player-content">{message.text}</div>
 				</div>
 			</div>
@@ -521,6 +523,16 @@ class PongChat extends Component {
 		bottom: 10px;
 	}
 
+	.msg-heading {
+	    display: flex;
+        align-items: center;
+    }
+
+
+	.message[is-my-msg] .message-player-content {
+		text-align: right;
+	}
+
 	.message-player-img {
 		width: 40px;
 		height: 40px;
@@ -532,14 +544,12 @@ class PongChat extends Component {
 	}
 
 	.message-player-name {
-		position: absolute;
-		top: 10px;
 		font-size: 12px;
-		width: calc(100% - 120px);
-		left: 45px;
-		overflow-x: auto;
+		overflow-x: scroll;
 		color: rgb(177, 177, 177);
-		white-space: nowrap
+		white-space: nowrap;
+		margin: 0 12px;
+		flex:1;
 	}
 
 	.message-player-name:hover {
@@ -552,17 +562,13 @@ class PongChat extends Component {
 	}
 
 	.message-player-date {
-		position: absolute;
-		top: 10px;
 		font-size: 11px;
-		right: 10px;
 		color: rgb(177, 177, 177);
+		min-width: fit-content;
 	}
 
 	.message-player-content {
-		position: relative;
 		color: rgb(177, 177, 177);
-		width: calc(100% - 10px);
 		word-wrap: break-word;
 		margin-top: 5px;
 		font-size: 12px;
@@ -675,10 +681,10 @@ class PongChat extends Component {
 
     sendMessage() {
 		const inputNode = this.shadowRoot.getElementById("chat-input");
-        const msg = inputNode.value
-        console.log(state.activeChannel, msg)
-        this._sendWsMessage(state.activeChannel, msg)
-
+        const text = inputNode.value
+        console.log("SENDING: ",state.activeChannel, " TO: ", text)
+        this._sendWsMessage(state.activeChannel, text)
+        state.messages.push({text, sender:state.username, date:Date.now(), channel: state.activeChannel})
     }
 
     _sendWsMessage(to, text) {
@@ -694,6 +700,9 @@ class PongChat extends Component {
         const minutes = date.getHours().toString().padStart(2, '0');
         const seconds = date.getMinutes().toString().padStart(2, '0');
         return `${minutes}:${seconds}`;
+    }
+    equals(sender, username) {
+       return sender === username
     }
 }
 
