@@ -17,16 +17,15 @@ function navigateTo(path) {
 	displayContent(path);
 }
 
+/* TODO THIS IS FOR TESTIG WS AND WILL BE REMOVED */
 function initializeWS() {
     //const roomName = 'TOTO'
-    // Replace 'ws://your-socket-url' with the actual WebSocket URL
-const socket = new WebSocket(
-            'ws://'
+    const wsBase = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
+    const wsUrl = wsBase
             + window.location.host
             + '/ws/chat/'
-            //+ roomName
-            //+ '/'
-        );
+    console.log("WS URL:",wsUrl)
+    const socket = new WebSocket(wsUrl);
     console.log(socket)
 
 // Event handler for when the connection is opened
