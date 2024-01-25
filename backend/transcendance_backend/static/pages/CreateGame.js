@@ -600,7 +600,7 @@ class PongCreateGame extends Component {
 		//})
 		//.catch(error => {console.error(error)})
 
-		const socket = new WebSocket("ws://localhost:8000/ws/state-update/");
+		const socket = ws('state-update');
 
 		socket.addEventListener("open", (event) => {
 			console.log("Websocket Connected");
@@ -615,6 +615,18 @@ class PongCreateGame extends Component {
 			console.log("Close code: ", event.code);
 			console.log("Error type: ", event.type);
 		  });
+
+        // Event handler for receiving messages
+        socket.addEventListener('message', (event) => {
+            console.log('Received message:', event.data);
+        });
+
+        // TODO To remove, I'm just sending random msg after 2sec
+        setTimeout(() => {
+            const msg = JSON.stringify({message:'Hello, WebSocket yooooooo!'})
+            socket.send(msg);
+            console.log('STATE-UPDATE WS MSG SENT', msg)
+        }, 2000);
 	}	
 
 

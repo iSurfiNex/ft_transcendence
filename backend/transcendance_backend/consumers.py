@@ -1,46 +1,52 @@
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        # self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
-        self.user = self.scope["user"]
 
-        print(
-            "=================WS CONNECT============",
-            "USER: ",
-        )
-        self.accept()
-
-    def disconnect(self, close_code):
-        print("=================WS DISCONNECT============")
-        pass
-
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        # if not message.to or not message.content:
-        #    print("==> Chat websocket: Malformed message received")
-
-        print("=================WS RECEIVE============", message)
-        # self.send(text_data=json.dumps({"message": message}))
-
-
-class StateUpdateConsumer(WebsocketConsumer):
+class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
+            logger.debug("=================WS CONNECT START============")
             await self.accept()
-            logger.debug("=================WS CONNECT============")
-            print("==================================")
+            logger.debug("=================WS CONNECTED============")
+
+            self.user = self.scope["user"]
+            print("CHAT WS USER: ", self.user)
         except Exception as e:
             logger.error(f"Error: {e}")
 
-    def disconnect(self, close_code):
-	    logger.debug("=================WS DISCONNECT============")
-    
-    def receive(self, json_data):
-        data = json.loads(json_data)
-        logger.debug("=================WS RECEIVE============\n", data)
+    async def disconnect(self, close_code):
+        logger.debug("=================WS DISCONNECT============")
+
+    async def receive(self, text_data):
+        logger.debug("=================WS RECEIVE============")
+        logger.debug(text_data)
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+        str_resp = json.dumps({"message": message})
+        # TODO change this, I just send back the received msg
+        await self.send(text_data=str_resp)
+
+
+class StateUpdateConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        try:
+            logger.debug("=================WS CONNECT START============")
+            await self.accept()
+            logger.debug("=================WS CONNECTED============")
+        except Exception as e:
+            logger.error(f"Error: {e}")
+
+    async def disconnect(self, close_code):
+        logger.debug("=================WS DISCONNECT============")
+
+    async def receive(self, text_data):
+        logger.debug("=================WS RECEIVE============")
+        logger.debug(text_data)
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+        str_resp = json.dumps({"message": message})
+        # TODO change this, I just send back the received msg
+        await self.send(text_data=str_resp)

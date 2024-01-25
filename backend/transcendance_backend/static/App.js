@@ -1,5 +1,14 @@
 import {setup} from "./pouic/state.js"
 
+/* Global function to start a WebSocket connection. If page protocol is https, start wss connection otherwise ws. Exemple if page is https://localhost:8000/start-game and you call ws('chat'), a connection will open at wss://localhost:8000/ws/chat */
+window.ws = route => {
+    const wsBase = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
+    const wsUrl = `${wsBase}${window.location.host}/ws/${route}`
+    console.log("NEW WS AT URL:",wsUrl)
+    const socket = new WebSocket(wsUrl);
+    return socket;
+}
+
 var state_base = {
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
@@ -254,3 +263,4 @@ function checkScreenWidth() {
 }
 
 window.addEventListener('resize', checkScreenWidth);
+

@@ -32,8 +32,8 @@ from .views import (
 
 websocket_urlpatterns = [
     # re_path(r"ws/game/(?P<room_id>\w+)/$", ChatConsumer.as_asgi()),
-    re_path("ws/state-update/", StateUpdateConsumer.as_asgi()),
-    re_path(r"ws/chat/$", ChatConsumer.as_asgi()),
+    path("ws/state-update", StateUpdateConsumer.as_asgi()),
+    re_path(r"ws/chat$", ChatConsumer.as_asgi()),
 ]
 
 urlpatterns = [
@@ -50,10 +50,17 @@ urlpatterns = [
     path("api/requestlogin/", RequestLogin.as_view(), name="request-login"),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
-    path("api/manage-tournament/", ManageTournamentView.as_view(), name="manage-tournament"),
-    path("api/manage-tournament/<int:id>/", ManageTournamentView.as_view(), name="tournament-detail"),
+    path(
+        "api/manage-tournament/",
+        ManageTournamentView.as_view(),
+        name="manage-tournament",
+    ),
+    path(
+        "api/manage-tournament/<int:id>/",
+        ManageTournamentView.as_view(),
+        name="tournament-detail",
+    ),
     path("api/manage-game/", ManageGameView.as_view(), name="manage-game"),
     path("api/manage-game/<int:id>/", ManageGameView.as_view(), name="game-detail"),
-    
     re_path(r"^.*", TemplateView.as_view(template_name="index.html")),
 ]

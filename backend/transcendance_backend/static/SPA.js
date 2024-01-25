@@ -19,48 +19,43 @@ function navigateTo(path) {
 
 /* TODO THIS IS FOR TESTIG WS AND WILL BE REMOVED */
 function initializeWS() {
-    //const roomName = 'TOTO'
-    const wsBase = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
-    const wsUrl = wsBase
-            + window.location.host
-            + '/ws/chat/'
-    console.log("WS URL:",wsUrl)
-    const socket = new WebSocket(wsUrl);
-    console.log(socket)
+    const socket = ws('chat')
 
-// Event handler for when the connection is opened
-socket.addEventListener('open', (event) => {
-    console.log('WebSocket connection opened:', event);
-});
+    // Event handler for when the connection is opened
+    socket.addEventListener('open', (event) => {
+        console.log('WebSocket connection opened:', event);
+    });
 
-// Event handler for receiving messages
-socket.addEventListener('message', (event) => {
-    console.log('Received message:', event.data);
-});
+    // Event handler for receiving messages
+    socket.addEventListener('message', (event) => {
+        console.log('Received message:', event.data);
+    });
 
-// Event handler for when the connection is closed
-socket.addEventListener('close', (event) => {
-    console.log('WebSocket connection closed:', event);
-});
+    // Event handler for when the connection is closed
+    socket.addEventListener('close', (event) => {
+        console.log('WebSocket connection closed:', event);
+    });
 
-// Event handler for errors
-socket.addEventListener('error', (error) => {
-    console.error('WebSocket error:', error);
-});
+    // Event handler for errors
+    socket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+    });
 
-// Send a message to the server
-function sendMessage(message) {
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(message);
-    } else {
-        console.error('WebSocket not open. Unable to send message.');
+    // Send a message to the server
+    function sendMessage(message) {
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(message);
+        } else {
+            console.error('WebSocket not open. Unable to send message.');
+        }
     }
-}
 
-// Example: Send a message after a delay
-setTimeout(() => {
-    sendMessage(JSON.stringify({message:'Hello, WebSocket yooooooo!'}));
-}, 2000);
+    // Example: Send a message after a delay
+    setTimeout(() => {
+        const msg = JSON.stringify({message:'Hello, WebSocket yooooooo!'})
+        socket.send(msg);
+        console.log('STATE-UPDATE WS MSG SENT', msg)
+    }, 2000);
 }
 
 function displayContent(path) {
