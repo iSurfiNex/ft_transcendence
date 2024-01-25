@@ -162,6 +162,15 @@ class PongLogin extends Component {
 		}
 	}
 
+    setCookie(name, value, days) {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + days);
+
+        const cookieValue = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/`;
+
+        document.cookie = cookieValue;
+    }
+
     onLoginFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -179,6 +188,8 @@ class PongLogin extends Component {
             }
         }
         state.logginError = null
+	    setCookie('loggedin', true, 7);
+        navigateTo('/')
     })
     .catch(error => {
         // Handle errors

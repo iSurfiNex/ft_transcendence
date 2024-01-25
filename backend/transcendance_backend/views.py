@@ -3,7 +3,7 @@ from django.db.utils import IntegrityError
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from urllib.parse import urlencode
 from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
@@ -18,7 +18,7 @@ from typing import Type
 
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 
 User = get_user_model()
 
@@ -39,6 +39,15 @@ def login_user(request):
             },
             status=HTTPStatus.FORBIDDEN,
         )
+
+
+@csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
+@require_GET  # Ensure that the view only responds to POST requests
+def logout_user(request):
+    response = JsonResponse({"status": "OK"})
+    response.delete_cookie("sessionid")
+    logout(request)
+    return response
 
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.

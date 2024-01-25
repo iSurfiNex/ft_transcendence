@@ -174,3 +174,5 @@ LOGGING = {
         "level": "DEBUG",
     },
 }
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}

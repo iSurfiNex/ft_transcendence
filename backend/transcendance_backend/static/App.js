@@ -21,7 +21,6 @@ var state_base = {
 	],
 	whoAmI: 'jtoulous',
         logginError: "",
-	isLoggedIn: true,
 	profiles: [
 		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
@@ -38,10 +37,10 @@ var state_base = {
 	],
 	activeChannel: 'Global',
 	messages: [
-		{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' },
-		{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' },
-		{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' },
-		{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' },
+		{ text: 'Greetings', sender: 'tlarraze', date: 1706191171037, channel: 'Global' },
+		{ text: 'Greetings', sender: 'jtoulous', date: 1706191071037, channel: 'Global' },
+		{ text: 'Hi there', sender: 'fjullien', date: 1706191078037, channel: 'Global' },
+		{ text: 'Hello', sender: 'rsterin', date: 1706190091037, channel: 'fjullien' },
 	],
 	tournaments: [
 		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11, 12], date: '11/11/2023 04:38', countdown: 5 },

@@ -38,6 +38,9 @@ class PongTopBar extends Component {
 				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
 			</a>
 		</div>
+			<a class="profile-picture-div" href="/profile" onclick="navigateTo('/logout/'); return false;">
+				Déconnexion
+			</a>
 	</div>
 `
 

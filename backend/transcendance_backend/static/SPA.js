@@ -17,69 +17,49 @@ function navigateTo(path) {
 	displayContent(path);
 }
 
-/* TODO THIS IS FOR TESTIG WS AND WILL BE REMOVED */
-function initializeWS() {
-    const socket = ws('chat')
+function isUserAuthenticated() {
+    return document.cookie.split(';').some((item) => item.trim().startsWith('loggedin'));
+}
 
-    // Event handler for when the connection is opened
-    socket.addEventListener('open', (event) => {
-        console.log('WebSocket connection opened:', event);
-    });
-
-    // Event handler for receiving messages
-    socket.addEventListener('message', (event) => {
-        console.log('Received message:', event.data);
-    });
-
-    // Event handler for when the connection is closed
-    socket.addEventListener('close', (event) => {
-        console.log('WebSocket connection closed:', event);
-    });
-
-    // Event handler for errors
-    socket.addEventListener('error', (error) => {
-        console.error('WebSocket error:', error);
-    });
-
-    // Send a message to the server
-    function sendMessage(message) {
-        if (socket.readyState === WebSocket.OPEN) {
-            socket.send(message);
-        } else {
-            console.error('WebSocket not open. Unable to send message.');
-        }
-    }
-
-    // Example: Send a message after a delay
-    setTimeout(() => {
-        const msg = JSON.stringify({message:'Hello, WebSocket yooooooo!'})
-        socket.send(msg);
-        console.log('STATE-UPDATE WS MSG SENT', msg)
-    }, 2000);
+function unsetCookie(name) {
+    document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }
 
 function displayContent(path) {
-	if (window.state.isLoggedIn && path === "/login/") {
+    const loggedIn = isUserAuthenticated()
+    console.log("LOOGED",loggedIn)
+    if (path === "/logout/") {
+        // This request unsets the 'sessionid' cookie
+        fetch('/api/logout/').then(()=>{
+            unsetCookie('csrftoken')
+            unsetCookie('loggedin')
+		    navigateTo("/");
+        }, ()=> {
+            console.error('Logout request failed :(')
+        })
+    }
+	else if (loggedIn && path === "/login/") {
 		navigateTo("/");
 	}
 	else if (path === "/login/") {
-		displayElement("pong-login");
+        // TODO ça marche mais c'est dégeulasse
+
+        // Remove every pong-something nodes
+        const pongNodes = Array.from(document.body.children).filter(node => node.tagName.toLowerCase().startsWith('pong-'));
+        pongNodes.forEach(node => node.remove());
+        // notify the Layout function it will have to recreate the missing elements when players reconnect
+        topbar = chat = contentSeparator = undefined
+        // readd the pong login
+	    body.append(document.createElement('pong-login'));
 	}
-	else if (!window.state.isLoggedIn) {
+	else if (!loggedIn) {
 		navigateTo("/login/");
 	}
 	else {
 		Layout();
 
-            console.log("YO")
 		if (path === "/") {
 			displayElement("pong-home");
-		}
-		else if (path === "/start-game") {
-            console.log("START-GAME !")
-            initializeWS()
-            //fetch("https://localhost:3000").then(res => console.log("RES", res)).catch(err => console.log("ERR", err))
-			//displayElement("start-game");
 		}
 		else if (path === "/profile") {
 			displayElement("pong-profile");
