@@ -89,7 +89,7 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
             await self.accept()
             logger.debug("=================WS CONNECTED============")
             self.user = self.scope["user"]
-            print("CHAT WS USER: ", self.user)
+            logger.debug(self.user)
         except Exception as e:
             logger.error(f"Error: {e}")
 
