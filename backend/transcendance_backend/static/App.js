@@ -10,6 +10,7 @@ window.ws = route => {
 }
 
 var state_base = {
+	username: window.username,
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
