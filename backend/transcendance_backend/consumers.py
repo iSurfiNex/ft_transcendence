@@ -7,6 +7,8 @@ logger = logging.getLogger(__name__)
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    user_name = None
+
     async def connect(self):
         try:
             logger.debug("=================WS CONNECT START============")
@@ -39,6 +41,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if self.user_name is not None:
             # Remove the user from the group when the WebSocket connection is closed
             await self.channel_layer.group_discard(self.user_name, self.channel_name)
+            self.user_name = None
 
     async def send_message_to_user(self, to, text):
         # Get the WebSocket channel name for the specified user
