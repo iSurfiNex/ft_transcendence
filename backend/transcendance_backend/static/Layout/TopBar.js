@@ -10,9 +10,6 @@ class PongTopBar extends Component {
 			<div class="logo-text">PONG</div>
 		</a>
 
-		<div class="notifications">
-		</div>
-
 		<div class="language">
 			<div class="btn-group language-button" role="group" aria-label="Basic radio toggle button group">
 				<input @click="this.updateActiveLanguage(en)" type="radio" class="btn-check" id="en" name="btnradio" autoComplete="off" checked="{this.selectedLanguage(en)}"/>
@@ -38,9 +35,12 @@ class PongTopBar extends Component {
 				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
 			</a>
 		</div>
-			<a id="logout-button" href="/logout/" onclick="navigateTo('/logout/'); return false;">
-				Déconnexion
+
+		<div class="logout-div">
+			<a class="logout-button" id="logout-button" href="/logout/" onclick="navigateTo('/logout/'); return false;">
+				<img src="/static/img/logout.svg" alt="logout"/>
 			</a>
+		</div>
 	</div>
 `
 
@@ -58,18 +58,11 @@ class PongTopBar extends Component {
 		}
 
 		.logo {
-			position: absolute;
-			height: calc(100%);
-			top: 0;
-			width: 25%;
-			overflow: hidden;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			overflow: hidden;
+			display: none;
 		}
 
 		.logo-text {
+			display: none;
 			font-size: 2.5vh;
 			color: white;
 		}
@@ -85,10 +78,10 @@ class PongTopBar extends Component {
 
 		.language {
 			position: fixed;
-			width: 55%;
+			width: 50%;
 			height: 10%;
 			top: 0;
-			right: 20%;
+			right: 25%;
 			border-right: 8px solid #424242;
 			border-left: 8px solid #424242;
 			display: flex;
@@ -103,10 +96,10 @@ class PongTopBar extends Component {
 
 		.profile-picture {
 			position: fixed;
-			width: 20%;
+			width: 25%;
 			height: 10%;
 			top: 0;
-			right: 0;
+			left: 0;
 		}
 
 		.profile-picture-div {
@@ -120,8 +113,6 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture-div img {
-			top: 5%;
-			left: 5%;
 			border-radius: 50%;
 			border: 3px solid #9f9f9f;
 			box-shadow: 0px 0px 15px -3px #9F9F9F;
@@ -129,6 +120,36 @@ class PongTopBar extends Component {
 			max-height: 100%;
 			height: auto;
 			overflow: hidden;
+			margin: 10%;
+		}
+
+		.logout-div {
+			position: fixed;
+			width: 25%;
+			height: 10%;
+			top: 0;
+			right: 0;
+		}
+
+		.logout-button {
+			position: absolute;
+			width: 100%;
+			height: 90%;
+			top: 5%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.logout-button img {
+			border-radius: 50%;
+			border: 3px solid #9f9f9f;
+			box-shadow: 0px 0px 15px -3px #9F9F9F;
+			background-color: #9F9F9F;
+			max-height: 100%;
+			height: auto;
+			overflow: hidden;
+			margin: 10%;
 		}
 	}
 
@@ -145,19 +166,12 @@ class PongTopBar extends Component {
 		}
 
 		.logo {
-			position: absolute;
-			height: calc(100%);
-			top: 0;
-			width: 25%;
-			overflow: hidden;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			display: none;
 		}
 
-
 		.logo-text {
-			font-size: 4vh;
+			display: none;
+			font-size: 2.5vh;
 			color: white;
 		}
 
@@ -172,12 +186,12 @@ class PongTopBar extends Component {
 
 		.language {
 			position: fixed;
-			width: 250px;
+			width: 50%;
 			height: 10%;
 			top: 0;
-			right: 10%;
-			border-right: 10px solid #424242;
-			border-left: 10px solid #424242;
+			right: 25%;
+			border-right: 8px solid #424242;
+			border-left: 8px solid #424242;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -190,10 +204,10 @@ class PongTopBar extends Component {
 
 		.profile-picture {
 			position: fixed;
-			width: 10%;
+			width: 25%;
 			height: 10%;
 			top: 0;
-			right: 0;
+			left: 0;
 		}
 
 		.profile-picture-div {
@@ -217,6 +231,35 @@ class PongTopBar extends Component {
 			height: auto;
 			overflow: hidden;
 		}
+
+		.logout-div {
+			position: fixed;
+			width: 25%;
+			height: 10%;
+			top: 0;
+			right: 0;
+		}
+
+		.logout-button {
+			position: absolute;
+			width: 100%;
+			height: 90%;
+			top: 5%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.logout-button img {
+			border-radius: 50%;
+			border: 3px solid #9f9f9f;
+			box-shadow: 0px 0px 15px -3px #9F9F9F;
+			background-color: #9F9F9F;
+			max-height: 100%;
+			height: auto;
+			overflow: hidden;
+			margin: 10%;
+		}
 	}
 
 	@media only screen and (min-width: 768px) and (min-height: 524px) {
@@ -231,6 +274,7 @@ class PongTopBar extends Component {
 		}
 
 		.logo {
+			display: block;
 			position: absolute;
 			height: calc(100%);
 			top: 0;
@@ -243,6 +287,7 @@ class PongTopBar extends Component {
 		}
 
 		.logo-text {
+			display: block;
 			font-size: 6vh;
 			color: white;
 		}
@@ -252,7 +297,7 @@ class PongTopBar extends Component {
 			width: 250px;
 			height: 10%;
 			top: 0;
-			right: 10%;
+			right: calc(20% + 10px);
 			border-right: 10px solid #424242;
 			border-left: 10px solid #424242;
 			display: flex;
@@ -269,7 +314,7 @@ class PongTopBar extends Component {
 			width: 10%;
 			height: 10%;
 			top: 0;
-			right: 0;
+			right: calc(10% + 10px);
 		}
 
 		.profile-picture-div {
@@ -290,7 +335,38 @@ class PongTopBar extends Component {
 			box-shadow: 0px 0px 15px -3px #9F9F9F;
 			background-color: #9F9F9F;
 			overflow: hidden;
+			margin: 10%;
 		}
+
+		.logout-div {
+			position: fixed;
+			width: calc(10% + 10px);
+			height: 10%;
+			top: 0;
+			right: 0;
+			border-left: 10px solid #424242;
+		}
+
+		.logout-button {
+			position: absolute;
+			width: 100%;
+			height: 90%;
+			top: 5%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.logout-button img {
+			border-radius: 50%;
+			border: 3px solid #9f9f9f;
+			box-shadow: 0px 0px 15px -3px #9F9F9F;
+			background-color: #9F9F9F;
+			max-height: 100%;
+			height: auto;
+			overflow: hidden;
+			margin: 10%;
+}
 	}
 
 	::-webkit-scrollbar {
