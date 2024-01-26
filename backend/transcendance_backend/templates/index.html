@@ -21,12 +21,12 @@
 			 const expirationDate = new Date();
 			 expirationDate.setDate(expirationDate.getDate() + days);
 
-			 const cookieValue = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/`;
+			 const cookieValue = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/; SameSite=Strict;`;
 
 			 document.cookie = cookieValue;
 		 }
 		 function unsetCookie(name) {
-			 document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+			 document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;`;
 		 }
 
 		{% if user.is_authenticated %}

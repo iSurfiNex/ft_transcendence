@@ -22,7 +22,7 @@ function isUserAuthenticated() {
 }
 
 function unsetCookie(name) {
-    document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;`;
 }
 
 function displayContent(path) {
@@ -31,7 +31,6 @@ function displayContent(path) {
     if (path === "/logout/") {
         // This request unsets the 'sessionid' cookie
         fetch('/api/logout/').then(()=>{
-            unsetCookie('csrftoken')
             unsetCookie('loggedin')
 		    navigateTo("/");
         }, ()=> {
