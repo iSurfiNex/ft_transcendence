@@ -49,7 +49,7 @@ function displayContent(path) {
         // notify the Layout function it will have to recreate the missing elements when players reconnect
         topbar = chat = contentSeparator = undefined
         // readd the pong login
-	    body.append(document.createElement('pong-login'));
+		displayElement("pong-login");
 	}
 	else if (!loggedIn) {
 		navigateTo("/login/");
