@@ -38,7 +38,7 @@ class PongTopBar extends Component {
 				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
 			</a>
 		</div>
-			<a class="profile-picture-div" href="/profile" onclick="navigateTo('/logout/'); return false;">
+			<a id="logout-button" href="/logout/" onclick="navigateTo('/logout/'); return false;">
 				Déconnexion
 			</a>
 	</div>
@@ -316,6 +316,11 @@ class PongTopBar extends Component {
 
 	.logo {
 		text-decoration: none;
+	}
+
+	#logout-button {
+		position: relative;
+		z-index: 1;
 	}
 `
 	observers = {
