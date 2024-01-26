@@ -27,7 +27,6 @@ function unsetCookie(name) {
 
 function displayContent(path) {
     const loggedIn = isUserAuthenticated()
-    console.log("LOOGED",loggedIn)
     if (path === "/logout/") {
         // This request unsets the 'sessionid' cookie
         fetch('/api/logout/').then(()=>{
