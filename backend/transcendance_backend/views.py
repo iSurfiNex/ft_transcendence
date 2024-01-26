@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.db.utils import IntegrityError
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -9,11 +9,13 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from http import HTTPStatus
 import json
+import logging
 
 import requests
 
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
+from .utils import tournamentUpdate, gameUpdate
 from typing import Type
 
 # from django.contrib.auth.models import User
@@ -21,7 +23,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, logout
 
 User = get_user_model()
-
+logger = logging.getLogger(__name__)
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
 @require_POST  # Ensure that the view only responds to POST requests
@@ -207,6 +209,7 @@ class ManageTournamentView(View):
 
     def post(self, request):    
         try:
+            logger.debug("=========== POST REQUEST STARTED MF ========")
             data = json.loads(request.body)
 
             game1 = Game.objects.create(state='waiting', power_ups=data['power_ups'])
@@ -218,7 +221,8 @@ class ManageTournamentView(View):
             tournament = Tournament.objects.create(created_by=player, power_ups=data['power_ups']) 
             tournament.games.add(game1, game2)
 
-            #tournamentUpdate(tournament, 'create')
+            logger.debug("=========== STARTING TOURNAMENT UPDATE MF ========")
+            tournamentUpdate(tournament, 'create')
             #gameUpdate(game1, 'create')
             #gameUpdate(game2, 'create')
             response = tournament.serialize()

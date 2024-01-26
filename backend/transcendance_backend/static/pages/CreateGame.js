@@ -7,6 +7,7 @@ class PongCreateGame extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<meta name="csrf-token" content="{% csrf_token %}">
+	<script>this.initWS()</script>
 	<div class="available-space">
 		<div class="create-game">
 			<div class="top-bar"><span class="title">{language.GameEditor}</span></div>
@@ -52,13 +53,14 @@ class PongCreateGame extends Component {
 			<div class="bottom-bar">
 				<div class="button-space"> 
 					<button class="btn create-button" @click="this.createGame()">{language.Create}</button>
-					<button class="btn cancel-button" @click="this.cancelGame()">{language.Cancel}</button>
+					<button class="btn cancel-button" @click="this.initWS()">{language.Cancel}</button>
 				</div>
 			</div>
 			
 		</div>
 </div>
 `
+//@click="this.cancelGame()"
 
 	static css = css`
 	@keyframes fadeIn {
@@ -564,48 +566,13 @@ class PongCreateGame extends Component {
 	}
 
 
-
-	newTournament() {
-		//const dataToSend = {
-		//	state: "waiting",
-		//	goal_objective: this.$id("max-score").value,
-		//	created_by: state.whoAmI,
-		//	power_ups: this.$id("toggle-Powerups").checked, 
-		//}
-//
-		//fetch("https://localhost:8000/api/manage-tournament/", {
-		//	method: 'POST',
-		//	headers: {
-		//		'Content-Type': 'application/json',
-		//		'X-CSRFToken': this.getCSRF(),
-		//	},
-		//	body: JSON.stringify(dataToSend),
-		//})
-		//.then(response => {
-		//	if (!response.ok)
-		//		throw new Error('Problem creating Tournament');
-		//	return (response.json());	
-		//})
-		//.then(data => {
-		//	const newTournament = { type: 'tournament', id: data.id, status:'waiting', creator: state.whoAmI, players: [state.whoAmI], gamesID: [data.games[0].id, data.games[1].id], date: ''};
-		//	const newGame1 = { type: 'tournament-game', id: data.games[0].id, status: 'waiting', creator: state.whoAmI, players: [], score: [], date: ''};
-		//	const newGame2 = { type: 'tournament-game', id: data.games[1].id, status: 'waiting', creator: state.whoAmI, players: [], score: [], date: ''};
-//
-		//	state.tournaments.push(newTournament);
-		//	state.games.push(newGame1);
-		//	state.games.push(newGame2);
-		//	state.currentTournament = data.id;//PROB: STATE NE CHANGE PAS DE VALEUR	
-//
-		//	navigateTo('/play/waiting-room');
-		//})
-		//.catch(error => {console.error(error)})
-
+	initWS() {
 		const socket = ws('state-update');
-
+		
 		socket.addEventListener("open", (event) => {
 			console.log("Websocket Connected");
 		})
-
+		
 		socket.addEventListener("error", (event) => {
 			console.error("Websocket Error: ", event);
 		})
@@ -616,17 +583,39 @@ class PongCreateGame extends Component {
 			console.log("Error type: ", event.type);
 		  });
 
-        // Event handler for receiving messages
-        socket.addEventListener('message', (event) => {
-            console.log('Received message:', event.data);
-        });
+		socket.addEventListener("message", (event) => {
+			data = JSON.parse(event.data);
+			console.log('Received message:', data.type);
+		});
+	}
 
-        // TODO To remove, I'm just sending random msg after 2sec
-        setTimeout(() => {
-            const msg = JSON.stringify({message:'Hello, WebSocket yooooooo!'})
-            socket.send(msg);
-            console.log('STATE-UPDATE WS MSG SENT', msg)
-        }, 2000);
+
+	newTournament() {
+		const dataToSend = {
+			state: "waiting",
+			goal_objective: this.$id("max-score").value,
+			created_by: state.whoAmI,
+			power_ups: this.$id("toggle-Powerups").checked, 
+		}	
+
+		fetch("https://localhost:8000/api/manage-tournament/", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': this.getCSRF(),
+			},
+			body: JSON.stringify(dataToSend),
+		})
+		.then(response => {
+			if (!response.ok)
+				throw new Error('Problem creating Tournament');
+			return (response.json());	
+		})
+		.then(data => {
+			state.currentTournament = data.id;
+			//navigateTo('/play/waiting-room');
+		})
+		.catch(error => {console.error(error)})
 	}	
 
 
