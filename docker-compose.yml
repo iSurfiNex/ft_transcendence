@@ -22,50 +22,51 @@ services:
       - "8000:443"
     volumes:
       - backend:/volumes/backend
-  #prometheus:
-  #  container_name: prometheus
-  #  build: ./prometheus
-  #  image: prometheus
-  #  volumes:
-  #    - prometheus:/etc/prometheus
-  #  ports:
-  #    - '9090:9090'
-  #  networks:
-  #    - ft_transcendence
-  #  env_file:
-  #    - .env
-  #  restart: unless-stopped
-  #alertmanager:
-  #  container_name: alertmanager
-  #  build: ./alertmanager
-  #  image: alertmanager
-  #  volumes:
-  #    - alertmanager:/etc/alertmanager
-  #  ports:
-  #    - '9093:9093'
-  #  networks:
-  #    - ft_transcendence
-  #  env_file:
-  #    - .env
-  #  restart: unless-stopped
-  #grafana:
-  #  container_name: grafana
-  #  build: ./grafana
-  #  image: grafana
-  #  ports:
-  #    - 3000:3000
-  #  volumes:
-  #    - grafana:/etc/grafana/provisioning/datasources
-  #  networks:
-  #    - ft_transcendence
-  #  env_file:
-  #    - .env
-  #  restart: unless-stopped
-     networks:
-       - ft_transcendence
-     env_file:
-       - .env
-     restart: on-failure
+    networks:
+      - ft_transcendence
+    env_file:
+      - .env
+    restart: on-failure
+
+  # prometheus:
+  #   container_name: prometheus
+  #   build: ./prometheus
+  #   image: prometheus
+  #   volumes:
+  #     - prometheus:/etc/prometheus
+  #   ports:
+  #     - '9090:9090'
+  #   networks:
+  #     - ft_transcendence
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
+  # alertmanager:
+  #   container_name: alertmanager
+  #   build: ./alertmanager
+  #   image: alertmanager
+  #   volumes:
+  #     - alertmanager:/etc/alertmanager
+  #   ports:
+  #     - '9093:9093'
+  #   networks:
+  #     - ft_transcendence
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
+  # grafana:
+  #   container_name: grafana
+  #   build: ./grafana
+  #   image: grafana
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - grafana:/etc/grafana/provisioning/datasources
+  #   networks:
+  #     - ft_transcendence
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
 
 volumes:
   backend:
@@ -75,27 +76,27 @@ volumes:
       device: ${VOLUME_PATH}/backend
       o: bind
       type: none
-  #prometheus:
-  #  name: prometheus
-  #  driver: local
-  #  driver_opts:
-  #    device: ${VOLUME_PATH}/prometheus
-  #    o: bind
-  #    type: none
-  #grafana:
-  #  name: grafana
-  #  driver: local
-  #  driver_opts:
-  #    device: ${VOLUME_PATH}/grafana
-  #    o: bind
-  #    type: none
-  #alertmanager:
-  #  name: alertmanager
-  #  driver: local
-  #  driver_opts:
-  #    device: ${VOLUME_PATH}/alertmanager
-  #    o: bind
-  #    type: none
+  prometheus:
+    name: prometheus
+    driver: local
+    driver_opts:
+      device: ${VOLUME_PATH}/prometheus
+      o: bind
+      type: none
+  grafana:
+    name: grafana
+    driver: local
+    driver_opts:
+      device: ${VOLUME_PATH}/grafana
+      o: bind
+      type: none
+  alertmanager:
+    name: alertmanager
+    driver: local
+    driver_opts:
+      device: ${VOLUME_PATH}/alertmanager
+      o: bind
+      type: none
 
 networks:
   ft_transcendence:
