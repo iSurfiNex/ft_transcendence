@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2024/01/22 15:49:32 by tlarraze         ###   ########.fr        #
+#    Updated: 2024/01/26 16:29:09 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ jfile = {
 	"paddleL": {"x": 10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"paddleR": {"x": -10, "y": 0, "z": 0, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"ball": {"x": 0, "y": 0, "z": 0, "color": "n", "s": 0.1},
-	"bonus": {"x": 0, "y": 500, "z": 50, "state": 0, "way": "d"}
+	"bonus": {"x": 0, "y": 600, "z": 50, "state": 0, "way": "d"}
 }
 
 users = set()
@@ -72,9 +72,8 @@ async def send_pos_to_all(websocket, jfile):
 		jfile["ball"]["x"] = game_phy.engine.ball.p.x	# Need to be fixed
 		game_phy.update()								# Need to be fixed
 		jfile = move_paddle_ball(jfile)
-		for client in users:
-			await websocket.send(json.dumps(jfile))
-		await asyncio.sleep(1/60)
+		await websocket.send(json.dumps(jfile))
+		await asyncio.sleep((1/60))
 
 async def listener(websocket, path):
 	# Declare jfile as a global variable
@@ -99,7 +98,7 @@ async def listener(websocket, path):
 		print(f"Number of connected clients: {len(users)}")
 
 if __name__ == "__main__":
-	print(socket.gethostbyname(socket.gethostname()))
+	print(socket.gethostbyname(socket.gethostname()) + ":8000/game.html")
 	start_server = websockets.serve(listener, socket.gethostbyname(socket.gethostname()), 8080)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()

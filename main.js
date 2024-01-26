@@ -11,7 +11,6 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 	let i = 0.00;
 	let ball;
 	let bonus;
-	let paint_z = -50;
 	let time = (new Date().getTime());
 	
 	// Set up scene
@@ -62,24 +61,29 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 
 
 // Load a glTF resource
-	loader.load(
-		'abstract_ball.glb', //or abstract_2.glb   need to choose
-		(gltf) => {
-			ball = gltf.scene.children[0];
-			if (ball) {
-				ball.scale.multiplyScalar(20);
-				ball.position.set(0, 0, 0);
-				ball.renderOrder = 10;
-				scene.add(ball);
-			}
-		},
-		(xhr) => {
-			console.log((xhr.loaded / xhr.total) * 100 + '% loaded of Ball');
-		},
-		(error) => {
-			console.error('Error loading GLTF model', error);
+loader.load(
+	'abstract_ball.glb', //or abstract_2.glb   need to choose
+	(gltf) => {
+		ball = gltf.scene;
+		if (ball) {
+			ball.traverse((child) => {
+				if (child.isMesh) {
+					child.material.depthTest = false;
+				}
+			});
+			ball.scale.multiplyScalar(15);
+			ball.position.set(0, 0, 0);
+			ball.renderOrder = 11;
+			scene.add(ball);
 		}
-	);
+	},
+	(xhr) => {
+		console.log((xhr.loaded / xhr.total) * 100 + '% loaded of Ball');
+	},
+	(error) => {
+		console.error('Error loading GLTF model', error);
+	}
+);
 
 	loader.load(
 		'power_up_box.glb',
@@ -94,13 +98,12 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 							color: 0xffffff, // Set the desired color
 						});
 						child.material = basicMaterial;
+						child.material.transparent = true;
 					}
 				});
-	
+				ball.renderOrder = 10;
 				bonus.scale.multiplyScalar(25);
 				bonus.position.set(0, 500, 0);
-				bonus.renderOrder = 15; // Set a higher renderOrder for the bonus
-	
 				scene.add(bonus);
 			}
 		},
@@ -129,6 +132,15 @@ renderer.render(scene, camera);
 		var	down = -1;
 		var	w = -1;
 		var	s = -1;
+		document.addEventListener('keydown', function(event) {
+			if (event.key == "p" && bonus) {
+				bonus.traverse((child) => {
+					if (child.isMesh && child.material) {
+						Opacity_fade_out(child.material);
+					}
+				});
+			}
+		});
 		document.addEventListener('keydown', function(event) {
 			if (event.key == "ArrowUp" && up == -1)
 			{
@@ -177,8 +189,6 @@ renderer.render(scene, camera);
 			console.log(event.key);
 			if (event.key != "s" && event.key != "w" && event.key != "t" && event.key != "ArrowUp" && event.key != "ArrowDown")
 				return
-			if (event.key == "f12")
-				handleResize()
 			if (event.key == "ArrowDown" || event.key == "ArrowUp")
 			{
 				var obj = {
@@ -218,9 +228,9 @@ renderer.render(scene, camera);
 		const message = event.data;
 		jfile = JSON.parse(event.data)
 
-		paddleR.position.set(390, jfile['paddleR']['y'], 0);
+		paddleR.position.set(390, jfile['paddleR']['y'], 10);
 		//paddleR.position.y = jfile['paddleR']['y'];
-		paddleL.position.set(-390, jfile['paddleL']['y'], 0);
+		paddleL.position.set(-390, jfile['paddleL']['y'], 10);
 		
 		//paddleR.scale.set(jfile["paddleR"]["sizeX"], jfile["paddleR"]["sizeY"], 1);
 		//paddleL.scale.set(jfile["paddleL"]["sizeX"], jfile["paddleL"]["sizeY"], 1);
@@ -246,12 +256,11 @@ renderer.render(scene, camera);
 					light.intensity = 10;
 					paint = new THREE.Mesh( paint_geo, material_paint_R); 
 				}
+				paint.position.copy(ball.position);
 				paint.position.x = ball.position.x + Math.round(Math.random() * 100 % 15);
 				paint.position.y = ball.position.y + Math.round(Math.random() * 100 % 15);
-				paint.position.z = paint_z;
-				paint_z += 0.01;
-				paint.scale.set(scale, scale);
-				paint.material.opacity = Math.random();
+				paint.scale.set(scale, scale, 1);
+				paint.renderOrder = 0;
 				scene.add(paint);
 				console.log(scene.children.length)
 			}
@@ -259,14 +268,14 @@ renderer.render(scene, camera);
 
 			if (ball)
 			{
-				ball.position.set(jfile['ball']['x'], jfile['ball']['y'], 0);
+				ball.position.set(jfile['ball']['x'], jfile['ball']['y'], jfile['ball']['z']);
 				ball.rotation.x += 0.01;
 				ball.rotation.y += 0.01;
 			}			
 		}
 		if (bonus)
 		{
-			bonus.position.set(0, jfile['bonus']['y'], 0);
+			bonus.position.set(0, jfile['bonus']['y'], 50);
 			bonus.rotation.z += 0.01;
 		}
 
@@ -278,3 +287,18 @@ renderer.render(scene, camera);
 		};
 
 animate();
+
+function Opacity_fade_out(material) {
+	let opacity = material.opacity;
+	const reduceOpacityInterval = setInterval(() => {
+		if (opacity > 0.001) {
+			console.log(opacity);
+			opacity -= 0.01;
+			material.opacity = opacity;
+			renderer.render(scene, camera);
+			console.log("END: " + opacity);
+		} else {
+			clearInterval(reduceOpacityInterval); // Stop the interval when opacity reaches 0.01
+		}
+	}, 1); // Reduce opacity every second
+}
