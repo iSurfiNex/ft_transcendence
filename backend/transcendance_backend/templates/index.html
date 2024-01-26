@@ -34,6 +34,7 @@
 		 window.username = '{{ user.username }}'
 		{% else %}
 		 unsetCookie('loggedin')
+		 window.username = null
 		{% endif %}
 
 		</script>
