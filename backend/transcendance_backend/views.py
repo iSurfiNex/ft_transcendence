@@ -10,12 +10,14 @@ from django.shortcuts import get_object_or_404
 from http import HTTPStatus
 import json
 import os
+import logging
 
 import requests
 import random
 
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
+from .utils import tournamentUpdate, gameUpdate
 from typing import Type
 
 # from django.contrib.auth.models import User
@@ -23,7 +25,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, logout
 
 User = get_user_model()
-
+logger = logging.getLogger(__name__)
 
 @csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
 @require_POST  # Ensure that the view only responds to POST requests
@@ -209,6 +211,7 @@ class ManageTournamentView(View):
 
     def post(self, request):
         try:
+            logger.debug("=========== POST REQUEST STARTED MF ========")
             data = json.loads(request.body)
 
             game1 = Game.objects.create(state="waiting", power_ups=data["power_ups"])

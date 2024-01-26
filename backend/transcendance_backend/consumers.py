@@ -2,6 +2,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import json
 from datetime import datetime
+from asgiref.sync import async_to_sync
 
 logger = logging.getLogger(__name__)
 
@@ -88,15 +89,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
 class StateUpdateConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
-            logger.debug("=================WS CONNECT START============")
+            logger.debug("=================WS CONNECT START  jojojojojojoj============")
+            await self.channel_layer.group_add("state-update", self.channel_name)
             await self.accept()
-            logger.debug("=================WS CONNECTED============")
-            self.user = self.scope["user"]
-            logger.debug(self.user)
+            logger.debug("=================WS CONNECTED   jojojojojojo============")
         except Exception as e:
             logger.error(f"Error: {e}")
 
     async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("state-update", self.channel_name)
         logger.debug("=================WS DISCONNECT============")
 
     async def receive(self, text_data):
@@ -106,4 +107,8 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
         message = text_data_json["message"]
         str_resp = json.dumps({"message": message})
         # TODO change this, I just send back the received msg
-        await self.send(text_data=str_resp)
+        #await self.send(text_data=str_resp)
+
+    async def send_update(self, event):
+        logger.debug("==============  SEND CALLED ===========")
+        await self.send(text_data=json.dumps(event['data']))
