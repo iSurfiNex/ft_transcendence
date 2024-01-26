@@ -42,7 +42,6 @@ urlpatterns = [
     path("api/register/", register_user, name="register-user"),
     path("api/login/", login_user, name="login-user"),
     path("api/logout/", logout_user, name="logout-user"),
-    path("api/start-game/", start_game, name="start-game"),
     path("api/players/", PlayerView.as_view(), name="player-list"),
     path("api/players/<int:id>/", PlayerView.as_view(), name="player-detail"),
     path("api/tournaments/", TournamentView.as_view(), name="tournament-list"),
@@ -65,5 +64,4 @@ urlpatterns = [
     path("api/manage-game/", ManageGameView.as_view(), name="manage-game"),
     path("api/manage-game/<int:id>/", ManageGameView.as_view(), name="game-detail"),
     re_path(r"^.*", TemplateView.as_view(template_name="index.html")),
-
 ]
