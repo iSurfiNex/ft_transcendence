@@ -519,7 +519,7 @@ class PongChat extends Component {
 		position: relative;
 		width: calc(100% - 15px);
 		left: 10px;
-		margin-top: 25px;
+		margin-top: 16px;
 		bottom: 10px;
 	}
 
@@ -530,7 +530,7 @@ class PongChat extends Component {
 
 
 	.message[is-my-msg] .message-player-content {
-		text-align: right;
+		margin-left: auto;
 	}
 
 	.message-player-img {
@@ -570,8 +570,12 @@ class PongChat extends Component {
 	.message-player-content {
 		color: rgb(177, 177, 177);
 		word-wrap: break-word;
-		margin-top: 5px;
+		margin-top: 10px;
 		font-size: 12px;
+		background: #444;
+  		border-radius: 11px;
+  		padding: 6px 12px;
+  		max-width: fit-content;
 	}
 
 	::-webkit-scrollbar {
