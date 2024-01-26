@@ -23,7 +23,6 @@ from .views import (
     TournamentView,
     GameView,
     RequestLogin,
-    start_game,
     register_user,
     login_user,
     logout_user,
