@@ -71,8 +71,8 @@ class WaitingRoom extends Component {
 
             <div class="profil-pics-N">
                 <div class="gallery-N">
-                    <img src="{this.playerOnePic(currentGame)}" alt="player 1">
-                    <img src="{this.playerTwoPic(currentGame)}" alt="player 2">
+                    <img src="{this.playerOnePic()}" alt="player 1">
+                    <img src="{this.playerTwoPic()}" alt="player 2">
                 </div>
             </div>    
 	    </div>
@@ -1092,11 +1092,13 @@ class WaitingRoom extends Component {
 		initPopover(this)
 	}
 
-    playerOnePic(gameId) {
-        if (!gameId || state.games[gameId - 1].players.length < 1 || gameId == -1)
+    playerOnePic() {
+        const game = state.games.find(game => game.id == state.currentGame);
+        
+        if (!game || game.players.length < 1 || state.currentGame == -1)
             return ("/static/img/list.svg");
         
-        const playerNick = state.games[gameId - 1].players[0];
+        const playerNick = game.players[0];
         const user = state.users.find(elem => elem.nickname === playerNick);
 
         if (user)
@@ -1105,11 +1107,13 @@ class WaitingRoom extends Component {
         return '/static/img/list.svg';
     }
 
-    playerTwoPic(gameId) {
-        if (!gameId || state.games[gameId - 1].players.length < 2 || gameId == -1)
+    playerTwoPic() {
+        const game = state.games.find(game => game.id == state.currentGame);
+
+        if (!game || game.players.length < 2 || state.currentGame == -1)
             return ("/static/img/list.svg");
         
-        const playerNick = state.games[gameId - 1].players[1];
+        const playerNick = game.players[1];
         const user = state.users.find(elem => elem.nickname === playerNick);
 
         if (user)
@@ -1118,30 +1122,24 @@ class WaitingRoom extends Component {
         return '/static/img/list.svg';
     }
 
-    getPlayerOne(gameId) {
-        if (!gameId)
-            return ("Unknown");
+    getPlayerOne() {
+        const game = state.games.find(game => game.id == state.currentGame);
+        const playerOne = game.players[0];
         
-        if (state.games[gameId - 1].players.length < 1)
+        if (!game || game.players.length < 1 || !playerOne)
             return ("Unknown");
 
-        const playerOne = state.games[gameId - 1].players[0];
-        if (!playerOne)
-            return ("Unknown");
         return (playerOne);
     }
 
-    getPlayerTwo(gameId)
+    getPlayerTwo()
     {
-        if (!gameId)
+        const game = state.games.find(game => game.id == state.currentGame);
+        const playerTwo = game.players[1];
+
+        if (!game || game.players.length < 2 || !playerTwo)
             return ("Unknown");
 
-        if (state.games[gameId - 1].players.length < 2)
-            return ("Unknown");
-
-        const playerTwo = state.games[gameId - 1].players[1];
-        if (!playerTwo)
-            return ("Unknown");
         return (playerTwo);
     }
 
@@ -1200,12 +1198,12 @@ class WaitingRoom extends Component {
     }
 
     isGameCreator() {
-        if (state.currentGame == -1)
+        const game = state.games.find(game => game.id == state.currentGame);
+
+        if (!game || state.whoAmI != game.creator)
             return !(false);
 
-        if (state.whoAmI == state.games[state.currentGame - 1].creator)
-            return !(true);
-        return !(false);
+        return !(true);
     }
 
     isTournamentCreator() {
@@ -1252,7 +1250,7 @@ class WaitingRoom extends Component {
 
     startTournament() {
         const nb_players = state.tournaments[state.currentTournament].players.length;
-        const url = "https://localhost:8000/api/create-tournament/" + state.currentTournament + "/";
+        const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
 
         if (nb_players != 4)
         {    
@@ -1261,7 +1259,7 @@ class WaitingRoom extends Component {
         }
 
         const dataToPut = {
-            use: "start-tournament",
+            action: "start-tournament",
         }
 
         fetch(url, {
@@ -1279,14 +1277,15 @@ class WaitingRoom extends Component {
         })
         .then (data => {
             state.tournaments[state.currentTournament].status = "running";//PROB STATE
-            state.currentGame = getGameID(data);
+            //CHANGER LES STATUS DES DEUX GAME DU TOURNOI
+            state.currentGame = this.getGameID(data);
         })
         .catch(error => {console.error(error)})
     }
 
     //startGame() {
     //    const nb_players = state.games[state.currentGame].players.lenght;
-    //    const url = "https://localhost:8000/api/create-tournament/" + state.currentTournament + "/";
+    //    const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
 	//	const currentDatetime = new Date();
 	//	const formatedDatetime = currentDatetime.toISOString();
 //
@@ -1297,7 +1296,7 @@ class WaitingRoom extends Component {
     //    }
 //
     //    const dataToPut = {
-    //        state: "running",
+    //        use: 'start-game'
     //        started_at: formatedDatetime,
     //    }
     //}

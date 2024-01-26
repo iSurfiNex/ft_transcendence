@@ -1,6 +1,16 @@
 import {setup} from "./pouic/state.js"
 
+/* Global function to start a WebSocket connection. If page protocol is https, start wss connection otherwise ws. Exemple if page is https://localhost:8000/start-game and you call ws('chat'), a connection will open at wss://localhost:8000/ws/chat */
+window.ws = route => {
+    const wsBase = window.location.protocol === 'https:' ? 'wss://' : 'ws://'
+    const wsUrl = `${wsBase}${window.location.host}/ws/${route}`
+    console.log("NEW WS AT URL:",wsUrl)
+    const socket = new WebSocket(wsUrl);
+    return socket;
+}
+
 var state_base = {
+	username: window.username,
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
@@ -11,7 +21,7 @@ var state_base = {
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: 'jtoulous',
-	isLoggedIn: true,
+        logginError: "",
 	profiles: [
 		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
@@ -28,10 +38,10 @@ var state_base = {
 	],
 	activeChannel: 'Global',
 	messages: [
-		{ text: 'Greetings', sender: 'tlarraze', date: '19:06', channel: 'Global' },
-		{ text: 'Greetings', sender: 'jtoulous', date: '18:05', channel: 'Global' },
-		{ text: 'Hi there', sender: 'fjullien', date: '17:04', channel: 'Global' },
-		{ text: 'Hello', sender: 'rsterin', date: '16:03', channel: 'fjullien' },
+		{ text: 'Greetings', sender: 'tlarraze', date: 1706191171037, channel: 'Global' },
+		{ text: 'Greetings', sender: 'jtoulous', date: 1706191071037, channel: 'Global' },
+		{ text: 'Hi there', sender: 'fjullien', date: 1706191078037, channel: 'Global' },
+		{ text: 'Hello', sender: 'rsterin', date: 1706190091037, channel: 'fjullien' },
 	],
 	tournaments: [
 		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11], date: '11/11/2023 04:38', countdown: 5 },
@@ -70,11 +80,17 @@ var state_base = {
 
 	en: {
 		// LOGIN
+		email: 'Email',
 		username: 'Username',
 		password: 'Password',
+		confirmPassword: 'Confirm password', // TODO mutliling
 		login: 'Login',
 		register: 'Register',
 		connectionWith: 'Connection with 42',
+                invalidLoginCredentials: 'Invalid login credentials.',// TODO mutlilang
+                usernameAlreadyExist: 'This username already exist.',
+                errUnknown: 'An unexpected error occured.', // TODO mutlilang
+                'A user with that username already exists.': "A user with that username already exists.", // TODO multilang
 
 		// HOME
 		play: 'PLAY',
@@ -124,6 +140,7 @@ var state_base = {
 	},
 	fr: {
 		// LOGIN
+		email: 'Email',
 		username: 'Nom d\'utilisateur',
 		password: 'Mot de passe',
 		login: 'Se connecter',
@@ -178,6 +195,7 @@ var state_base = {
 	},
 	de: {
 		// LOGIN
+		email: 'Email',
 		username: 'Nutzername',
 		password: 'Passwort',
 		login: 'Anmeldung',
@@ -230,6 +248,11 @@ var state_base = {
 		Create: 'anlegen',
 		Cancel: 'abbrechen'
 	},
+
+    lang(key) {
+        return state.language[key] || state.language.errUnknown
+    }
+
 }
 
 state_base.language = {...state_base.en}
@@ -240,3 +263,4 @@ function checkScreenWidth() {
 }
 
 window.addEventListener('resize', checkScreenWidth);
+

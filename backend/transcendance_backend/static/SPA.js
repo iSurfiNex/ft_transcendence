@@ -17,14 +17,40 @@ function navigateTo(path) {
 	displayContent(path);
 }
 
+function isUserAuthenticated() {
+    return document.cookie.split(';').some((item) => item.trim().startsWith('loggedin'));
+}
+
+function unsetCookie(name) {
+    document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;`;
+}
+
 function displayContent(path) {
-	if (window.state.isLoggedIn && path === "/login/") {
+    const loggedIn = isUserAuthenticated()
+    if (path === "/logout/") {
+        // This request unsets the 'sessionid' cookie
+        fetch('/api/logout/').then(()=>{
+            unsetCookie('loggedin')
+		    navigateTo("/");
+        }, ()=> {
+            console.error('Logout request failed :(')
+        })
+    }
+	else if (loggedIn && path === "/login/") {
 		navigateTo("/");
 	}
 	else if (path === "/login/") {
-		displayElement("pong-login");
+        // TODO ça marche mais c'est dégeulasse
+
+        // Remove every pong-something nodes
+        const pongNodes = Array.from(document.body.children).filter(node => node.tagName.toLowerCase().startsWith('pong-'));
+        pongNodes.forEach(node => node.remove());
+        // notify the Layout function it will have to recreate the missing elements when players reconnect
+        topbar = chat = contentSeparator = undefined
+        // readd the pong login
+	    body.append(document.createElement('pong-login'));
 	}
-	else if (!window.state.isLoggedIn) {
+	else if (!loggedIn) {
 		navigateTo("/login/");
 	}
 	else {

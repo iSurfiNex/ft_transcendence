@@ -1,3 +1,4 @@
+
 import {extractPathScope, get_prop, isIterable, addPathObserver } from './utils.js'
 import {bindText, bindAttr } from './binding.js'
 
@@ -19,16 +20,13 @@ export const evalRepeat = (node, scope, prefixes = {}) => {
     let clone = templateNode.cloneNode(true)
     el.removeChild(templateNode);
     let nodePool = []
-    let onchange = (newVal) => {
-      if (newVal === undefined)
-        return
-      if (!isIterable(newVal)) {
-        console.warn(newVal, "Value is not iterable")
-        return
-      }
-      let nodesDiff = newVal.length - nodePool.length
+    let onchange = (newLen) => {
+      if (newLen === undefined)
+        newLen = 0
+
+      let nodesDiff = newLen - nodePool.length
       // Restore pool nodes
-      for (let i = 0; i < newVal.length && i < nodePool.length; i++)
+      for (let i = 0; i < newLen && i < nodePool.length; i++)
       {
         if (!nodePool[i].isConnected)
           el.appendChild(nodePool[i])
@@ -47,13 +45,16 @@ export const evalRepeat = (node, scope, prefixes = {}) => {
         }
       }
       else {
+        const startIdx = nodePool.length + nodesDiff
         // Disconnect pool nodes if needed
-        for (let i = nodePool.length + nodesDiff; i < nodePool.length; i++) {
+        for (let i = startIdx; i < nodePool.length; i++) {
           el.removeChild(nodePool[i]);
         }
+        nodePool.splice(startIdx, -nodesDiff)
       }
     }
 
+    path.push('length')
     let initialVal = get_prop(localScope, path)
     onchange(initialVal)
     addPathObserver(path, onchange)

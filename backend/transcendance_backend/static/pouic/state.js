@@ -27,12 +27,12 @@ const handler = {
     return new Proxy(target[key], next_handler)
   },
   set(target, key, value, receiver) {
+    target[key] = value
     let path = [...this.path, key]
     let obs = get_prop(observers, path)
     if (!obs)
       return true
     callObsCbRecurse(obs, value, [...path])
-    target[key] = value
 
     return true
   }

@@ -27,21 +27,23 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" repeat="messages" as="message">
-				<div class="message" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
-					<a href="/profile" onClick="navigateTo('/profile'); return false;">
-						<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
+				<div class="message" is-my-msg="{this.equals(message.sender, username)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
+					<div class="msg-heading">
+						<a href="/profile" onClick="navigateTo('/profile'); return false;">
+							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
+						</a>
 						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
-					</a>
-					<div class="message-player-date">{message.date}</div>
+						<div class="message-player-date">{this.formatDatetime(message.date)}</div>
+					</div>
 					<div class="message-player-content">{message.text}</div>
 				</div>
 			</div>
 
 			<div class="bottom-bar">
-				<input placeholder="{language.writeHere}" class="chat-input"/>
+				<input id="chat-input" placeholder="{language.writeHere}"/>
 				<label class="btn btn-primary chat-send" for="btn-check">
 					<div class="chat-send-button">
-						<input class="chat-send-img" alt="send" type="image" src="/static/img/send.svg" name="submit"/>
+						<input class="chat-send-img" alt="send" type="image" src="/static/img/send.svg" name="submit" @click="this.sendMessage()"/>
 					</div>
 				</label>
 				<div class="player-list">
@@ -193,7 +195,7 @@ class PongChat extends Component {
 			box-shadow: 0px -8px 11px -6px rgba(0,0,0,0.36);
 		}
 
-		.chat-input {
+		#chat-input {
 			width: calc(100% - 226px) !important;
 		}
 
@@ -341,7 +343,7 @@ class PongChat extends Component {
 		padding-top: 3px;
 	}
 
-	.chat-input {
+	#chat-input {
 		position: absolute;
 		width: calc(100% - 156px);
 		height: 64px;
@@ -517,8 +519,18 @@ class PongChat extends Component {
 		position: relative;
 		width: calc(100% - 15px);
 		left: 10px;
-		margin-top: 25px;
+		margin-top: 16px;
 		bottom: 10px;
+	}
+
+	.msg-heading {
+	    display: flex;
+        align-items: center;
+    }
+
+
+	.message[is-my-msg] .message-player-content {
+		margin-left: auto;
 	}
 
 	.message-player-img {
@@ -532,14 +544,12 @@ class PongChat extends Component {
 	}
 
 	.message-player-name {
-		position: absolute;
-		top: 10px;
 		font-size: 12px;
-		width: calc(100% - 120px);
-		left: 45px;
-		overflow-x: auto;
+		overflow-x: scroll;
 		color: rgb(177, 177, 177);
-		white-space: nowrap
+		white-space: nowrap;
+		margin: 0 12px;
+		flex:1;
 	}
 
 	.message-player-name:hover {
@@ -552,20 +562,20 @@ class PongChat extends Component {
 	}
 
 	.message-player-date {
-		position: absolute;
-		top: 10px;
 		font-size: 11px;
-		right: 10px;
 		color: rgb(177, 177, 177);
+		min-width: fit-content;
 	}
 
 	.message-player-content {
-		position: relative;
 		color: rgb(177, 177, 177);
-		width: calc(100% - 10px);
 		word-wrap: break-word;
-		margin-top: 5px;
+		margin-top: 10px;
 		font-size: 12px;
+		background: #444;
+  		border-radius: 11px;
+  		padding: 6px 12px;
+  		max-width: fit-content;
 	}
 
 	::-webkit-scrollbar {
@@ -595,8 +605,17 @@ class PongChat extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
+
 	connectedCallback() {
 		initPopover(this);
+        this.socket = ws('chat')
+        this.socket.addEventListener('message', (event) => {
+            console.log('Received message:', event.data);
+            // TODO try catch
+            const data = JSON.parse(event.data)
+            const {sender, text, datetime} = data
+            state.messages.push({text, sender, date:datetime, channel: sender})
+        });
 	}
 
 	chatCheckHandler() {
@@ -663,6 +682,32 @@ class PongChat extends Component {
 		state.activeChannel = channel.name;
 		channel.notifications = 0;
 	}
+
+    sendMessage() {
+		const inputNode = this.shadowRoot.getElementById("chat-input");
+        const text = inputNode.value
+        console.log("SENDING: ",state.activeChannel, " TO: ", text)
+        this._sendWsMessage(state.activeChannel, text)
+        state.messages.push({text, sender:state.username, date:Date.now(), channel: state.activeChannel})
+    }
+
+    _sendWsMessage(to, text) {
+        if (this.socket.readyState === WebSocket.OPEN) {
+            const jsonString = JSON.stringify({to,text});
+          	this.socket.send(jsonString);
+        } else {
+            console.error('WebSocket not open. Unable to send message.');
+        }
+    }
+    formatDatetime(date) {
+        date = new Date(date)
+        const minutes = date.getHours().toString().padStart(2, '0');
+        const seconds = date.getMinutes().toString().padStart(2, '0');
+        return `${minutes}:${seconds}`;
+    }
+    equals(sender, username) {
+       return sender === username
+    }
 }
 
 register(PongChat);

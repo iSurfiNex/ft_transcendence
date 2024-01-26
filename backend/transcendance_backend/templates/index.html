@@ -15,6 +15,28 @@
 		<meta http-equiv="Access-Control-Allow-Origin" content="https://api.intra.42.fr/oauth/token">
 
 		<title>Pong !</title>
+
+		<script>
+		 function setCookie(name, value, days) {
+			 const expirationDate = new Date();
+			 expirationDate.setDate(expirationDate.getDate() + days);
+
+			 const cookieValue = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/; SameSite=Strict;`;
+
+			 document.cookie = cookieValue;
+		 }
+		 function unsetCookie(name) {
+			 document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;`;
+		 }
+
+		{% if user.is_authenticated %}
+		 setCookie('loggedin', true, 7);
+		 window.username = '{{ user.username }}'
+		{% else %}
+		 unsetCookie('loggedin')
+		{% endif %}
+
+		</script>
 	</head>
 	<body>
 		<noscript>You need to enable JavaScript to run this app.</noscript>

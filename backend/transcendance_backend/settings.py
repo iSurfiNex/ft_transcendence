@@ -27,7 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 USE_X_FORWARDED_HOST = True
+
+# These settings help enforce secure connections and protect against certain security vulnerabilities.
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -38,8 +43,13 @@ ALLOWED_HOSTS = [os.environ.get("LOCAL_IP"), "localhost"]
 CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "https://" + os.environ.get("LOCAL_IP") + ":8000"]
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 INSTALLED_APPS = [
+    "daphne",
+    "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -148,3 +158,21 @@ TEST_DATABASE_NAME = os.environ.get("TEST_DB_NAME")
 
 # Specify the test database user
 TEST_DATABASE_USER = os.environ.get("TEST_DB_USER")
+
+ASGI_APPLICATION = "transcendance_backend.asgi.application"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}

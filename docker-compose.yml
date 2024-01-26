@@ -22,12 +22,6 @@ services:
       - "8000:443"
     volumes:
       - backend:/volumes/backend
-    networks:
-      - ft_transcendence
-    env_file:
-      - .env
-    restart: on-failure
-
   #prometheus:
   #  container_name: prometheus
   #  build: ./prometheus
@@ -67,6 +61,11 @@ services:
   #  env_file:
   #    - .env
   #  restart: unless-stopped
+     networks:
+       - ft_transcendence
+     env_file:
+       - .env
+     restart: on-failure
 
 volumes:
   backend:

@@ -12067,7 +12067,7 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+`
 
-/*# sourceMappingURL=bootstrap.css.map */`
 export const bootstrapSheet = sheet.replace(styles);
 bootstrapSheet.then((sheet) => document.adoptedStyleSheets.push(sheet));
