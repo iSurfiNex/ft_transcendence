@@ -216,6 +216,7 @@ class PongLogin extends Component {
             }
         }
         state.logginError = null
+        console.log("====NEW USER REGISTERED===")
     })
     .catch(error => {
         // Handle errors
