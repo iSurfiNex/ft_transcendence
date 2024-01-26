@@ -15,7 +15,7 @@ class PongLogin extends Component {
 						<span class="front">{language.login}</span>
 					</button>
 				</form>
-				<form class="form-register" @submit="this.onRegisterFormSubmit(event)">
+				<form id="form-register" @submit="this.onRegisterFormSubmit(event)">
 					<input name="email" type="text" placeholder="{language.email}" class="input-field">
 					<input name="username" type="text" placeholder="{language.username}" class="input-field">
 					<input name="password1" type="password" placeholder="{language.password}" class="input-field">
@@ -43,7 +43,7 @@ class PongLogin extends Component {
 			flex-direction: column;
 		}
 
-		.form-register {
+		#form-register {
 			display: flex;
 			flex-direction: column;
 		}
@@ -55,7 +55,7 @@ class PongLogin extends Component {
 			flex-direction: row;
 		}
 
-		.form-register {
+		#form-register {
 			display: flex;
 			flex-direction: column;
 			margin-left: 25px;
@@ -68,7 +68,7 @@ class PongLogin extends Component {
 			flex-direction: row;
 		}
 
-		.form-register {
+		#form-register {
 			display: flex;
 			flex-direction: column;
 			margin-left: 25px;
@@ -216,6 +216,8 @@ class PongLogin extends Component {
             }
         }
         state.logginError = null
+		const formRegisterNode = this.shadowRoot.getElementById("form-register");
+        formRegisterNode.reset()
         console.log("====NEW USER REGISTERED===")
     })
     .catch(error => {
