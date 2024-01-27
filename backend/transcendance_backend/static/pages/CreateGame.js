@@ -613,7 +613,7 @@ class PongCreateGame extends Component {
 		})
 		.then(data => {
 			state.currentTournament = data.id;
-			//navigateTo('/play/waiting-room');
+			navigateTo('/play/waiting-room');
 		})
 		.catch(error => {console.error(error)})
 	}	

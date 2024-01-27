@@ -17,6 +17,8 @@ from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
 from .utils import tournamentUpdate, gameUpdate
 from typing import Type
+from asgiref.sync import async_to_sync
+
 
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -215,14 +217,14 @@ class ManageTournamentView(View):
             game1 = Game.objects.create(state='waiting', power_ups=data['power_ups'])
             game2 = Game.objects.create(state='waiting', power_ups=data['power_ups'])
             
-            Player.objects.create(name=data['created_by'])# a degager plus tard
-            player = get_object_or_404(Player, name=data['created_by'])
+            player = Player.objects.create(username=data['created_by'])# a degager plus tard
 
             tournament = Tournament.objects.create(created_by=player, power_ups=data['power_ups']) 
             tournament.games.add(game1, game2)
 
-            logger.debug("=========== STARTING TOURNAMENT UPDATE MF ========")
+            logger.debug("=========== START TOURNAMENT UPDATE MF ========")
             tournamentUpdate(tournament, 'create')
+            logger.debug("=========== END TOURNAMENT UPDATE MF ========")
             #gameUpdate(game1, 'create')
             #gameUpdate(game2, 'create')
             response = tournament.serialize()
@@ -241,10 +243,10 @@ class ManageTournamentView(View):
             
             if data["action"] == "start-tournament":#POUR COMMENCER LE TOURNOI
                 
-                player1 = Player.objects.create(name='taMere')#A DEGAGER
-                player2 = Player.objects.create(name='taSoeur')#C'EST POUR TESTER
-                player3 = Player.objects.create(name='taGrandMere')#
-                player4 = Player.objects.create(name='taCousine')#
+                player1 = Player.objects.create(username='taMere')#A DEGAGER
+                player2 = Player.objects.create(username='taSoeur')#C'EST POUR TESTER
+                player3 = Player.objects.create(username='taGrandMere')#
+                player4 = Player.objects.create(username='taCousine')#
                 players = [player1, player2, player3, player4]#
                 
                 #players = list(tournament.players.all())
@@ -255,7 +257,7 @@ class ManageTournamentView(View):
                 tournament.save()
 
             elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI 
-                new_player = get_object_or_404(Player, name=data['name'])
+                new_player = get_object_or_404(Player, username=data['name'])
                 tournament.players.add(new_player)
             
             #A FAIRE: FONCTION POUR ENVOYER LES NOUVELLES DONNEES A TOUT LE MONDE POUR MISE A JOUR DU STATE AVEC WS
@@ -292,8 +294,7 @@ class ManageGameView(View):
         try:
             data = json.loads(request.body)
 
-            Player.objects.create(name=data['created_by'])# a degager plus tard
-            player = get_object_or_404(Player, name=data['created_by'])
+            player = Player.objects.create(username=data['created_by'])# a degager plus tard
             game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'])
             game.players.add(player)
 
@@ -318,7 +319,7 @@ class ManageGameView(View):
                 game.save()
 
             if data['action'] == "add-player":
-                new_player = get_object_or_404(Player, name=data['name'])
+                new_player = get_object_or_404(Player, username=data['name'])
                 game.players.add(new_player)
 
                 #gameUpdate(game, 'update')
@@ -331,6 +332,37 @@ class ManageGameView(View):
             return JsonResponse({"errors": "Object not found"}, status=404)
         except IntegrityError as e:
             return JsonResponse({"errors": str(e)}, status=400)
+
+
+@csrf_exempt
+def BuildState(request):
+    
+    #player = Player.objects.create(username='taMere')#A DEGAGER
+    #Player.objects.create(username='taSoeur')#C'EST POUR TESTER
+    #Player.objects.create(username='taGrandMere')#
+    #Player.objects.create(username='taCousine')#
+    #game1 = Game.objects.create(state='waiting', power_ups=False)#
+    #game2 = Game.objects.create(state='waiting', power_ups=False)#
+    #tour = Tournament.objects.create(created_by=player , power_ups=False)# 
+    #tour.games.add(game1, game2)#
+    #tour.players.add(player)#
+
+    players_list = Player.objects.all()
+    games_list = Game.objects.all()
+    tournaments_list = Tournament.objects.all()
+
+    players = [player.serialize() for player in players_list]
+    games = [game.serialize() for game in games_list]
+    tournaments = [tournament.serialize() for tournament in tournaments_list]
+
+    data = {
+        'players': players,
+        'games': games,
+        'tournaments': tournaments,
+    }
+
+    return JsonResponse(data)
+
 
 
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")

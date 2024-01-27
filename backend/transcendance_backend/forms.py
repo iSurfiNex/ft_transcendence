@@ -5,7 +5,10 @@ from .models import Player, Tournament, Game
 class PlayerForm(forms.ModelForm):
     class Meta:
         model = Player
-        fields = ["name"]
+        fields = [
+            "username",
+            "name",
+        ]
 
 
 class GameForm(forms.ModelForm):
@@ -21,6 +24,7 @@ class GameForm(forms.ModelForm):
             "goal_objective",
             "ia",
             "power_ups",
+            "created_by",
         ]
 
 

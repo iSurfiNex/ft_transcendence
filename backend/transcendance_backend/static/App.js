@@ -11,24 +11,30 @@ window.ws = route => {
 
 var state_base = {
 	username: window.username,
+	whoAmI: 'jtoulous',
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
+	logginError: "",
+	currentTournament: -1,
+	currentGame: 3,
+	language: undefined,
+	profileLooking: 'rsterin',
+	activeChannel: 'Global',
+
+
 	users: [
 		{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
 		{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
 		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
-	whoAmI: 'jtoulous',
-        logginError: "",
 	profiles: [
 		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ name: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
 		{ name: 'jtoulous', win: 32, lose: 16, ballHit: 128, goal: 32, tournamentWin: 200 },
 		{ name: 'tlarraze', win: 64, lose: 8, ballHit: 512, goal: 64, tournamentWin: 2000 },
 	],
-	profileLooking: 'rsterin',
 	channels: [
 		{ name: 'Global', id: 1, notifications: 0 },
 		{ name: 'rsterin', id: 2, notifications: 0 },
@@ -36,7 +42,6 @@ var state_base = {
 		{ name: 'jtoulous', id: 4, notifications: 0 },
 		{ name: 'tlarraze', id: 5, notifications: 0 },
 	],
-	activeChannel: 'Global',
 	messages: [
 		{ text: 'Greetings', sender: 'tlarraze', date: 1706191171037, channel: 'Global' },
 		{ text: 'Greetings', sender: 'jtoulous', date: 1706191071037, channel: 'Global' },
@@ -74,9 +79,7 @@ var state_base = {
 		{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	],
-	currentTournament: -1,
-	currentGame: 3,
-	language: undefined,
+
 
 	en: {
 		// LOGIN
@@ -264,3 +267,4 @@ function checkScreenWidth() {
 
 window.addEventListener('resize', checkScreenWidth);
 
+state || [];

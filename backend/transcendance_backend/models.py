@@ -7,7 +7,8 @@ from .validators import even_value_validator
 
 
 class Player(models.Model):
-    name = models.CharField(max_length=32, unique=True)
+    username = models.CharField(max_length=32, unique=True, blank=False, null=False, default='Guest')
+    name = models.CharField(max_length=32, blank=True)
     blocked_users = models.ManyToManyField("self", symmetrical=False, blank=True)
     games = models.ManyToManyField("Game", blank=True)
     tournaments = models.ManyToManyField("Tournament", blank=True)
@@ -15,6 +16,7 @@ class Player(models.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "username": self.username,
             "name": self.name,
             "blocked_users": [
                 user.serialize_summary() for user in self.blocked_users.all()
@@ -28,7 +30,7 @@ class Player(models.Model):
     def serialize_summary(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "username": self.username,
         }
 
 
@@ -68,7 +70,8 @@ class Game(models.Model):
     )
     ia = models.BooleanField(default=False)
     power_ups = models.BooleanField(default=False)
-    
+    created_by = models.ForeignKey(Player, on_delete=models.CASCADE, null=True, blank=True)
+
     def serialize(self):
         return {
             "id": self.id,
@@ -80,6 +83,7 @@ class Game(models.Model):
             "goal_objective": self.goal_objective,
             "ia": self.ia,
             "power_ups": self.power_ups,
+            "created_by": self.created_by,
         }
 
     def serialize_summary(self):
