@@ -28,6 +28,7 @@ from .views import (
     logout_user,
     ManageTournamentView,
     ManageGameView,
+    CreateState,
 )
 
 websocket_urlpatterns = [
@@ -62,5 +63,6 @@ urlpatterns = [
     ),
     path("api/manage-game/", ManageGameView.as_view(), name="manage-game"),
     path("api/manage-game/<int:id>/", ManageGameView.as_view(), name="game-detail"),
+    path("api/build-state/", BuildState, name="build-state"),
     re_path(r"^.*", TemplateView.as_view(template_name="index.html")),
 ]

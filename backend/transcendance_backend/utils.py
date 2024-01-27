@@ -19,12 +19,12 @@ def tournamentUpdate(tournament, action):
     
     channel_layer = get_channel_layer()
     #logger.debug(channel_layer)
-    channel_layer.group_send("state-update", data)
+    async_to_sync(channel_layer.group_send("state-update", data))
     logger.debug("=========== Tournament update END ==========================================================")
 
 
 
-async def gameUpdate(game, acton):
+def gameUpdate(game, acton):
     data = {
         'type': 'send.update',
         'game-mode': 'game',
@@ -33,4 +33,4 @@ async def gameUpdate(game, acton):
     }
 
     channel_layer = get_channel_layer()
-    await channel_layer.group_send("state-update", data)
+    async_to_sync(channel_layer.group_send("state-update", data))
