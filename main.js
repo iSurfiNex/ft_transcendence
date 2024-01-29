@@ -1,14 +1,14 @@
 import * as THREE from 'three';
+//import * as TEXT from './node_modules/three-text2d'
 import * as UNIFORMS from '/uniforms.js';
 import './node_modules/three/src/geometries/SphereGeometry.js';
 import './node_modules/three/src/lights/Light.js';
 import './node_modules/three/src/materials/ShaderMaterial.js';
 import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-//import { MeshText2D } from 'three-text2d'
 //import	'./node_modules/three-text2d/src/index.js'
 //import { MeshText2D, textAlign } from './node_modules/three-text2d/dist/three-text2d.js';
 //////////////si on part sur un match avec un temps definis, se serai cool d'avoir une prolongation en cas d'egaliter et de mettre la ball couleur gold ?
-	let i = 0.00;
+	let paint_z = 0;
 	let ball;
 	let bonus;
 	let time = (new Date().getTime());
@@ -28,6 +28,7 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 //	const textMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 //	const textMesh = new  TEXT.MeshText2D();
 //	scene.add(textMesh);
+	console.log("Three js version is r"+ THREE.REVISION);
 
 	const light = new THREE.DirectionalLight(0xffffff, 10);
 	const geometry_line = new THREE.BoxGeometry(2, 1000, 1);
@@ -43,13 +44,15 @@ import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader
 	const paint_geo = new THREE.CircleGeometry(15, 128);
 
 
+	material_paint_L.depthTest = false;
+	material_paint_R.depthTest = false;
 	material_paddleL.depthTest = false;
 	material_paddleR.depthTest = false;
 	material_line.depthTest = false;
 
-	paddleL.renderOrder = 2;
-	paddleR.renderOrder = 1;
-	line.renderOrder = 3;
+	paddleL.renderOrder = 5002;
+	paddleR.renderOrder = 5001;
+	line.renderOrder = 5003;
 		
 	light.position.set(0, 0, 610);
 	paddleL.position.set(-290, 0, 0);
@@ -73,7 +76,7 @@ loader.load(
 			});
 			ball.scale.multiplyScalar(15);
 			ball.position.set(0, 0, 0);
-			ball.renderOrder = 11;
+			ball.renderOrder = 5011;
 			scene.add(ball);
 		}
 	},
@@ -101,7 +104,7 @@ loader.load(
 						child.material.transparent = true;
 					}
 				});
-				ball.renderOrder = 10;
+				ball.renderOrder = 5010;
 				bonus.scale.multiplyScalar(25);
 				bonus.position.set(0, 500, 0);
 				scene.add(bonus);
@@ -260,7 +263,8 @@ renderer.render(scene, camera);
 				paint.position.x = ball.position.x + Math.round(Math.random() * 100 % 15);
 				paint.position.y = ball.position.y + Math.round(Math.random() * 100 % 15);
 				paint.scale.set(scale, scale, 1);
-				paint.renderOrder = 0;
+				paint.renderOrder = paint_z;
+				paint_z += 1;
 				scene.add(paint);
 				console.log(scene.children.length)
 			}
