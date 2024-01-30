@@ -8,29 +8,54 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def tournamentUpdate(tournament, action):
+
+def stateUpdate(dataToSend, action, dataType):
     logger.debug("=========== Tournament update START ==========================================================")
     data = {
         'type': 'send.update',
-        'game-mode': 'tournament',
+        'data-type': dataType,
         'action': action,
-        'data': tournament.serialize(),
+        'data': dataToSend.serialize(),
     }
-    
     channel_layer = get_channel_layer()
-    #logger.debug(channel_layer)
     async_to_sync(channel_layer.group_send("state-update", data))
     logger.debug("=========== Tournament update END ==========================================================")
 
 
+#def tournamentUpdate(tournament, action):
+#    logger.debug("=========== Tournament update START ==========================================================")
+#    data = {
+#        'type': 'send.update',
+#        'data-type': 'tournament',
+#        'action': action,
+#        'data': tournament.serialize(),
+#    }
+#    
+#    channel_layer = get_channel_layer()
+#    #logger.debug(channel_layer)
+#    async_to_sync(channel_layer.group_send("state-update", data))
+#    logger.debug("=========== Tournament update END ==========================================================")
 
-def gameUpdate(game, acton):
-    data = {
-        'type': 'send.update',
-        'game-mode': 'game',
-        'action': action,
-        'data': game.serialize(),
-    }
 
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send("state-update", data))
+
+#def gameUpdate(game, action):
+#    data = {
+#        'type': 'send.update',
+#        'data-type': 'game',
+#        'action': action,
+#        'data': game.serialize(),
+#    }
+#
+#    channel_layer = get_channel_layer()
+#    async_to_sync(channel_layer.group_send("state-update", data))
+#
+#def updateUser(user, action):
+#    data = {
+#        'type': 'send.update',
+#        'data-type': 'user',
+#        'action': action,
+#        'data': user.serialize(),
+#    }
+#
+#    channel_layer = get_channel_layer()
+#    async_to_sync(channel_layer.group_send("state-update", data))

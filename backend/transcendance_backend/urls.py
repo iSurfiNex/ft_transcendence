@@ -28,7 +28,7 @@ from .views import (
     logout_user,
     ManageTournamentView,
     ManageGameView,
-    CreateState,
+    BuildState,
 )
 
 websocket_urlpatterns = [

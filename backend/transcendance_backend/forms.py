@@ -16,15 +16,15 @@ class GameForm(forms.ModelForm):
         model = Game
         fields = [
             "state",
-            "required_player_number",
-            "started_at",
-            "ended_at",
-            "players",
-            "winner",
+            #"required_player_number",
             "goal_objective",
             "ia",
             "power_ups",
+            "players",
             "created_by",
+            "started_at",
+            "ended_at",
+            "winner",
         ]
 
 
@@ -33,9 +33,9 @@ class TournamentForm(forms.ModelForm):
         model = Tournament
         fields = [
             "state",
+            #"required_player_number",
+            "power_ups",
+            "players",
             "games",
             "created_by",
-            "required_player_number",
-            "players",
-            "power_ups",
         ]

@@ -1,0 +1,7 @@
+-ws envoi des donnees non fonctionnel
+-probleme "player can t serialize()" 
+-rajouter une entree dans le login pour avoir le nom complet du gars
+-voir ou seront stocker les images afin de pouvoir creer le path jusqu'a l image de profil du mec
+-"profiles" de la state, faire un modele pour les stat ou incorporer direct avec users
+-channels du state, jsp ca sert a quoi
+-"messages" dans le state, le virer?
