@@ -567,7 +567,6 @@ class PongCreateGame extends Component {
 	}
 
 
-<<<<<<< HEAD
 	initWS() {
 		const socket = ws('state-update');
 		
@@ -599,8 +598,6 @@ class PongCreateGame extends Component {
         }, 2000);
 	}
 
-=======
->>>>>>> 576ef88 (wesh)
 	newTournament() {
 		const dataToSend = {
 			state: "waiting",
