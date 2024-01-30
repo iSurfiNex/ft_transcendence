@@ -567,37 +567,6 @@ class PongCreateGame extends Component {
 	}
 
 
-	initWS() {
-		const socket = ws('state-update');
-		
-		socket.addEventListener("open", (event) => {
-			console.log("Websocket Connected");
-		})
-		
-		socket.addEventListener("error", (event) => {
-			console.error("Websocket Error: ", event);
-		})
-
-		socket.addEventListener("close", (event) => {
-			console.log("WebSocket connection closed: ", event);
-			console.log("Close code: ", event.code);
-			console.log("Error type: ", event.type);
-		  });
-
-		socket.addEventListener("message", (event) => {
-			data = JSON.parse(event.data);
-			console.log('Received message:', data.type);
-		});
-	}
-
-        // TODO To remove, I'm just sending random msg after 2sec
-        setTimeout(() => {
-            const msg = JSON.stringify({message:'Hello, WebSocket yooooooo!'})
-            socket.send(msg);
-            console.log('STATE-UPDATE WS MSG SENT', msg)
-        }, 2000);
-	}
-
 	newTournament() {
 		const dataToSend = {
 			state: "waiting",

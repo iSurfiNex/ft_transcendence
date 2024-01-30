@@ -10,7 +10,10 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from http import HTTPStatus
 import json
+<<<<<<< HEAD
 import os
+=======
+>>>>>>> b972098063966ff544bef33c345a88831692ad64
 import logging
 
 import requests
