@@ -30,10 +30,6 @@ var state_base = {
 	profileLooking: 'rsterin',
 	channels: [
 		{ name: 'global', id: 1, notifications: 0 },
-		{ name: 'rsterin', id: 2, notifications: 0 },
-		{ name: 'fjullien', id: 3, notifications: 1 },
-		{ name: 'jtoulous', id: 4, notifications: 0 },
-		{ name: 'tlarraze', id: 5, notifications: 0 },
 	],
 	activeChannel: 'global',
 	messages: [],
