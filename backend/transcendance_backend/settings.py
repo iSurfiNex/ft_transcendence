@@ -33,6 +33,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+SECURE_URL_SCHEME = "https"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
