@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from http import HTTPStatus
 import json
+import os
 
 import requests
 import random
@@ -98,7 +99,7 @@ class RequestLogin(View):
             "client_id": "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080",
             "client_secret": "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",
             "code": request.GET["code"],
-            "redirect_uri": "https://localhost:8000/login/",
+            "redirect_uri": request.build_absolute_uri("/login/"),
         }
         response = requests.post(
             url, json=data, headers={"Content-Type": "application/json"}
