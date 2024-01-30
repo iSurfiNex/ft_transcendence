@@ -6,7 +6,7 @@
 #    By: tlarraze <tlarraze@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/10 14:19:36 by tlarraze          #+#    #+#              #
-#    Updated: 2024/01/29 16:29:32 by tlarraze         ###   ########.fr        #
+#    Updated: 2024/01/30 17:14:40 by tlarraze         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ jfile = {
 	"paddleL": {"x": 10, "y": 0, "z": 10, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"paddleR": {"x": -10, "y": 0, "z": 10, "up": -1, "down": -1, "sizeX": game_phy.engine.players[0].pad.dim[0], "sizeY": game_phy.engine.players[0].pad.dim[1]},
 	"ball": {"x": 0, "y": 0, "z": 0, "color": "n", "s": 0.1},
-	"bonus": {"x": 0, "y": 600, "z": 50, "state": 0, "way": "d"}
+	"bonus": {"x": 0, "y": 600, "z": 50, "state": 0, "way": "d", "size_minus": "0", "size_plus": "0"}
 }
 
 users = set()

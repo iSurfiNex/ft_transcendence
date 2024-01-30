@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-//import * as TEXT from './node_modules/three-text2d'
+//import * as ADDONS from 'three/addons/'
 import * as UNIFORMS from '/uniforms.js';
 import './node_modules/three/src/geometries/SphereGeometry.js';
 import './node_modules/three/src/lights/Light.js';
@@ -140,6 +140,9 @@ renderer.render(scene, camera);
 				bonus.traverse((child) => {
 					if (child.isMesh && child.material) {
 						Opacity_fade_out(child.material);
+						paddleR.scale.set(1, 1.5);
+						paddleL.scale.set(1, 0.5);
+
 					}
 				});
 			}
@@ -206,6 +209,7 @@ renderer.render(scene, camera);
 					"user": "Paddle Left"	
 				}
 			};
+			console.log(obj);
 			if (event.key) {
 					socket.send(JSON.stringify(obj)); // Send the typed message to the server
 			}
@@ -231,12 +235,19 @@ renderer.render(scene, camera);
 		const message = event.data;
 		jfile = JSON.parse(event.data)
 
+		// if (jfile['bonus']['size_minus'] == 'r')
+		// 	paddleR.scale.set(1, 2);
+		// else
+		//paddleR.setSize(jfile["paddleR"]["sizeY"], jfile["paddleR"]["sizeX"], 20);
+		//au pire il faut mettre la size des paddle a 1 et les scale a fond
 		paddleR.position.set(390, jfile['paddleR']['y'], 10);
-		//paddleR.position.y = jfile['paddleR']['y'];
+
+		// if (jfile['bonus']['size_minus'] == 'l')
+		// 	paddleL.scale.set(1, 2);
+		// else
+		// 	paddleL.scale.set(1, 1);
 		paddleL.position.set(-390, jfile['paddleL']['y'], 10);
-		
-		//paddleR.scale.set(jfile["paddleR"]["sizeX"], jfile["paddleR"]["sizeY"], 1);
-		//paddleL.scale.set(jfile["paddleL"]["sizeX"], jfile["paddleL"]["sizeY"], 1);
+
 		if (ball)
 		{
 			let actual_time = new Date();
@@ -266,7 +277,7 @@ renderer.render(scene, camera);
 				paint.renderOrder = paint_z;
 				paint_z += 1;
 				scene.add(paint);
-				console.log(scene.children.length)
+				//console.log(scene.children.length)
 			}
 			actual_time = null;
 
@@ -296,11 +307,9 @@ function Opacity_fade_out(material) {
 	let opacity = material.opacity;
 	const reduceOpacityInterval = setInterval(() => {
 		if (opacity > 0.001) {
-			console.log(opacity);
 			opacity -= 0.01;
 			material.opacity = opacity;
 			renderer.render(scene, camera);
-			console.log("END: " + opacity);
 		} else {
 			clearInterval(reduceOpacityInterval); // Stop the interval when opacity reaches 0.01
 		}
