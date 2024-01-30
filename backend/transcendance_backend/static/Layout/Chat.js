@@ -63,7 +63,7 @@ class PongChat extends Component {
 							<img class="chat-player-img" src="{this.getProfilePicture(user.nickname)}" alt="profile"/>
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
-						<button class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+						<button @click="this.sendMessageToUser(user)" class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
 						<button class="chat-player-invite btn btn-success" title="Invite"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="invite"/></button>
 						<button class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
 						<div class="chat-player-seperator"></div>
@@ -709,6 +709,13 @@ class PongChat extends Component {
 	updateActiveChannel(channel, notifications) {
 		state.activeChannel = channel.name;
 		channel.notifications = 0;
+	}
+
+	sendMessageToUser(user) {
+		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
+
+		state.channels.push({name: user.nickname, id: maxId + 1, notifications: 0});
+		state.isPlayerListChecked = !state.isPlayerListChecked;
 	}
 
 	sendMessage() {
