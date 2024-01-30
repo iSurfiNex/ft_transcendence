@@ -90,6 +90,8 @@ var state_base = {
                 usernameAlreadyExist: 'This username already exist.',
                 errUnknown: 'An unexpected error occured.', // TODO mutlilang
                 'A user with that username already exists.': "A user with that username already exists.", // TODO multilang
+                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Incorrect password or username.", // TODO mutlilang
+                'This field is required.': 'Missing field', // TODO mutlilang
 
 		// HOME
 		play: 'PLAY',
