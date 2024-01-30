@@ -50,7 +50,6 @@ class PongChat extends Component {
 					<label class="btn btn-primary player-list-label" for="btn-check-list">
 						<input class="btn-check player-list-input" @click="this.playerListCheckHandler()" checked={isPlayerListChecked} type="checkbox" id="btn-check-list" autoComplete="off"/>
 						<img class="player-list-unchecked" src="/static/img/list.svg" alt="list"/>
-						<img class="player-list-checked" src="/static/img/close.svg" alt="close"/>
 					</label>
 				</div>
 			</div>
@@ -410,20 +409,6 @@ class PongChat extends Component {
 		margin-left: -5px;
 	}
 
-	.player-list-checked {
-		width: 35px;
-		height: 35px;
-		margin-top: 8px;
-	}
-
-	.player-list-label input:checked ~ .player-list-checked {
-		display: none;
-	}
-
-	.player-list-label input:not(:checked) ~ .player-list-unchecked {
-		display: none;
-	}
-
 	.player-list-input {
 		display: none;
 	}
@@ -589,9 +574,9 @@ class PongChat extends Component {
 		margin-top: 10px;
 		font-size: 12px;
 		background: #444;
-  		border-radius: 11px;
-  		padding: 6px 12px;
-  		max-width: fit-content;
+		border-radius: 11px;
+		padding: 6px 12px;
+		max-width: fit-content;
 	}
 
 	::-webkit-scrollbar {
@@ -713,9 +698,14 @@ class PongChat extends Component {
 
 	sendMessageToUser(user) {
 		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
+		const channel = state.channels.find(channel => channel.name === user.nickname);
+
+		state.isPlayerListChecked = !state.isPlayerListChecked;
+
+		if (channel)
+			return ;
 
 		state.channels.push({name: user.nickname, id: maxId + 1, notifications: 0});
-		state.isPlayerListChecked = !state.isPlayerListChecked;
 	}
 
 	sendMessage() {
@@ -734,7 +724,7 @@ class PongChat extends Component {
 	_sendWsMessage(to, text) {
 		if (this.socket.readyState === WebSocket.OPEN) {
 			const jsonString = JSON.stringify({to,text});
-		  	this.socket.send(jsonString);
+			this.socket.send(jsonString);
 		} else {
 			console.error('WebSocket not open. Unable to send message.');
 		}
@@ -746,7 +736,7 @@ class PongChat extends Component {
 		return `${minutes}:${seconds}`;
 	}
 	equals(a, b) {
-	   return a === b
+		 return a === b
 	}
 }
 

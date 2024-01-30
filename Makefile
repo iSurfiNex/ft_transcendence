@@ -1,13 +1,13 @@
-VOLUME_PATH = /sgoinfre/goinfre/Perso/jtoulous/data
+VOLUME_PATH = /sgoinfre/goinfre/Perso/rsterin/data
 
 all: volumes up
 
 volumes:
 	@echo "Creating folder for volumes ..."
-	@mkdir -p ${VOLUME_PATH}/backend
-	@mkdir -p ${VOLUME_PATH}/prometheus
-	@mkdir -p ${VOLUME_PATH}/grafana
-	@mkdir -p ${VOLUME_PATH}/alertmanager
+	@sudo mkdir -p ${VOLUME_PATH}/backend
+	@sudo mkdir -p ${VOLUME_PATH}/prometheus
+	@sudo mkdir -p ${VOLUME_PATH}/grafana
+	@sudo mkdir -p ${VOLUME_PATH}/alertmanager
 
 up:
 	@echo "Building containers ..."
@@ -26,7 +26,7 @@ clean: down
 
 fclean: clean
 	@docker system prune -af --volumes
-	-@rm -rf ${VOLUME_PATH}
+	-@sudo rm -rf ${VOLUME_PATH}
 
 re: fclean all
 
