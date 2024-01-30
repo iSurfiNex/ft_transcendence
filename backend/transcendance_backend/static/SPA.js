@@ -312,7 +312,7 @@ function displayElement(element) {
 //			}
 //		}
 //
-//		state = newState;
+//		state = newState; /// va falloir attribuer chaque tab de la state a
 //	})
 //}
 
