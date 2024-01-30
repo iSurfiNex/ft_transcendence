@@ -721,6 +721,10 @@ class PongChat extends Component {
 	sendMessage() {
 		const inputNode = this.shadowRoot.getElementById("chat-input");
 		const text = inputNode.value
+
+		if (!text)
+			return ;
+
 		console.log("SENDING: ", text, " TO: ", state.activeChannel)
 		this._sendWsMessage(state.activeChannel, text)
 		if (state.activeChannel != "global")
