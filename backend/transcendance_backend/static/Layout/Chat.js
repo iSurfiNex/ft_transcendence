@@ -26,7 +26,7 @@ class PongChat extends Component {
 				</div>
 			</div>
 
-			<div class="messages" repeat="messages" as="message">
+			<div class="messages" id="messages" repeat="messages" as="message">
 				<div class="message" is-my-msg="{this.equals(message.sender, whoAmI)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
 					<div class="msg-heading">
 						<a href="/profile" onClick="navigateTo('/profile'); return false;">
@@ -155,7 +155,7 @@ class PongChat extends Component {
 			height: calc(100% - 165px);
 			top: 81px;
 			display: flex;
-			flex-direction: column-reverse;
+			flex-direction: column;
 			overflow-y: auto;
 		}
 	}
@@ -252,7 +252,7 @@ class PongChat extends Component {
 			height: calc(100% - 165px);
 			top: 81px;
 			display: flex;
-			flex-direction: column-reverse;
+			flex-direction: column;
 			overflow-y: auto;
 		}
 	}
@@ -304,7 +304,7 @@ class PongChat extends Component {
 			height: calc(100% - 160px);
 			top: 81px;
 			display: flex;
-			flex-direction: column-reverse;
+			flex-direction: column;
 			overflow-y: auto;
 		}
 	}
@@ -533,13 +533,20 @@ class PongChat extends Component {
 	}
 
 	.msg-heading {
-	    display: flex;
-        align-items: center;
-    }
+		display: flex;
+		align-items: center;
+	}
 
+	.message[is-my-msg] .msg-heading {
+		flex-direction: row-reverse
+	}
 
 	.message[is-my-msg] .message-player-content {
 		margin-left: auto;
+	}
+
+	.message[is-my-msg] .message-player-name {
+		text-align: right;
 	}
 
 	.message-player-img {
@@ -617,14 +624,26 @@ class PongChat extends Component {
 
 	connectedCallback() {
 		initPopover(this);
-        this.socket = ws('chat')
-        this.socket.addEventListener('message', (event) => {
-            console.log('Received message:', event.data);
-            // TODO try catch
-            const data = JSON.parse(event.data)
-            const {sender, text, datetime} = data
-            state.messages.push({text, sender, date:datetime, channel: sender})
-        });
+		this.socket = ws('chat')
+		this.socket.addEventListener('message', (event) => {
+			console.log('Received message:', event.data);
+			// TODO try catch
+			const data = JSON.parse(event.data)
+			const {channel, sender, text, datetime} = data
+			state.messages.push({text, sender, date: datetime, channel});
+
+			if (state.activeChannel == channel) {
+				var message = this.shadowRoot.getElementById("messages");
+				message.scrollTop = message.scrollHeight;
+			}
+			else {
+				const tmp = channel;
+				const channelNotif = state.channels.find(channel => channel.name === tmp);
+
+				if (channelNotif)
+					channelNotif.notifications++;
+			}
+		});
 	}
 
 	chatCheckHandler() {
@@ -679,7 +698,7 @@ class PongChat extends Component {
 			return (user.fullname)
 		}
 		else {
-			return ('');
+			return (string);
 		}
 	}
 
@@ -692,31 +711,32 @@ class PongChat extends Component {
 		channel.notifications = 0;
 	}
 
-    sendMessage() {
+	sendMessage() {
 		const inputNode = this.shadowRoot.getElementById("chat-input");
-        const text = inputNode.value
-        console.log("SENDING: ",state.activeChannel, " TO: ", text)
-        this._sendWsMessage(state.activeChannel, text)
-        state.messages.push({text, sender:state.whoAmI, date:Date.now(), channel: state.activeChannel})
-    }
+		const text = inputNode.value
+		console.log("SENDING: ", text, " TO: ", state.activeChannel)
+		this._sendWsMessage(state.activeChannel, text)
+		if (state.activeChannel != "global")
+			state.messages.push({text, sender:state.whoAmI, date:Date.now(), channel: state.activeChannel})
+	}
 
-    _sendWsMessage(to, text) {
-        if (this.socket.readyState === WebSocket.OPEN) {
-            const jsonString = JSON.stringify({to,text});
-          	this.socket.send(jsonString);
-        } else {
-            console.error('WebSocket not open. Unable to send message.');
-        }
-    }
-    formatDatetime(date) {
-        date = new Date(date)
-        const minutes = date.getHours().toString().padStart(2, '0');
-        const seconds = date.getMinutes().toString().padStart(2, '0');
-        return `${minutes}:${seconds}`;
-    }
-    equals(a, b) {
-       return a === b
-    }
+	_sendWsMessage(to, text) {
+		if (this.socket.readyState === WebSocket.OPEN) {
+			const jsonString = JSON.stringify({to,text});
+		  	this.socket.send(jsonString);
+		} else {
+			console.error('WebSocket not open. Unable to send message.');
+		}
+	}
+	formatDatetime(date) {
+		date = new Date(date)
+		const minutes = date.getHours().toString().padStart(2, '0');
+		const seconds = date.getMinutes().toString().padStart(2, '0');
+		return `${minutes}:${seconds}`;
+	}
+	equals(a, b) {
+	   return a === b
+	}
 }
 
 register(PongChat);
