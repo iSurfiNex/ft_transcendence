@@ -613,7 +613,7 @@ class PongCreateGame extends Component {
 		  });
 
 		socket.addEventListener("message", (event) => {
-			data = JSON.parse(event.data);
+			let data = JSON.parse(event.data);
 			console.log('Received message:', data.type);
 		});
 	}

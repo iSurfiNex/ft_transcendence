@@ -83,9 +83,9 @@ class Game(models.Model):
             "power_ups": self.power_ups,
             "players": [player.serialize_summary() for player in self.players.all()],
             "created_by": self.created_by.serialize_summary(),
-            "created_at": self.created_at,
-            "started_at": self.started_at,
-            "ended_at": self.ended_at,
+            "created_at": int(self.created_at.timestamp() * 1000) if self.created_at else None,
+            "started_at": int(self.started_at.timestamp() * 1000) if self.started_at else None,
+            "ended_at": int(self.ended_at.timestamp() * 1000) if self.ended_at else None,
             "winner": self.winner.serialize_summary() if self.winner else None,
         }
 
@@ -116,7 +116,7 @@ class Tournament(models.Model):
             "players": [player.serialize_summary() for player in self.players.all()],
             "games": [game.serialize() for game in self.games.all()],
             "created_by": self.created_by.serialize_summary(),
-            "created_at": self.created_at,
+            "created_at": int(self.created_at.timestamp() * 1000) if self.created_at else None,
         }
 
     def serialize_summary(self):

@@ -289,10 +289,10 @@ function displayElement(element) {
 //		}
 //
 
-		
+
 
 //		//var newState = {
-//		//	username: window.username,
+//		//	whoAmI: window.username,
 //		//	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 //		//	isChatBubbleChecked: true,
 //		//	isPlayerListChecked: true,
