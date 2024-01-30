@@ -10,10 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from http import HTTPStatus
 import json
-<<<<<<< HEAD
 import os
-=======
->>>>>>> b972098063966ff544bef33c345a88831692ad64
 import logging
 
 import requests
@@ -21,7 +18,7 @@ import random
 
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
-from .utils import tournamentUpdate, gameUpdate
+from .utils import stateUpdate
 from typing import Type
 from asgiref.sync import async_to_sync
 
@@ -231,12 +228,11 @@ class ManageTournamentView(View):
             tournament.players.add(creator)
             tournament.games.add(game1, game2)
 
-            #logger.debug("=========== START TOURNAMENT UPDATE FROM VIEW ========")
-            #stateUpdate(tournament, 'create', 'tournament')
-            #logger.debug("=========== END TOURNAMENT UPDATE FROM VIEW ========")
-            logger.debug("=========== START TOURNAMENT SERIALIZE ========")
+            logger.debug("=========== START TOURNAMENT UPDATE FROM VIEW ========")
+            stateUpdate(tournament, 'create', 'tournament')
+            logger.debug("=========== END TOURNAMENT UPDATE FROM VIEW ========")
             response = tournament.serialize()
-            logger.debug(response)
+            #logger.debug(response)
 
             return JsonResponse(response, status=200)
 

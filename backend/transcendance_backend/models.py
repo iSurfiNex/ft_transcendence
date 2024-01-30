@@ -4,6 +4,7 @@ from django.core.validators import (
     MaxValueValidator,
 )
 from .validators import even_value_validator
+from datetime import datetime
 
 
 class Player(models.Model):
@@ -61,7 +62,7 @@ class Game(models.Model):
         related_name="games_played",
     )
     created_by = models.ForeignKey(Player, on_delete=models.CASCADE, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=datetime.now)
     started_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
     winner = models.ForeignKey(
@@ -81,11 +82,11 @@ class Game(models.Model):
             "ia": self.ia,
             "power_ups": self.power_ups,
             "players": [player.serialize_summary() for player in self.players.all()],
-            "created_by": self.created_by,
+            "created_by": self.created_by.serialize_summary(),
             "created_at": self.created_at,
             "started_at": self.started_at,
             "ended_at": self.ended_at,
-            "winner": self.winner,
+            "winner": self.winner.serialize_summary() if self.winner else None,
         }
 
     def serialize_summary(self):

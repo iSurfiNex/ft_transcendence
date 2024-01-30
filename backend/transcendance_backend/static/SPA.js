@@ -288,32 +288,35 @@ function displayElement(element) {
 //			current_tournament = curr_tournament.id;
 //		}
 //
-//		var newState = {
-//			username: window.username,
-//			isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
-//			isChatBubbleChecked: true,
-//			isPlayerListChecked: true,
-//			logginError: "",
-//			currentGame: current_game,
-//			currentTournament: current_tournament,
+
+		
+
+//		//var newState = {
+//		//	username: window.username,
+//		//	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
+//		//	isChatBubbleChecked: true,
+//		//	isPlayerListChecked: true,
+//		//	logginError: "",
+//		//	currentGame: current_game,
+//		//	currentTournament: current_tournament,
 //
-//			users: users_list,
-//			games: games_list,
-//			tournaments: tournaments_list,
-//			//profiles
-//			//channels
-//			//messages , ca degage?
-//			
-//			en: englishDictionnary,
-//			fr: frenchDictionnary,
-//			de: germanDictionnary,
-//		
-//			lang(key) {
-//				return state.language[key] || state.language.errUnknown
-//			}
-//		}
+//		//	users: users_list,
+//		//	games: games_list,
+//		//	tournaments: tournaments_list,
+//		//	//profiles
+//		//	//channels
+//		//	//messages , ca degage?
+//		//	
+//		//	en: englishDictionnary,
+//		//	fr: frenchDictionnary,
+//		//	de: germanDictionnary,
+//		//
+//		//	lang(key) {
+//		//		return state.language[key] || state.language.errUnknown
+//		//	}
+//		//}
 //
-//		state = newState; /// va falloir attribuer chaque tab de la state a
+//		//state = newState; /// va falloir attribuer chaque tab de la state a
 //	})
 //}
 

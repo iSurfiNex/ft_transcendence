@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def stateUpdate(dataToSend, action, dataType):
-    logger.debug("=========== Tournament update START ==========================================================")
+    logger.debug("=========== State update START ==========================================================")
     data = {
         'type': 'send.update',
         'data-type': dataType,
@@ -18,8 +18,8 @@ def stateUpdate(dataToSend, action, dataType):
         'data': dataToSend.serialize(),
     }
     channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send("state-update", data))
-    logger.debug("=========== Tournament update END ==========================================================")
+    async_to_sync(channel_layer.group_send)("state-update", data)
+    logger.debug("=========== Stade update END ==========================================================")
 
 
 #def tournamentUpdate(tournament, action):

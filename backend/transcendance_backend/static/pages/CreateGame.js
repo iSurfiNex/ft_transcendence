@@ -53,7 +53,7 @@ class PongCreateGame extends Component {
 			<div class="bottom-bar">
 				<div class="button-space"> 
 					<button class="btn create-button" @click="this.createGame()">{language.Create}</button>
-					<button class="btn cancel-button" @click="this.cancelGame()">{language.Cancel}</button>
+					<button class="btn cancel-button" @click="this.initWS()">{language.Cancel}</button>
 				</div>
 			</div>
 			
@@ -537,7 +537,7 @@ class PongCreateGame extends Component {
 			goal_objective: this.$id("max-score").value,
 			ia: this.$id("toggle-IA").checked,
 			power_ups: this.$id("toggle-Powerups").checked,
-			created_by: state.username,
+			created_by: state.whoAmi,
 		}
 
 		fetch("https://localhost:8000/api/manage-game/", {
@@ -571,7 +571,6 @@ class PongCreateGame extends Component {
 		const dataToSend = {
 			state: "waiting",
 			goal_objective: this.$id("max-score").value,
-			//created_by: state.username,
 			created_by: state.whoAmI,
 			power_ups: this.$id("toggle-Powerups").checked, 
 		}	
