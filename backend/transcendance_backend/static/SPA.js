@@ -196,7 +196,7 @@ function displayElement(element) {
 
 	//currentGame faire une fonction voir si le user n'est pas dans l une des game creer
 	//currentTournament  pareil
-}
+//}
 
 //function stateBuild() {
 //	fetch("https://localhost:8000/api/build-state", {
