@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 class ChatConsumer(AsyncWebsocketConsumer):
     user_name = None
 
+
     async def connect(self):
         try:
             logger.debug("=================WS CONNECT START============")
@@ -22,6 +23,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 # Add the user to a group named after their username
                 await self.channel_layer.group_add(
                     f"user_{self.user_name}", self.channel_name
+                )
+
+                await self.channel_layer.group_add(
+                    f"global", self.channel_name
                 )
 
             else:
@@ -60,6 +65,23 @@ class ChatConsumer(AsyncWebsocketConsumer):
             },
         )
 
+    async def send_message_to_all_users(self, text):
+        # Get the WebSocket channel name for the specified user
+        to_global = f"global"
+
+        # Send the message to all users' WebSocket channels
+        await self.channel_layer.group_send(
+            to_global,
+            {
+                "type": "chat.message",
+                "text": text,
+                "sender": self.user_name,
+                "datetime": int(
+                    datetime.now().timestamp() * 1000
+                ),  # NOTE *1000 to make it js timestamp compatible
+            }
+        )
+
     async def chat_message(self, event):
         # Send the message back to the WebSocket client
         await self.send(
@@ -82,7 +104,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text = data["text"]
         to = data["to"]
 
-        await self.send_message_to_user(to, text)
+        if to == "global":
+            await self.send_message_to_all_users(text)
+        else:
+            await self.send_message_to_user(to, text)
 
 
 class StateUpdateConsumer(AsyncWebsocketConsumer):
