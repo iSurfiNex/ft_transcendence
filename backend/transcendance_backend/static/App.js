@@ -29,19 +29,14 @@ var state_base = {
 	],
 	profileLooking: 'rsterin',
 	channels: [
-		{ name: 'Global', id: 1, notifications: 0 },
+		{ name: 'global', id: 1, notifications: 0 },
 		{ name: 'rsterin', id: 2, notifications: 0 },
 		{ name: 'fjullien', id: 3, notifications: 1 },
 		{ name: 'jtoulous', id: 4, notifications: 0 },
 		{ name: 'tlarraze', id: 5, notifications: 0 },
 	],
-	activeChannel: 'Global',
-	messages: [
-		{ text: 'Greetings', sender: 'tlarraze', date: 1706191171037, channel: 'Global' },
-		{ text: 'Greetings', sender: 'jtoulous', date: 1706191071037, channel: 'Global' },
-		{ text: 'Hi there', sender: 'fjullien', date: 1706191078037, channel: 'Global' },
-		{ text: 'Hello', sender: 'rsterin', date: 1706190091037, channel: 'fjullien' },
-	],
+	activeChannel: 'global',
+	messages: [],
 	tournaments: [
 		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11], date: '11/11/2023 04:38', countdown: 5 },
 		{ type: 'tournament', id: 2, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15], date: '11/11/2023 04:38', countdown: 5},
@@ -59,7 +54,7 @@ var state_base = {
 		{ type: 'powerup', id: 6, status: 'waiting', creator: 'jtoulous', players: ['jtoulous'], maxPlayer: '2', score: [], date: '' },
 		{ type: 'powerup', id: 7, status: 'waiting', creator: 'fjullien', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [], date: '' },
 		{ type: 'powerup', id: 8, status: 'running', creator: 'fjullien', players: ['fjullien', 'rsterin'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'rsterin', points: 3 }], date: '11/11/2023 04:38' },
-		
+
 		{ type: 'normal', id: 9, status: 'done', creator: 'tournament', players: ['fjullien', 'tlarraze'], maxPlayer: '2', score: [{ name: 'fjullien', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 		{ type: 'normal', id: 10, status: 'done', creator: 'tournament', players: ['rsterin', 'jtoulous'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'jtoulous', points: 3 }], date: '11/11/2023 04:38' },
@@ -123,7 +118,7 @@ var state_base = {
 		// 404
 		pageNotFound: 'Page not found',
 		returnToHome: 'Return to home',
-		
+
 		//waiting-room
 		WaitingRoom: 'Waiting Room',
 		GoButton: 'START',
