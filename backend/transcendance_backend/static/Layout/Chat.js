@@ -27,7 +27,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" repeat="messages" as="message">
-				<div class="message" is-my-msg="{this.equals(message.sender, username)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
+				<div class="message" is-my-msg="{this.equals(message.sender, whoAmI)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
 					<div class="msg-heading">
 						<a href="/profile" onClick="navigateTo('/profile'); return false;">
 							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
@@ -697,7 +697,7 @@ class PongChat extends Component {
         const text = inputNode.value
         console.log("SENDING: ",state.activeChannel, " TO: ", text)
         this._sendWsMessage(state.activeChannel, text)
-        state.messages.push({text, sender:state.username, date:Date.now(), channel: state.activeChannel})
+        state.messages.push({text, sender:state.whoAmI, date:Date.now(), channel: state.activeChannel})
     }
 
     _sendWsMessage(to, text) {
@@ -714,8 +714,8 @@ class PongChat extends Component {
         const seconds = date.getMinutes().toString().padStart(2, '0');
         return `${minutes}:${seconds}`;
     }
-    equals(sender, username) {
-       return sender === username
+    equals(a, b) {
+       return a === b
     }
 }
 

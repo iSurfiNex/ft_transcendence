@@ -10,7 +10,6 @@ window.ws = route => {
 }
 
 var state_base = {
-	username: window.username,
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
@@ -20,7 +19,7 @@ var state_base = {
 		{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
 		{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
-	whoAmI: 'jtoulous',
+	whoAmI: window.whoAmI,
         logginError: "",
 	profiles: [
 		{ name: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },

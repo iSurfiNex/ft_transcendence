@@ -31,7 +31,7 @@ function displayContent(path) {
         // This request unsets the 'sessionid' cookie
         fetch('/api/logout/').then(()=>{
             unsetCookie('loggedin')
-            state.username = null
+            state.whoAmI = null
 		    navigateTo("/");
         }, ()=> {
             console.error('Logout request failed :(')

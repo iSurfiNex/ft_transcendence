@@ -189,7 +189,7 @@ class PongLogin extends Component {
         }
         state.logginError = null
 	    setCookie('loggedin', true, 7);
-        state.username = data['username']
+        state.whoAmI = data['username']
         navigateTo('/')
     })
     .catch(error => {

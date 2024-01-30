@@ -33,10 +33,10 @@
 
 		{% if user.is_authenticated %}
 			setCookie('loggedin', true, 7);
-			window.username = '{{ user.username }}'
+			window.whoAmI = '{{ user.username }}'
 		{% else %}
 			unsetCookie('loggedin')
-			window.username = null
+			window.whoAmI = null
 		{% endif %}
 		</script>
 	</head>
