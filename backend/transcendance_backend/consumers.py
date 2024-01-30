@@ -59,6 +59,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "chat.message",
                 "text": text,
                 "sender": self.user_name,
+                "channel": self.user_name,
                 "datetime": int(
                     datetime.now().timestamp() * 1000
                 ),  # NOTE *1000 to make it js timestamp compatible
@@ -76,6 +77,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "chat.message",
                 "text": text,
                 "sender": self.user_name,
+                "channel": "global",
                 "datetime": int(
                     datetime.now().timestamp() * 1000
                 ),  # NOTE *1000 to make it js timestamp compatible
@@ -90,6 +92,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "type": "chat.message",
                     "text": event["text"],
                     "sender": event["sender"],
+                    "channel": event["channel"],
                     "datetime": event["datetime"],
                 }
             )
