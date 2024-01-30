@@ -7,7 +7,7 @@ from .validators import even_value_validator
 
 
 class Player(models.Model):
-    username = models.CharField(max_length=32, unique=True, blank=False, null=False, default='Guest')
+    username = models.CharField(max_length=32, unique=True, blank=False, null=False)
     name = models.CharField(max_length=32, blank=True)
     blocked_users = models.ManyToManyField("self", symmetrical=False, blank=True)
     games = models.ManyToManyField("Game", blank=True)
