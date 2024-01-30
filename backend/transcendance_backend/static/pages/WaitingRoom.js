@@ -1200,7 +1200,7 @@ class WaitingRoom extends Component {
     isGameCreator() {
         const game = state.games.find(game => game.id == state.currentGame);
 
-        if (!game || state.whoAmI != game.creator)
+        if (!game || state.username != game.creator)
             return !(false);
 
         return !(true);
@@ -1210,7 +1210,7 @@ class WaitingRoom extends Component {
         if (state.currentTournament == -1 )
             return !(false);
 
-        if (state.whoAmI == state.tournaments[state.currentTournament - 1].creator)
+        if (state.username == state.tournaments[state.currentTournament - 1].creator)
             return !(true);
         return !(false);
     }
@@ -1242,7 +1242,7 @@ class WaitingRoom extends Component {
         {
             const players = game.players;
 
-            if (players[0].name == state.whoAmI || players[1].name == state.whoAmI)
+            if (players[0].name == state.username || players[1].name == state.username)
                 return (game.id);
         }
         return (null);
@@ -1250,7 +1250,7 @@ class WaitingRoom extends Component {
 
     startTournament() {
         const nb_players = state.tournaments[state.currentTournament].players.length;
-        const url = "https://localhost:8000/api/manage-tournament/" + 1 + "/";
+        const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
 
         if (nb_players != 4)
         {    
@@ -1276,30 +1276,46 @@ class WaitingRoom extends Component {
             return (response.json());	
         })
         .then (data => {
-            state.tournaments[state.currentTournament].status = "running";//PROB STATE
-            //CHANGER LES STATUS DES DEUX GAME DU TOURNOI
-            state.currentGame = this.getGameID(data);
+            state.currentGame = this.getGameID(data);//a degager, va se mettre a jour durant le gameUpdate()
+            //startCountdown();
+            //navigateTO(LA-PAGE-DU-JEU)
         })
         .catch(error => {console.error(error)})
     }
 
-    //startGame() {
-    //    const nb_players = state.games[state.currentGame].players.lenght;
-    //    const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
-	//	const currentDatetime = new Date();
-	//	const formatedDatetime = currentDatetime.toISOString();
-//
-    //    if (nb_players != 2)
-    //    {    
-    //        console.error("not enought players");
-    //        return ;
-    //    }
-//
-    //    const dataToPut = {
-    //        use: 'start-game'
-    //        started_at: formatedDatetime,
-    //    }
-    //}
+    startGame() {
+        const nb_players = state.games[state.currentGame].players.lenght;
+        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+
+        if (nb_players != 2)
+        {    
+            console.error("not enought players");
+            return ;
+        }
+
+        const dataToPut = {
+            action: 'start-game'
+        }
+
+        fetch(url,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+				'X-CSRFToken': this.getCSRF(),
+            },
+            body: JSON.stringify(dataToPut),
+        })
+        .then (response => {
+            if (!response.ok)
+                throw new Error('Problem starting Game');
+            return (response.json());    
+        })
+        .then (data => {
+            //startCountdown();
+            //navigateTo(LA-PAGE-DU-JEU)
+        })
+        .catch(error => {console.error(error)})
+    }
 
 }
 
