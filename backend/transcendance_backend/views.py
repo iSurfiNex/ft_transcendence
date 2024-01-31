@@ -1,7 +1,6 @@
 from django.http import JsonResponse, Http404
 from django.db.utils import IntegrityError
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST, require_GET
 from urllib.parse import urlencode
@@ -25,7 +24,6 @@ from django.contrib.auth import get_user_model, logout
 User = get_user_model()
 
 
-@csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
 @require_POST  # Ensure that the view only responds to POST requests
 def login_user(request):
     form = AuthenticationForm(request, data=request.POST)
@@ -37,7 +35,6 @@ def login_user(request):
         return JsonResponse({"status": "success!", "username": user.username})
 
 
-@csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
 @require_GET  # Ensure that the view only responds to POST requests
 def logout_user(request):
     response = JsonResponse({"status": "OK"})
@@ -46,7 +43,6 @@ def logout_user(request):
     return response
 
 
-@csrf_exempt  # Use csrf_exempt for simplicity in this example. In a real-world scenario, handle CSRF properly.
 @require_POST  # Ensure that the view only responds to POST requests
 def register_user(request):
     # Extract user registration data from the POST request
@@ -108,7 +104,6 @@ class RequestLogin(View):
 
 
 def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
-    @method_decorator(csrf_exempt, name="dispatch")
     class EndpointView(View):
         def get(self, request, id=None):
             try:

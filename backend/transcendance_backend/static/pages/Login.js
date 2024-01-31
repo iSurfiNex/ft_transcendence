@@ -177,6 +177,10 @@ class PongLogin extends Component {
         fetch('/api/login/', {
         method: 'POST',
         body: formData,
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": window.csrfToken
+        }
     })
     .then(response => response.json())
     .then(data => {
@@ -205,6 +209,10 @@ class PongLogin extends Component {
         fetch('/api/register/', {
         method: 'POST',
         body: formData,
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": window.csrfToken
+        }
     })
     .then(response => response.json())
     .then(data => {

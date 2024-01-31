@@ -31,6 +31,8 @@
 			document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;`;
 		}
 
+		 window.csrfToken = "{{ csrf_token }}";
+
 		{% if user.is_authenticated %}
 			setCookie('loggedin', true, 7);
 			window.whoAmI = '{{ user.username }}'
