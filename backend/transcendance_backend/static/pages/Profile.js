@@ -8,11 +8,27 @@ class PongProfile extends Component {
 	<div class="profile">
 		<div class="profile-topbar">
 			<div class="profile-topbar-picture">
-				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
+				<img id="avatar-img" src="{profile.avatar_url}" alt="profile"/>
 			</div>
 			<div class="profile-topbar-fullname">
 				<span class="profile-topbar-name">{this.getFullName(profileLooking)}</span>
-				<span class="profile-topbar-nickname">({this.getNickName(profileLooking)})</span>
+				<span class="profile-topbar-nickname">({profile.name})</span>
+				<div id="edit-profile">
+					<label for="pseudo-input">{language.new_pseudo}</label>
+					<input id="pseudo-input"/>
+					<button>
+						<label for="avatar-input" class="custom-file-input">
+							{language.new_picture}
+						</label>
+					</button>
+					<input
+						id="avatar-input"
+						type="file"
+						accept="image/png, image/jpeg"
+						@change="this.updatePictureFromInput()"
+						style="display:none;"/>
+					<button @click="this.submitProfileUpdate()">{language.save}</button>
+				</div>
 			</div>
 			<div class="profile-topbar-button">
 				<button @click="this.sendMessageToUser(profileLooking)" class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
@@ -558,33 +574,11 @@ class PongProfile extends Component {
 		state.channels.push({name: user, id: maxId + 1, notifications: 0});
 	}
 
-	getProfilePicture(whoAmI) {
-		const user = state.users.find(user => user.nickname === whoAmI);
-
-		if (user) {
-			return '/static/' + user.picture;
-		}
-		else {
-			return '/static/img/list.svg';
-		}
-	}
-
 	getFullName(whoAmI) {
 		const user = state.users.find(user => user.nickname === whoAmI);
 
 		if (user) {
 			return user.fullname;
-		}
-		else {
-			return '';
-		}
-	}
-
-	getNickName(whoAmI) {
-		const user = state.users.find(user => user.nickname === whoAmI);
-
-		if (user) {
-			return user.nickname;
 		}
 		else {
 			return '';
@@ -861,6 +855,59 @@ class PongProfile extends Component {
 		const score = game.score.find(score => score.name === player2);
 		return '(' + score.points + ')';
 	}
+
+    submitProfileUpdate() {
+        const avatarInput = this.shadowRoot.getElementById('avatar-input');
+        const pseudoInput = this.shadowRoot.getElementById('pseudo-input');
+        const avatar = avatarInput.files && avatarInput.files[0]
+        const pseudo = pseudoInput.value
+
+        const formData = new FormData();
+
+        if (avatar)
+            formData.append('avatar', avatar);
+
+        if (pseudo)
+            formData.append('pseudo', pseudo);
+
+        const onSuccess = (resp) => {
+            if (resp.status !== "success"){
+                console.error('update profile request failed :(')
+                return
+             }
+            console.log('update profile success!')
+        }
+        const onFailure = () => {
+            console.error('update profile request failed :(')
+        }
+
+        fetch('/api/update_profile/', {
+        body: formData,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": window.csrfToken
+        }
+        })
+            .then(resp => resp.json())
+            .then(onSuccess, onFailure);
+    }
+
+    /* Update the displayed avatar with the uploaded picture */
+    updatePictureFromInput() {
+        const profilePic = this.shadowRoot.getElementById('avatar-img');
+        const input = this.shadowRoot.getElementById('avatar-input');
+
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        profilePic.src = e.target.result;
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
 }
 
 register(PongProfile);

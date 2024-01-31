@@ -32,7 +32,7 @@ class PongTopBar extends Component {
 		</div>
 		<div class="profile-picture">
 			<a class="profile-picture-div" href="javascript:void(0)" @click="this.navigate(whoAmI)">
-				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
+				<img src="{profile.avatar_thumbnail_url}" alt="profile"/>
 			</a>
 		</div>
 
@@ -405,17 +405,6 @@ class PongTopBar extends Component {
 
 	connectedCallback() {
 		initPopover(this);
-	}
-
-	getProfilePicture(whoAmI) {
-		const user = state.users.find(user => user.nickname === whoAmI);
-
-		if (user) {
-			return ("/static/" + user.picture);
-		}
-		else {
-			return '/static/img/list.svg';
-		}
 	}
 
 	selectedLanguage(language) {

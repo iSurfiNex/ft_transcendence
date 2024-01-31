@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "transcendance_backend",
+    "imagekit",
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,6 @@ LOGGING = {
 }
 
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")  # 'data' is my media folder
+MEDIA_URL = "/media/"

@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
+from django.conf.urls.static import static
+from django.conf import settings
 from django.views.generic import TemplateView
 from .consumers import ChatConsumer, StateUpdateConsumer
 from .views import (
@@ -26,6 +28,7 @@ from .views import (
     register_user,
     login_user,
     logout_user,
+    update_profile,
     ManageTournamentView,
     ManageGameView,
 )
@@ -36,11 +39,14 @@ websocket_urlpatterns = [
     re_path(r"ws/chat$", ChatConsumer.as_asgi()),
 ]
 
-urlpatterns = [
+urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
     path("admin/", admin.site.urls),
     path("api/register/", register_user, name="register-user"),
     path("api/login/", login_user, name="login-user"),
     path("api/logout/", logout_user, name="logout-user"),
+    path("api/update_profile/", update_profile, name="update_profile"),
     path("api/players/", PlayerView.as_view(), name="player-list"),
     path("api/players/<int:id>/", PlayerView.as_view(), name="player-detail"),
     path("api/tournaments/", TournamentView.as_view(), name="tournament-list"),

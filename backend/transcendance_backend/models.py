@@ -4,18 +4,42 @@ from django.core.validators import (
     MaxValueValidator,
 )
 from .validators import even_value_validator
+from django.contrib.auth.models import User
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 class Player(models.Model):
+    # TODO user default avatar by requesting https://thispersondoesnotexist.com/
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    avatar = models.ImageField(
+        upload_to="avatars", default="avatars/default.jpg", null=True
+    )
+    avatar_thumbnail = ImageSpecField(
+        source="avatar",
+        processors=[ResizeToFill(100, 100)],
+        format="JPEG",
+        options={"quality": 60},
+    )
+
     name = models.CharField(max_length=32, unique=True)
     blocked_users = models.ManyToManyField("self", symmetrical=False, blank=True)
     games = models.ManyToManyField("Game", blank=True)
     tournaments = models.ManyToManyField("Tournament", blank=True)
 
+    # Get the object serialized as JS object
+    @property
+    def serialized(self):
+        return json.dumps(self.serialize(), cls=DjangoJSONEncoder)
+
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
+            "avatar_url": self.avatar.url,
+            "avatar_thumbnail_url": self.avatar_thumbnail.url,
             "blocked_users": [
                 user.serialize_summary() for user in self.blocked_users.all()
             ],
@@ -68,7 +92,7 @@ class Game(models.Model):
     )
     ia = models.BooleanField(default=False)
     power_ups = models.BooleanField(default=False)
-    
+
     def serialize(self):
         return {
             "id": self.id,
@@ -122,3 +146,22 @@ class Tournament(models.Model):
         return {
             "id": self.id,
         }
+
+
+# === SIGNALS ===
+
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+
+
+# Automatically associate a Player when a User is created
+@receiver(post_save, sender=User)
+def create_player(sender, instance, created, **kwargs):
+    if created:
+        Player.objects.create(user=instance, name=f"{instance.username}{instance.id}")
+
+
+@receiver(post_save, sender=User)
+def save_player(sender, instance, **kwargs):
+    instance.player.save()

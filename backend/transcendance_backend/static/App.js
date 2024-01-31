@@ -10,6 +10,7 @@ window.ws = route => {
 }
 
 var state_base = {
+	profile: window.profile,
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
@@ -128,6 +129,9 @@ var state_base = {
 		Tournament: 'Tournament',
 		Size: 'Size:',
 		Create: 'Create',
+		save: 'Save',// TODO translate
+		new_pseudo: 'New pseudo',// TODO translate
+		new_picture: 'New picture',// TODO translate
 		Cancel: 'Cancel'
 	},
 	fr: {

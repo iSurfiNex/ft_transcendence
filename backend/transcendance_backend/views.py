@@ -20,6 +20,9 @@ from typing import Type
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, logout
+from django.contrib.auth.decorators import login_required
+
+from .models import Player
 
 User = get_user_model()
 
@@ -32,7 +35,13 @@ def login_user(request):
     else:
         user = form.get_user()
         login(request, user)
-        return JsonResponse({"status": "success!", "username": user.username})
+        return JsonResponse(
+            {
+                "status": "success!",
+                "username": user.username,
+                "profile": user.player.serialized,
+            }
+        )
 
 
 @require_GET  # Ensure that the view only responds to POST requests
@@ -65,24 +74,35 @@ def register_user(request):
         user.last_name = "last_name_unknown"
         user.save()
         return JsonResponse({"status": "success"})
-    except IntegrityError as e:
-        # Check if the error message indicates a duplicate username violation
-        if (
-            'duplicate key value violates unique constraint "auth_user_username_key"'
-            in str(e)
-        ):
-            return JsonResponse(
-                {"status": "error", "message": "usernameAlreadyExist"},
-                status=HTTPStatus.BAD_REQUEST,
-            )
-        else:
-            # Handle other IntegrityError cases if needed
-            return JsonResponse(
-                {"status": "error", "message": str(e)}, status=HTTPStatus.BAD_REQUEST
-            )
     except Exception as e:
         return JsonResponse(
-            {"status": "error", "message": str(e)},
+            {"errors": {"any": str(e)}},
+            status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
+        )
+
+
+@login_required
+@require_POST
+def update_profile(request):
+    try:
+        profile = Player.objects.get(user=request.user)
+
+        # Update pseudo if provided in the request
+        pseudo = request.POST.get("pseudo", None)
+        if pseudo is not None:
+            profile.name = pseudo
+
+        # Update image if provided in the request
+        avatar = request.FILES.get("avatar", None)
+        if avatar is not None:
+            profile.avatar = avatar
+
+        profile.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    except Exception as e:
+        return JsonResponse(
+            {"errors": {"any": str(e)}},
             status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
         )
 
