@@ -15,8 +15,8 @@ class PongProfile extends Component {
 				<span class="profile-topbar-nickname">({this.getNickName(profileLooking)})</span>
 			</div>
 			<div class="profile-topbar-button">
-				<button class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
-				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Invite"><img class="profile-topbar-img" src="/static/img/plus.svg" alt="invite"></img></button>
+				<button @click="this.sendMessageToUser(profileLooking)" class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
+				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Add friend"><img class="profile-topbar-img" src="/static/img/plus.svg" alt="add friend"></img></button>
 				<button class="profile-topbar-button-block btn btn-danger btn-lg" title="Block"><img class="profile-topbar-img" src="/static/img/block.svg" alt="block"></img></button>
 			</div>
 		</div>
@@ -542,6 +542,20 @@ class PongProfile extends Component {
 
 	connectedCallback() {
 		initPopover(this);
+	}
+
+	sendMessageToUser(user) {
+		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
+		const channel = state.channels.find(channel => channel.name === user);
+
+		state.isPlayerListChecked = true;
+
+		if (channel)
+			return ;
+		else if (user === state.whoAmI)
+			return ;
+
+		state.channels.push({name: user, id: maxId + 1, notifications: 0});
 	}
 
 	getProfilePicture(whoAmI) {
