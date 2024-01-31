@@ -66,6 +66,12 @@ function displayContent(path) {
 		else if (path === "/play/waiting-room") {
 			displayElement("waiting-room");
 		}
+		else if (path === "/play/tournament-wr") {
+			displayElement("tournament-wr")
+		}
+		else if (path === "/play/tournament-running-wr") {
+			displayElement("tournament-running-wr");
+		}
 		else if (path === "/play/pong") {
 			displayElement("pong-classic");
 		}
@@ -113,47 +119,47 @@ function displayElement(element) {
 
 function stateUpdate(event)
 {
-	newData = JSON.parse(event.data);
+	data = JSON.parse(event.data);
 	
-	if (newData['data-type'] == 'tournament')
+	if (data.data_type == 'tournament')
 	{
 		var newTournament = {
 			type: 'tournament',
-			id: newData.data.id,
-			status: newData.data.state,
-			creator: newData.data.created_by.username,
-			players: newData.data.players.map(player => player.username),
-			gamesId: newData.data.games.map(game => game.id),
-			date: newData.data.created_at,
+			id: data.id,
+			status: data.state,
+			creator: data.created_by.username,
+			players: data.players.map(player => player.username),
+			gamesId: data.games.map(game => game.id),
+			date: data.created_at,
 		};
 
 		var newGame1 = {
-			type: (newData.data.power_ups == true) ? "powerup" : "normal",
-			id: newData.data.games[0].id,
-			status: newData.data.state,
-			creator: newData.data.created_by.username,
+			type: (data.power_ups == true) ? "powerup" : "normal",
+			id: data.games[0].id,
+			status: data.state,
+			creator: data.created_by.username,
 			players: [],
 			score: [],
-			date: newData.data.created_at,
+			date: data.created_at,
 		};
 
 		var newGame2 = {
-			type: (newData.data.power_ups == true) ? "powerup" : "normal",
-			id: newData.data.games[1].id,
-			status: newData.data.state,
-			creator: newData.data.created_by.username,
+			type: (data.power_ups == true) ? "powerup" : "normal",
+			id: data.games[1].id,
+			status: data.state,
+			creator: data.created_by.username,
 			players: [],
 			score: [],
-			date: newData.data.created_at,
+			date: data.created_at,
 		};
 
-		if (newData['action'] == 'create')
+		if (data.action == 'create')
 		{
 			state.tournaments.push(newTournament);
 			state.games.push(newGame1);
 			state.games.push(newGame2);
 		}
-		else if (newData['action'] == 'update')
+		else if (data.action == 'update')
 		{
 			state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
 			state.games = state.games.map(game => {return (game.id == newGame1.id) ? newGame1 : game;});
@@ -161,41 +167,41 @@ function stateUpdate(event)
 		}
 	}
 
-	//else if (newData['data-type'] == 'game')
-	//{
-	//	var newGame = {
-	//		type: (newData.data.power_ups == true) ? "powerup" : "normal",
-	//		id: newData.data.id,
-	//		status: newData.data.state,
-	//		creator: newData.data.created_by.username,
-	//		players: newData.data.players.map(player => player.username),
-	//		score: [],
-	//		date: newData.data.created_at,
-	//	};
-//
-	//	if (newData['action'] == 'create')
-	//		state.games.push(newGame);
-	//	else if (newData['action'] == 'update')
-	//		state.games = state.games.map(game => {return (game.id == newGame.id) ? newGame : game;});
-	//}
+	else if (data.data_type == 'game')
+	{
+		var newGame = {
+			type: (data.power_ups == true) ? "powerup" : "normal",
+			id: data.id,
+			status: data.state,
+			creator: data.created_by.username,
+			players: data.players.map(player => player.username),
+			score: [],
+			date: data.created_at,
+		};
 
-	//else if (newData['data-type'] == 'user')									 
+		if (newData['action'] == 'create')
+			state.games.push(newGame);
+		else if (newData['action'] == 'update')
+			state.games = state.games.map(game => {return (game.id == newGame.id) ? newGame : game;});
+	}
+
+	//else if (data.data_type == 'user')									 
 	//{
 	//	var newUser = {
-	//		nickname: newData.username,
-	//		//fullname: newData.name,
+	//		nickname: data.username,
+	//		//fullname: data.name,
 	//		//picture:,  A VOIR
 	//	};
 //
-	//	if (newData['action'] == 'create')
+	//	if (data.action == 'create')
 	//		state.users.push(newUser);
-	//	else if (newData['action'] == 'update')
+	//	else if (data.action == 'update')
 	//		state.users.map(user => {(u)})
 	//}
 
 
-	//currentGame faire une fonction voir si le user n'est pas dans l une des game creer
-	//currentTournament  pareil
+	//currentGame = getCurrentGame();
+	//currentTournament = getCurrentTournament();
 }
 
 //function stateBuild() {

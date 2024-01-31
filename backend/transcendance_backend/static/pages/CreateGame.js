@@ -7,7 +7,6 @@ class PongCreateGame extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<meta name="csrf-token" content="{% csrf_token %}">
-	<script>this.initWS()</script>
 	<div class="available-space">
 		<div class="create-game">
 			<div class="top-bar"><span class="title">{language.GameEditor}</span></div>
@@ -53,7 +52,7 @@ class PongCreateGame extends Component {
 			<div class="bottom-bar">
 				<div class="button-space"> 
 					<button class="btn create-button" @click="this.createGame()">{language.Create}</button>
-					<button class="btn cancel-button" @click="this.initWS()">{language.Cancel}</button>
+					<button class="btn cancel-button" @click="this.cancelGame()">{language.Cancel}</button>
 				</div>
 			</div>
 			
@@ -511,6 +510,34 @@ class PongCreateGame extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
+	connectedCallback() {
+		console.log("CONNECTED CALLBACK ================");
+		
+		const socket = ws('state-update');
+		
+		socket.addEventListener("open", (event) => {
+			console.log("Websocket Connected");
+		})
+		
+		socket.addEventListener("error", (event) => {
+			console.error("Websocket Error: ", event);
+		})
+
+		socket.addEventListener("close", (event) => {
+			console.log("WebSocket connection closed: ", event);
+			console.log("Close code: ", event.code);
+			console.log("Error type: ", event.type);
+		  });
+
+		socket.addEventListener("message", (event) => {
+			let data = JSON.parse(event.data);
+			console.log('Received message:', data);
+			console.log('action: ', data.action);
+			console.log('data_type: ', data.data_type);
+			stateUpdate(event);
+		});
+	}
+	
 	$id(str) {
 		return this.shadowRoot.getElementById(str);
 	}
@@ -589,43 +616,16 @@ class PongCreateGame extends Component {
 			return (response.json());	
 		})
 		.then(data => {
-			state.currentTournament = data.id;
 			navigateTo('/play/waiting-room');
 		})
 		.catch(error => {console.error(error)})
 	}	
-
-	initWS() {
-		const socket = ws('state-update');
-		
-		socket.addEventListener("open", (event) => {
-			console.log("Websocket Connected");
-		})
-		
-		socket.addEventListener("error", (event) => {
-			console.error("Websocket Error: ", event);
-		})
-
-		socket.addEventListener("close", (event) => {
-			console.log("WebSocket connection closed: ", event);
-			console.log("Close code: ", event.code);
-			console.log("Error type: ", event.type);
-		  });
-
-		socket.addEventListener("message", (event) => {
-			let data = JSON.parse(event.data);
-			console.log('Received message:', data.type);
-		});
-	}
 
 	cancelGame() {
 		navigateTo('/play/pong'); 
 		return false;
 	}
 
-	connectedCallback() {
-		initPopover(this)
-	}
 }
 
 register(PongCreateGame)

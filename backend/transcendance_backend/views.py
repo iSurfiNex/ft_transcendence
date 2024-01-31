@@ -215,7 +215,7 @@ class ManageTournamentView(View):
 
     def post(self, request):
         try:
-            logger.debug("=========== POST REQUEST STARTED MF ========")
+            #logger.debug("=========== POST REQUEST STARTED MF ========")
             data = json.loads(request.body)
 
             Player.objects.create(username=data['created_by'])# A DEGAGER, C EST POUR LE DEBUG
@@ -228,9 +228,9 @@ class ManageTournamentView(View):
             tournament.players.add(creator)
             tournament.games.add(game1, game2)
 
-            logger.debug("=========== START TOURNAMENT UPDATE FROM VIEW ========")
+            #logger.debug("=========== START TOURNAMENT UPDATE FROM VIEW ========")
             stateUpdate(tournament, 'create', 'tournament')
-            logger.debug("=========== END TOURNAMENT UPDATE FROM VIEW ========")
+            #logger.debug("=========== END TOURNAMENT UPDATE FROM VIEW ========")
             response = tournament.serialize()
             #logger.debug(response)
 
@@ -315,12 +315,16 @@ class ManageGameView(View):
             
             Player.objects.create(username=data['created_by'])# a degager plus tard
             creator = get_object_or_404(Player, username=data['created_by'])
-
+            logger.debug("=========  BREAK 1 ==============")
             game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
+            logger.debug("=========  BREAK 2 ==============")
             game.players.add(creator)
+            logger.debug("=========  BREAK 3 ==============")
 
             #stateUpdate(game, 'create', 'game')
             response = game.serialize()
+            logger.debug("=========  BREAK 4 ==============")
+
             return JsonResponse(response, status=200)
 
         except KeyError:

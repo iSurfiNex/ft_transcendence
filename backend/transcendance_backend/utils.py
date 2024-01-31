@@ -11,11 +11,15 @@ logger = logging.getLogger(__name__)
 
 def stateUpdate(dataToSend, action, dataType):
     logger.debug("=========== State update START ==========================================================")
+    #dataToSend.append({'data_type': dataType, 'action': action})
+    dataTo = dataToSend.serialize()
+    dataTo['action'] = action
+    dataTo['data_type'] = dataType
     data = {
         'type': 'send.update',
-        'data-type': dataType,
-        'action': action,
-        'data': dataToSend.serialize(),
+        #'data_type': dataType,
+        #'action': action,
+        'data': dataTo,
     }
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)("state-update", data)
