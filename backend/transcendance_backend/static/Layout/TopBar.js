@@ -31,7 +31,7 @@ class PongTopBar extends Component {
 			</div>
 		</div>
 		<div class="profile-picture">
-			<a class="profile-picture-div" href="/profile" onclick="navigateTo('/profile'); return false;">
+			<a class="profile-picture-div" href="javascript:void(0)" @click="this.navigate(whoAmI)">
 				<img src="{this.getProfilePicture(whoAmI)}" alt="profile"/>
 			</a>
 		</div>
@@ -421,6 +421,12 @@ class PongTopBar extends Component {
 	selectedLanguage(language) {
 		if (state.language.username == language.username)
 			return true;
+		return false;
+	}
+
+	navigate(nickname) {
+		state.profileLooking = nickname
+		navigateTo('/profile');
 		return false;
 	}
 
