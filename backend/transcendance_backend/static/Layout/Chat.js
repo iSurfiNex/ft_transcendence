@@ -63,7 +63,7 @@ class PongChat extends Component {
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
 						<button @click="this.sendMessageToUser(user)" class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
-						<button class="chat-player-invite btn btn-success" title="Invite"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="invite"/></button>
+						<button class="chat-player-invite btn btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
 						<button class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
 						<div class="chat-player-seperator"></div>
 					</div>
@@ -706,9 +706,11 @@ class PongChat extends Component {
 		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 		const channel = state.channels.find(channel => channel.name === user.nickname);
 
-		state.isPlayerListChecked = !state.isPlayerListChecked;
+		state.isPlayerListChecked = true;
 
 		if (channel)
+			return ;
+		else if (user.nickname === state.whoAmI)
 			return ;
 
 		state.channels.push({name: user.nickname, id: maxId + 1, notifications: 0});
