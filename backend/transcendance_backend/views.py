@@ -51,7 +51,6 @@ def logout_user(request):
     logout(request)
     return response
 
-
 @require_POST  # Ensure that the view only responds to POST requests
 def register_user(request):
     # Extract user registration data from the POST request
@@ -106,6 +105,11 @@ def update_profile(request):
             status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
         )
 
+@login_required
+@require_GET
+def get_user_profile(request, id):
+    user = get_object_or_404(User, id=id)
+    return JsonResponse(user.player.serialize())
 
 class RequestLogin(View):
     def get(self, request):
