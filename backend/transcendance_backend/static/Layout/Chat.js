@@ -21,7 +21,7 @@ class PongChat extends Component {
 				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 					<input @click="this.updateActiveChannel(channel,channel.notifications)" type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
 					<label class="btn btn-secondary channels-bubble" style="{this.getUserPictureFromString(channel.name)}" for="{channel.id}">{this.getFirstLetter(channel.name)}
-						<div hidden="{!channel.notifications}" class ="channels-bubble-notif {channel.notifications?active}">{channel.notifications}</div>
+						<div hidden="{!channel.notifications}" class ="channels-bubble-notif {channel.notifications?active}">{this.getChannelNotifications(channel.notifications)}</div>
 					</label>
 				</div>
 			</div>
@@ -29,7 +29,7 @@ class PongChat extends Component {
 			<div class="messages" id="messages" repeat="messages" as="message">
 				<div class="message" is-my-msg="{this.equals(message.sender, whoAmI)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
 					<div class="msg-heading">
-						<a href="javascript:void(0)" @click="this.navigate(user.nickname)">
+						<a href="javascript:void(0)" @click="this.navigate(message.sender)">
 							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
 						</a>
 						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
@@ -623,10 +623,15 @@ class PongChat extends Component {
 			}
 			else {
 				const tmp = channel;
-				const channelNotif = state.channels.find(channel => channel.name === tmp);
+				const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
+				const tmpChan = state.channels.find(channel => channel.name === tmp);
 
-				if (channelNotif)
-					channelNotif.notifications++;
+				if (tmpChan) {
+					console.log(tmpChan.id);
+					state.channels[tmpChan.id - 1].notifications++;
+				}
+				else
+					state.channels.push({name: sender, id: maxId + 1, notifications: 1});
 			}
 		});
 	}
@@ -691,9 +696,18 @@ class PongChat extends Component {
 		return !(message == channelName);
 	}
 
+	getChannelNotifications(notifications) {
+		if (notifications > 9)
+			return ('9+');
+		return (notifications);
+	}
+
 	updateActiveChannel(channel, notifications) {
 		state.activeChannel = channel.name;
 		channel.notifications = 0;
+
+		var message = this.shadowRoot.getElementById("messages");
+		message.scrollTop = message.scrollHeight;
 	}
 
 	navigate(nickname) {
@@ -727,7 +741,10 @@ class PongChat extends Component {
 		this._sendWsMessage(state.activeChannel, text)
 		if (state.activeChannel != "global")
 			state.messages.push({text, sender:state.whoAmI, date:Date.now(), channel: state.activeChannel})
-	}
+
+		var message = this.shadowRoot.getElementById("messages");
+		message.scrollTop = message.scrollHeight;
+}
 
 	_sendWsMessage(to, text) {
 		if (this.socket.readyState === WebSocket.OPEN) {
