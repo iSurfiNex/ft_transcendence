@@ -10,7 +10,7 @@ window.ws = route => {
 }
 
 var state_base = {
-	whoAmI: window.whoAmI,//a degager et utiliser username a la place
+	whoAmI: window.whoAmI,
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,

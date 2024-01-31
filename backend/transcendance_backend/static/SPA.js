@@ -111,73 +111,73 @@ function displayElement(element) {
 	body.append(content);
 }
 
-//function stateUpdate(event)
-//{
-//	newData = JSON.parse(event.data);
-//	
-//	if (newData['data-type'] == 'tournament')
-//	{
-//		var newTournament = {
-//			type: 'tournament',
-//			id: newData.data.id,
-//			status: newData.data.state,
-//			creator: newData.data.created_by.username,
-//			players: newData.data.players.map(player => player.username),
-//			gamesId: newData.data.games.map(game => game.id),
-//			date: newData.data.created_at,
-//		};
+function stateUpdate(event)
+{
+	newData = JSON.parse(event.data);
+	
+	if (newData['data-type'] == 'tournament')
+	{
+		var newTournament = {
+			type: 'tournament',
+			id: newData.data.id,
+			status: newData.data.state,
+			creator: newData.data.created_by.username,
+			players: newData.data.players.map(player => player.username),
+			gamesId: newData.data.games.map(game => game.id),
+			date: newData.data.created_at,
+		};
+
+		var newGame1 = {
+			type: (newData.data.power_ups == true) ? "powerup" : "normal",
+			id: newData.data.games[0].id,
+			status: newData.data.state,
+			creator: newData.data.created_by.username,
+			players: [],
+			score: [],
+			date: newData.data.created_at,
+		};
+
+		var newGame2 = {
+			type: (newData.data.power_ups == true) ? "powerup" : "normal",
+			id: newData.data.games[1].id,
+			status: newData.data.state,
+			creator: newData.data.created_by.username,
+			players: [],
+			score: [],
+			date: newData.data.created_at,
+		};
+
+		if (newData['action'] == 'create')
+		{
+			state.tournaments.push(newTournament);
+			state.games.push(newGame1);
+			state.games.push(newGame2);
+		}
+		else if (newData['action'] == 'update')
+		{
+			state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
+			state.games = state.games.map(game => {return (game.id == newGame1.id) ? newGame1 : game;});
+			state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
+		}
+	}
+
+	//else if (newData['data-type'] == 'game')
+	//{
+	//	var newGame = {
+	//		type: (newData.data.power_ups == true) ? "powerup" : "normal",
+	//		id: newData.data.id,
+	//		status: newData.data.state,
+	//		creator: newData.data.created_by.username,
+	//		players: newData.data.players.map(player => player.username),
+	//		score: [],
+	//		date: newData.data.created_at,
+	//	};
 //
-//		var newGame1 = {
-//			type: (newData.data.power_ups == true) ? "powerup" : "normal",
-//			id: newData.data.games[0].id,
-//			status: newData.data.state,
-//			creator: newData.data.created_by.username,
-//			players: [],
-//			score: [],
-//			date: newData.data.created_at,
-//		};
-//
-//		var newGame2 = {
-//			type: (newData.data.power_ups == true) ? "powerup" : "normal",
-//			id: newData.data.games[1].id,
-//			status: newData.data.state,
-//			creator: newData.data.created_by.username,
-//			players: [],
-//			score: [],
-//			date: newData.data.created_at,
-//		};
-//
-//		if (newData['action'] == 'create')
-//		{
-//			state.tournaments.push(newTournament);
-//			state.games.push(newGame1);
-//			state.games.push(newGame2);
-//		}
-//		else if (newData['action'] == 'update')
-//		{
-//			state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
-//			state.games = state.games.map(game => {return (game.id == newGame1.id) ? newGame1 : game;});
-//			state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
-//		}
-//	}
-//
-//	else if (newData['data-type'] == 'game')
-//	{
-//		var newGame = {
-//			type: (newData.data.power_ups == true) ? "powerup" : "normal",
-//			id: newData.data.id,
-//			status: newData.data.state,
-//			creator: newData.data.created_by.username,
-//			players: newData.data.players.map(player => player.username),
-//			score: [],
-//			date: newData.data.created_at,
-//		};
-//
-//		if (newData['action'] == 'create')
-//			state.games.push(newGame);
-//		else if (newData['action'] == 'update')
-//			state.games = state.games.map(game => {return (game.id == newGame.id) ? newGame : game;});
-//	}
+	//	if (newData['action'] == 'create')
+	//		state.games.push(newGame);
+	//	else if (newData['action'] == 'update')
+	//		state.games = state.games.map(game => {return (game.id == newGame.id) ? newGame : game;});
+	//}
 
 	//else if (newData['data-type'] == 'user')									 
 	//{
@@ -196,7 +196,7 @@ function displayElement(element) {
 
 	//currentGame faire une fonction voir si le user n'est pas dans l une des game creer
 	//currentTournament  pareil
-//}
+}
 
 //function stateBuild() {
 //	fetch("https://localhost:8000/api/build-state", {

@@ -1278,7 +1278,7 @@ class WaitingRoom extends Component {
         .then (data => {
             state.currentGame = this.getGameID(data);//a degager, va se mettre a jour durant le gameUpdate()
             //startCountdown();
-            //navigateTO(LA-PAGE-DU-JEU)
+            //navigateTo(LA-PAGE-DU-JEU)
         })
         .catch(error => {console.error(error)})
     }
