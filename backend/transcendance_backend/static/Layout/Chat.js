@@ -29,7 +29,7 @@ class PongChat extends Component {
 			<div class="messages" id="messages" repeat="messages" as="message">
 				<div class="message" is-my-msg="{this.equals(message.sender, whoAmI)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
 					<div class="msg-heading">
-						<a href="/profile" onClick="navigateTo('/profile'); return false;">
+						<a href="javascript:void(0)" @click="this.navigate(user.nickname)">
 							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
 						</a>
 						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
@@ -58,7 +58,7 @@ class PongChat extends Component {
 				<span class="chat-player-list-header-text">{language.playerList}</span>
 				<div class="chat-list-player" repeat="users" as="user">
 					<div class="chat-player">
-						<a class="chat-player-link" href="/profile" onClick="navigateTo('/profile'); return false;">
+						<a class="chat-player-link" href="javascript:void(0)" @click="this.navigate(user.nickname)">
 							<img class="chat-player-img" src="{this.getProfilePicture(user.nickname)}" alt="profile"/>
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
@@ -694,6 +694,12 @@ class PongChat extends Component {
 	updateActiveChannel(channel, notifications) {
 		state.activeChannel = channel.name;
 		channel.notifications = 0;
+	}
+
+	navigate(nickname) {
+		state.profileLooking = nickname
+		navigateTo('/profile');
+		return false;
 	}
 
 	sendMessageToUser(user) {
