@@ -39,7 +39,7 @@ def login_user(request):
             {
                 "status": "success!",
                 "username": user.username,
-                "profile": user.player.serialized,
+                "profile": user.player.serialize(),
             }
         )
 
