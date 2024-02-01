@@ -96,11 +96,6 @@ def update_profile(request):
         firstName = request.POST.get("first_name", None)
         lastName = request.POST.get("last_name", None)
         avatar = request.FILES.get("avatar", None)
-        if name is not None:
-            profile.name = name
-        if avatar is not None:
-            profile.avatar = avatar
-        profile.save()
 
         if firstName is not None:
             request.user.first_name = firstName
@@ -108,8 +103,14 @@ def update_profile(request):
             request.user.last_name = lastName
         request.user.save()
 
+        if name is not None:
+            profile.name = name
+        if avatar is not None:
+            profile.avatar = avatar
+        profile.save()
+
         return JsonResponse(
-            {"status": "success", "profile": request.user.player.serialize()},
+            {"status": "success", "profile": profile.serialize()},
             status=200,
         )
     except Exception as e:
