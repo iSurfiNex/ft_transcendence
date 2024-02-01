@@ -226,7 +226,11 @@ class PongLogin extends Component {
         state.logginError = null
 		const formRegisterNode = this.shadowRoot.getElementById("form-register");
         formRegisterNode.reset()
-        console.log("====NEW USER REGISTERED===")
+        console.log("====NEW USER REGISTERED===!")
+	    setCookie('loggedin', true, 7);
+        state.whoAmI = data['username']
+        state.profile = data['profile']
+        navigateTo('/')
     })
     .catch(error => {
         // Handle errors

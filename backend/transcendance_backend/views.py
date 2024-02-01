@@ -69,7 +69,14 @@ def register_user(request):
         user.first_name = "first_name_unknown"
         user.last_name = "last_name_unknown"
         user.save()
-        return JsonResponse({"status": "success"})
+        login(request, user)
+        return JsonResponse(
+            {
+                "status": "success!",
+                "username": user.username,
+                "profile": user.player.serialize(),
+            }
+        )
     except Exception as e:
         return JsonResponse(
             {"errors": {"any": str(e)}},
