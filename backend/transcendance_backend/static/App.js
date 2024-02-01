@@ -11,6 +11,13 @@ window.ws = route => {
 
 var state_base = {
 	profile: window.profile,
+        profileErrors : {
+                first_name: '',
+                last_name: '',
+                avatar: '',
+                name: '',
+                global: ''
+        },
 	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
@@ -80,7 +87,7 @@ var state_base = {
 		connectionWith: 'Connection with 42',
                 invalidLoginCredentials: 'Invalid login credentials.',// TODO mutlilang
                 usernameAlreadyExist: 'This username already exist.',
-                errUnknown: 'An unexpected error occured.', // TODO mutlilang
+                errUnknown: 'An error occured.', // TODO mutlilang
                 'A user with that username already exists.': "A user with that username already exists.", // TODO multilang
                 'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Incorrect password or username.", // TODO mutlilang
                 'This field is required.': 'Missing field', // TODO mutlilang
@@ -134,6 +141,7 @@ var state_base = {
 		avatar: 'Avatar',// TODO translate
 		firstName: 'First name',// TODO translate
 		lastName: 'Last name',// TODO translate
+		success: 'Success',// TODO translate
 		Cancel: 'Cancel'
 	},
 	fr: {

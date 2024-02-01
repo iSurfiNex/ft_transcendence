@@ -12,8 +12,10 @@ class PongUpdateProfile extends Component {
  	type="text"
  	class="form-control"
  	id="firstNameInput"
- 	placeholder="name@example.com">
+ 	placeholder="name@example.com"
+	value="{profile.first_name}"/>
    <label for="firstNameInput">{language.firstName}</label>
+    <div class="invalid-feedback">{profileErrors.first_name}</div>
  </div>
 
  <div class="form-floating">
@@ -21,8 +23,10 @@ class PongUpdateProfile extends Component {
  	type="text"
  	class="form-control"
  	id="lastNameInput"
- 	placeholder="name@example.com">
+ 	placeholder="name@example.com"
+	value="{profile.last_name}">
    <label for="lastNameInput">{language.lastName}</label>
+    <div class="invalid-feedback">{profileErrors.last_name}</div>
  </div>
 
 </div>
@@ -32,8 +36,10 @@ class PongUpdateProfile extends Component {
 	type="text"
 	class="form-control"
 	id="pseudoInput"
- 	placeholder="name@example.com">
+ 	placeholder="name@example.com"
+	value="{profile.name}">
    <label for="pseudoInput">{language.pseudo}</label>
+    <div class="invalid-feedback">{profileErrors.name}</div>
 </div>
 
 <button class="btn btn-success">
@@ -47,37 +53,64 @@ class PongUpdateProfile extends Component {
 	accept="image/png, image/jpeg"
 	@change="this.updatePictureFromInput()"
 	style="display:none;"/>
+
+    <div class="invalid-feedback">{profileErrors.avatar}</div>
 <button class="btn btn-primary" @click="this.submitProfileUpdate()">{language.save}</button>
+<span class="text-light ps-3">{profileErrors.global}</span>
+
 `
 
 	static css = css`
+
 `
 	observers = {
 		'player.active': active => console.log("active?: ", active)
 	}
 
     submitProfileUpdate() {
-        const avatarInput = this.shadowRoot.getElementById('avatarInput');
-        const pseudoInput = this.shadowRoot.getElementById('pseudoInput');
-        const avatar = avatarInput.files && avatarInput.files[0]
-        const pseudo = pseudoInput.value
+        const inputs = {
+            avatar: this.shadowRoot.getElementById('avatarInput'),
+            name: this.shadowRoot.getElementById('pseudoInput'),
+            first_name: this.shadowRoot.getElementById('firstNameInput'),
+            last_name: this.shadowRoot.getElementById('lastNameInput'),
+        }
+        const fields = {
+            avatar: inputs.avatar.files && inputs.avatar.files[0],
+            name: inputs.name.value,
+            first_name: inputs.first_name.value,
+            last_name: inputs.last_name.value
+        }
 
         const formData = new FormData();
 
-        if (avatar)
-            formData.append('avatar', avatar);
+        for (const [key, value] of Object.entries(fields)){
+        if (value)
+            formData.append(key, value);
+        }
 
-        if (pseudo)
-            formData.append('name', pseudo);
+        const resetFormErrors = () => {
+                for (const [key, input] of Object.entries(inputs)) {
+                    input.classList.toggle('is-invalid', false)
+                }
+            state.profileErrors.global = ''
+        }
 
         const onSuccess = (resp) => {
-            if (resp.status !== "success"){
-                console.error('update profile request failed :(')
-                return
-             }
-            console.log('update profile success!')
+            state.profile.errors = {}
+            resetFormErrors()
+            if (resp.status === "success"){
+                state.profileErrors.global = state.language.success
+                state.profile = resp.profile
+            } else {
+            for (const [key, err] of Object.entries(resp.errors)) {
+                state.profileErrors[key] = err
+                inputs[key].classList.toggle('is-invalid', true)
+            }
+            }
         }
-        const onFailure = () => {
+
+        const onFailure = (err) => {
+            state.profileErrors.global = state.language.errUnknown
             console.error('update profile request failed :(')
         }
         post('/api/update_profile/', formData)

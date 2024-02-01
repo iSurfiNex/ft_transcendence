@@ -1,18 +1,17 @@
 from django import forms
 from .models import Player, Tournament, Game
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 
 class PlayerForm(forms.ModelForm):
-    def clean_name(self):
-        name = self.cleaned_data["name"]
-        if Player.objects.filter(name=name).exists():
-            raise ValidationError("already_exists")
-        return name
+    # Fields from User model
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
 
     class Meta:
         model = Player
-        fields = ["name", "avatar"]
+        fields = ["name", "avatar", "first_name", "last_name"]
 
 
 class GameForm(forms.ModelForm):
