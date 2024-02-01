@@ -173,15 +173,8 @@ class PongLogin extends Component {
     onLoginFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        fetch('/api/login/', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-        headers: {
-            "X-CSRFToken": window.csrfToken
-        }
-    })
-    .then(response => response.json())
+
+        post('/api/login/',formData)
     .then(data => {
         const errors = data['errors']
         if (errors !== undefined) {
@@ -207,15 +200,7 @@ class PongLogin extends Component {
         event.preventDefault();
         const formData = new FormData(event.target);
         formData.append('password2', formData.get('password1'))
-        fetch('/api/register/', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-        headers: {
-            "X-CSRFToken": window.csrfToken
-        }
-    })
-    .then(response => response.json())
+        post('/api/register/',formData)
     .then(data => {
         const errors = data['errors']
         if (errors !== undefined) {
