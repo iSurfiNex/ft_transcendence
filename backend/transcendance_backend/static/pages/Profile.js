@@ -135,8 +135,9 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	#avatar-img {
-		max-width: 180px;
-		max-height: 180px;
+		width: 180px;
+		height: 180px;
+		object-fit: contain;
 	}
 
 	.profile-topbar-fullname {

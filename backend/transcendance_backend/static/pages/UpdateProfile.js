@@ -86,19 +86,18 @@ class PongUpdateProfile extends Component {
 
     /* Update the displayed avatar with the uploaded picture */
     updatePictureFromInput() {
-        const profilePic = this.shadowRoot.getElementById('avatar-img');
         const input = this.shadowRoot.getElementById('avatarInput');
 
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
+        if (!input.files || !input.files[0])
+            return
+        const reader = new FileReader();
 
-      reader.onload = function (e) {
-        profilePic.src = e.target.result;
-      };
+        reader.onload = function (e) {
+            state.profile.avatar_url = e.target.result;
+        };
 
-      reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(input.files[0]);
     }
-  }
 }
 
 register(PongUpdateProfile);
