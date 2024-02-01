@@ -16,7 +16,6 @@ class PongLogin extends Component {
 					</button>
 				</form>
 				<form id="form-register" @submit="this.onRegisterFormSubmit(event)">
-					<input name="email" type="text" placeholder="{language.email}" class="input-field">
 					<input name="username" type="text" placeholder="{language.username}" class="input-field">
 					<input name="password1" type="password" placeholder="{language.password}" class="input-field">
 					<input name="password2" type="password" placeholder="{language.confirmPassword}" class="input-field">

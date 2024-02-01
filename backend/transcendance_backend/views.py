@@ -56,7 +56,6 @@ def register_user(request):
     # Extract user registration data from the POST request
     username = request.POST.get("username")
     password = request.POST.get("password1")
-    email = request.POST.get("email")
     form = UserCreationForm(request.POST)
     if not form.is_valid():
         return JsonResponse({"errors": form.errors}, status=HTTPStatus.BAD_REQUEST)
@@ -66,8 +65,6 @@ def register_user(request):
         user = User.objects.create_user(
             username=username,
             password=password,
-            email=email,
-            # username=username, password=password, email=email
         )
         user.first_name = "first_name_unknown"
         user.last_name = "last_name_unknown"
