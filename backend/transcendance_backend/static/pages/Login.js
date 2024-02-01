@@ -18,7 +18,7 @@ class PongLogin extends Component {
 				<form id="form-register" @submit="this.onRegisterFormSubmit(event)">
 					<input name="username" type="text" placeholder="{language.username}" class="input-field">
 					<input name="password1" type="password" placeholder="{language.password}" class="input-field">
-					<input name="password2" type="password" placeholder="{language.confirmPassword}" class="input-field">
+<!--					<input name="password2" type="password" placeholder="{language.confirmPassword}" class="input-field"> -->
 					<button id="register-button" class="input-button pushable" type="submit">
 						<span class="front">{language.register}</span>
 					</button>
@@ -206,6 +206,7 @@ class PongLogin extends Component {
     onRegisterFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
+        formData.append('password2', formData.get('password1'))
         fetch('/api/register/', {
         method: 'POST',
         body: formData,
