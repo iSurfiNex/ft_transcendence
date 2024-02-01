@@ -14,6 +14,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    id_42 = models.IntegerField(null=True)
     avatar = models.ImageField(
         upload_to="avatars", default="avatars/default.jpg", null=True
     )

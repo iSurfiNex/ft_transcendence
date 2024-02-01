@@ -24,6 +24,10 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Player
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 User = get_user_model()
 
 
@@ -73,7 +77,6 @@ def register_user(request):
         login(request, user)
         return JsonResponse(
             {
-                "status": "success!",
                 "username": user.username,
                 "profile": user.player.serialize(),
             }
@@ -131,21 +134,82 @@ def get_user_profile(request, id):
     return JsonResponse(user.player.serialize())
 
 
+def auto_login(request):
+    user = User.objects.get(username="a")
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = requests.get("https://api.intra.42.fr/v2/me")
+
+    if response.status_code != 200:
+        return JsonResponse(status=404)
+    login(request, user)
+    return JsonResponse({"status": "OK"})
+
+
 class Request42Login(View):
     def get(self, request):
+        token_42 = request.GET["code"]
         url = "https://api.intra.42.fr/oauth/token"
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080",
             "client_secret": "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",
             # "client_secret": "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",
-            "code": request.GET["code"],
+            "code": token_42,
             "redirect_uri": request.build_absolute_uri("/login/"),
         }
+
         response = requests.post(
             url, json=data, headers={"Content-Type": "application/json"}
         )
-        return JsonResponse(response.json())
+        if response.status_code != 200:
+            logger.debug("======== 42 Authorization error")
+            return JsonResponse({"errors": {"any": "42 Authorization"}}, status=401)
+
+        response_data = response.json()
+        access_token = response_data["access_token"]
+        logger.debug("======== 42 Token received")
+        logger.debug(token_42)
+        logger.debug("======== 42 Token received")
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json",
+        }
+        me_response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
+
+        if me_response.status_code != 200:
+            logger.debug("======== 42 API error")
+            return JsonResponse({"errors": {"any": "42 API"}}, status=401)
+
+        logger.debug("======== 42 API reached")
+        me_response_data = me_response.json()
+        id_42 = me_response_data["id"]
+        first_name = me_response_data["first_name"]
+        last_name = me_response_data["last_name"]
+        username = me_response_data["login"]
+        player = Player.objects.filter(id_42=id_42).first()
+
+        if player is None:
+            logger.debug("======== Creating new User")
+            user = User.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+            )
+            user.player.id_42 = id_42
+            user.save()
+            logger.debug("======== New User created")
+        else:
+            user = player.user
+            logger.debug("======== Logging existing user")
+        login(request, user)
+
+        logger.debug("======== User logged in")
+        return JsonResponse(
+            {
+                "username": user.username,
+                "profile": user.player.serialize(),
+            }
+        )
 
 
 def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):

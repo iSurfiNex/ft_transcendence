@@ -157,6 +157,7 @@ class PongLogin extends Component {
 			}).then(async (response)=>{
 				const resp = await response.json()
 				sessionStorage.setItem("access_token", resp.access_token);
+                this.handleLogin(resp)
 			})
 		}
 	}
@@ -170,12 +171,8 @@ class PongLogin extends Component {
         document.cookie = cookieValue;
     }
 
-    onLoginFormSubmit(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
+    handleLogin(data) {
 
-        post('/api/login/',formData)
-    .then(data => {
         const errors = data['errors']
         if (errors !== undefined) {
             for (const [key, errMsg] of Object.entries(errors)) {
@@ -188,7 +185,15 @@ class PongLogin extends Component {
         state.whoAmI = data['username']
         state.profile = data['profile']
         navigateTo('/')
-    })
+
+    }
+
+    onLoginFormSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        post('/api/login/',formData)
+            .then(this.handleLogin)
     .catch(error => {
         // Handle errors
         console.error('Error:', error);
@@ -212,7 +217,6 @@ class PongLogin extends Component {
         state.logginError = null
 		const formRegisterNode = this.shadowRoot.getElementById("form-register");
         formRegisterNode.reset()
-        console.log("====NEW USER REGISTERED===!")
 	    setCookie('loggedin', true, 7);
         state.whoAmI = data['username']
         state.profile = data['profile']
