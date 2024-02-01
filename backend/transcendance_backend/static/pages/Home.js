@@ -267,7 +267,7 @@ class PongHome extends Component {
 		}
 	}
 
-	@media only screen and (min-width: 768px) and (min-height: 524px) {
+	@media only screen and (min-width: 769px) and (min-height: 525px) {
 		.home {
 			position: absolute;
 			right: 0;

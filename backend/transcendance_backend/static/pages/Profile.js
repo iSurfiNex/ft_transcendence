@@ -194,7 +194,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 
 	}
 
-	@media only screen and (min-width: 768px) and (min-height: 524px) {
+	@media only screen and (min-width: 769px) and (min-height: 525px) {
 		.profile {
 			position: absolute;
 			right: 0;
