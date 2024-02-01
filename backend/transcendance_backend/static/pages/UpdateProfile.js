@@ -61,7 +61,12 @@ class PongUpdateProfile extends Component {
 `
 
 	static css = css`
-
+label {
+    font-size: 12px;
+}
+button label {
+    cursor: inherit;
+}
 `
 	observers = {
 		'player.active': active => console.log("active?: ", active)
