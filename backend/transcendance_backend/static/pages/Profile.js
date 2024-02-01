@@ -152,6 +152,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		min-width: 200px;
 		flex: 1;
 		max-width: 500px;
+        --bs-body-font-family: "Press Start 2P", sans-serif;
 	}
 
 	.profile-topbar {
