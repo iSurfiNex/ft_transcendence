@@ -18,7 +18,7 @@ var state_base = {
                 name: '',
                 global: ''
         },
-	isMobile: (window.innerWidth < 768 || window.innerHeight < 524),
+	isMobile: (window.innerWidth < 769 || window.innerHeight < 525),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
 	users: [
@@ -265,7 +265,7 @@ state_base.language = {...state_base.en}
 const state = setup(state_base)
 
 function checkScreenWidth() {
-	state.isMobile = (window.innerWidth < 768 || window.innerHeight < 524);
+	state.isMobile = (window.innerWidth < 769 || window.innerHeight < 525);
 }
 
 window.addEventListener('resize', checkScreenWidth);

@@ -7,7 +7,7 @@ class PongTopBar extends Component {
 	static template = html`
 	<div class="topbar">
 		<a href="/" onclick="navigateTo('/'); return false;" class="logo">
-			<div class="logo-text">PONG</div>
+			<div class="logo-text">qwewqewqe</div>
 		</a>
 
 		<div class="language">
@@ -58,11 +58,18 @@ class PongTopBar extends Component {
 		}
 
 		.logo {
-			display: none;
+			position: absolute;
+			height: calc(100%);
+			top: 0;
+			width: 25%;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
 		}
 
 		.logo-text {
-			display: none;
 			font-size: 2.5vh;
 			color: white;
 		}
@@ -95,32 +102,15 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture {
-			position: fixed;
-			width: 25%;
-			height: 10%;
-			top: 0;
-			left: 0;
+			display: none;
 		}
 
 		.profile-picture-div {
-			position: absolute;
-			width: 100%;
-			height: 90%;
-			top: 5%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			display: none;
 		}
 
 		.profile-picture-div img {
-			border-radius: 50%;
-			border: 3px solid #9f9f9f;
-			box-shadow: 0px 0px 15px -3px #9F9F9F;
-			background-color: #9F9F9F;
-			max-height: 100%;
-			height: auto;
-			overflow: hidden;
-			margin: 10%;
+			display: none;
 		}
 
 		.logout-div {
@@ -166,12 +156,18 @@ class PongTopBar extends Component {
 		}
 
 		.logo {
-			display: none;
+			position: absolute;
+			height: calc(100%);
+			top: 0;
+			width: 25%;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		.logo-text {
-			display: none;
-			font-size: 2.5vh;
+			font-size: 4vh;
 			color: white;
 		}
 
@@ -203,33 +199,15 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture {
-			position: fixed;
-			width: 25%;
-			height: 10%;
-			top: 0;
-			left: 0;
+			display: none;
 		}
 
 		.profile-picture-div {
-			position: absolute;
-			width: 100%;
-			height: 90%;
-			top: 5%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			display: none;
 		}
 
 		.profile-picture-div img {
-			top: 5%;
-			left: 5%;
-			border-radius: 50%;
-			border: 3px solid #9f9f9f;
-			box-shadow: 0px 0px 15px -3px #9F9F9F;
-			background-color: #9F9F9F;
-			max-height: 100%;
-			height: auto;
-			overflow: hidden;
+			display: none;
 		}
 
 		.logout-div {
@@ -262,7 +240,7 @@ class PongTopBar extends Component {
 		}
 	}
 
-	@media only screen and (min-width: 768px) and (min-height: 524px) {
+	@media only screen and (min-width: 769px) and (min-height: 525px) {
 		.topbar {
 			display: block;
 			position: fixed;
@@ -310,6 +288,7 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture {
+			display: block;
 			position: fixed;
 			width: 10%;
 			height: 10%;
@@ -328,6 +307,7 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture-div img {
+			display: block;
 			max-height: 100%;
 			height: auto;
 			border-radius: 50%;
