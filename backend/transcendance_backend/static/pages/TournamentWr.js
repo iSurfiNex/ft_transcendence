@@ -415,8 +415,7 @@ class TournamentWr extends Component {
         })
         .then (data => {
             state.currentGame = this.getGameID(data);//a degager, va se mettre a jour durant le gameUpdate()
-            //startCountdown();
-            //navigateTo(LA-PAGE-DU-JEU)
+            navigateTo('/play/tournament-running-wr')
         })
         .catch(error => {console.error(error)})
     }

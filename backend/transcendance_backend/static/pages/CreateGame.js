@@ -581,13 +581,6 @@ class PongCreateGame extends Component {
 			return (response.json());
 		})
 		.then(data => {
-			gameType = 'normal'
-			if (this.$id("toggle-Powerups").checked == true)
-				gameType = 'powerup'
-			const newGame = { type: gameType, id: data.id, status: 'waiting', creator: state.username, players: [], score: [], date: ''};
-			
-			state.games.push(newGame);
-			state.currentGame = data.id;
 			navigateTo('/play/waiting-room');
 		})
 		.catch(error => {console.error(error)})
@@ -616,7 +609,7 @@ class PongCreateGame extends Component {
 			return (response.json());	
 		})
 		.then(data => {
-			navigateTo('/play/waiting-room');
+			navigateTo('/play/tournament-wr');
 		})
 		.catch(error => {console.error(error)})
 	}	

@@ -112,3 +112,10 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
     async def send_update(self, event):
         logger.debug("==============  SEND CALLED ===========")
         await self.send(text_data=json.dumps(event['data']))
+
+#class GameRunningConsumer(AsyncWebsocketConsumer):
+#    async def connect(self):
+#
+#    async def disconnect(self):
+#
+#    async def receive(self):

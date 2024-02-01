@@ -121,7 +121,7 @@ function stateUpdate(event)
 {
 	data = JSON.parse(event.data);
 	
-	if (data.data_type == 'tournament')
+	if (data.data_type == 'tournament')//tournament update
 	{
 		var newTournament = {
 			type: 'tournament',
@@ -167,7 +167,7 @@ function stateUpdate(event)
 		}
 	}
 
-	else if (data.data_type == 'game')
+	else if (data.data_type == 'game')//game update
 	{
 		var newGame = {
 			type: (data.power_ups == true) ? "powerup" : "normal",
@@ -185,7 +185,7 @@ function stateUpdate(event)
 			state.games = state.games.map(game => {return (game.id == newGame.id) ? newGame : game;});
 	}
 
-	//else if (data.data_type == 'user')									 
+	//else if (data.data_type == 'user') //user update									 
 	//{
 	//	var newUser = {
 	//		nickname: data.username,
@@ -199,9 +199,16 @@ function stateUpdate(event)
 	//		state.users.map(user => {(u)})
 	//}
 
+	state.currentGame = -1;
+	state.currentTournament = -1;
 
-	//currentGame = getCurrentGame();
-	//currentTournament = getCurrentTournament();
+	currentGame = state.games.find(game => game.players.find(player => player.nickname == state.whoAmI));
+	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player.nickname == state.whoAmI));
+	
+	if (currentGame)
+		state.currentGame = currentGame.id;
+	if (currentTournament)
+		state.currentTournament = currentTournament.id;
 }
 
 //function stateBuild() {
