@@ -39,9 +39,9 @@ SECURE_URL_SCHEME = "https"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get("LOCAL_IP"), "localhost"]
+ALLOWED_HOSTS = [os.environ.get("GF_IP"), "localhost"]
 
-CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "https://" + os.environ.get("LOCAL_IP") + ":8000"]
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "https://" + os.environ.get("GF_IP") + ":8000"]
 
 # Application definition
 AUTHENTICATION_BACKENDS = [
