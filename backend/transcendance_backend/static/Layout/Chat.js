@@ -615,7 +615,12 @@ class PongChat extends Component {
 			// TODO try catch
 			const data = JSON.parse(event.data)
 			const {channel, sender, text, datetime} = data
-			state.messages.push({text, sender, date: datetime, channel});
+			if (text === '/invite')
+				state.messages.push({content: sender + ' invite you in a game, type /join ' + sender + ' to join him/her.', sender, date: datetime, channel});
+			else if (text === '/join')
+				state.messages.push({content: sender + ' is joining your game.', sender, date: datetime, channel});
+			else
+				state.messages.push({text, sender, date: datetime, channel});
 
 			if (state.activeChannel == channel) {
 				var message = this.shadowRoot.getElementById("messages");
@@ -738,7 +743,24 @@ class PongChat extends Component {
 			return ;
 
 		console.log("SENDING: ", text, " TO: ", state.activeChannel)
-		this._sendWsMessage(state.activeChannel, text)
+
+		if (text === '/invite') {
+			if (state.activeChannel != "global") {
+				state.messages.push({content: 'You have invite ' + text.substring('/invite '.length) + ' to join you.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				this._sendWsMessage(state.activeChannel, text)
+			}
+			else
+				state.messages.push({content: 'You need to be in a private channel to invite.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+		}
+		else if (text === '/join') {
+			if (state.activeChannel != "global")
+				this._sendWsMessage(state.activeChannel, text)
+			else
+				state.messages.push({content: 'You need to be in a private channel to join.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+		}
+		else
+			this._sendWsMessage(state.activeChannel, text)
+
 		if (state.activeChannel != "global")
 			state.messages.push({text, sender:state.whoAmI, date:Date.now(), channel: state.activeChannel})
 
