@@ -310,27 +310,17 @@ class ManageGameView(View):
             return JsonResponse({"errors": "Object not found"}, status=404)
 
     def post(self, request):
-        logger.debug("=========  BREAK 1 ==============")
-
         try:
-            logger.debug("=========  BREAK 2 ==============")
             data = json.loads(request.body)
             
-            logger.debug("=========  BREAK 3 ==============")
             logger.debug(data['created_by'])
             Player.objects.create(username=data['created_by'])# a degager plus tard
-            logger.debug("=========  BREAK 4 ==============")
             creator = get_object_or_404(Player, username=data['created_by'])
-            logger.debug("=========  BREAK 5 ==============")
             game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
-            logger.debug("=========  BREAK 6 ==============")
             game.players.add(creator)
-            logger.debug("=========  BREAK 7 ==============")
 
-            #stateUpdate(game, 'create', 'game')
+            stateUpdate(game, 'create', 'game')
             response = game.serialize()
-            logger.debug("=========  BREAK 4 ==============")
-
             return JsonResponse(response, status=200)
 
         except KeyError:

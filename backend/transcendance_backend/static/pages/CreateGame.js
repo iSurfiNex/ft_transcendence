@@ -59,7 +59,6 @@ class PongCreateGame extends Component {
 		</div>
 </div>
 `
-//@click="this.cancelGame()"
 
 	static css = css`
 	@keyframes fadeIn {
@@ -560,30 +559,31 @@ class PongCreateGame extends Component {
 
 
 	newGame() {
-		const dataToSend = {
-			goal_objective: this.$id("max-score").value,
-			ia: this.$id("toggle-IA").checked,
-			power_ups: this.$id("toggle-Powerups").checked,
-			created_by: state.whoAmi,
-		}
-
-		fetch("https://localhost:8000/api/manage-game/", {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': this.getCSRF(),
-			},
-			body: JSON.stringify(dataToSend),
-		})
-		.then(response => {
-			if (!response.ok)
-				throw new Error('Problem creating Game');
-			return (response.json());
-		})
-		.then(data => {
-			navigateTo('/play/waiting-room');
-		})
-		.catch(error => {console.error(error)})
+		//const dataToSend = {
+		//	goal_objective: this.$id("max-score").value,
+		//	ia: this.$id("toggle-IA").checked,
+		//	power_ups: this.$id("toggle-Powerups").checked,
+		//	created_by: state.whoAmI,
+		//}
+//
+		//fetch("https://localhost:8000/api/manage-game/", {
+		//	method: 'POST',
+		//	headers: {
+		//		'Content-Type': 'application/json',
+		//		'X-CSRFToken': this.getCSRF(),
+		//	},
+		//	body: JSON.stringify(dataToSend),
+		//})
+		//.then(response => {
+		//	if (!response.ok)
+		//		throw new Error('Problem creating Game');
+		//	return (response.json());
+		//})
+		//.then(data => {
+		//	navigateTo('/play/waiting-room');
+		//})
+		//.catch(error => {console.error(error)})
+		stateBuild();
 	}
 
 
