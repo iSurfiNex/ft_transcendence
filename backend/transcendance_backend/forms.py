@@ -1,11 +1,18 @@
 from django import forms
 from .models import Player, Tournament, Game
+from django.core.exceptions import ValidationError
 
 
 class PlayerForm(forms.ModelForm):
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        if Player.objects.filter(name=name).exists():
+            raise ValidationError("already_exists")
+        return name
+
     class Meta:
         model = Player
-        fields = ["name"]
+        fields = ["name", "avatar"]
 
 
 class GameForm(forms.ModelForm):

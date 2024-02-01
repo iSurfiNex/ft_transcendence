@@ -11,6 +11,27 @@ document.addEventListener("DOMContentLoaded", function () {
 const body = document.body;
 let topbar, chat, contentSeparator;
 
+function csrfToken()
+{
+		const token = document.cookie
+			.split('; ')
+			.find(row => row.startsWith('csrftoken='))
+			.split('=')[1];
+		return (token);
+}
+
+function post(url, body) {
+        return fetch(url, {
+        body ,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": csrfToken()
+        }
+        })
+    .then(response => response.json())
+}
+
 function navigateTo(path) {
 	history.pushState({ path: path }, "", path);
 

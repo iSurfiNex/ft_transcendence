@@ -83,13 +83,17 @@ def register_user(request):
 @login_required
 @require_POST
 def update_profile(request):
+    form = PlayerForm(request.POST)
+    if not form.is_valid():
+        return JsonResponse({"errors": form.errors}, status=HTTPStatus.BAD_REQUEST)
+
     try:
         profile = Player.objects.get(user=request.user)
 
         # Update pseudo if provided in the request
-        pseudo = request.POST.get("pseudo", None)
-        if pseudo is not None:
-            profile.name = pseudo
+        name = request.POST.get("name", None)
+        if name is not None:
+            profile.name = name
 
         # Update image if provided in the request
         avatar = request.FILES.get("avatar", None)
@@ -111,7 +115,7 @@ def get_user_profile(request, id):
     user = get_object_or_404(User, id=id)
     return JsonResponse(user.player.serialize())
 
-class RequestLogin(View):
+class Request42Login(View):
     def get(self, request):
         url = "https://api.intra.42.fr/oauth/token"
         data = {

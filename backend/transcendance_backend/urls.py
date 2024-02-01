@@ -24,7 +24,7 @@ from .views import (
     PlayerView,
     TournamentView,
     GameView,
-    RequestLogin,
+    Request42Login,
     register_user,
     login_user,
     logout_user,
@@ -55,7 +55,7 @@ urlpatterns += [
     path(
         "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
     ),
-    path("api/requestlogin/", RequestLogin.as_view(), name="request-login"),
+    path("api/requestlogin/", Request42Login.as_view(), name="request-login"),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
     path(
