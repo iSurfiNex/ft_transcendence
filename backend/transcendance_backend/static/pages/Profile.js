@@ -1,40 +1,31 @@
 import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
+import './UpdateProfile.js'
 
 class PongProfile extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<div class="profile">
 		<div class="profile-topbar">
-			<div class="profile-topbar-picture">
+			<div id="user-card">
 				<img id="avatar-img" src="{profile.avatar_url}" alt="profile"/>
-			</div>
-			<div class="profile-topbar-fullname">
-				<span class="profile-topbar-name">{this.getFullName(profileLooking)}</span>
-				<span class="profile-topbar-nickname">({profile.name})</span>
-				<div id="edit-profile">
-					<label for="pseudo-input">{language.new_pseudo}</label>
-					<input id="pseudo-input"/>
-					<button>
-						<label for="avatar-input" class="custom-file-input">
-							{language.new_picture}
-						</label>
-					</button>
-					<input
-						id="avatar-input"
-						type="file"
-						accept="image/png, image/jpeg"
-						@change="this.updatePictureFromInput()"
-						style="display:none;"/>
-					<button @click="this.submitProfileUpdate()">{language.save}</button>
+				<div class="profile-topbar-fullname">
+					<span class="profile-topbar-name">{this.getFullName(profileLooking)}</span>
+					<span class="profile-topbar-nickname">({profile.name})</span>
 				</div>
 			</div>
+
+<!--
+TODO use this instead of pong-update-profile when viewing another user profile
 			<div class="profile-topbar-button">
 				<button @click="this.sendMessageToUser(profileLooking)" class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
 				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Add friend"><img class="profile-topbar-img" src="/static/img/plus.svg" alt="add friend"></img></button>
 				<button class="profile-topbar-button-block btn btn-danger btn-lg" title="Block"><img class="profile-topbar-img" src="/static/img/block.svg" alt="block"></img></button>
 			</div>
+-->
+
+			<pong-update-profile></pong-update-profile>
 		</div>
 
 		<div class="profile-content">
@@ -128,7 +119,54 @@ class PongProfile extends Component {
 `
 
 	static css = css`
+
+	.profile-topbar-button {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.profile-topbar-img {
+		width: 36px;
+	}
+
+	#user-card {
+		width: 180px;
+	}
+
+	#avatar-img {
+		max-width: 180px;
+		max-height: 180px;
+	}
+
+	.profile-topbar-fullname {
+		color: #9F9F9F;
+		font-size: 30px;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	pong-update-profile {
+		min-width: 200px;
+		flex: 1;
+		max-width: 500px;
+	}
+
+	.profile-topbar {
+		background-color: rgb(54, 54, 54);
+		border-bottom: 10px solid #424242;
+		padding: 24px;
+		gap: 24px;
+		display: flex;
+		flex-wrap: wrap;
+	}
+
 	@media only screen and (max-width: 768px) {
+		.profile-topbar {
+			justify-content: center;
+		}
+
 		.profile {
 			position: absolute;
 			right: 0;
@@ -139,87 +177,6 @@ class PongProfile extends Component {
 			overflow: hidden;
 		}
 
-		.profile-topbar-fullname {
-			position: absolute	;
-			color: #9F9F9F;
-			width: 40%;
-			height: 100%;
-			right: 25%;
-			top: 0;
-			font-size: 30px;
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-		}
-
-		.profile-topbar-picture img {
-			margin-left: 10px;
-			max-height: 100%;
-			height: auto;
-			overflow: hidden;
-			background-color: white;
-			border-radius: 50%;
-			border: 3px solid #9f9f9f;
-			box-shadow: 0px 0px 15px -3px #9F9F9F;
-			background-color: #9F9F9F;
-		}
-
-		.profile-topbar-button {
-			position: absolute;
-			width: 20%;
-			height: 100%;
-			right: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-		}
-
-		.profile-topbar-button-message {
-			height: 25%;
-		}
-
-		.profile-topbar-button-invite {
-			height: 25%;
-			margin-top: 5px;
-		}
-
-		.profile-topbar-button-block {
-			height: 25%;
-			margin-top: 5px;
-		}
-
-		.profile-topbar-img {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			height: auto;
-			overflow: hidden;
-			max-height: 100%;
-		}
-
-		.profile {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			width: 100%;
-			height: calc(90% - 6px);
-			background-color: rgba(255, 255, 255, 0.5);
-		}
-
-		.profile-topbar-picture img {
-			margin-left: 10px;
-			max-height: 100%;
-			height: auto;
-			overflow: hidden;
-			background-color: white;
-			border-radius: 50%;
-			border: 3px solid #9f9f9f;
-			box-shadow: 0px 0px 15px -3px #9F9F9F;
-			background-color: #9F9F9F;
-		}
 	}
 
 	@media only screen and (max-height: 524px) {
@@ -233,67 +190,6 @@ class PongProfile extends Component {
 			overflow: hidden;
 		}
 
-		.profile-topbar-fullname {
-			position: absolute	;
-			color: #9F9F9F;
-			width: 40%;
-			height: 100%;
-			right: 25%;
-			top: 0;
-			font-size: 17px;
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-		}
-
-		.profile-topbar-picture img {
-			margin-left: 10px;
-			max-height: 100%;
-			height: auto;
-			overflow: hidden;
-			background-color: white;
-			border-radius: 50%;
-			border: 3px solid #9f9f9f;
-			box-shadow: 0px 0px 15px -3px #9F9F9F;
-			background-color: #9F9F9F;
-		}
-
-		.profile-topbar-button {
-			position: absolute;
-			width: 30%;
-			height: 100%;
-			right: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: row;
-			overflow: hidden;
-		}
-
-		.profile-topbar-button-message {
-			width: 25%;
-		}
-
-		.profile-topbar-button-invite {
-			width: 25%;
-			margin-left: 5px;
-		}
-
-		.profile-topbar-button-block {
-			width: 25%;
-			margin-left: 5px;
-		}
-
-		.profile-topbar-img {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			width: auto;
-			overflow: hidden;
-			max-width: 100%;
-		}
 	}
 
 	@media only screen and (min-width: 768px) and (min-height: 524px) {
@@ -307,92 +203,9 @@ class PongProfile extends Component {
 			overflow: hidden;
 		}
 
-		.profile-topbar-fullname {
-			position: absolute;
-			color: #9F9F9F;
-			width: 50%;
-			height: 100%;
-			right: 20%;
-			top: 0;
-			font-size: 25px;
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-		}
-
-		.profile-topbar-picture img {
-			max-height: 100%;
-			height: auto;
-			overflow: hidden;
-			background-color: white;
-			border-radius: 50%;
-			border: 3px solid #9f9f9f;
-			box-shadow: 0px 0px 15px -3px #9F9F9F;
-			background-color: #9F9F9F;
-		}
-
-		.profile-topbar-button {
-			position: absolute;
-			width: 20%;
-			height: 100%;
-			right: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-		}
-
-		.profile-topbar-button-message {
-			height: 25%;
-		}
-
-		.profile-topbar-button-invite {
-			height: 25%;
-			margin-top: 5px;
-		}
-
-		.profile-topbar-button-block {
-			height: 25%;
-			margin-top: 5px;
-		}
-
-		.profile-topbar-img {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			height: auto;
-			overflow: hidden;
-			max-height: 100%;
-		}
-	}
-
-	.profile-topbar {
-		position: relative;
-		top: 0;
-		width: 100%;
-		height: 30%;
-		background-color: rgb(54, 54, 54);
-		border-bottom: 10px solid #424242;
-	}
-
-	.profile-topbar-picture {
-		position: relative;
-		top: 5%;
-		height: 90%;
-		width: 30%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.profile-topbar-name {
-		position: relative;
 	}
 
 	.profile-topbar-nickname {
-		position: relative;
 		font-style: italic;
 	}
 
@@ -855,59 +668,6 @@ class PongProfile extends Component {
 		const score = game.score.find(score => score.name === player2);
 		return '(' + score.points + ')';
 	}
-
-    submitProfileUpdate() {
-        const avatarInput = this.shadowRoot.getElementById('avatar-input');
-        const pseudoInput = this.shadowRoot.getElementById('pseudo-input');
-        const avatar = avatarInput.files && avatarInput.files[0]
-        const pseudo = pseudoInput.value
-
-        const formData = new FormData();
-
-        if (avatar)
-            formData.append('avatar', avatar);
-
-        if (pseudo)
-            formData.append('pseudo', pseudo);
-
-        const onSuccess = (resp) => {
-            if (resp.status !== "success"){
-                console.error('update profile request failed :(')
-                return
-             }
-            console.log('update profile success!')
-        }
-        const onFailure = () => {
-            console.error('update profile request failed :(')
-        }
-
-        fetch('/api/update_profile/', {
-        body: formData,
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            "X-CSRFToken": window.csrfToken
-        }
-        })
-            .then(resp => resp.json())
-            .then(onSuccess, onFailure);
-    }
-
-    /* Update the displayed avatar with the uploaded picture */
-    updatePictureFromInput() {
-        const profilePic = this.shadowRoot.getElementById('avatar-img');
-        const input = this.shadowRoot.getElementById('avatar-input');
-
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        profilePic.src = e.target.result;
-      };
-
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
 }
 
 register(PongProfile);

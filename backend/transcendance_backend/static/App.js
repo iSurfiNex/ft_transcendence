@@ -130,8 +130,10 @@ var state_base = {
 		Size: 'Size:',
 		Create: 'Create',
 		save: 'Save',// TODO translate
-		new_pseudo: 'New pseudo',// TODO translate
-		new_picture: 'New picture',// TODO translate
+		pseudo: 'Pseudo',// TODO translate
+		avatar: 'Avatar',// TODO translate
+		firstName: 'First name',// TODO translate
+		lastName: 'Last name',// TODO translate
 		Cancel: 'Cancel'
 	},
 	fr: {
