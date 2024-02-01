@@ -4,13 +4,13 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    url: http://${LOCAL_IP}:9090
+    url: http://${GF_IP}:9090
     isDefault: true
 
   - name: PostgreSQL
     type: postgres
     access: proxy
-    url: ${LOCAL_IP}:${DB_PORT}
+    url: ${GF_IP}:${DB_PORT}
     user: ${DB_USER}
     secureJsonData:
       password: ${DB_PASSWORD}
@@ -22,7 +22,7 @@ datasources:
   - name: Alertmanager
     type: alertmanager
     access: proxy
-    url: ${LOCAL_IP}:9093
+    url: ${GF_IP}:9093
     jsonData:
       implementation: prometheus
       handleGrafanaManagedAlerts: false

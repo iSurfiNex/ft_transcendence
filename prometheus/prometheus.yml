@@ -7,7 +7,7 @@ alerting:
   alertmanagers:
   - static_configs:
     - targets:
-      - ${LOCAL_IP:localhost}:9093
+      - ${GF_IP:localhost}:9093
 
 rule_files:
   - /etc/prometheus/alert-rules.yml
@@ -31,7 +31,7 @@ scrape_configs:
     scheme: http
     static_configs:
     - targets:
-      - ${LOCAL_IP:localhost}:9100
+      - ${GF_IP:localhost}:9100
 
 remote_write:
-  - url: 'http://${LOCAL_IP:localhost}:9100/metrics'
+  - url: 'http://${GF_IP:localhost}:9100/metrics'
