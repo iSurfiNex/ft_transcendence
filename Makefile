@@ -4,10 +4,10 @@ all: volumes up
 
 volumes:
 	@echo "Creating folder for volumes ..."
-	@sudo mkdir -p ${VOLUME_PATH}/backend
-	@sudo mkdir -p ${VOLUME_PATH}/prometheus
-	@sudo mkdir -p ${VOLUME_PATH}/grafana
-	@sudo mkdir -p ${VOLUME_PATH}/alertmanager
+	@mkdir -p ${VOLUME_PATH}/backend
+	@mkdir -p ${VOLUME_PATH}/prometheus
+	@mkdir -p ${VOLUME_PATH}/grafana
+	@mkdir -p ${VOLUME_PATH}/alertmanager
 
 up:
 	@echo "Building containers ..."
@@ -26,7 +26,7 @@ clean: down
 
 fclean: clean
 	@docker system prune -af --volumes
-	-@sudo rm -rf ${VOLUME_PATH}
+	-@rm -rf ${VOLUME_PATH}
 
 re: fclean all
 
