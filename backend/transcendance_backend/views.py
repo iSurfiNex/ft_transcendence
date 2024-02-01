@@ -51,6 +51,7 @@ def logout_user(request):
     logout(request)
     return response
 
+
 @require_POST  # Ensure that the view only responds to POST requests
 def register_user(request):
     # Extract user registration data from the POST request
@@ -83,7 +84,7 @@ def register_user(request):
 @login_required
 @require_POST
 def update_profile(request):
-    form = PlayerForm(request.POST)
+    form = PlayerForm(request.POST, instance=request.user.player)
     if not form.is_valid():
         return JsonResponse({"errors": form.errors}, status=HTTPStatus.BAD_REQUEST)
 
@@ -92,28 +93,38 @@ def update_profile(request):
 
         # Update pseudo if provided in the request
         name = request.POST.get("name", None)
+        firstName = request.POST.get("first_name", None)
+        lastName = request.POST.get("last_name", None)
+        avatar = request.FILES.get("avatar", None)
         if name is not None:
             profile.name = name
-
-        # Update image if provided in the request
-        avatar = request.FILES.get("avatar", None)
         if avatar is not None:
             profile.avatar = avatar
-
         profile.save()
 
-        return JsonResponse({"status": "success"}, status=200)
+        if firstName is not None:
+            request.user.first_name = firstName
+        if lastName is not None:
+            request.user.last_name = lastName
+        request.user.save()
+
+        return JsonResponse(
+            {"status": "success", "profile": request.user.player.serialize()},
+            status=200,
+        )
     except Exception as e:
         return JsonResponse(
             {"errors": {"any": str(e)}},
             status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
         )
 
+
 @login_required
 @require_GET
 def get_user_profile(request, id):
     user = get_object_or_404(User, id=id)
     return JsonResponse(user.player.serialize())
+
 
 class Request42Login(View):
     def get(self, request):

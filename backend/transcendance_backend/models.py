@@ -38,6 +38,8 @@ class Player(models.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "first_name": self.user.first_name,
+            "last_name": self.user.last_name,
             "avatar_url": self.avatar.url,
             "avatar_thumbnail_url": self.avatar_thumbnail.url,
             "blocked_users": [
