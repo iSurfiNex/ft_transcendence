@@ -149,13 +149,15 @@ class Request42Login(View):
     def get(self, request):
         token_42 = request.GET["code"]
         url = "https://api.intra.42.fr/oauth/token"
+        base_uri = os.environ.get("SITE_ORIGIN", "")
+        redirect_uri = f"{base_uri}/login/"
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080",
             "client_secret": "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",
             # "client_secret": "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",
             "code": token_42,
-            "redirect_uri": request.build_absolute_uri("/login/"),
+            "redirect_uri": redirect_uri,
         }
 
         response = requests.post(
