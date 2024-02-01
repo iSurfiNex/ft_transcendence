@@ -7,7 +7,7 @@ class PongTopBar extends Component {
 	static template = html`
 	<div class="topbar">
 		<a href="/" onclick="navigateTo('/'); return false;" class="logo">
-			<div class="logo-text">qwewqewqe</div>
+			<div class="logo-text">PONG</div>
 		</a>
 
 		<div class="language">
