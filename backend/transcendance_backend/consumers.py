@@ -3,7 +3,6 @@ import logging
 import json
 from datetime import datetime
 from asgiref.sync import sync_to_async
-from .utils import stateUpdate
 
 logger = logging.getLogger(__name__)
 
@@ -39,10 +38,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
                 await self.update_connected_state(True)
 
-                await sync_to_async(stateUpdate)(
-                    self.scope["user"].player, "update", "user"
-                )
-
             else:
                 await self.close()
                 logger.debug(
@@ -63,9 +58,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_discard(self.user_name, self.channel_name)
 
             self.user_name = None
-            await sync_to_async(stateUpdate)(
-                self.scope["user"].player, "update", "user"
-            )
 
     async def send_message_to_user(self, to, text):
         # Get the WebSocket channel name for the specified user

@@ -11,6 +11,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime
 
+from .utils import stateUpdate
 
 class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
@@ -181,3 +182,9 @@ def create_player(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_player(sender, instance, **kwargs):
     instance.player.save()
+
+
+# Notify other users through websocket anytime a player instance is updated
+@receiver(post_save, sender=Player)
+def player_saved_hook(sender, instance, **kwargs):
+    stateUpdate(instance, "update", "user")
