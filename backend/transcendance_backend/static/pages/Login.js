@@ -28,7 +28,7 @@ class PongLogin extends Component {
  				{lang(logginError)}
 			</span>
 			<span class="separator">―――――――――――――――――</span>
-			<button id="pong-button" @click="this.handleClick()" class="pushable">
+			<button id="pong-button" @click="this.connectionWith42()" class="pushable">
 				<span class="front">{language.connectionWith}</span>
 			</button>
 		</div>
@@ -151,7 +151,7 @@ class PongLogin extends Component {
 
 		const type = new URLSearchParams(window.location.search).get("code");
 		if (type) {
-			const hostname = window.location.origin + '/api/requestlogin/?code=' + type
+			const hostname = window.location.origin + '/api/request_42_login/?type=login&code=' + type
 			const response = fetch(hostname, {
 				method: 'GET',
 			}).then(async (response)=>{
@@ -229,7 +229,7 @@ class PongLogin extends Component {
     });
     }
 
-	handleClick() {
+	connectionWith42() {
 		const hostname = encodeURIComponent(window.location.origin + '/login/')
 		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=' + hostname + '&response_type=code';
 

@@ -138,9 +138,15 @@ def get_user_profile(request, id):
 def request_42_login(request):
     try:
         token_42 = request.GET["code"]
+        type = request.GET["type"]
+        logger.debug(f"======== Request 42 Login, type: {type}")
+
+        if type != "login" and type != "profile":
+            raise Exception("Invalid type")
+
         url = "https://api.intra.42.fr/oauth/token"
         base_uri = os.environ.get("SITE_ORIGIN", "")
-        redirect_uri = f"{base_uri}/login/"
+        redirect_uri = f"{base_uri}/{type}/"
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080",
@@ -150,6 +156,9 @@ def request_42_login(request):
             "redirect_uri": redirect_uri,
         }
 
+        logger.debug(
+            f"======== 42 authorization request, code: {token_42}, redirect_uri: {redirect_uri} "
+        )
         authorize_response = requests.post(
             url, json=data, headers={"Content-Type": "application/json"}
         )
@@ -187,28 +196,41 @@ def request_42_login(request):
         first_name = me_response_data["first_name"]
         last_name = me_response_data["last_name"]
         username = me_response_data["login"]
+
+        url_profile_42 = f"https://profile.intra.42.fr/users/{username}"
+
         player = Player.objects.filter(id_42=id_42).first()
 
         if player is None:
-            logger.debug("======== Creating new User")
-            user = User.objects.create_user(
-                first_name=first_name,
-                last_name=last_name,
-                username=username,
-            )
+            if type == "profile":
+                logger.debug("======== Linking existing user")
+                user = request.user
+            else:
+                logger.debug("======== Creating new User")
+                user = User.objects.create_user(
+                    username=username,
+                )
+            user.first_name = first_name
+            user.last_name = last_name
             user.player.id_42 = id_42
+            user.player.url_profile_42 = url_profile_42
             user.player.avatar.save(
                 f"{user.player.pk}_avatar.jpg",
                 img_42_profile,
             )
             user.save()
-            logger.debug("======== New User created")
+            logger.debug("======== User updated with 42 data")
         else:
-            user = player.user
-            logger.debug("======== Logging existing user")
-        login(request, user)
+            if type == "profile":
+                raise Exception("A 42 account is already linked for this user")
 
-        logger.debug("======== User logged in")
+            user = player.user
+
+        if type == "login":
+            logger.debug("======== Logging existing user")
+            login(request, user)
+            logger.debug("======== User logged in")
+
         return JsonResponse(
             {
                 "username": user.username,

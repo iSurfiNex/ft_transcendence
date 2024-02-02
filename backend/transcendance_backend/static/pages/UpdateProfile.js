@@ -55,6 +55,13 @@ class PongUpdateProfile extends Component {
 	style="display:none;"/>
 
     <div class="invalid-feedback">{profileErrors.avatar}</div>
+<a
+    hidden="{!profile.id_42}"
+    class="btn btn-primary"
+    href="{profile.url_profile_42}"
+    target="_blank"
+>42</a>
+<button hidden="{profile.id_42}" class="btn btn-primary" @click="this.link42Account()">{language.link42}</button>
 <button class="btn btn-primary" @click="this.submitProfileUpdate()">{language.save}</button>
 <span class="text-light ps-3">{profileErrors.global}</span>
 
@@ -68,6 +75,7 @@ button label {
     cursor: inherit;
 }
 `
+
 	observers = {
 		'player.active': active => console.log("active?: ", active)
 	}
@@ -135,6 +143,13 @@ button label {
         };
 
         reader.readAsDataURL(input.files[0]);
+    }
+
+    link42Account() {
+		const hostname = encodeURIComponent(window.location.origin + '/profile/')
+		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=' + hostname + '&response_type=code';
+
+		window.location.href = apiUrl;
     }
 }
 
