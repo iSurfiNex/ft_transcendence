@@ -194,6 +194,9 @@ function displayContent(path) {
 		else if (path === "/play/create-game") {
 			displayElement("pong-create-game");
 		}
+		else if (path === "/game/") {
+			displayElement("pong-game");
+		}
 		else {
 			displayElement("pong-not-found");
 		}
