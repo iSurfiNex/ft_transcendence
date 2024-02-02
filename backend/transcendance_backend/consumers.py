@@ -2,6 +2,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import json
 from datetime import datetime
+from asgiref.sync import sync_to_async
 
 logger = logging.getLogger(__name__)
 
@@ -9,6 +10,14 @@ logger = logging.getLogger(__name__)
 class ChatConsumer(AsyncWebsocketConsumer):
     user_name = None
 
+    @sync_to_async
+    def update_connected_state(self, new_value):
+        player = self.scope["user"].player
+
+        player.is_connected = new_value
+        player.save()
+
+        logger.debug(f"CONNECTION STATE {self.scope['user'].player.is_connected}")
 
     async def connect(self):
         try:
@@ -25,9 +34,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     f"user_{self.user_name}", self.channel_name
                 )
 
-                await self.channel_layer.group_add(
-                    f"global", self.channel_name
-                )
+                await self.channel_layer.group_add(f"global", self.channel_name)
+
+                await self.update_connected_state(True)
 
             else:
                 await self.close()
@@ -44,6 +53,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         logger.debug("=================WS DISCONNECT============")
         if self.user_name is not None:
+            await self.update_connected_state(False)
+            # change statut de l objet et recup
+            # stateUpdate(Player, "update", "user")
             # Remove the user from the group when the WebSocket connection is closed
             await self.channel_layer.group_discard(self.user_name, self.channel_name)
             self.user_name = None
@@ -81,7 +93,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "datetime": int(
                     datetime.now().timestamp() * 1000
                 ),  # NOTE *1000 to make it js timestamp compatible
-            }
+            },
         )
 
     async def chat_message(self, event):
