@@ -399,8 +399,18 @@ class PongTopBar extends Component {
 		return false;
 	}
 
-	updateActiveLanguage(language) {
-		state.language = language;
+	updateActiveLanguage(lang) {
+		state.language = lang;
+        let langkey = ""
+        // TODO c'est dégueulasse
+        if (lang.username === 'Username')
+            langkey = 'en'
+        else if (lang.username === 'Nom d\'utilisateur')
+            langkey = 'fr'
+        else if (lang.username === "Nutzername")
+            langkey = 'de'
+
+        document.cookie = `lang=${langkey}`;
 	}
 }
 

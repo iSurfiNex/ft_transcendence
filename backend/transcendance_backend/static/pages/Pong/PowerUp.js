@@ -21,7 +21,7 @@ class PongPowerUp extends Component {
 							<div class="pong-players" repeat="players" as="player">
 								<div class="pong-player">{player}</div>
 							</div>
-							<div class="pong-player-count">{game.players.length}/{game.maxPlayer}</div>
+							<div class="pong-player-count">{game.players.length}/2</div>
 							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
 								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 							</a>
@@ -219,7 +219,7 @@ class PongPowerUp extends Component {
 			return (true);
 		if (game.creator == "tournament")
 			return (true);
-		if (game.players.length >= game.maxPlayer)
+		if (game.players.length >= 2)
 			return (true);
 		return (false);
 	}

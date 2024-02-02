@@ -108,6 +108,7 @@ var state_base = {
 		total: 'TOTAL',
 		gameHistory: 'Game history',
 		tournamentHistory: 'Tournament history',
+		link42: 'Link with 42',
 
                 // UPDATE PROFILE
 		save: 'Save',
@@ -177,6 +178,7 @@ var state_base = {
 		total: 'TOTAL',
 		gameHistory: 'Historique des parties',
 		tournamentHistory: 'Historique des tournois',
+		link42: 'Lier avec 42',
 
                 // UPDATE PROFILE
 		save: 'Enregistrer',
@@ -246,6 +248,7 @@ var state_base = {
 		total: 'GESAMT',
 		gameHistory: 'Spielgeschichte',
 		tournamentHistory: 'Turniergeschichte',
+		link42: 'Link zu 42',
 
                 // UPDATE PROFILE
 		save: 'Speichern',

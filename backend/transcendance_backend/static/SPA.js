@@ -11,13 +11,33 @@ document.addEventListener("DOMContentLoaded", function () {
 const body = document.body;
 let topbar, chat, contentSeparator;
 
-function csrfToken()
+function getCookie(key)
 {
 		const token = document.cookie
 			.split('; ')
-			.find(row => row.startsWith('csrftoken='))
+			.find(row => row.startsWith(`${key}=`))
 			.split('=')[1];
 		return (token);
+}
+
+if (!getCookie("lang"))
+    document.cookie = `lang=en`;
+
+function csrfToken()
+{
+    return getCookie('csrftoken')
+}
+
+function get(url, body) {
+        return fetch(url, {
+        body ,
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            "X-CSRFToken": csrfToken()
+        }
+        })
+    .then(response => response.json())
 }
 
 function post(url, body) {
@@ -83,6 +103,30 @@ function unsetCookie(name) {
     document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;`;
 }
 
+function link42Account() {
+	const token = new URLSearchParams(window.location.search).get("code");
+	if (!token)
+        navigateTo('/profile')
+	const hostname = window.location.origin + '/api/request_42_login/?type=profile&code=' + token
+	const response = get(hostname).then(data => {
+		sessionStorage.setItem("access_token", data.access_token);
+        const errors = data['errors']
+        if (errors !== undefined) {
+            for (const [key, errMsg] of Object.entries(errors)) {
+                state.profileErrors.global = errMsg
+                return
+            }
+        }
+        state.whoAmI = data['username']
+        state.profile = data['profile']
+        state.profileErrors.global = ''
+	}, err => {
+        state.profileErrors.global = '42 link error'
+    })
+
+    navigateTo('/profile')
+}
+
 function displayContent(path) {
     const loggedIn = isUserAuthenticated()
     if (path === "/logout/") {
@@ -118,6 +162,9 @@ function displayContent(path) {
 		if (path === "/") {
 			displayElement("pong-home");
 		}
+        else if (path === "/profile/") {
+            link42Account()
+        }
 		else if (path === "/profile") {
 			displayElement("pong-profile");
 		}

@@ -4,3 +4,5 @@ tmp/
 .env
 __pycache__/
 node_modules/
+backend/media/
+!backend/media/avatars/default.jpg

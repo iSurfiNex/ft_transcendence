@@ -16,6 +16,7 @@ class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     id_42 = models.IntegerField(null=True)
+    url_profile_42 = models.CharField(max_length=200, null=True)
     avatar = models.ImageField(
         upload_to="avatars", default="avatars/default.jpg", null=True
     )
@@ -39,6 +40,8 @@ class Player(models.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "id_42": self.id_42,
+            "url_profile_42": self.url_profile_42,
             "name": self.name,
             "first_name": self.user.first_name,
             "last_name": self.user.last_name,
