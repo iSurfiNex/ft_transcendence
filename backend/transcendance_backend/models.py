@@ -122,7 +122,8 @@ class Game(models.Model):
 class Tournament(models.Model):
     GAME_STATES = (
         ("waiting", "Waiting"),
-        ("running", "Running"),
+        ("round 1", "ROUND 1"),
+        ("round 2", "ROUND 2")
         ("done", "Done"),
     )
     state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")

@@ -364,12 +364,13 @@ class ManageTournamentView(View):
                 tournament.games.all()[1].players.add(players[2], players[3])
                 tournament.games.all()[1].started_at = datetime
                 tournament.games.all()[1].state = "running"
-                tournament.state = "running"
+                tournament.state = "round 1"
+                tournament.players.clear()
                 tournament.save()
 
             #elif data['action'] == "start-2nd-round"
 
-            elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI 
+            elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
                 new_player = get_object_or_404(Player, username=data['username'])
                 tournament.players.add(new_player)
             

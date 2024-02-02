@@ -12,7 +12,7 @@ class TournamentWr extends Component {
         
             <div class="player-count">
                 <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
-                {this.getPlayerCount()}/4
+                {this.getPlayerCount()}/{this.expectedPlayers()}
             </div>
     
             <div class="tournament-room" repeat="tournaments" as="tournament"> 
@@ -351,6 +351,15 @@ class TournamentWr extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
+
+    expectedPlayers() {
+        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
+        if (tournament.status == "waiting")
+            return (4);
+        if (tournament.status == "waiting")
+            return (2);
+    }
+
     getPlayerCount() {
         if (state.currentTournament == -1)
             return (0);
@@ -369,7 +378,7 @@ class TournamentWr extends Component {
             return !(false);
         
         let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-        if (state.username == tournament.creator)
+        if (state.username == tournament.creator && tournament.status == "waiting")
             return !(true);
         return !(false);
     }
@@ -397,7 +406,7 @@ class TournamentWr extends Component {
         }
 
         const dataToPut = {
-            action: "start-tournament",
+            action: "start-1st-round",
         }
 
         fetch(url, {
@@ -414,8 +423,8 @@ class TournamentWr extends Component {
             return (response.json());	
         })
         .then (data => {
-            state.currentGame = this.getGameID(data);//a degager, va se mettre a jour durant le gameUpdate()
-            navigateTo('/play/tournament-running-wr')
+            //startCountdown();
+            //navigateTo('PAGE DU JEU');
         })
         .catch(error => {console.error(error)})
     }

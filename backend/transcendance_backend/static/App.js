@@ -42,8 +42,8 @@ var state_base = {
 	activeChannel: 'global',
 	messages: [],
 	tournaments: [
-		{ type: 'tournament', id: 1, status: 'running', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11], date: '11/11/2023 04:38', countdown: 5 },
-		{ type: 'tournament', id: 2, status: 'running', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15], date: '11/11/2023 04:38', countdown: 5},
+		{ type: 'tournament', id: 1, status: 'round 1', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11], date: '11/11/2023 04:38', countdown: 5 },
+		{ type: 'tournament', id: 2, status: 'round 1', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15], date: '11/11/2023 04:38', countdown: 5},
 
 		{ type: 'tournament', id: 3, status: 'waiting', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' , countdown: -1},
 		{ type: 'tournament', id: 4, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '', countdown: -1},
