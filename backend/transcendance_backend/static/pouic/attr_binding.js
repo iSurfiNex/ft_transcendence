@@ -6,7 +6,7 @@ const attach_attr_obs = (attrName, query, node, scope, prefixes) => {
     if (negate)
       newVal = !newVal
     if (useValue) {
-      newVal === false ? node.removeAttribute(attrName) : node.setAttribute(attrName, newVal===true ? '': newVal)
+      (newVal === false || newVal == undefined ) ? node.removeAttribute(attrName) : node.setAttribute(attrName, newVal===true ? '': newVal)
     } else {
       newVal ? node.setAttribute(attrName, forwardVal) : node.removeAttribute(attrName)
     }
