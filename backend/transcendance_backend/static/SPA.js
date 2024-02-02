@@ -11,13 +11,21 @@ document.addEventListener("DOMContentLoaded", function () {
 const body = document.body;
 let topbar, chat, contentSeparator;
 
-function csrfToken()
+function getCookie(key)
 {
 		const token = document.cookie
 			.split('; ')
-			.find(row => row.startsWith('csrftoken='))
+			.find(row => row.startsWith(`${key}=`))
 			.split('=')[1];
 		return (token);
+}
+
+if (!getCookie("lang"))
+    document.cookie = `lang=en`;
+
+function csrfToken()
+{
+    return getCookie('csrftoken')
 }
 
 function post(url, body) {
