@@ -290,19 +290,19 @@ function stateUpdate(event)
 			state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
 	}
 
-	//else if (data.data_type == 'user') //user update									 
-	//{
-	//	var newUser = {
-	//		nickname: data.username,
-	//		//fullname: data.name,
-	//		//picture:,  A VOIR
-	//	};
-//
-	//	if (data.action == 'create')
-	//		state.users.push(newUser);
-	//	else if (data.action == 'update')
-	//		state.users.map(user => {(u)})
-	//}
+	else if (data.data_type == 'user') //user update									 
+	{
+		var newUser = {
+			nickname: data.name,
+			fullname: data.first_name + " " + data.last_name,
+			picture: data.avatar_url,
+		};
+
+		if (data.action == 'create')
+			state.users.push(newUser);
+		else if (data.action == 'update')
+			state.users.map(user => {return user.nickname == newUser.nickname ? newUser : user});
+	}
 
 	state.currentGame = -1;
 	state.currentTournament = -1;
