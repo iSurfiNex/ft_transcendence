@@ -640,7 +640,7 @@ class PongChat extends Component {
 
         this.socket.onclose = (event) => {
             console.log('WebSocket connection closed:', event, '\nAutoreconnect in 2 sec.');
-            setTimeout(() => this.connectWs(), 2000);
+            setTimeout(() => this.connectWsChat(), 2000);
         };
     }
 
