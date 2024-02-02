@@ -13,9 +13,11 @@ import os
 
 import requests
 import random
+from datetime import datetime, timedelta
 
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
+from .utils import stateUpdate
 from typing import Type
 
 # from django.contrib.auth.models import User
@@ -323,12 +325,10 @@ class ManageTournamentView(View):
 
     def post(self, request):
         try:
-            #logger.debug("=========== POST REQUEST STARTED MF ========")
             data = json.loads(request.body)
 
-            #Player.objects.create(username=data['created_by'])# A DEGAGER, C EST POUR LE DEBUG
-            creator = get_object_or_404(Player, username=data['created_by'])
-            
+            creator = get_object_or_404(Player, user__username=data['created_by'])
+
             game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
             game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
             
@@ -336,12 +336,8 @@ class ManageTournamentView(View):
             tournament.players.add(creator)
             tournament.games.add(game1, game2)
 
-            #logger.debug("=========== START TOURNAMENT UPDATE FROM VIEW ========")
             stateUpdate(tournament, 'create', 'tournament')
-            #logger.debug("=========== END TOURNAMENT UPDATE FROM VIEW ========")
             response = tournament.serialize()
-            #logger.debug(response)
-
             return JsonResponse(response, status=200)
 
         except KeyError:
@@ -353,35 +349,36 @@ class ManageTournamentView(View):
         try:
             data = json.loads(request.body)
             tournament = get_object_or_404(Tournament, id=id)
-            datetime = timezone.now()
 
             if data["action"] == "start-1st-round":#POUR COMMENCER LE TOURNOI
                 
-                player1 = Player.objects.create(username='taMere')#A DEGAGER
-                player2 = Player.objects.create(username='taSoeur')#C'EST POUR TESTER
-                player3 = Player.objects.create(username='taGrandMere')#
-                player4 = Player.objects.create(username='taCouz')#
-                players = [player1, player2, player3, player4]#
+                #player1 = Player.objects.create(name='taMere')#A DEGAGER
+                #player2 = Player.objects.create(name='taSoeur')#C'EST POUR TESTER
+                #player3 = Player.objects.create(name='taGrandMere')#
+                #player4 = Player.objects.create(name='taCouz')#
+                #players = [player1, player2, player3, player4]#
                 
-                #players = list(tournament.players.all())
+                players = list(tournament.players.all())
                 random.shuffle(players)
                 tournament.games.all()[0].players.add(players[0], players[1])
-                tournament.games.all()[0].started_at = datetime
+                tournament.games.all()[0].started_at = (datetime.now() + timedelta(seconds=5)).timestamp() * 1000
                 tournament.games.all()[0].state = "running"
                 tournament.games.all()[1].players.add(players[2], players[3])
-                tournament.games.all()[1].started_at = datetime
+                tournament.games.all()[1].started_at = (datetime.now() + timedelta(seconds=5)).timestamp() * 1000
                 tournament.games.all()[1].state = "running"
                 tournament.state = "round 1"
+                stateUpdate(tournament, 'update', 'tournament')
+                tournament.games.clear()
                 tournament.players.clear()
                 tournament.save()
 
             #elif data['action'] == "start-2nd-round"
 
             elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
-                new_player = get_object_or_404(Player, username=data['username'])
+                new_player = get_object_or_404(Player, user__username=data['username'])
                 tournament.players.add(new_player)
             
-            #stateUpdate(tournament, 'update', 'tournament')
+            stateUpdate(tournament, 'update', 'tournament')
             response = tournament.serialize()
             return JsonResponse(response, status=200)
 
@@ -425,7 +422,7 @@ class ManageGameView(View):
             data = json.loads(request.body)
             
             #Player.objects.create(username=data['created_by'])# a degager plus tard
-            creator = get_object_or_404(Player, username=data['created_by'])
+            creator = get_object_or_404(Player, user__username=data['created_by'])
             game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
             game.players.add(creator)
 
@@ -455,7 +452,6 @@ class ManageGameView(View):
                 new_player = get_object_or_404(Player, username=data['username'])
                 game.players.add(new_player)
             
-
 
             #stateUpdate(game, 'update', 'game')
             response = game.serialize()

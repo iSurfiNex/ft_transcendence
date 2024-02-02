@@ -26,6 +26,7 @@ class TournamentWr extends Component {
                 </div>
             </div>
         </div>
+        <script>document.addEventListener("DOMContentLoaded", this.startRound2())</script>
     </div>
     `
 
@@ -351,12 +352,25 @@ class TournamentWr extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
+    StartRound2() {
+        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
+
+        if (tournament.status == "waiting")
+            return ;
+        
+        if (tournament.players.lenght == 2)
+        {
+            //start round 2
+        }
+        else 
+            setInterval(checkPlayersSize, 1000); 
+    }
 
     expectedPlayers() {
         let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
         if (tournament.status == "waiting")
             return (4);
-        if (tournament.status == "waiting")
+        if (tournament.status == "round 1")
             return (2);
     }
 

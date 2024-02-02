@@ -56,7 +56,7 @@ class Player(models.Model):
     def serialize_summary(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "name": self.user.username,
         }
 
 
@@ -123,7 +123,7 @@ class Tournament(models.Model):
     GAME_STATES = (
         ("waiting", "Waiting"),
         ("round 1", "ROUND 1"),
-        ("round 2", "ROUND 2")
+        ("round 2", "ROUND 2"),
         ("done", "Done"),
     )
     state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")

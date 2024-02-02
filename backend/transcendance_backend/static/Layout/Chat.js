@@ -606,7 +606,7 @@ class PongChat extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
-    connectWs() {
+    connectWsChat() {
         this.socket = ws('chat')
 		this.socket.addEventListener('message', (event) => {
 			console.log('Received message:', event.data);
@@ -644,9 +644,37 @@ class PongChat extends Component {
         };
     }
 
+	connectWsStateUpdate() {
+		const socket = ws('state-update');
+		
+		socket.addEventListener("open", (event) => {
+			console.log("Websocket Connected");
+		})
+		
+		socket.addEventListener("error", (event) => {
+			console.error("Websocket Error: ", event);
+		})
+
+		socket.addEventListener("close", (event) => {
+			console.log("WebSocket connection closed: ", event);
+			console.log("Close code: ", event.code);
+			console.log("Error type: ", event.type);
+		  });
+
+		socket.addEventListener("message", (event) => {
+			let data = JSON.parse(event.data);
+			console.log('Received message:', data);
+			console.log('action: ', data.action);
+			console.log('data_type: ', data.data_type);
+			stateUpdate(event);
+		});
+	}
+
 	connectedCallback() {
 		initPopover(this);
-        this.connectWs()
+        this.connectWsChat();
+		this.connectWsStateUpdate();
+		stateBuild();	
 	}
 
 	chatCheckHandler() {
