@@ -81,16 +81,16 @@ var state_base = {
 		email: 'Email',
 		username: 'Username',
 		password: 'Password',
-		confirmPassword: 'Confirm password', // TODO mutliling
+		confirmPassword: 'Confirm password',
 		login: 'Login',
 		register: 'Register',
 		connectionWith: 'Connection with 42',
-                invalidLoginCredentials: 'Invalid login credentials.',// TODO mutlilang
+                invalidLoginCredentials: 'Invalid login credentials.',
                 usernameAlreadyExist: 'This username already exist.',
-                errUnknown: 'An error occured.', // TODO mutlilang
-                'A user with that username already exists.': "A user with that username already exists.", // TODO multilang
-                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Incorrect password or username.", // TODO mutlilang
-                'This field is required.': 'Missing field', // TODO mutlilang
+                errUnknown: 'An error occured.',
+                'A user with that username already exists.': "A user with that username already exists.",
+                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Incorrect password or username.",
+                'This field is required.': 'Missing field',
 
 		// HOME
 		play: 'PLAY',
@@ -115,6 +115,14 @@ var state_base = {
 		gameHistory: 'Game history',
 		tournamentHistory: 'Tournament history',
 
+                // UPDATE PROFILE
+		save: 'Save',
+		pseudo: 'Pseudo',
+		avatar: 'Avatar',
+		firstName: 'First name',
+		lastName: 'Last name',
+		success: 'Success',
+
 		// CHAT
 		writeHere: 'Type your message here',
 		playerList: 'Player List',
@@ -136,12 +144,6 @@ var state_base = {
 		Tournament: 'Tournament',
 		Size: 'Size:',
 		Create: 'Create',
-		save: 'Save',// TODO translate
-		pseudo: 'Pseudo',// TODO translate
-		avatar: 'Avatar',// TODO translate
-		firstName: 'First name',// TODO translate
-		lastName: 'Last name',// TODO translate
-		success: 'Success',// TODO translate
 		Cancel: 'Cancel'
 	},
 	fr: {
@@ -149,9 +151,15 @@ var state_base = {
 		email: 'Email',
 		username: 'Nom d\'utilisateur',
 		password: 'Mot de passe',
+		confirmPassword: 'Confirmation de mot de passe',
 		login: 'Se connecter',
 		register: 'S\'inscrire',
 		connectionWith: 'Connexion avec 42',
+                invalidLoginCredentials: 'Authentification invalide',
+                errUnknown: "Une erreur s'est produite.",
+                'A user with that username already exists.': "Un utilisateur avec ce pseudo existe déjà.",
+                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Mot de passe ou nom d'utilisateur incorrect.",
+                'This field is required.': 'Champs requis',
 
 		// HOME
 		play: 'JOUER',
@@ -175,6 +183,14 @@ var state_base = {
 		total: 'TOTAL',
 		gameHistory: 'Historique des parties',
 		tournamentHistory: 'Historique des tournois',
+
+                // UPDATE PROFILE
+		save: 'Enregistrer',
+		pseudo: 'Pseudo',
+		avatar: 'Avatar',
+		firstName: 'Prénom',
+		lastName: 'Nom',
+		success: 'Succès',
 
 		// CHAT
 		writeHere: 'Ecrivez votre message ici',
@@ -204,9 +220,15 @@ var state_base = {
 		email: 'Email',
 		username: 'Nutzername',
 		password: 'Passwort',
+		confirmPassword: 'Passwort Bestätigung',
 		login: 'Anmeldung',
 		register: 'Registrieren',
 		connectionWith: 'Verbindung mit 42',
+                invalidLoginCredentials: 'Ungültige Login-Details',
+                errUnknown: 'Es ist ein Fehler aufgetreten.',
+                'A user with that username already exists.': "Ein Benutzer mit diesem Benutzernamen existiert bereits.",
+                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Falsches Passwort oder Benutzername.",
+                'This field is required.': 'Fehlendes Feld',
 
 		// HOME
 		play: 'SPIELEN',
@@ -230,6 +252,14 @@ var state_base = {
 		total: 'GESAMT',
 		gameHistory: 'Spielgeschichte',
 		tournamentHistory: 'Turniergeschichte',
+
+                // UPDATE PROFILE
+		save: 'Speichern',
+		pseudo: 'Pseudo',
+		avatar: 'Benutzerbild',
+		firstName: 'Vorname',
+		lastName: 'Nachname',
+		success: 'Erfolg',
 
 		// CHAT
 		writeHere: 'Schreiben Sie ihre Nachricht hier',

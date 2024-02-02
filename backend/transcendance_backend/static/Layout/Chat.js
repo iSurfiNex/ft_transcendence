@@ -606,10 +606,8 @@ class PongChat extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
-
-	connectedCallback() {
-		initPopover(this);
-		this.socket = ws('chat')
+    connectWs() {
+        this.socket = ws('chat')
 		this.socket.addEventListener('message', (event) => {
 			console.log('Received message:', event.data);
 			// TODO try catch
@@ -639,6 +637,16 @@ class PongChat extends Component {
 					state.channels.push({name: sender, id: maxId + 1, notifications: 1});
 			}
 		});
+
+        this.socket.onclose = (event) => {
+            console.log('WebSocket connection closed:', event, '\nAutoreconnect in 2 sec.');
+            setTimeout(() => this.connectWs(), 2000);
+        };
+    }
+
+	connectedCallback() {
+		initPopover(this);
+        this.connectWs()
 	}
 
 	chatCheckHandler() {
