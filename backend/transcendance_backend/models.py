@@ -186,5 +186,5 @@ def save_player(sender, instance, **kwargs):
 
 # Notify other users through websocket anytime a player instance is updated
 @receiver(post_save, sender=Player)
-def player_saved_hook(sender, instance, **kwargs):
-    stateUpdate(instance, "update", "user")
+def player_saved_hook(sender, instance, created, **kwargs):
+    stateUpdate(instance, "create" if created else "update", "user")
