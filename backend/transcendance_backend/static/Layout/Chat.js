@@ -614,9 +614,9 @@ class PongChat extends Component {
 			const data = JSON.parse(event.data)
 			const {channel, sender, text, datetime} = data
 			if (text === '/invite')
-				state.messages.push({text: sender + ' invite you in a game, type /join ' + sender + ' to join him/her.', sender, date: datetime, channel});
+				state.messages.push({text: sender + ' invite you in a game, type /join ' + sender + ' to join him/her.', sender: 'Pong', date: datetime, channel});
 			else if (text === '/join')
-				state.messages.push({text: sender + ' is joining your game.', sender, date: datetime, channel});
+				state.messages.push({text: sender + ' is joining your game.', sender: 'Pong', date: datetime, channel});
 			else
 				state.messages.push({text, sender, date: datetime, channel});
 
@@ -646,11 +646,11 @@ class PongChat extends Component {
 
 	connectWsStateUpdate() {
 		const socket = ws('state-update');
-		
+
 		socket.addEventListener("open", (event) => {
 			console.log("Websocket Connected");
 		})
-		
+
 		socket.addEventListener("error", (event) => {
 			console.error("Websocket Error: ", event);
 		})
@@ -674,7 +674,7 @@ class PongChat extends Component {
 		initPopover(this);
         this.connectWsChat();
 		this.connectWsStateUpdate();
-		stateBuild();	
+		stateBuild();
 	}
 
 	chatCheckHandler() {
@@ -796,6 +796,7 @@ class PongChat extends Component {
 	sendMessage() {
 		const inputNode = this.shadowRoot.getElementById("chat-input");
 		const text = inputNode.value
+		const tmp = state.users.find(user => user.nickname === state.activeChannel);
 
 		if (!text)
 			return ;
@@ -804,17 +805,17 @@ class PongChat extends Component {
 
 		if (text === '/invite') {
 			if (state.activeChannel != "global") {
-				state.messages.push({text: 'You have invite ' + text.substring('/invite '.length) + ' to join you.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				state.messages.push({text: 'You have invite ' + tmp.nickname + ' to join you.', sender: 'Pong', date:Date.now(), channel: state.activeChannel});
 				this._sendWsMessage(state.activeChannel, text)
 			}
 			else
-				state.messages.push({text: 'You need to be in a private channel to invite.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				state.messages.push({text: 'You need to be in a private channel to invite.', sender: 'Pong', date:Date.now(), channel: state.activeChannel});
 		}
 		else if (text === '/join') {
 			if (state.activeChannel != "global")
 				this._sendWsMessage(state.activeChannel, text)
 			else
-				state.messages.push({text: 'You need to be in a private channel to join.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				state.messages.push({text: 'You need to be in a private channel to join.', sender: 'Pong', date:Date.now(), channel: state.activeChannel});
 		}
 		else
 			this._sendWsMessage(state.activeChannel, text)
