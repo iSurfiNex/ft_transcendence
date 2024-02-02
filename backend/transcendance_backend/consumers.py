@@ -27,7 +27,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 logger.debug("=================WS CONNECTED============")
 
                 # Extract user name from the path or from headers (adjust as needed)
-                self.user_name = self.scope["user"].username
+                self.user_name = self.scope["user"].player.name
 
                 # Add the user to a group named after their username
                 await self.channel_layer.group_add(
