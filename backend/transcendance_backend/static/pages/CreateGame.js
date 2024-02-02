@@ -509,6 +509,34 @@ class PongCreateGame extends Component {
 		'player.active': active => console.log("active?: ", active)
 	}
 
+	connectedCallback() {
+		console.log("CONNECTED CALLBACK ================");
+		
+		const socket = ws('state-update');
+		
+		socket.addEventListener("open", (event) => {
+			console.log("Websocket Connected");
+		})
+		
+		socket.addEventListener("error", (event) => {
+			console.error("Websocket Error: ", event);
+		})
+
+		socket.addEventListener("close", (event) => {
+			console.log("WebSocket connection closed: ", event);
+			console.log("Close code: ", event.code);
+			console.log("Error type: ", event.type);
+		  });
+
+		socket.addEventListener("message", (event) => {
+			let data = JSON.parse(event.data);
+			console.log('Received message:', data);
+			console.log('action: ', data.action);
+			console.log('data_type: ', data.data_type);
+			stateUpdate(event);
+		});
+	}
+	
 	$id(str) {
 		return this.shadowRoot.getElementById(str);
 	}
@@ -529,6 +557,7 @@ class PongCreateGame extends Component {
 		return (false);
 	}
 
+
 	newGame() {
 		const dataToSend = {
 			goal_objective: this.$id("max-score").value,
@@ -537,108 +566,32 @@ class PongCreateGame extends Component {
 			created_by: state.whoAmI,
 		}
 
-		fetch("https://localhost:8000/api/manage-game/", {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': this.getCSRF(),
-			},
-			body: JSON.stringify(dataToSend),
-		})
-		.then(response => {
-			if (!response.ok)
-				throw new Error('Problem creating Game');
-			return (response.json());
-		})
+		post2("https://localhost:8000/api/manage-game/", dataToSend)
 		.then(data => {
-			gameType = 'normal'
-			if (this.$id("toggle-Powerups").checked == true)
-				gameType = 'powerup'
-			const newGame = { type: gameType, id: data.id, status: 'waiting', creator: state.whoAmI, players: [], score: [], date: ''};
-			
-			state.games.push(newGame);
-			state.currentGame = data.id;//PROB: STATE NE CHANGE PAS DE VALEUR
 			navigateTo('/play/waiting-room');
 		})
-		.catch(error => {console.error(error)})
 	}
-
 
 
 	newTournament() {
-		//const dataToSend = {
-		//	state: "waiting",
-		//	goal_objective: this.$id("max-score").value,
-		//	created_by: state.whoAmI,
-		//	power_ups: this.$id("toggle-Powerups").checked, 
-		//}
-//
-		//fetch("https://localhost:8000/api/manage-tournament/", {
-		//	method: 'POST',
-		//	headers: {
-		//		'Content-Type': 'application/json',
-		//		'X-CSRFToken': this.getCSRF(),
-		//	},
-		//	body: JSON.stringify(dataToSend),
-		//})
-		//.then(response => {
-		//	if (!response.ok)
-		//		throw new Error('Problem creating Tournament');
-		//	return (response.json());	
-		//})
-		//.then(data => {
-		//	const newTournament = { type: 'tournament', id: data.id, status:'waiting', creator: state.whoAmI, players: [state.whoAmI], gamesID: [data.games[0].id, data.games[1].id], date: ''};
-		//	const newGame1 = { type: 'tournament-game', id: data.games[0].id, status: 'waiting', creator: state.whoAmI, players: [], score: [], date: ''};
-		//	const newGame2 = { type: 'tournament-game', id: data.games[1].id, status: 'waiting', creator: state.whoAmI, players: [], score: [], date: ''};
-//
-		//	state.tournaments.push(newTournament);
-		//	state.games.push(newGame1);
-		//	state.games.push(newGame2);
-		//	state.currentTournament = data.id;//PROB: STATE NE CHANGE PAS DE VALEUR	
-//
-		//	navigateTo('/play/waiting-room');
-		//})
-		//.catch(error => {console.error(error)})
+		const dataToSend = {
+			state: "waiting",
+			goal_objective: this.$id("max-score").value,
+			created_by: state.whoAmI,
+			power_ups: this.$id("toggle-Powerups").checked, 
+		}	
 
-		const socket = ws('state-update');
-
-		socket.addEventListener("open", (event) => {
-			console.log("Websocket Connected");
+		post2("https://localhost:8000/api/manage-tournament/", dataToSend)
+		.then(data => {
+			navigateTo('/play/tournament-wr');
 		})
-
-		socket.addEventListener("error", (event) => {
-			console.error("Websocket Error: ", event);
-		})
-
-		socket.addEventListener("close", (event) => {
-			console.log("WebSocket connection closed: ", event);
-			console.log("Close code: ", event.code);
-			console.log("Error type: ", event.type);
-		  });
-
-        // Event handler for receiving messages
-        socket.addEventListener('message', (event) => {
-            console.log('Received message:', event.data);
-        });
-
-        // TODO To remove, I'm just sending random msg after 2sec
-        setTimeout(() => {
-            const msg = JSON.stringify({message:'Hello, WebSocket yooooooo!'})
-            socket.send(msg);
-            console.log('STATE-UPDATE WS MSG SENT', msg)
-        }, 2000);
-	}
-
-
+	}	
 
 	cancelGame() {
 		navigateTo('/play/pong'); 
 		return false;
 	}
 
-	connectedCallback() {
-		initPopover(this)
-	}
 }
 
 register(PongCreateGame)

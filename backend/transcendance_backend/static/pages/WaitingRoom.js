@@ -10,57 +10,6 @@ class WaitingRoom extends Component {
 	static template = html`
     <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
-        
-        <div class="rectangle-waitingRoom-T" hidden="{this.IsTournament()}">
-            <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
-                
-            <div hidden="{this.IsTournamentWaiting()}">
-                <div class="player-count">
-                    <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
-                    {this.getPlayerCount()}/4
-                </div>
-
-                <div class="tournament-room" repeat="tournaments" as="tournament"> 
-                    <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}"> 
-                        <div class="player-T" repeat="tournament.players" as="player">
-                            <a href="/profile" class="profil-T">
-                                <img src="{this.getPlayerPic(player)}">
-                                <div class="profil-nick-T"> {player} </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div hidden="{this.IsTournamentRunning()}">
-                <div class="countdown-T" hidden="{this.hasCountdownStarted()}"> {language.Start} {this.getCountdown()} </div>
-
-                <div class="tournament-list" repeat="tournaments" as="tournament">
-                    <div hidden="{this.IsCurrentTournament(tournament.id)}">
-                        <div class="match" repeat="tournament.gamesId" as="matchId"> 
-                            <div class="match-info">
-                                <div class="player-1">
-                                        <img src="{this.playerOnePic(matchId)}">
-                                        <a href="/profile">{this.getPlayerOne(matchId)}</a> 
-                                </div>
-                                <div class="VS-logo"> VS </div>
-                                <div class="player-2">
-                                        <img src="{this.playerTwoPic(matchId)}">
-                                        <a href="/profile">{this.getPlayerTwo(matchId)}</a>
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-        </div>
-    
-
-
-        <div hidden="{this.IsNormal()}">
             <div class="nicknames-N">
                 <a type="button" class="btn btn-startGame" hidden="{this.isGameCreator()}">{language.GoButton}</a>
                 <a class="playerOne-N" href="/profile"> {this.getPlayerOne(currentGame)} </a> 
@@ -75,11 +24,8 @@ class WaitingRoom extends Component {
                     <img src="{this.playerTwoPic()}" alt="player 2">
                 </div>
             </div>    
-	    </div>
-
     </div>
     `
-
 
     static css = css`
     @media only screen and (max-width: 370px) {
@@ -93,281 +39,6 @@ class WaitingRoom extends Component {
             font-family: 'Press Start 2P', sans-serif;
             
         }
-
-        .rectangle-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
-            backdrop-filter: blur(1px);
-            align-items: center;
-            white-space: nowrap;
-            font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .title-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            left: 0%;
-            right: 15%;
-            top: 0%;
-            overflow: hidden;
-            
-            font-size: 8vw;
-        	color: white;
-        	text-shadow: 
-        	    2px 2px 3px #ff6600,
-        	    4px 4px 6px #cc3300,
-        	    6px 6px 9px #993300;
-        	text-align: center;
-        }
-
-        .player-count {
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            top: 15%;
-            text-align: center;
-            line-height: 2.5;
-
-            font-size: 3vh;
-            color: white;
-        }
-
-        .tournament-room {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            height: 70%;
-            left: 0%;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .player-list-T{
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .btn-startGame-T {
-            position: absolute;
-            left: 2%;
-            top: 15%;
-            width: 20%;
-            height: 70%;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-
-            font-size: 3vw;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00c7d6;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 1;
-            backdrop-filter: blur(1px);
-        }
-
-        .btn-startGame-T:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .player-T {
-            position: relative;
-            flex-direction: column;
-            width: 50%;
-            left: 25%;
-            height: 20%;
-        }
-
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            margin-bottom: 5%;
-        }
-
-        .profil-T img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        .profil-nick-T {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 40%;
-            left: 20%;
-
-            font-size: 4vw;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
-        }
-
-
-
-
-
-        .countdown-T {
-            position: absolute;
-            width: 100%;
-            height: 7%;
-            top: 20%;
-
-            font-size: 3vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-            text-align: center;
-        }
-
-        .tournament-list {
-            position: absolute;
-            width: 100%;
-            height: 65%;
-            top: 35%;
-        }
-
-        .match {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            overflow: scroll;
-        }
-
-        .match-info {
-            position: relative;
-            height: 30%;
-            width: 100%;
-            word-spacing: 30px;
-            overflow: auto;
-            justify-content: center;
-            margin-bottom: 1%;
-            transition: opacity 0.9s;
-            transition: width 1s, height 1s;
-        }
-
-
-        .player-1 {
-            position: absolute;
-            left: 0%;
-            width: 40%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            font-size: 5vh;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .player-1 img {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        } 
-
-        .player-1 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
-
-        .player-1 a {
-            position: absolute;
-        }
-
-        .player-2 {
-            position: absolute;
-            left: 60%;
-            width: 40%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            font-family: 'Courier New', monospace;
-            font-size: 5vh;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .player-2 img {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        } 
-
-        .player-2 img:hover {
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
-
-        .player-2 a {
-            position: absolute;
-        }
-
-        .VS-logo {
-            position: absolute;
-            height: 100%;
-            width: 20%;
-            left: 40%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: font-size 0.3s;
-
-            font-family: 'Courier New', monospace;
-            font-size: 5vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-
-
-
 
         .nicknames-N {
             position: absolute;
@@ -597,282 +268,6 @@ class WaitingRoom extends Component {
             white-space: nowrap;
             font-family: 'Press Start 2P', sans-serif;
         }
-
-        .title-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            left: 0%;
-            right: 15%;
-            top: 0%;
-            overflow: hidden;
-            white-space: nowrap;
-            background-color: rgb(112, 112, 112);
-            font-size: 2.5vw;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
-        }
-
-        .player-count {
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            top: 15%;
-            text-align: center;
-            line-height: 2.5;
-
-            font-size: 1.3vw;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-        .tournament-room {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            height: 70%;
-            left: 0%;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .player-list-T{
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .btn-startGame-T {
-            position: absolute;
-            left: 2%;
-            bottom: 0;
-            width: 20%;
-            height: 70%;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-
-            font-size: 1vw;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00c7d6;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
-            backdrop-filter: blur(1px);
-        }
-
-        .btn-startGame-T:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .player-T {
-            position: relative;
-            flex-direction: column;
-            width: 50%;
-            left: 25%;
-            height: 20%;
-        }
-
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            margin-bottom: 5%;
-        }
-
-        .profil-T img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 1;
-        }
-
-        .profil-T:hover {
-            height: 450%;
-            transition: all 1s ease;
-        }
-
-        .profil-nick-T {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 25%;
-            left: 25%;
-
-            font-size: 1.2vw;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
-        }
-
-
-
-
-
-        .countdown-T {
-            position: absolute;
-            width: 100%;
-            height: 7%;
-            top: 20%;
-
-            font-size: 1vw;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-            text-align: center;
-        }
-
-        .tournament-list {
-            position: absolute;
-            width: 100%;
-            height: 65%;
-            top: 35%;
-        }
-
-        .match {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            overflow: scroll;
-        }
-
-        .match-info {
-            position: relative;
-            height: 30%;
-            width: 100%;
-            word-spacing: 30px;
-            overflow: auto;
-            justify-content: center;
-            margin-bottom: 1%;
-            transition: opacity 0.9s;
-            transition: width 1s, height 1s;
-        }
-
-        .match-info:hover {
-            height: 100%;
-            top: 0%;
-            transition: opacity 0.3s;
-            transition: width 1s, height 1s;
-        }
-
-        .match-info:hover .VS-logo {
-            font-size: 8vh;
-            transition: font-size 0.3s;
-        }
-
-        .player-1 {
-            position: absolute;
-            left: 0%;
-            width: 40%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            font-size: 1vw;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .player-1 img {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-        } 
-
-        //.player-1 img:hover {
-        //    opacity: 1;
-        //    transition: opacity 0.3s;
-        //}
-
-        .player-1 a {
-            position: absolute;
-        }
-
-        .player-2 {
-            position: absolute;
-            left: 60%;
-            width: 40%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-
-            font-size: 1vw;
-            color: white;
-            text-shadow: 
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-        }
-
-        .player-2 img {
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-        } 
-
-        //.player-2 img:hover {
-        //    opacity: 1;
-        //    transition: opacity 0.3s;
-        //}
-
-        .player-2 a {
-            position: absolute;
-        }
-
-        .VS-logo {
-            position: absolute;
-            height: 100%;
-            width: 20%;
-            left: 40%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: font-size 0.3s;
-
-            font-size: 5vh;
-            color: #00ff00;
-            text-shadow: 
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-
-
-
 
         .nicknames-N {
             position: absolute;
@@ -1164,11 +559,18 @@ class WaitingRoom extends Component {
     IsTournamentWaiting() {
         if (state.currentTournament == -1 || state.tournaments[state.currentTournament - 1].status != 'waiting')
             return !(false);
+        tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament); 
+        if (tournament.status != "waiting")
+            return !(false);
         return !(true);
     }
 
     IsTournamentRunning() {
-        if (state.currentTournament == -1 || state.tournaments[state.currentTournament - 1].status != 'running')
+        if (state.currentTournament == -1)
+            return !(false);
+
+        tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament); 
+        if (tournament.status != "running")
             return !(false);
         return !(true);
     }
@@ -1200,7 +602,7 @@ class WaitingRoom extends Component {
     isGameCreator() {
         const game = state.games.find(game => game.id == state.currentGame);
 
-        if (!game || state.whoAmI != game.creator)
+        if (!game || state.username != game.creator)
             return !(false);
 
         return !(true);
@@ -1210,7 +612,7 @@ class WaitingRoom extends Component {
         if (state.currentTournament == -1 )
             return !(false);
 
-        if (state.whoAmI == state.tournaments[state.currentTournament - 1].creator)
+        if (state.username == state.tournaments[state.currentTournament - 1].creator)
             return !(true);
         return !(false);
     }
@@ -1242,7 +644,7 @@ class WaitingRoom extends Component {
         {
             const players = game.players;
 
-            if (players[0].name == state.whoAmI || players[1].name == state.whoAmI)
+            if (players[0].name == state.username || players[1].name == state.username)
                 return (game.id);
         }
         return (null);
@@ -1276,30 +678,46 @@ class WaitingRoom extends Component {
             return (response.json());	
         })
         .then (data => {
-            state.tournaments[state.currentTournament].status = "running";//PROB STATE
-            //CHANGER LES STATUS DES DEUX GAME DU TOURNOI
-            state.currentGame = this.getGameID(data);
+            state.currentGame = this.getGameID(data);//a degager, va se mettre a jour durant le gameUpdate()
+            //startCountdown();
+            //navigateTo(LA-PAGE-DU-JEU)
         })
         .catch(error => {console.error(error)})
     }
 
-    //startGame() {
-    //    const nb_players = state.games[state.currentGame].players.lenght;
-    //    const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
-	//	const currentDatetime = new Date();
-	//	const formatedDatetime = currentDatetime.toISOString();
-//
-    //    if (nb_players != 2)
-    //    {    
-    //        console.error("not enought players");
-    //        return ;
-    //    }
-//
-    //    const dataToPut = {
-    //        use: 'start-game'
-    //        started_at: formatedDatetime,
-    //    }
-    //}
+    startGame() {
+        const nb_players = state.games[state.currentGame].players.lenght;
+        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+
+        if (nb_players != 2)
+        {    
+            console.error("not enought players");
+            return ;
+        }
+
+        const dataToPut = {
+            action: 'start-game'
+        }
+
+        fetch(url,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+				'X-CSRFToken': this.getCSRF(),
+            },
+            body: JSON.stringify(dataToPut),
+        })
+        .then (response => {
+            if (!response.ok)
+                throw new Error('Problem starting Game');
+            return (response.json());    
+        })
+        .then (data => {
+            //startCountdown();
+            //navigateTo(LA-PAGE-DU-JEU)
+        })
+        .catch(error => {console.error(error)})
+    }
 
 }
 

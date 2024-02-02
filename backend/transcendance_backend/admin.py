@@ -7,7 +7,8 @@ class TournamentAdmin(admin.ModelAdmin):
     filter_horizontal = (
         "players",
     )
-    list_display = ("id", "created_by", "required_player_number")
+    #list_display = ("id", "created_by", "required_player_number")
+    list_display = ("id", "created_by")
     search_fields = (
         "id",
         "created_by",
@@ -16,7 +17,8 @@ class TournamentAdmin(admin.ModelAdmin):
 
 class GameAdmin(admin.ModelAdmin):
     filter_horizontal = ("players",)
-    list_display = ("id", "state", "required_player_number", "goal_objective", "ia")
+    #list_display = ("id", "state", "required_player_number", "goal_objective", "ia")
+    list_display = ("id", "state", "goal_objective", "ia")
     list_filter = ("state", "ia")
     search_fields = ("id",)
 

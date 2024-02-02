@@ -116,22 +116,40 @@ class ChatConsumer(AsyncWebsocketConsumer):
 class StateUpdateConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
-            logger.debug("=================WS CONNECT START============")
+            await self.channel_layer.group_add("state-update", self.channel_name)
             await self.accept()
-            logger.debug("=================WS CONNECTED============")
-            self.user = self.scope["user"]
-            logger.debug(self.user)
         except Exception as e:
             logger.error(f"Error: {e}")
 
     async def disconnect(self, close_code):
-        logger.debug("=================WS DISCONNECT============")
+        await self.channel_layer.group_discard("state-update", self.channel_name)
+
+    #async def receive(self, text_data):
+    #    text_data_json = json.loads(text_data)
+    #    message = text_data_json["message"]
+    #    str_resp = json.dumps({"message": message})
+    #    # TODO change this, I just send back the received msg
+    #    #await self.send(text_data=str_resp)
+
+    async def send_update(self, event):
+        await self.send(text_data=json.dumps(event['data']))
+
+
+class GameRunningConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.id = self.scope['url_route']['kwargs']['id']
+        self.game_group_name = f"game_{self.id}"
+
+        await self.channel_layer.group_add(self.game_group_name, self.channel_name)
+        await self.accept()
+
+
+    async def disconnect(self, close_code):#PAS OUBLIER DE DECONNECTER LES JOUEURS DU WS A LA FIN DE LA GAME
+        await self.channel_layer.group_discard(self.game_group_name, self.channel_name)
 
     async def receive(self, text_data):
-        logger.debug("=================WS RECEIVE============")
-        logger.debug(text_data)
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        str_resp = json.dumps({"message": message})
-        # TODO change this, I just send back the received msg
-        await self.send(text_data=str_resp)
+        data = json.loads(text_data)
+        await self.send_game_update(data)
+
+    async def send_game_update(self, event):
+        await self.send(text_data=json.dumps(event['message']))

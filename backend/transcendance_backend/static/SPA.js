@@ -32,6 +32,43 @@ function post(url, body) {
     .then(response => response.json())
 }
 
+function post2(url, body) {
+	return fetch(url, {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			"Content-Type": "application/json",
+			"X-CSRFToken": csrfToken()
+		},
+		body: JSON.stringify(body)
+	})
+	.then(response => response.json())
+}
+
+
+function put(url, body) {
+	return fetch(url, {
+	body ,
+	method: 'PUT',
+	credentials: 'include',
+	headers: {
+		"X-CSRFToken": csrfToken()
+	}
+	})
+.then(response => response.json())
+}
+
+function get(url) {
+	return fetch(url, {
+	method: 'GET',
+	credentials: 'include',
+	headers: {
+		"X-CSRFToken": csrfToken()
+	}
+	})
+.then(response => response.json())
+}
+
 function navigateTo(path) {
 	history.pushState({ path: path }, "", path);
 
@@ -87,6 +124,12 @@ function displayContent(path) {
 		else if (path === "/play/waiting-room") {
 			displayElement("waiting-room");
 		}
+		else if (path === "/play/tournament-wr") {
+			displayElement("tournament-wr")
+		}
+		else if (path === "/play/tournament-running-wr") {
+			displayElement("tournament-running-wr");
+		}
 		else if (path === "/play/pong") {
 			displayElement("pong-classic");
 		}
@@ -130,4 +173,186 @@ function displayElement(element) {
 	content.id = 'pong-content'
 	content.classList.add("pong-content");
 	body.append(content);
+}
+
+function stateUpdate(event)
+{
+	data = JSON.parse(event.data);
+	console.log(data.players)
+	if (data.data_type == 'tournament')//tournament update
+	{
+		var newTournament = {
+			type: 'tournament',
+			id: data.id,
+			status: data.state,
+			creator: data.created_by.username,
+			players: data.players.map(player => player.username),
+			gamesId: data.games.map(game => game.id),
+			date: data.created_at,
+		};
+
+		var newGame1 = {
+			type: (data.power_ups == true) ? "powerup" : "normal",
+			id: data.games[0].id,
+			status: data.state,
+			creator: data.created_by.username,
+			players: [],
+			score: [],
+			date: data.created_at,
+		};
+
+		var newGame2 = {
+			type: (data.power_ups == true) ? "powerup" : "normal",
+			id: data.games[1].id,
+			status: data.state,
+			creator: data.created_by.username,
+			players: [],
+			score: [],
+			date: data.created_at,
+		};
+
+		if (data.action == 'create')
+		{
+			state.tournaments.push(newTournament);
+			state.games.push(newGame1);
+			state.games.push(newGame2);
+		}
+		else if (data.action == 'update')
+		{
+			state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
+			state.games = state.games.map(game => {return (game.id == newGame1.id) ? newGame1 : game;});
+			state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
+		}
+	}
+
+	else if (data.data_type == 'game')//game update
+	{
+		var newGame = {
+			type: (data.power_ups == true) ? "powerup" : "normal",
+			id: data.id,
+			status: data.state,
+			creator: data.created_by.username,
+			players: data.players.map(player => player.username),
+			score: [],
+			date: data.created_at,
+		};
+
+		if (data.action == 'create')
+			state.games.push(newGame);
+		else if (data.action == 'update')
+			state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
+	}
+
+	//else if (data.data_type == 'user') //user update									 
+	//{
+	//	var newUser = {
+	//		nickname: data.username,
+	//		//fullname: data.name,
+	//		//picture:,  A VOIR
+	//	};
+//
+	//	if (data.action == 'create')
+	//		state.users.push(newUser);
+	//	else if (data.action == 'update')
+	//		state.users.map(user => {(u)})
+	//}
+
+	state.currentGame = -1;
+	state.currentTournament = -1;
+
+	currentGame = state.games.find(game => game.players.find(player => player == state.whoAmI));
+	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.whoAmI));
+	
+	if (currentGame)
+		state.currentGame = currentGame.id;
+	if (currentTournament)
+		state.currentTournament = currentTournament.id;
+}
+
+function stateBuild() {
+	get("https://localhost:8000/api/build-state/")
+	.then (data => {
+		var users_list = [];
+		var games_list = [];
+		var	tournaments_list = [];
+		var current_tournament = -1;
+		var current_game = -1;
+		var user = window.username;
+
+		for (let user of data.users) { //RECUP LES DONNEES DE CHAQUE JOUEUR
+			let user_data = {
+				nickname: user.username,
+				fullname: user.name,
+				picture: 'img/list.svg',//A REVOIR //////////////////////////////////////////
+			};
+			users_list.push(user_data);
+		}
+
+		for (let game of data.games) { //RECUP LES DONNEES DE CHAQUE GAME
+			
+			let game_type = (game.power_ups === true) ? "powerup" : "normal";
+			let game_players;
+
+			for (let player of data.players) {
+				let username = player.username;
+				game_players.push(username);
+			}
+
+			let game_data = {
+				type: game_type,
+				id: game.id,
+				status: game.state,
+				creator: game.created_by.username,
+				players: game_players,
+				//score:,
+				date: game.created_at,
+			}
+			games_list.push(game_data);
+		}
+
+		for (let tournament of data.tournaments){ //RECUP LES DONNEES DE CHAQUE TOURNOI
+			let tournament_players;
+			let tournament_gamesId;
+
+			for (let player of tournament.players){ //creer la list des blazes D joueur
+				tournament_players.push(player.username);
+			}
+
+			for (let game of tournament.games){
+				tournament_gamesId.push(game.id);
+			}
+
+			let tournament_data = {
+				type: 'tournament',
+				id: tournament.id,
+				status: tournament.state,
+				creator: tournament.created_by.username,
+				players: tournament_players,
+				gamesId: tournament_gamesId,
+				date: tournament.created_at,
+			}
+			tournaments_list.push(tournament_data);
+		}
+
+		//console.log(games_list);
+		let curr_game = games_list.find(game => game.players.find(player => player == state.whoAmI));
+		let curr_tournament = tournaments_list.find(tournament => tournament.players.find(player => player == state.whoAmI));
+
+		//let curr_game = games_list.find(game => game.players.includes(user));
+		if (curr_game){
+			current_game = curr_game.id;
+		}
+
+		//let curr_tournament = tournaments_list.find(tournament => tournament.players.includes(user));
+		if (curr_tournament){
+			current_tournament = curr_tournament.id;
+		}
+
+		state.profileLooking = state.whoAmI;
+		state.games = games_list,
+		state.tournaments = tournaments_list,
+		state.users = users_list,
+		state.currentTournament = current_tournament;
+		state.currentGame = current_game;
+	})
 }

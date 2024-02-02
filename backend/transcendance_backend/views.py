@@ -306,6 +306,7 @@ class ManageTournamentView(View):
             else:
                 tournament = get_object_or_404(Tournament, id=id)
                 response = tournament.serialize()
+            
             return JsonResponse(response, status=200)
 
         except KeyError:
@@ -315,23 +316,25 @@ class ManageTournamentView(View):
 
     def post(self, request):
         try:
+            #logger.debug("=========== POST REQUEST STARTED MF ========")
             data = json.loads(request.body)
 
-            game1 = Game.objects.create(state="waiting", power_ups=data["power_ups"])
-            game2 = Game.objects.create(state="waiting", power_ups=data["power_ups"])
-
-            Player.objects.create(name=data["created_by"])  # a degager plus tard
-            player = get_object_or_404(Player, name=data["created_by"])
-
-            tournament = Tournament.objects.create(
-                created_by=player, power_ups=data["power_ups"]
-            )
+            #Player.objects.create(username=data['created_by'])# A DEGAGER, C EST POUR LE DEBUG
+            creator = get_object_or_404(Player, username=data['created_by'])
+            
+            game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
+            game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
+            
+            tournament = Tournament.objects.create(state='waiting', power_ups=data['power_ups'], created_by=creator)
+            tournament.players.add(creator)
             tournament.games.add(game1, game2)
 
-            # tournamentUpdate(tournament, 'create')
-            # gameUpdate(game1, 'create')
-            # gameUpdate(game2, 'create')
+            #logger.debug("=========== START TOURNAMENT UPDATE FROM VIEW ========")
+            stateUpdate(tournament, 'create', 'tournament')
+            #logger.debug("=========== END TOURNAMENT UPDATE FROM VIEW ========")
             response = tournament.serialize()
+            #logger.debug(response)
+
             return JsonResponse(response, status=200)
 
         except KeyError:
@@ -343,31 +346,34 @@ class ManageTournamentView(View):
         try:
             data = json.loads(request.body)
             tournament = get_object_or_404(Tournament, id=id)
+            datetime = timezone.now()
 
-            if data["action"] == "start-tournament":  # POUR COMMENCER LE TOURNOI
-                player1 = Player.objects.create(name="taMere")  # A DEGAGER
-                player2 = Player.objects.create(name="taSoeur")  # C'EST POUR TESTER
-                player3 = Player.objects.create(name="taGrandMere")  #
-                player4 = Player.objects.create(name="taCousine")  #
-                players = [player1, player2, player3, player4]  #
-
-                # players = list(tournament.players.all())
+            if data["action"] == "start-1st-round":#POUR COMMENCER LE TOURNOI
+                
+                player1 = Player.objects.create(username='taMere')#A DEGAGER
+                player2 = Player.objects.create(username='taSoeur')#C'EST POUR TESTER
+                player3 = Player.objects.create(username='taGrandMere')#
+                player4 = Player.objects.create(username='taCouz')#
+                players = [player1, player2, player3, player4]#
+                
+                #players = list(tournament.players.all())
                 random.shuffle(players)
                 tournament.games.all()[0].players.add(players[0], players[1])
+                tournament.games.all()[0].started_at = datetime
+                tournament.games.all()[0].state = "running"
                 tournament.games.all()[1].players.add(players[2], players[3])
+                tournament.games.all()[1].started_at = datetime
+                tournament.games.all()[1].state = "running"
                 tournament.state = "running"
                 tournament.save()
 
-            elif (
-                data["action"] == "add-player"
-            ):  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI
-                new_player = get_object_or_404(Player, name=data["name"])
-                tournament.players.add(new_player)
+            #elif data['action'] == "start-2nd-round"
 
-            # A FAIRE: FONCTION POUR ENVOYER LES NOUVELLES DONNEES A TOUT LE MONDE POUR MISE A JOUR DU STATE AVEC WS
-            # tournamentUpdate(tournament, 'update')
-            # gameUpdate(tournament.games[0], 'update')
-            # gameUpdate(tournament.games[1], 'update')
+            elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI 
+                new_player = get_object_or_404(Player, username=data['username'])
+                tournament.players.add(new_player)
+            
+            #stateUpdate(tournament, 'update', 'tournament')
             response = tournament.serialize()
             return JsonResponse(response, status=200)
 
@@ -376,8 +382,8 @@ class ManageTournamentView(View):
         except Http404:
             return JsonResponse({"errors": "Object not found"}, status=404)
 
-    # def delete(self, request, id):code.interact(local=dict(globals(), **locals()))['name'])
-    #
+    #def delete(self, request, id):
+    #        
     #        tournament.players.remove(gone_player)
     #        response = tournament.serialize()
     #        return response
@@ -390,24 +396,32 @@ class ManageTournamentView(View):
 
 class ManageGameView(View):
     def get(self, request, id=None):
-        games = Game.objects.all()
-        response = [game.serialize() for game in games]
-        return JsonResponse(response, status=200)
+        try: 
+            if id is None:
+                games = Game.objects.all()
+                response = [game.serialize() for game in games]
+
+            else:
+                game = get_object_or_404(Game, id=id)
+                response = game.serialize()
+
+            return JsonResponse(response, status=200)
+            
+        except KeyError:
+            return JsonResponse({"errors": "Invalid data"}, status=404)
+        except Http404:
+            return JsonResponse({"errors": "Object not found"}, status=404)
 
     def post(self, request):
         try:
             data = json.loads(request.body)
+            
+            #Player.objects.create(username=data['created_by'])# a degager plus tard
+            creator = get_object_or_404(Player, username=data['created_by'])
+            game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
+            game.players.add(creator)
 
-            Player.objects.create(name=data["created_by"])  # a degager plus tard
-            player = get_object_or_404(Player, name=data["created_by"])
-            game = Game.objects.create(
-                state="waiting",
-                goal_objective=data["goal_objective"],
-                ia=data["ia"],
-                power_ups=data["power_ups"],
-            )
-            game.players.add(player)
-
+            stateUpdate(game, 'create', 'game')
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -422,19 +436,22 @@ class ManageGameView(View):
         try:
             data = json.loads(request.body)
             game = get_object_or_404(Game, id=id)
-
-            if data["action"] == "start-game":
-                game.started_at = data["started_at"]
+            datetime = timezone.now()
+            
+            if data['action'] == "start-game":
+                game.started_at = datetime
                 game.state = "running"
                 game.save()
 
-            if data["action"] == "add-player":
-                new_player = get_object_or_404(Player, name=data["name"])
+            if data['action'] == "add-player":
+                new_player = get_object_or_404(Player, username=data['username'])
                 game.players.add(new_player)
+            
 
-                # gameUpdate(game, 'update')
-                response = game.serialize()
-                return JsonResponse(response, status=200)
+
+            #stateUpdate(game, 'update', 'game')
+            response = game.serialize()
+            return JsonResponse(response, status=200)
 
         except KeyError:
             return JsonResponse({"errors": "Invalid data"}, status=400)
@@ -443,6 +460,34 @@ class ManageGameView(View):
         except IntegrityError as e:
             return JsonResponse({"errors": str(e)}, status=400)
 
+
+def BuildState(request):
+    
+    #player = Player.objects.create(username='taMere')#A DEGAGER
+    #Player.objects.create(username='taSoeur')#C'EST POUR TESTER
+    #Player.objects.create(username='taGrandMere')#
+    #Player.objects.create(username='taCousine')#
+    #game1 = Game.objects.create(state='waiting', power_ups=False)#
+    #game2 = Game.objects.create(state='waiting', power_ups=False)#
+    #tour = Tournament.objects.create(created_by=player , power_ups=False)# 
+    #tour.games.add(game1, game2)#
+    #tour.players.add(player)#
+
+    users_list = Player.objects.all()
+    games_list = Game.objects.all()
+    tournaments_list = Tournament.objects.all()
+
+    users = [user.serialize() for user in users_list]
+    games = [game.serialize() for game in games_list]
+    tournaments = [tournament.serialize() for tournament in tournaments_list]
+
+    data = {
+        'users': users,
+        'games': games,
+        'tournaments': tournaments,
+    }
+
+    return JsonResponse(data)
 
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")
 TournamentView = create_rest_api_endpoint(Tournament, TournamentForm, "Tournament")
