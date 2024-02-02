@@ -41,9 +41,9 @@ class PongChat extends Component {
 
 			<div class="bottom-bar">
 				<input id="chat-input" placeholder="{language.writeHere}"/>
-				<label class="btn btn-primary chat-send" for="btn-check">
+				<label class="btn btn-primary chat-send" for="btn-check-send">
 					<div class="chat-send-button">
-						<input class="chat-send-img" alt="send" type="image" src="/static/img/send.svg" name="submit" @click="this.sendMessage()"/>
+						<input class="chat-send-img" alt="send" type="image" src="/static/img/send.svg" name="submit" @click="this.sendMessage()" id="btn-check-send"/>
 					</div>
 				</label>
 				<div class="player-list">
@@ -64,7 +64,7 @@ class PongChat extends Component {
 						</a>
 						<button @click="this.sendMessageToUser(user)" class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
 						<button class="chat-player-invite btn btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
-						<button class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
+						<button @click="this.blockUser(user)" class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
 						<div class="chat-player-seperator"></div>
 					</div>
 				</div>
@@ -614,9 +614,9 @@ class PongChat extends Component {
 			const data = JSON.parse(event.data)
 			const {channel, sender, text, datetime} = data
 			if (text === '/invite')
-				state.messages.push({content: sender + ' invite you in a game, type /join ' + sender + ' to join him/her.', sender, date: datetime, channel});
+				state.messages.push({text: sender + ' invite you in a game, type /join ' + sender + ' to join him/her.', sender, date: datetime, channel});
 			else if (text === '/join')
-				state.messages.push({content: sender + ' is joining your game.', sender, date: datetime, channel});
+				state.messages.push({text: sender + ' is joining your game.', sender, date: datetime, channel});
 			else
 				state.messages.push({text, sender, date: datetime, channel});
 
@@ -629,10 +629,10 @@ class PongChat extends Component {
 				const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 				const tmpChan = state.channels.find(channel => channel.name === tmp);
 
-				if (tmpChan) {
-					console.log(tmpChan.id);
+				if (state.profile.blocked_users.some(user => user.name === sender))
+					return ;
+				else if (tmpChan)
 					state.channels[tmpChan.id - 1].notifications++;
-				}
 				else
 					state.channels.push({name: sender, id: maxId + 1, notifications: 1});
 			}
@@ -697,6 +697,26 @@ class PongChat extends Component {
 		return (channelName == state.activeChannel);
 	}
 
+	blockUser(tmpUser) {
+		if (tmpUser.nickname === state.whoAmI)
+			return ;
+		else if (state.profile.blocked_users.some(user => user.name === tmpUser.nickname)) {
+			var indexToRemove = state.profile.blocked_users.findIndex(user => user.id === tmpUser.id);
+
+			state.profile.blocked_users.splice(indexToRemove, 1);
+			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', date: Date.now(), channel: 'global'});
+		}
+		else {
+			state.profile.blocked_users.push({id: tmpUser.id, name: tmpUser.nickname});
+			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', date: Date.now(), channel: 'global'});
+		}
+		if (state.activeChannel == 'global') {
+			var message = this.shadowRoot.getElementById("messages");
+			message.scrollTop = message.scrollHeight;
+		}
+		state.isPlayerListChecked = true;
+	}
+
 	getUserPictureFromString(string) {
 		const user = state.users.find(user => user.nickname === string);
 
@@ -735,7 +755,7 @@ class PongChat extends Component {
 
 	isMessageInChannel(message, sender, channelName) {
 		if (state.profile.blocked_users.some(user => user.name === sender))
-			return ;
+			return true;
 		return !(message == channelName);
 	}
 
@@ -784,17 +804,17 @@ class PongChat extends Component {
 
 		if (text === '/invite') {
 			if (state.activeChannel != "global") {
-				state.messages.push({content: 'You have invite ' + text.substring('/invite '.length) + ' to join you.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				state.messages.push({text: 'You have invite ' + text.substring('/invite '.length) + ' to join you.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
 				this._sendWsMessage(state.activeChannel, text)
 			}
 			else
-				state.messages.push({content: 'You need to be in a private channel to invite.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				state.messages.push({text: 'You need to be in a private channel to invite.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
 		}
 		else if (text === '/join') {
 			if (state.activeChannel != "global")
 				this._sendWsMessage(state.activeChannel, text)
 			else
-				state.messages.push({content: 'You need to be in a private channel to join.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
+				state.messages.push({text: 'You need to be in a private channel to join.', sender:state.whoAmI, date:Date.now(), channel: state.activeChannel});
 		}
 		else
 			this._sendWsMessage(state.activeChannel, text)
