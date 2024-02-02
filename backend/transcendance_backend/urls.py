@@ -55,7 +55,7 @@ urlpatterns += [
     path(
         "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
     ),
-    path("api/requestlogin/", request_42_login, name="request-42-login"),
+    path("api/request_42_login/", request_42_login, name="request-42-login"),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
     path(
