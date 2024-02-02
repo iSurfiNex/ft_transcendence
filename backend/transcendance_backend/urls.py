@@ -24,13 +24,12 @@ from .views import (
     PlayerView,
     TournamentView,
     GameView,
-    Request42Login,
+    request_42_login,
     register_user,
     login_user,
     logout_user,
     update_profile,
     get_user_profile,
-    auto_login,
     ManageTournamentView,
     ManageGameView,
 )
@@ -45,7 +44,6 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     path("admin/", admin.site.urls),
-    path("api/auto_login/", auto_login, name="yooo"),
     path("api/register/", register_user, name="register-user"),
     path("api/login/", login_user, name="login-user"),
     path("api/logout/", logout_user, name="logout-user"),
@@ -57,7 +55,7 @@ urlpatterns += [
     path(
         "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
     ),
-    path("api/requestlogin/", Request42Login.as_view(), name="request-login"),
+    path("api/requestlogin/", request_42_login, name="request-42-login"),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
     path(

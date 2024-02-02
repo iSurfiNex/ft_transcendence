@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST, require_GET
 from urllib.parse import urlencode
 from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
+from django.core.files.base import ContentFile
 from http import HTTPStatus
 import json
 import os
@@ -134,19 +135,8 @@ def get_user_profile(request, id):
     return JsonResponse(user.player.serialize())
 
 
-def auto_login(request):
-    user = User.objects.get(username="a")
-    headers = {"Authorization": f"Bearer {access_token}"}
-    response = requests.get("https://api.intra.42.fr/v2/me")
-
-    if response.status_code != 200:
-        return JsonResponse(status=404)
-    login(request, user)
-    return JsonResponse({"status": "OK"})
-
-
-class Request42Login(View):
-    def get(self, request):
+def request_42_login(request):
+    try:
         token_42 = request.GET["code"]
         url = "https://api.intra.42.fr/oauth/token"
         base_uri = os.environ.get("SITE_ORIGIN", "")
@@ -160,30 +150,39 @@ class Request42Login(View):
             "redirect_uri": redirect_uri,
         }
 
-        response = requests.post(
+        authorize_response = requests.post(
             url, json=data, headers={"Content-Type": "application/json"}
         )
-        if response.status_code != 200:
-            logger.debug("======== 42 Authorization error")
-            return JsonResponse({"errors": {"any": "42 Authorization"}}, status=401)
 
-        response_data = response.json()
-        access_token = response_data["access_token"]
-        logger.debug("======== 42 Token received")
+        authorize_response.raise_for_status()  # Check if the request was successful
+
+        authorize_response_data = authorize_response.json()
+        access_token = authorize_response_data["access_token"]
+
+        logger.debug("======== 42 Token received: ")
         logger.debug(token_42)
-        logger.debug("======== 42 Token received")
+
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json",
         }
         me_response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
 
-        if me_response.status_code != 200:
-            logger.debug("======== 42 API error")
-            return JsonResponse({"errors": {"any": "42 API"}}, status=401)
+        me_response.raise_for_status()  # Check if the request was successful
 
         logger.debug("======== 42 API reached")
         me_response_data = me_response.json()
+
+        img_url = me_response_data["image"]["versions"]["medium"]
+        logger.debug("======== Downloading image at ")
+        logger.debug(img_url)
+        img_response = requests.get(img_url)
+        img_response.raise_for_status()  # Check if the request was successful
+
+        logger.debug("======== Image downloaded")
+
+        img_42_profile = ContentFile(img_response.content)
+
         id_42 = me_response_data["id"]
         first_name = me_response_data["first_name"]
         last_name = me_response_data["last_name"]
@@ -198,6 +197,10 @@ class Request42Login(View):
                 username=username,
             )
             user.player.id_42 = id_42
+            user.player.avatar.save(
+                f"{user.player.pk}_avatar.jpg",
+                img_42_profile,
+            )
             user.save()
             logger.debug("======== New User created")
         else:
@@ -211,6 +214,10 @@ class Request42Login(View):
                 "username": user.username,
                 "profile": user.player.serialize(),
             }
+        )
+    except Exception as e:
+        return JsonResponse(
+            {"errors": {"global": str(e)}}, status=HTTPStatus.BAD_REQUEST
         )
 
 
