@@ -10,10 +10,6 @@ class PongProfile extends Component {
 		<div class="profile-topbar">
 			<div id="user-card">
 				<img id="avatar-img" src="{profile.avatar_url}" alt="profile"/>
-				<div class="profile-topbar-fullname">
-					<span class="profile-topbar-name">{this.getFullName(profileLooking)}</span>
-					<span class="profile-topbar-nickname">({profile.name})</span>
-				</div>
 			</div>
 
 <!--
@@ -131,21 +127,13 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	#user-card {
-		width: 180px;
+		min-width: 180px;
 	}
 
 	#avatar-img {
 		width: 180px;
 		height: 180px;
 		object-fit: contain;
-	}
-
-	.profile-topbar-fullname {
-		color: #9F9F9F;
-		font-size: 30px;
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
 	}
 
 	pong-update-profile {
@@ -205,10 +193,6 @@ TODO use this instead of pong-update-profile when viewing another user profile
 			overflow: hidden;
 		}
 
-	}
-
-	.profile-topbar-nickname {
-		font-style: italic;
 	}
 
 	.profile-title {
