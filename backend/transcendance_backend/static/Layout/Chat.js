@@ -27,7 +27,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" id="messages" repeat="messages" as="message">
-				<div class="message" is-my-msg="{this.equals(message.sender, whoAmI)}" hidden="{this.isMessageInChannel(message.channel, activeChannel)}">
+				<div class="message" is-my-msg="{this.equals(message.sender,whoAmI)}" hidden="{this.isMessageInChannel(message.channel,message.sender,activeChannel)}">
 					<div class="msg-heading">
 						<a href="javascript:void(0)" @click="this.navigate(message.sender)">
 							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
@@ -705,7 +705,9 @@ class PongChat extends Component {
 		}
 	}
 
-	isMessageInChannel(message, channelName) {
+	isMessageInChannel(message, sender, channelName) {
+		if (state.profile.blocked_users.some(user => user.name === sender))
+			return ;
 		return !(message == channelName);
 	}
 
