@@ -410,7 +410,7 @@ class PongTopBar extends Component {
         else if (lang.username === "Nutzername")
             langkey = 'de'
 
-        document.cookie = `lang=${langkey}`;
+        document.cookie = `lang=${langkey}; path=/`;
 	}
 }
 
