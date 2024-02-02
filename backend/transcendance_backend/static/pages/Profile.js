@@ -144,12 +144,16 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	.profile-topbar {
+		height: 30%;
 		background-color: rgb(54, 54, 54);
 		border-bottom: 10px solid #424242;
 		padding: 24px;
 		gap: 24px;
 		display: flex;
 		flex-wrap: wrap;
+		align-items: center;
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 
 	@media only screen and (max-width: 768px) {
