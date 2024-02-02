@@ -147,8 +147,8 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		height: 30%;
 		background-color: rgb(54, 54, 54);
 		border-bottom: 10px solid #424242;
-		padding: 24px;
-		gap: 24px;
+		padding: 20px;
+		gap: 20px;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
