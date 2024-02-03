@@ -26,16 +26,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+USE_X_FORWARDED_HOST = True
+
+# These settings help enforce secure connections and protect against certain security vulnerabilities.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_URL_SCHEME = "https"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get("GF_IP"), "localhost"]
 
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "https://" + os.environ.get("GF_IP") + ":8000"]
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 INSTALLED_APPS = [
+    "daphne",
+    "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -44,12 +59,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "transcendance_backend",
+    "imagekit",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "transcendance_backend.middleware.LanguageMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -131,7 +148,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -144,3 +161,24 @@ TEST_DATABASE_NAME = os.environ.get("TEST_DB_NAME")
 
 # Specify the test database user
 TEST_DATABASE_USER = os.environ.get("TEST_DB_USER")
+
+ASGI_APPLICATION = "transcendance_backend.asgi.application"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")  # 'data' is my media folder
+MEDIA_URL = "/media/"
