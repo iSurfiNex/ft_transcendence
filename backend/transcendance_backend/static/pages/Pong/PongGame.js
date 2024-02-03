@@ -126,8 +126,11 @@ class PongGame extends Component {
 	paddleR.position.set(290, 0, 0);
 	line.position.set(0, 0, 0);
 
+    const baseURL = '/static/pong/'; // Set your base URL here
 	// instantiate a loader
 	const loader = new GLTFLoader();
+
+    loader.setPath(baseURL);
 
 
 // Load a glTF resource
