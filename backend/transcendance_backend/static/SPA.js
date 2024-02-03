@@ -25,7 +25,7 @@ function getCookie(key)
 }
 
 if (!getCookie("lang"))
-    document.cookie = `lang=en; path=/`;
+    document.cookie = `lang=en; path=/; SameSite=Strict;`;
 
 function csrfToken()
 {
