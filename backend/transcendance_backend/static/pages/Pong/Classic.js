@@ -23,7 +23,7 @@ class PongClassic extends Component {
 							</div>
 							<div class="pong-player-count">{game.players.length}/2</div>
 							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
-								ALLLO
+								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 							</a>
 						</div>
 					</div>
@@ -32,7 +32,6 @@ class PongClassic extends Component {
 		</div>
 	</div>
 `
-//<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 
 	static css = css`
 	@keyframes fadeIn {
@@ -226,9 +225,19 @@ class PongClassic extends Component {
 	}
 
 	navigateUpdate(game) {
-		state.currentGame = game.id;
-		console.log(state.currentGame + ' ' + game.id);
-		navigateTo('/play/waiting-room');
+		//state.currentGame = game.id;
+		//console.log(state.currentGame + ' ' + game.id);
+		var url = "https://localhost:8000/api/manage-game/" + game.id + "/";
+
+		var dataToSend = {
+			action: "add-player",
+			username: state.whoAmI,
+		};
+
+		put2(url, dataToSend)
+		.then ( data => {
+			navigateTo('/play/waiting-room');
+		});
 		return (false);
 	}
 }

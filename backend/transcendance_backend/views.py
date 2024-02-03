@@ -463,19 +463,18 @@ class ManageGameView(View):
         try:
             data = json.loads(request.body)
             game = get_object_or_404(Game, id=id)
-            datetime = timezone.now()
             
             if data['action'] == "start-game":
-                game.started_at = datetime
+                game.started_at = (datetime.now().timestamp() + timedelta(seconds=5)) * 1000
                 game.state = "running"
                 game.save()
 
             if data['action'] == "add-player":
-                new_player = get_object_or_404(Player, username=data['username'])
+                new_player = get_object_or_404(Player, user__username=data['username'])
                 game.players.add(new_player)
             
 
-            #stateUpdate(game, 'update', 'game')
+            stateUpdate(game, 'update', 'game')
             response = game.serialize()
             return JsonResponse(response, status=200)
 

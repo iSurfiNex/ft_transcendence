@@ -82,6 +82,19 @@ function put(url, body) {
 .then(response => response.json())
 }
 
+function put2(url, body) {
+	return fetch(url, {
+		method: 'PUT',
+		credentials: 'include',
+		headers: {
+			"Content-Type": "application/json",
+			"X-CSRFToken": csrfToken()
+		},
+		body: JSON.stringify(body)
+	})
+	.then(response => response.json())
+}
+
 function get(url) {
 	return fetch(url, {
 	method: 'GET',
