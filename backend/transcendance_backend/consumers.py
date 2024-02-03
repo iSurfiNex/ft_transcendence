@@ -122,7 +122,8 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
             logger.error(f"Error: {e}")
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("state-update", self.channel_name)
+        #await self.channel_layer.group_discard("state-update", self.channel_name)
+        pass
 
     #async def receive(self, text_data):
     #    text_data_json = json.loads(text_data)
