@@ -144,59 +144,52 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	.profile-topbar {
-		height: 30%;
 		background-color: rgb(54, 54, 54);
 		border-bottom: 10px solid #424242;
-		padding: 24px;
-		gap: 24px;
+		padding: 20px;
+		gap: 20px;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		overflow-y: auto;
-		overflow-x: hidden;
+	}
+
+	.profile {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(255, 255, 255, 0.5);
+		display: flex;
+		flex-direction: column;
+		height: calc(90% - 6px);
+		width: 100%;
 	}
 
 	@media only screen and (max-width: 768px) {
 		.profile-topbar {
 			justify-content: center;
 		}
-
-		.profile {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			width: 100%;
-			height: calc(90% - 6px);
-			background-color: rgba(255, 255, 255, 0.5);
-			overflow: hidden;
-		}
-
-	}
-
-	@media only screen and (max-height: 524px) {
-		.profile {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			width: 100%;
-			height: calc(90% - 6px);
-			background-color: rgba(255, 255, 255, 0.5);
-			overflow: hidden;
-		}
-
 	}
 
 	@media only screen and (min-width: 769px) and (min-height: 525px) {
 		.profile {
-			position: absolute;
-			right: 0;
-			bottom: 0;
 			width: calc(75% - 10px);
 			height: calc(90% - 10px);
-			background-color: rgba(255, 255, 255, 0.5);
-			overflow: hidden;
 		}
+	}
 
+	.profile-content {
+		display: flex;
+		flex-wrap: wrap;
+		background: rgb(66, 66, 66);
+		gap: 10px;
+		flex: 1;
+	}
+
+	.profile-content > * {
+		box-sizing: border-box;
+		background: #8e8e8e;
+		flex: 1;
+		min-width: 250px;
 	}
 
 	.profile-title {
@@ -206,28 +199,15 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	.profile-stats {
-		position: absolute;
-		width: 32%;
-		height: calc(100% - 30%);
 		overflow-y: auto;
 	}
 
 	.profile-game-history {
-		position: absolute;
-		width: 34%;
-		left: 32%;
-		height: calc(100% - 30%);
-		border-left: 10px solid #424242;
 		overflow-y: auto;
 		text-align: center;
 	}
 
 	.profile-tournament-history {
-		position: absolute;
-		width: 34%;
-		left: 66%;
-		height: calc(100% - 30%);
-		border-left: 10px solid #424242;
 		overflow-y: auto;
 		text-align: center;
 	}
@@ -291,10 +271,8 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	.profile-chart {
-		position: relative;
-		top: 20px;
-		left: 10px;
-		width: calc(100% - 20px);
+		margin-top: 20px;
+		width: 100%;
 		height: calc(100% - 235px);
 		min-height: 100px;
 		display: flex;
@@ -313,10 +291,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	.profile-chart-desc {
-		position: relative;
-		top: 20px;
-		left: 10px;
-		width: calc(100% - 20px);
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -355,9 +330,6 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		background: #555;
 	}
 `
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
 
 	connectedCallback() {
 		initPopover(this);

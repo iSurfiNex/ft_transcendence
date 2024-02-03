@@ -11,10 +11,15 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime
 
+from .utils import stateUpdate
 
 class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+
+    # True while the user is connected to the chat websocket
+    is_connected = models.BooleanField(default=False)
+
     id_42 = models.IntegerField(null=True)
     url_profile_42 = models.CharField(max_length=200, null=True)
     avatar = models.ImageField(
@@ -28,7 +33,12 @@ class Player(models.Model):
     )
 
     name = models.CharField(max_length=32, unique=True)
-    blocked_users = models.ManyToManyField("self", symmetrical=False, blank=True)
+    blocked_users = models.ManyToManyField(
+        "self", related_name="blocked_by", symmetrical=False, blank=True
+    )
+    friend_users = models.ManyToManyField(
+        "self", related_name="friends", symmetrical=False, blank=True
+    )
     games = models.ManyToManyField("Game", blank=True)
     tournaments = models.ManyToManyField("Tournament", blank=True)
 
@@ -49,6 +59,9 @@ class Player(models.Model):
             "avatar_thumbnail_url": self.avatar_thumbnail.url,
             "blocked_users": [
                 user.serialize_summary() for user in self.blocked_users.all()
+            ],
+            "friend_users": [
+                user.serialize_summary() for user in self.friend_users.all()
             ],
             "tournaments": [
                 tournament.serialize_summary() for tournament in self.tournaments.all()
@@ -169,3 +182,9 @@ def create_player(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_player(sender, instance, **kwargs):
     instance.player.save()
+
+
+# Notify other users through websocket anytime a player instance is updated
+@receiver(post_save, sender=Player)
+def player_saved_hook(sender, instance, created, **kwargs):
+    stateUpdate(instance, "create" if created else "update", "user")

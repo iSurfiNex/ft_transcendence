@@ -2,8 +2,6 @@ from django.core.asgi import get_asgi_application
 from channels.layers import get_channel_layer
 
 from asgiref.sync import async_to_sync
-from .models import Player, Tournament, Game
-from .forms import PlayerForm, TournamentForm, GameForm
 import logging
 
 logger = logging.getLogger(__name__)

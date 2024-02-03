@@ -13,15 +13,19 @@ let topbar, chat, contentSeparator;
 
 function getCookie(key)
 {
-		const token = document.cookie
-			.split('; ')
-			.find(row => row.startsWith(`${key}=`))
-			.split('=')[1];
+	const matchCookie = document.cookie
+		.split('; ')
+		.find(row => row.startsWith(`${key}=`))
+
+    if (!matchCookie)
+        return undefined
+
+	const token = matchCookie.split('=')[1];
 		return (token);
 }
 
 if (!getCookie("lang"))
-    document.cookie = `lang=en`;
+    document.cookie = `lang=en; path=/; SameSite=Strict;`;
 
 function csrfToken()
 {
@@ -143,6 +147,7 @@ function displayContent(path) {
 		navigateTo("/");
 	}
 	else if (path === "/login/") {
+        state.loginLoading = false;
         // TODO ça marche mais c'est dégeulasse
 
         // Remove every pong-something nodes

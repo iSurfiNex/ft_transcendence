@@ -5,28 +5,32 @@ import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 class PongLogin extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-	<div class="login">
+	<div class="login" loading="{loginLoading}">
 		<div class="input">
 			<div class="login-register">
-				<form class="form-login" @submit="this.onLoginFormSubmit(event)">
+				<form id="form-login" @submit="this.onLoginFormSubmit(event)">
 					<input name="username" type="text" placeholder="{language.username}" class="input-field">
+                    <div class="field-error">{loginErrors.username}</div>
 					<input name="password" type="password" placeholder="{language.password}" class="input-field">
+                    <div class="field-error">{loginErrors.password}</div>
 					<button id="login-button" class="input-button pushable" type="submit">
 						<span class="front">{language.login}</span>
 					</button>
 				</form>
 				<form id="form-register" @submit="this.onRegisterFormSubmit(event)">
 					<input name="username" type="text" placeholder="{language.username}" class="input-field">
-					<input name="password1" type="password" placeholder="{language.password}" class="input-field">
-<!--					<input name="password2" type="password" placeholder="{language.confirmPassword}" class="input-field"> -->
+                    <div class="field-error">{registerErrors.username}</div>
+					<input name="password2" type="password" placeholder="{language.password}" class="input-field">
+                    <div class="field-error">{registerErrors.password2}</div>
+<!--					<input name="password1" type="password" placeholder="{language.confirmPassword}" class="input-field"> -->
 					<button id="register-button" class="input-button pushable" type="submit">
 						<span class="front">{language.register}</span>
 					</button>
 				</form>
 			</div>
-			<span class="error" hidden="{!logginError}">
- 				{lang(logginError)}
-			</span>
+
+            <div class="field-error">{registerErrors.__all__}</div>
+            <div class="field-error">{loginErrors.__all__}</div>
 			<span class="separator">―――――――――――――――――</span>
 			<button id="pong-button" @click="this.connectionWith42()" class="pushable">
 				<span class="front">{language.connectionWith}</span>
@@ -36,6 +40,24 @@ class PongLogin extends Component {
 `
 
 	static css = css`
+	.login::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		height: 0;
+		width: 100vw;
+		height: 100vh;
+		background: white;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.4s;
+	}
+
+	.login[loading]::after {
+		opacity: 0.4;
+		pointer-events: auto;
+	}
+
 	@media only screen and (max-width: 768px) {
 		.login-register {
 			display: flex;
@@ -74,9 +96,15 @@ class PongLogin extends Component {
 		}
 	}
 
-	.error {
+	.field-error {
 		color: red;
+		white-space: pre-line;
+		position: relative;
+		top: -10px;
+		font-size: 14px;
+		left: 8px;
 	}
+
 	.login {
 		display: flex;
 		justify-content: center;
@@ -94,7 +122,7 @@ class PongLogin extends Component {
 		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	}
 
-	.form-login {
+	#form-login {
 		display: flex;
 		flex-direction: column;
 	}
@@ -151,6 +179,7 @@ class PongLogin extends Component {
 
 		const type = new URLSearchParams(window.location.search).get("code");
 		if (type) {
+            state.loginLoading = true;
 			const hostname = window.location.origin + '/api/request_42_login/?type=login&code=' + type
 			const response = fetch(hostname, {
 				method: 'GET',
@@ -162,6 +191,19 @@ class PongLogin extends Component {
 		}
 	}
 
+    resetFormErrors() {
+        state.loginErrors = {
+                username: '',
+                password: '',
+                __all__: '',
+        }
+        state.registerErrors = {
+                username: '',
+                password2: '',
+                __all__: '',
+        }
+    }
+
     setCookie(name, value, days) {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + days);
@@ -172,15 +214,14 @@ class PongLogin extends Component {
     }
 
     handleLogin(data) {
-
         const errors = data['errors']
+        console.log(errors)
         if (errors !== undefined) {
             for (const [key, errMsg] of Object.entries(errors)) {
-                state.logginError = errMsg[0]
-               return
+                state.loginErrors[key] = errMsg.join('\n')
             }
+            return
         }
-        state.logginError = null
 	    setCookie('loggedin', true, 7);
         state.whoAmI = data['username']
         state.profile = data['profile']
@@ -189,32 +230,38 @@ class PongLogin extends Component {
     }
 
     onLoginFormSubmit(event) {
+        this.resetFormErrors()
         event.preventDefault();
+        state.loginLoading = true;
         const formData = new FormData(event.target);
 
         post('/api/login/',formData)
-            .then(this.handleLogin)
+            .then(data => this.handleLogin(data))
     .catch(error => {
+        console.log(error)
         // Handle errors
         console.error('Error:', error);
-        state.logginError = 'errUnknown'
-    });
+        state.loginErrors.__all__ = state.language.errUnknown
+    }).then(()=> {
+        state.loginLoading = false;
+    })
     }
 
     onRegisterFormSubmit(event) {
+        this.resetFormErrors()
         event.preventDefault();
+        state.loginLoading = true;
         const formData = new FormData(event.target);
-        formData.append('password2', formData.get('password1'))
+        formData.append('password1', formData.get('password2'))
         post('/api/register/',formData)
-    .then(data => {
-        const errors = data['errors']
-        if (errors !== undefined) {
-            for (const [key, errMsg] of Object.entries(errors)) {
-                state.logginError = errMsg[0]
-               return
-            }
+        .then(data => {
+            const errors = data['errors']
+            if (errors !== undefined) {
+                for (const [key, errMsg] of Object.entries(errors)) {
+                    state.registerErrors[key] = errMsg.join('\n')
+                }
+            return
         }
-        state.logginError = null
 		const formRegisterNode = this.shadowRoot.getElementById("form-register");
         formRegisterNode.reset()
 	    setCookie('loggedin', true, 7);
@@ -225,8 +272,10 @@ class PongLogin extends Component {
     .catch(error => {
         // Handle errors
         console.error('Error:', error);
-        state.logginError = 'errUnknown'
-    });
+        state.registerErrors.__all__ = state.language.errUnknown
+    }).then(()=> {
+        state.loginLoading = false;
+    })
     }
 
 	connectionWith42() {
