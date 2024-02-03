@@ -147,6 +147,7 @@ function displayContent(path) {
 		navigateTo("/");
 	}
 	else if (path === "/login/") {
+        state.loginLoading = false;
         // TODO ça marche mais c'est dégeulasse
 
         // Remove every pong-something nodes

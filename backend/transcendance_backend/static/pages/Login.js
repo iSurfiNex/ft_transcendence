@@ -232,6 +232,7 @@ class PongLogin extends Component {
     onLoginFormSubmit(event) {
         this.resetFormErrors()
         event.preventDefault();
+        state.loginLoading = true;
         const formData = new FormData(event.target);
 
         post('/api/login/',formData)
