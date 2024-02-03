@@ -5,7 +5,7 @@ import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 class PongLogin extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-	<div class="login">
+	<div class="login" loading="{loginLoading}">
 		<div class="input">
 			<div class="login-register">
 				<form id="form-login" @submit="this.onLoginFormSubmit(event)">
@@ -40,6 +40,24 @@ class PongLogin extends Component {
 `
 
 	static css = css`
+	.login::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		height: 0;
+		width: 100vw;
+		height: 100vh;
+		background: white;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.4s;
+	}
+
+	.login[loading]::after {
+		opacity: 0.4;
+		pointer-events: auto;
+	}
+
 	@media only screen and (max-width: 768px) {
 		.login-register {
 			display: flex;
@@ -161,6 +179,7 @@ class PongLogin extends Component {
 
 		const type = new URLSearchParams(window.location.search).get("code");
 		if (type) {
+            state.loginLoading = true;
 			const hostname = window.location.origin + '/api/request_42_login/?type=login&code=' + type
 			const response = fetch(hostname, {
 				method: 'GET',
@@ -222,12 +241,15 @@ class PongLogin extends Component {
         // Handle errors
         console.error('Error:', error);
         state.loginErrors.__all__ = state.language.errUnknown
-    });
+    }).then(()=> {
+        state.loginLoading = false;
+    })
     }
 
     onRegisterFormSubmit(event) {
         this.resetFormErrors()
         event.preventDefault();
+        state.loginLoading = true;
         const formData = new FormData(event.target);
         formData.append('password1', formData.get('password2'))
         post('/api/register/',formData)
@@ -250,7 +272,9 @@ class PongLogin extends Component {
         // Handle errors
         console.error('Error:', error);
         state.registerErrors.__all__ = state.language.errUnknown
-    });
+    }).then(()=> {
+        state.loginLoading = false;
+    })
     }
 
 	connectionWith42() {

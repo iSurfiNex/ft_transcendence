@@ -11,6 +11,7 @@ window.ws = route => {
 
 var state_base = {
 	profile: window.profile,
+        loginLoading: false,
         loginErrors : {
                 username: '',
                 password: '',
