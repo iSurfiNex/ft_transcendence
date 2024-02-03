@@ -90,12 +90,7 @@ var state_base = {
 		login: 'Login',
 		register: 'Register',
 		connectionWith: 'Connection with 42',
-                invalidLoginCredentials: 'Invalid login credentials.',
-                usernameAlreadyExist: 'This username already exist.',
                 errUnknown: 'An error occured.',
-                'A user with that username already exists.': "A user with that username already exists.",
-                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Incorrect password or username.",
-                'This field is required.': 'Missing field',
 
 		// HOME
 		play: 'PLAY',
@@ -161,11 +156,7 @@ var state_base = {
 		login: 'Se connecter',
 		register: 'S\'inscrire',
 		connectionWith: 'Connexion avec 42',
-                invalidLoginCredentials: 'Authentification invalide',
                 errUnknown: "Une erreur s'est produite.",
-                'A user with that username already exists.': "Un utilisateur avec ce pseudo existe déjà.",
-                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Mot de passe ou nom d'utilisateur incorrect.",
-                'This field is required.': 'Champs requis',
 
 		// HOME
 		play: 'JOUER',
@@ -231,11 +222,7 @@ var state_base = {
 		login: 'Anmeldung',
 		register: 'Registrieren',
 		connectionWith: 'Verbindung mit 42',
-                invalidLoginCredentials: 'Ungültige Login-Details',
                 errUnknown: 'Es ist ein Fehler aufgetreten.',
-                'A user with that username already exists.': "Ein Benutzer mit diesem Benutzernamen existiert bereits.",
-                'Please enter a correct username and password. Note that both fields may be case-sensitive.': "Falsches Passwort oder Benutzername.",
-                'This field is required.': 'Fehlendes Feld',
 
 		// HOME
 		play: 'SPIELEN',
