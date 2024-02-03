@@ -78,7 +78,7 @@ var state_base = {
 
 	//],
 	currentTournament: -1,
-	currentGame: 3,
+	currentGame: -1,
 	language: undefined,
 
 	en: {

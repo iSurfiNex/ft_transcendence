@@ -135,7 +135,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 class StateUpdateConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
-            await self.channel_layer.group_add("state-update", self.channel_name)
+            #await self.channel_layer.group_add("state-update", self.channel_name)
             await self.accept()
         except Exception as e:
             logger.error(f"Error: {e}")

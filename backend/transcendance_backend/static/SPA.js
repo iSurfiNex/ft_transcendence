@@ -265,6 +265,10 @@ function stateUpdate(event)
 
 
 function tournamentUpdate(data, action) {
+	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == data.id);
+	if (TournamentAlreadyExist && action == "create")
+		return ;
+	
 	var newTournament = {
 		type: 'tournament',
 		id: data.id,
@@ -312,6 +316,10 @@ function tournamentUpdate(data, action) {
 
 
 function gameUpdate(data, action) {
+	GameAlreadyExist = state.games.find(game => game.id == data.id);
+	if (GameAlreadyExist && action == "create")
+		return ;
+	
 	var newGame = {
 		type: (data.power_ups == true) ? "powerup" : "normal",
 		id: data.id,
@@ -330,6 +338,10 @@ function gameUpdate(data, action) {
 
 
 function userUpdate(data, action) {
+	UserAlreadyExist = state.users.find(user => user.name == data.name);
+	if (UserAlreadyExist && action == "create")
+		return ;
+
 	var newUser = {
 		nickname: data.name,
 		fullname: data.first_name + " " + data.last_name,
@@ -340,7 +352,6 @@ function userUpdate(data, action) {
 		state.users.push(newUser);
 	else if (action == 'update')
 		state.users.map(user => {return user.nickname == newUser.nickname ? newUser : user});
-
 }
 
 //function profileUpdate() {
@@ -377,7 +388,7 @@ function stateBuild() {
 
 		state.users = users_list;
 		state.games = games_list;
-//		state.tournaments = tournaments_list;
+		state.tournaments = tournaments_list;
 //		state.currentTournament = current_tournament;
 //		state.currentGame = current_game;
 	})
@@ -390,7 +401,7 @@ function userBuild(users) {
 		let user_data = {
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,
-			//picture: user.avatar_url,
+			picture: user.avatar_url,
 		};
 		users_list.push(user_data);
 	}	
