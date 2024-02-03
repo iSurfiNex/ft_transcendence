@@ -342,10 +342,26 @@ function userUpdate(data, action) {
 	if (UserAlreadyExist && action == "create")
 		return ;
 
+	friend_list = [];
+	blocked_list = [];
+
+	for (let friend in data.friend_users)
+	{
+		friend_list.push(friend.name);
+	}
+
+	for (let blocked in data.blocked_list)
+	{
+		blocked_list.push(blocked.name);
+	}
+
 	var newUser = {
+		id: data.id,
 		nickname: data.name,
 		fullname: data.first_name + " " + data.last_name,
 		picture: data.avatar_url,
+		blocked: blocked_list,
+		friends: friend_list,
 	};
 
 	if (action == 'create')
@@ -396,12 +412,27 @@ function stateBuild() {
 
 function userBuild(users) {
 	var users_list = [];
-	
+
 	for (let user of users) { 
+		let friend_list = [];
+		let blocked_list = [];
+	
+		for (let friend in user.friend_users)
+		{
+			friend_list.push(friend.name);
+		}
+	
+		for (let blocked in user.blocked_list)
+		{
+			blocked_list.push(blocked.name);
+		}
+		
 		let user_data = {
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,
 			picture: user.avatar_url,
+			blocked: blocked_list,
+			friends: friend_list,
 		};
 		users_list.push(user_data);
 	}	
@@ -416,7 +447,7 @@ function gameBuild(games) {
 		let game_type = (game.power_ups === true) ? "powerup" : "normal";
 		let game_players;
 
-		for (let player of game.players) {
+		for (let player of games.players) {
 			let username = player.name;
 			game_players.push(username);
 		}

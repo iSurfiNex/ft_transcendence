@@ -23,7 +23,7 @@ class PongClassic extends Component {
 							</div>
 							<div class="pong-player-count">{game.players.length}/2</div>
 							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
-								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
+								ALLLO
 							</a>
 						</div>
 					</div>
@@ -32,6 +32,7 @@ class PongClassic extends Component {
 		</div>
 	</div>
 `
+//<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 
 	static css = css`
 	@keyframes fadeIn {

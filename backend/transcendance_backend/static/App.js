@@ -35,7 +35,7 @@ var state_base = {
 	users: [
 		//{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
 		//{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
-		//{ nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg' },
+		//{id:3, nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg', blocked: [], friends: []},
 		//{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
 	],
 	whoAmI: window.whoAmI,
