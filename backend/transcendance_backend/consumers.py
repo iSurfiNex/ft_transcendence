@@ -10,10 +10,12 @@ logger = logging.getLogger(__name__)
 
 class ChatConsumer(AsyncWebsocketConsumer):
     user_name = None
+    nickname = None
 
     @sync_to_async
     def update_connected_state(self, new_value):
         player = self.scope["user"].player
+        self.nickname = player.name
 
         player.is_connected = new_value
         player.save()
@@ -78,6 +80,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "chat.message",
                 "text": text,
                 "sender": self.user_name,
+                "nickname": self.nickname,
                 "channel": self.user_name,
                 "datetime": int(
                     datetime.now().timestamp() * 1000
@@ -96,6 +99,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "chat.message",
                 "text": text,
                 "sender": self.user_name,
+                "nickname": self.nickname,
                 "channel": "global",
                 "datetime": int(
                     datetime.now().timestamp() * 1000
@@ -111,6 +115,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "type": "chat.message",
                     "text": event["text"],
                     "sender": event["sender"],
+                    "nickname": event["nickname"],
                     "channel": event["channel"],
                     "datetime": event["datetime"],
                 }
