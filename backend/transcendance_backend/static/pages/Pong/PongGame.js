@@ -18,6 +18,7 @@ class PongGame extends Component {
   	<span id="p2Points" class="points">{runningGame.p2Points}</span>
   </div>
   <div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
+	<div class="bg"></div>
   	<span id="gameOverTxt">{language.gameOver}</span>
 	<span id="gameOverState" class="blinking">{lang(runningGame.gameOverState)}</span>
   </div>
