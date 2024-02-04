@@ -553,7 +553,7 @@ class WaitingRoom extends Component {
 
     startTournament() {
         const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament);
-        const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+        const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         if (tournament.players.length != 4)
         {    
@@ -574,7 +574,7 @@ class WaitingRoom extends Component {
 
     startGame() {
         const game = state.games.find(game => game.id == state.currentGame);
-        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+        const url = "/api/manage-game/" + state.currentGame + "/";
 
         if (game.players.length != 2)
         {    
@@ -594,9 +594,9 @@ class WaitingRoom extends Component {
     }
 
     giveUp() {
-        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+        const url = "/api/manage-game/" + state.currentGame + "/";
         if (state.currentTournament != -1)
-            url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+            url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         var dataToSend = {
             action: 'rm-player',
