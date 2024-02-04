@@ -78,7 +78,7 @@ const fnEval = (bindName,bindArgsStr, scope, prefixes, negate, onChange) => {
       const varPath = pathStr.split('.')
       const argLocalScope = extractPathScope(varPath, scope, prefixes)
       args[i] = get_prop(argLocalScope, varPath)
-      if (args[i] ==undefined)
+      if (args[i] ===undefined)
         return false
       const onArgChange = newArg => {
         args[i] = newArg
