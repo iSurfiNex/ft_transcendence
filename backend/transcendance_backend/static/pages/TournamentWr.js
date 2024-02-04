@@ -411,7 +411,7 @@ class TournamentWr extends Component {
 
     startTournament() {
         const nb_players = state.tournaments[state.currentTournament].players.length;
-        const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+        const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         if (nb_players != 4)
         {    

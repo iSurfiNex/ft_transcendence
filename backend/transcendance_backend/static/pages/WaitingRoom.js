@@ -652,7 +652,7 @@ class WaitingRoom extends Component {
 
     startTournament() {
         const nb_players = state.tournaments[state.currentTournament].players.length;
-        const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+        const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         if (nb_players != 4)
         {    
@@ -687,7 +687,7 @@ class WaitingRoom extends Component {
 
     startGame() {
         const nb_players = state.games[state.currentGame].players.lenght;
-        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+        const url = "/api/manage-game/" + state.currentGame + "/";
 
         if (nb_players != 2)
         {    

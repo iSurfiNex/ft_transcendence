@@ -400,7 +400,7 @@ function userUpdate(data, action) {
 
 
 function stateBuild() {
-	get("https://localhost:8000/api/build-state/")
+	get("/api/build-state/")
 	.then (data => {
 		var users_list = userBuild(data.users);
 		var games_list = gameBuild(data.games);
