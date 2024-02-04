@@ -495,9 +495,9 @@ function gameBuild(games) {
 	for (let game of games) {
 
 		let game_type = (game.power_ups === true) ? "powerup" : "normal";
-		let game_players;
+		let game_players = [];
 
-		for (let player of games.players) {
+		for (let player of game.players) {
 			let username = player.name;
 			game_players.push(username);
 		}

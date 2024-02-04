@@ -8,13 +8,13 @@ logger = logging.getLogger(__name__)
 
 
 def stateUpdate(dataToSend, action, dataType):
-    if data_type != "all games" and data_type != "all tournaments":
-        theData = dataToSend.serialize()
-    else: 
-        theData = []
-        for obj in dataToSend:
-            serialized = obj.serialize()
-            theData.append(serialized)
+    #if data_type != "all games" and data_type != "all tournaments":
+    theData = dataToSend.serialize()
+    #else: 
+    #    theData = []
+    #    for obj in dataToSend:
+    #        serialized = obj.serialize()
+    #        theData.append(serialized)
 
     theData['action'] = action
     theData['data_type'] = dataType
