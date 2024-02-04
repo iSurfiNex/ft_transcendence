@@ -827,6 +827,7 @@ class PongChat extends Component {
         const channelName = "user_"+user.id
 		state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
         state.activeChannel = channelName
+        this.chatInput.focus()
 	}
 
 	sendMessage() {
