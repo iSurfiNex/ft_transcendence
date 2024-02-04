@@ -349,7 +349,7 @@ class ManageTournamentView(View):
         try:
             data = json.loads(request.body)
 
-            creator = get_object_or_404(Player, name=data['created_by'])
+            creator = request.user.player
 
             game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
             game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
@@ -444,9 +444,15 @@ class ManageGameView(View):
     def post(self, request):
         try:
             data = json.loads(request.body)
-            
-            creator = get_object_or_404(Player, name=data['created_by'])
-            game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
+
+            creator = request.user.player
+            game = Game.objects.create(
+                state="waiting",
+                goal_objective=data["goal_objective"],
+                ia=data["ia"],
+                power_ups=data["power_ups"],
+                created_by=creator,
+            )
             game.players.add(creator)
 
             stateUpdate(game, 'create', 'game')

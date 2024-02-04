@@ -530,7 +530,6 @@ class PongCreateGame extends Component {
 			goal_objective: this.$id("max-score").value,
 			ia: this.$id("toggle-IA").checked,
 			power_ups: this.$id("toggle-Powerups").checked,
-			created_by: state.whoAmI,
 		}
 
 		post2("/api/manage-game/", dataToSend)
@@ -545,7 +544,6 @@ class PongCreateGame extends Component {
 		const dataToSend = {
 			state: "waiting",
 			goal_objective: this.$id("max-score").value,
-			created_by: state.whoAmI,
 			power_ups: this.$id("toggle-Powerups").checked, 
 		}	
 
