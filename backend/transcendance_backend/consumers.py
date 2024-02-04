@@ -9,8 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    user_name = None
+    user_id = None
     nickname = None
+    group_name = None
 
     @sync_to_async
     def update_connected_state(self, new_value):
@@ -30,16 +31,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 logger.debug("=================WS CONNECTED============")
 
                 # Extract user name from the path or from headers (adjust as needed)
-                self.user_name = self.scope["user"].username
+                self.user_id = self.scope["user"].id
+                self.group_name = f"user_{self.user_id}"
 
-                # Add the user to a group named after their username
-                await self.channel_layer.group_add(
-                    f"user_{self.user_name}", self.channel_name
-                )
+                # Add the user to a group named after their id
+                await self.channel_layer.group_add(self.group_name, self.channel_name)
 
-                await self.channel_layer.group_add(
-                    f"global", self.channel_name
-                )
+                await self.channel_layer.group_add("global", self.channel_name)
 
                 await self.update_connected_state(True)
 
@@ -61,12 +59,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         logger.debug("=================WS DISCONNECT============")
-        if self.user_name is not None:
+        if self.user_id is not None:
             await self.update_connected_state(False)
             # Remove the user from the group when the WebSocket connection is closed
-            await self.channel_layer.group_discard(self.user_name, self.channel_name)
+            await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
-            self.user_name = None
+            self.user_id = None
+            self.group_name = None
             await sync_to_async(stateUpdate)(
                 self.scope["user"].player, "update", "user"
             )
@@ -81,9 +80,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 "type": "chat.message",
                 "text": text,
-                "sender": self.user_name,
+                "sender": self.user_id,
                 "nickname": self.nickname,
-                "channel": self.nickname,
+                "channel": self.group_name,
                 "datetime": int(
                     datetime.now().timestamp() * 1000
                 ),  # NOTE *1000 to make it js timestamp compatible
@@ -100,7 +99,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 "type": "chat.message",
                 "text": text,
-                "sender": self.user_name,
+                "sender": self.user_id,
                 "nickname": self.nickname,
                 "channel": "global",
                 "datetime": int(

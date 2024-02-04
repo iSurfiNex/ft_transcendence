@@ -18,7 +18,7 @@ class PongChat extends Component {
 
 		<div class="chat-desktop" hidden="{this.getHiddenStatus(isMobile, isChatBubbleChecked)}">
 			<div class="channels" repeat="channels" as="channel">
-				<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+				<div selected={this.equals(channel.name,activeChannel)} class="btn-group" role="group" aria-label="Basic radio toggle button group">
 					<input @click="this.updateActiveChannel(channel,channel.notifications)" type="radio" class="btn-check" name="btnradio" id="{channel.id}" autoComplete="off" checked="{this.isActiveChannel(channel.name)}"/>
 					<label class="btn btn-secondary channels-bubble" style="{this.getUserPictureFromString(channel.name)}" for="{channel.id}">{this.getFirstLetter(channel.name)}
 						<div hidden="{!channel.notifications}" class ="channels-bubble-notif {channel.notifications?active}">{this.getChannelNotifications(channel.notifications)}</div>
@@ -39,6 +39,26 @@ class PongChat extends Component {
 				</div>
 			</div>
 
+				<div class="chat-player-list-header-text" hidden="{isPlayerListChecked}">{language.playerList}</div>
+			<div class="chat-player-list" hidden="{isPlayerListChecked}">
+				<div class="chat-list-player" repeat="users" as="user">
+					<div class="chat-player">
+						<a class="chat-player-link" href="javascript:void(0)" @click="this.navigate(user.nickname)">
+							<img class="chat-player-img" src="{user.picture}" alt="profile"/>
+							<div class="chat-player-name">{user.nickname}</div>
+						</a>
+
+                       <div class="btn-group user-btn" role="group" aria-label="Basic example">
+                         <button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+                         <button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
+                         <button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
+                       </div>
+						<div class="chat-player-seperator"></div>
+
+					</div>
+				</div>
+			</div>
+
 			<div class="bottom-bar">
 				<input id="chat-input" placeholder="{language.writeHere}"/>
 				<label class="btn btn-primary chat-send" for="btn-check-send">
@@ -54,26 +74,32 @@ class PongChat extends Component {
 				</div>
 			</div>
 
-			<div class="chat-player-list" hidden="{isPlayerListChecked}">
-				<span class="chat-player-list-header-text">{language.playerList}</span>
-				<div class="chat-list-player" repeat="users" as="user">
-					<div class="chat-player">
-						<a class="chat-player-link" href="javascript:void(0)" @click="this.navigate(user.nickname)">
-							<img class="chat-player-img" src="{user.picture}" alt="profile"/>
-							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
-						</a>
-						<button @click="this.sendMessageToUser(user)" class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
-						<button class="chat-player-invite btn btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
-						<button @click="this.blockUser(user)" class="chat-player-block btn btn-danger" title="Block"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
-						<div class="chat-player-seperator"></div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 `
 
 	static css = css`
+	.channels label::hover {
+		box-shadow: 0 0 4px white;
+	}
+
+	.channels [selected] label {
+		box-shadow: 0 0 10px white;
+	}
+
+	.user-btn {
+		align-self: end;
+		position: relative;
+		top: -6px;
+	}
+
+	.chat-player-list-header-text {
+		font-size: 18px !important;
+		position: absolute !important;
+		width: 100% !important;
+		padding: 8px 0;
+	}
+
 	@media only screen and (max-width: 768px) {
 		.chat-bubble {
 			display: block;
@@ -127,7 +153,6 @@ class PongChat extends Component {
 
 		.chat-player-list-header-text {
 			position: fixed;
-			width: calc(100% - 40px);
 			text-align: center;
 			color: white;
 			font-size: 27px;
@@ -233,7 +258,6 @@ class PongChat extends Component {
 
 		.chat-player-list-header-text {
 			position: fixed;
-			width: calc(100% - 40px);
 			text-align: center;
 			color: white;
 			font-size: 27px;
@@ -276,7 +300,6 @@ class PongChat extends Component {
 
 		.chat-player-list-header-text {
 			position: fixed;
-			width: calc(25% - 20px);
 			text-align: center;
 			color: white;
 			font-size: 27px;
@@ -415,21 +438,17 @@ class PongChat extends Component {
 	}
 
 	.chat-player-list {
-		position: absolute;
-		left: 10px;
-		top: 20px;
 		background-color: #5e5e5e;
-		width: calc(100% - 20px);
-		height: calc(100% - 110px);
 		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+		overflow: scroll;
+  		height: 100%;
+		position: relative;
+		padding-bottom: 80px;
 	}
 
 	.chat-list-player {
-		position: absolute;
-		width: 100%;
-		height: calc(100% - 45px);
-		bottom: 0;
 		overflow-y: auto;
+		padding-top: 70px;
 	}
 
 	.chat-list-player::-webkit-scrollbar {
@@ -438,23 +457,23 @@ class PongChat extends Component {
 	}
 
 	.chat-player {
-		position: relative;
 		width: calc(100% - 15px);
-		height: 50px;
-		left: 5px;
-		top: 5px;
 		margin-bottom: 7px;
 		scrollbar-width: 2px;
+		display: flex;
+  		flex-direction: column;
+	}
+
+	.chat-player-link {
+		display: flex;
 	}
 
 	.chat-player-img {
 		object-fit: cover;
 		object-position: center;
-		position: relative;
 		background-color: white;
 		border-radius: 25px;
-		left: 5px;
-		top: 5px;
+		margin-left: 5px;
 		width: 40px;
 		height: 40px;
 		border: 3px solid white;
@@ -462,14 +481,14 @@ class PongChat extends Component {
 	}
 
 	.chat-player-name {
-		position: absolute;
 		white-space: nowrap;
-		top: 16px;
-		left: 50px;
 		font-size: 13px;
-		width: calc(100% - 180px);
 		overflow-x: auto;
 		color: rgb(233, 233, 233);
+		flex: 1;
+		display: flex;
+		align-items: center;
+		margin-left: 4px;
 	}
 
 	.chat-player-name::-webkit-scrollbar {
@@ -477,9 +496,6 @@ class PongChat extends Component {
 	}
 
 	.chat-player-invite {
-		position: absolute;
-		right: 43px;
-		top: 10px;
 		margin-left: 5px;
 		--bs-btn-padding-y: 0.25rem;
 		--bs-btn-padding-x: 0.5rem;
@@ -487,9 +503,6 @@ class PongChat extends Component {
 	}
 
 	.chat-player-block {
-		position: absolute;
-		right: 0;
-		top: 10px;
 		margin-left: 5px;
 		--bs-btn-padding-y: 0.25rem;
 		--bs-btn-padding-x: 0.5rem;
@@ -497,9 +510,6 @@ class PongChat extends Component {
 	}
 
 	.chat-player-message {
-		position: absolute;
-		right: 85px;
-		top: 10px;
 		margin-left: 5px;
 		--bs-btn-padding-y: 0.25rem;
 		--bs-btn-padding-x: 0.5rem;
@@ -628,6 +638,9 @@ class PongChat extends Component {
 			else
 				state.messages.push({text, sender, nickname, date: datetime, channel});
 
+			const tmp = channel;
+			const tmpChan = state.channels.find(channel => channel.name === tmp);
+
 			if (state.activeChannel == channel) {
 				var message = this.shadowRoot.getElementById("messages");
 				message.scrollTop = message.scrollHeight;
@@ -635,9 +648,7 @@ class PongChat extends Component {
 				state.channels[tmpChan.id - 1].invite = text === '/invite' ? true : false;
 			}
 			else {
-				const tmp = channel;
 				const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
-				const tmpChan = state.channels.find(channel => channel.name === tmp);
 
 				if (state.profile.blocked_users.some(user => user.name === nickname))
 					return ;
@@ -698,6 +709,10 @@ class PongChat extends Component {
 	}
 
 	getFirstLetter(word) {
+        if (word.startsWith('user')) {
+			const user = state.users.find(user => 'user_'+user.id === word);
+        	return user.username[0]
+        }
 		return (word[0]);
 	}
 
@@ -730,7 +745,7 @@ class PongChat extends Component {
 	}
 
 	getUserPictureFromString(string) {
-		const user = state.users.find(user => user.nickname === string);
+		const user = state.users.find(user => 'user_'+user.id === string);
 		const backgroundSize = 'cover';
 		const backgroundPos = 'center';
 		let backgroundImage = undefined;
@@ -768,7 +783,7 @@ class PongChat extends Component {
 	}
 
 	isMessageInChannel(message, sender, channelName) {
-		if (state.profile.blocked_users.some(user => user.name === sender))
+		if (state.profile.blocked_users.some(user => user.id === sender))
 			return true;
 		return !(message == channelName);
 	}
@@ -795,7 +810,7 @@ class PongChat extends Component {
 
 	sendMessageToUser(user) {
 		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
-		const channel = state.channels.find(channel => channel.name === user.nickname);
+		const channel = state.channels.find(channel => channel.name === 'user_'+user.id);
 
 		state.isPlayerListChecked = true;
 
@@ -804,13 +819,15 @@ class PongChat extends Component {
 		else if (user.nickname === state.whoAmI)
 			return ;
 
-		state.channels.push({name: user.nickname, id: maxId + 1, notifications: 0, invite: false});
+        const channelName = "user_"+user.id
+		state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
+        state.activeChannel = channelName
 	}
 
 	sendMessage() {
 		const inputNode = this.shadowRoot.getElementById("chat-input");
 		const text = inputNode.value
-		const tmp = state.users.find(user => user.nickname === state.activeChannel);
+		const tmp = state.users.find(user => 'user_'+user.id === state.activeChannel);
 		let send = true;
 
 		if (!text)
@@ -845,10 +862,10 @@ class PongChat extends Component {
 			}
 		}
 		else if (state.activeChannel != "global")
-			state.messages.push({text, sender:state.profile.username, nickname: state.whoAmI, date:Date.now(), channel: state.activeChannel})
+			state.messages.push({text, sender:state.profile.id, nickname: state.whoAmI, date:Date.now(), channel: state.activeChannel})
 
 		if (send == true)
-			this._sendWsMessage(tmp ? tmp.username : state.activeChannel, text)
+			this._sendWsMessage(tmp ? tmp.id : state.activeChannel, text)
 
 		var message = this.shadowRoot.getElementById("messages");
 		message.scrollTop = message.scrollHeight;
