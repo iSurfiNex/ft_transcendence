@@ -4,6 +4,8 @@ import json
 from datetime import datetime
 from asgiref.sync import sync_to_async
 from .utils import stateUpdate
+from .models import Game
+from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger(__name__)
 
@@ -157,18 +159,41 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
 
 class GameRunningConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.id = self.scope['url_route']['kwargs']['id']
-        self.game_group_name = f"game_{self.id}"
+        try:
+            if not self.scope["user"].is_authenticated:
+                raise Exception(f"Authentification required.")
+            id = self.scope["url_route"]["kwargs"]["id"]
+            try:
+                game = Game.objects.get(id=id)
+            except ObjectDoesNotExist:
+                raise Exception(f"Game with id={id} not found.")
+            assert game.state in [
+                "waiting",
+                "running",
+            ], "The game state must be 'waiting' or 'running' to join."
+            my_player = self.scope["user"].player
+            assert my_player in game.players
 
-        await self.channel_layer.group_add(self.game_group_name, self.channel_name)
-        await self.accept()
+            self.game_group_name = f"game_{self.id}"
+            await self.channel_layer.group_add(self.game_group_name, self.channel_name)
+            await self.accept()
+            logger.debug("======WS GAME: USER ACCEPTED======")
+        except:
+            await self.close()
+            logger.debug("======WS GAME: USER REJECTED======")
 
-
-    async def disconnect(self, close_code):#PAS OUBLIER DE DECONNECTER LES JOUEURS DU WS A LA FIN DE LA GAME
-        await self.channel_layer.group_discard(self.game_group_name, self.channel_name)
+    async def disconnect(
+        self, close_code
+    ):  # PAS OUBLIER DE DECONNECTER LES JOUEURS DU WS A LA FIN DE LA GAME
+        if self.game_group_name:
+            await self.channel_layer.group_discard(
+                self.game_group_name, self.channel_name
+            )
+        logger.debug("======WS GAME: USER DISCONNECTED======")
 
     async def receive(self, text_data):
         data = json.loads(text_data)
+        logger.debug("======WS GAME: MSG RECEIVED======")
         await self.send_game_update(data)
 
     async def send_game_update(self, event):
