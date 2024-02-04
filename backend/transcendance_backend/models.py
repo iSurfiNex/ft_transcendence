@@ -75,7 +75,7 @@ class Player(models.Model):
     def serialize_summary(self):
         return {
             "id": self.user.id,
-            "name": self.user.username,
+            "name": self.name,
         }
 
 
