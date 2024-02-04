@@ -370,6 +370,7 @@ function userUpdate(data, action) {
 
 	var newUser = {
 		id: data.id,
+        isConnected: data.is_connected,
 		username: data.username,
 		nickname: data.name,
 		fullname: data.first_name + " " + data.last_name,
@@ -446,6 +447,7 @@ function userBuild(users) {
 
 		let user_data = {
 			id: user.id,
+            isConnected: user.is_connected,
 			username: user.username,
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,

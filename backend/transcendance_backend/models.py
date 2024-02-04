@@ -52,6 +52,7 @@ class Player(models.Model):
         return {
             "id": self.user.id,
             "id_42": self.id_42,
+            "is_connected": self.is_connected,
             "url_profile_42": self.url_profile_42,
             "name": self.name,
             "username": self.user.username,

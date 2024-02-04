@@ -49,6 +49,7 @@ class PongChat extends Component {
 						</a>
 
                        <div class="btn-group user-btn" role="group" aria-label="Basic example">
+						 <span hidden="{user.isConnected}" class="offline">offline</span>
                          <button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
                          <button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
                          <button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
@@ -79,6 +80,11 @@ class PongChat extends Component {
 `
 
 	static css = css`
+	.offline {
+		line-height: 32px;
+  		margin-right: 10px;
+	}
+
 	.channels label::hover {
 		box-shadow: 0 0 4px white;
 	}
