@@ -517,29 +517,13 @@ class WaitingRoom extends Component {
 
     getPlayerOne() {
         const game = state.games.find(game => game.id == state.currentGame);
-        
-        if (game)
-            if (game.players.length > 0)
-                var playerOne = game.players[0];
-        
-        if (!game || game.players.length < 1 || !playerOne)
-            return ("Unknown");
-        
-        return (playerOne);
+        return game?.players[0] || "Unknown"
     }
 
     getPlayerTwo()
     {
         const game = state.games.find(game => game.id == state.currentGame);
-        
-        if (game)
-            if (game.players.length > 1)
-                var playerTwo = game.players[1];
-
-        if (!game || game.players.length < 2 || !playerTwo)
-            return ("Unknown");
-
-        return (playerTwo);
+        return game?.players[1] || "Unknown"
     }
 
     isGameCreator() {

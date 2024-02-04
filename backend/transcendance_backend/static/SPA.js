@@ -346,7 +346,7 @@ function gameUpdate(data, action) {
 		state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
 
 	state.currentGame = -1;
-	currentGame = state.games.find(game => game.players.find(player => player == state.whoAmI));
+	currentGame = state.games.find(game => game.players.find(player => player == state.profile.name));
 	if (currentGame)
 		state.currentGame = currentGame.id;
 }
