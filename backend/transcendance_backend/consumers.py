@@ -37,7 +37,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     f"user_{self.user_name}", self.channel_name
                 )
 
-                await self.channel_layer.group_add(f"global", self.channel_name)
+                await self.channel_layer.group_add(
+                    f"global", self.channel_name
+                )
 
                 await self.update_connected_state(True)
 
@@ -81,7 +83,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "text": text,
                 "sender": self.user_name,
                 "nickname": self.nickname,
-                "channel": self.user_name,
+                "channel": self.nickname,
                 "datetime": int(
                     datetime.now().timestamp() * 1000
                 ),  # NOTE *1000 to make it js timestamp compatible
