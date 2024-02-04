@@ -227,7 +227,7 @@ class PongClassic extends Component {
 	navigateUpdate(game) {
 		//state.currentGame = game.id;
 		//console.log(state.currentGame + ' ' + game.id);
-		var url = "/api/manage-game/" + game.id + "/";
+		var url = "https://localhost:8000/api/manage-game/" + game.id + "/";
 
 		var dataToSend = {
 			action: "add-player",

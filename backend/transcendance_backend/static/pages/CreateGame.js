@@ -533,7 +533,7 @@ class PongCreateGame extends Component {
 			created_by: state.whoAmI,
 		}
 
-		post2("/api/manage-game/", dataToSend)
+		post2("https://localhost:8000/api/manage-game/", dataToSend)
 		.then(data => {
 			navigateTo('/play/waiting-room');
 		})
@@ -548,7 +548,7 @@ class PongCreateGame extends Component {
 			power_ups: this.$id("toggle-Powerups").checked, 
 		}	
 
-		post2("/api/manage-tournament/", dataToSend)
+		post2("https://localhost:8000/api/manage-tournament/", dataToSend)
 		.then(data => {
 			navigateTo('/play/tournament-wr');
 		})

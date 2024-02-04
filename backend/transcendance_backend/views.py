@@ -349,7 +349,7 @@ class ManageTournamentView(View):
         try:
             data = json.loads(request.body)
 
-            creator = get_object_or_404(Player, user__username=data['created_by'])
+            creator = get_object_or_404(Player, name=data['created_by'])
 
             game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
             game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
@@ -397,7 +397,7 @@ class ManageTournamentView(View):
             #elif data['action'] == "start-2nd-round"
 
             elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
-                new_player = get_object_or_404(Player, user__username=data['username'])
+                new_player = get_object_or_404(Player, name=data['username'])
                 tournament.players.add(new_player)
             
             #elif data["action"] == "rm-player":
@@ -445,7 +445,7 @@ class ManageGameView(View):
         try:
             data = json.loads(request.body)
             
-            creator = get_object_or_404(Player, user__username=data['created_by'])
+            creator = get_object_or_404(Player, name=data['created_by'])
             game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
             game.players.add(creator)
 
@@ -470,18 +470,18 @@ class ManageGameView(View):
                 game.state = "running"
 
             elif data['action'] == "add-player":
-                new_player = get_object_or_404(Player, user__username=data['username'])
+                new_player = get_object_or_404(Player, name=data['username'])
                 game.players.add(new_player)
 
             elif data["action"] == "rm-player":
-                playerToRm = get_object_or_404(Player, user__username=data['username'])
+                playerToRm = get_object_or_404(Player, name=data['username'])
                 if playerToRm == game.created_by:
                     if game.players.count() == 2:
                         game.players.remove(playerToRm)
                         game.created_by = game.players.first()
                     else:
                         game.delete()
-                        stateUpdateAll(Game.objects.all(), "all games")
+                        #stateUpdate(Game.objects.all(), "update", "all games")
                         return JsonResponse({}, status=204)
                 else:
                     game.players.remove(playerToRm)
