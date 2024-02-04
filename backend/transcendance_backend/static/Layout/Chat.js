@@ -42,7 +42,7 @@ class PongChat extends Component {
 				<div class="chat-player-list-header-text" hidden="{isPlayerListChecked}">{language.playerList}</div>
 			<div class="chat-player-list" hidden="{isPlayerListChecked}">
 				<div class="chat-list-player" repeat="users" as="user">
-					<div class="chat-player">
+					<div class="chat-player" hidden="{this.equals(user.id, profile.id)}">
 						<a class="chat-player-link" href="javascript:void(0)" @click="this.navigate(user.nickname)">
 							<img class="chat-player-img" src="{user.picture}" alt="profile"/>
 							<div class="chat-player-name">{user.nickname}</div>
