@@ -480,7 +480,7 @@ function userBuild(users) {
 		let user_data = {
 			id: user.id,
             isConnected: user.is_connected,
-			username: user.username,
+			username: user.name,
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,
 			picture: user.avatar_url,
@@ -498,11 +498,10 @@ function gameBuild(games) {
 	for (let game of games) {
 
 		let game_type = (game.power_ups === true) ? "powerup" : "normal";
-		let game_players;
+		let game_players = [];
 
-		for (let player of games.players) {
-			let username = player.name;
-			game_players.push(username);
+		for (let player of game.players) {
+			game_players.push(player.name);
 		}
 
 		let game_data = {

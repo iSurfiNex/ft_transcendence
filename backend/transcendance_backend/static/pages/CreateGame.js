@@ -537,6 +537,7 @@ class PongCreateGame extends Component {
 		.then(data => {
 			navigateTo('/play/waiting-room');
 		})
+		.catch(error => console.error(error))
 	}
 
 
