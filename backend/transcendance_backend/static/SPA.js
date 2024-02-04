@@ -82,6 +82,19 @@ function put(url, body) {
 .then(response => response.json())
 }
 
+function put2(url, body) {
+	return fetch(url, {
+		method: 'PUT',
+		credentials: 'include',
+		headers: {
+			"Content-Type": "application/json",
+			"X-CSRFToken": csrfToken()
+		},
+		body: JSON.stringify(body)
+	})
+	.then(response => response.json())
+}
+
 function get(url) {
 	return fetch(url, {
 	method: 'GET',
@@ -248,7 +261,7 @@ function stateUpdate(event)
 	else if (data_type == 'game')//game update
 		gameUpdate(data, data.action);
 
-	else if (data_type == 'user') //user update									 
+	else if (data_type == 'user') //user update
 		userUpdate(data, data.action);
 
 	//else if (data_type == 'profile')
@@ -259,7 +272,7 @@ function stateUpdate(event)
 
 	currentGame = state.games.find(game => game.players.find(player => player == state.whoAmI));
 	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.whoAmI));
-	
+
 	if (currentGame)
 		state.currentGame = currentGame.id;
 	if (currentTournament)
@@ -271,7 +284,7 @@ function tournamentUpdate(data, action) {
 	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == data.id);
 	if (TournamentAlreadyExist && action == "create")
 		return ;
-	
+
 	var newTournament = {
 		type: 'tournament',
 		id: data.id,
@@ -322,7 +335,7 @@ function gameUpdate(data, action) {
 	GameAlreadyExist = state.games.find(game => game.id == data.id);
 	if (GameAlreadyExist && action == "create")
 		return ;
-	
+
 	var newGame = {
 		type: (data.power_ups == true) ? "powerup" : "normal",
 		id: data.id,
@@ -341,24 +354,44 @@ function gameUpdate(data, action) {
 
 
 function userUpdate(data, action) {
-	UserAlreadyExist = state.users.find(user => user.name == data.name);
+	UserAlreadyExist = state.users.find(user => user.nickname == data.name);
 	if (UserAlreadyExist && action == "create")
 		return ;
 
+	friend_list = [];
+	blocked_list = [];
+
+	for (let friend in data.friend_users)
+	{
+		friend_list.push(friend.name);
+	}
+
+	for (let blocked in data.blocked_list)
+	{
+		blocked_list.push(blocked.name);
+	}
+
 	var newUser = {
+		id: data.id,
+		username: data.username,
 		nickname: data.name,
 		fullname: data.first_name + " " + data.last_name,
 		picture: data.avatar_url,
+		blocked: blocked_list,
+		friends: friend_list,
 	};
 
 	if (action == 'create')
 		state.users.push(newUser);
-	else if (action == 'update')
-		state.users.map(user => {return user.nickname == newUser.nickname ? newUser : user});
+	else if (action == 'update') {
+		const i = state.users.findIndex(user => user.id === newUser.id);
+
+		state.users[i] = newUser
+	}
 }
 
 //function profileUpdate() {
-//	
+//
 //}
 
 
@@ -384,10 +417,10 @@ function stateBuild() {
 //
 //		if (curr_game)
 //			current_game = curr_game.id;
-//		
+//
 //		if (curr_tournament)
 //			current_tournament = curr_tournament.id;
-		
+
 
 		state.users = users_list;
 		state.games = games_list;
@@ -399,15 +432,32 @@ function stateBuild() {
 
 function userBuild(users) {
 	var users_list = [];
-	
-	for (let user of users) { 
+
+	for (let user of users) {
+		let friend_list = [];
+		let blocked_list = [];
+
+		for (let friend in user.friend_users)
+		{
+			friend_list.push(friend.name);
+		}
+
+		for (let blocked in user.blocked_list)
+		{
+			blocked_list.push(blocked.name);
+		}
+
 		let user_data = {
+			id: user.id,
+			username: user.username,
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,
 			picture: user.avatar_url,
+			blocked: blocked_list,
+			friends: friend_list,
 		};
 		users_list.push(user_data);
-	}	
+	}
 	return (users_list);
 }
 
@@ -415,11 +465,11 @@ function gameBuild(games) {
 	var games_list = [];
 
 	for (let game of games) {
-			
+
 		let game_type = (game.power_ups === true) ? "powerup" : "normal";
 		let game_players;
 
-		for (let player of game.players) {
+		for (let player of games.players) {
 			let username = player.name;
 			game_players.push(username);
 		}
@@ -441,11 +491,11 @@ function gameBuild(games) {
 function tournamentBuild(tournaments) {
 	var	tournaments_list = [];
 
-	for (let tournament of tournaments){ 
+	for (let tournament of tournaments){
 		let tournament_players;
 		let tournament_gamesId;
 
-		for (let player of tournament.players){ 
+		for (let player of tournament.players){
 			tournament_players.push(player.username);
 		}
 

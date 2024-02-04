@@ -12,10 +12,12 @@ logger = logging.getLogger(__name__)
 
 class ChatConsumer(AsyncWebsocketConsumer):
     user_name = None
+    nickname = None
 
     @sync_to_async
     def update_connected_state(self, new_value):
         player = self.scope["user"].player
+        self.nickname = player.name
 
         player.is_connected = new_value
         player.save()
@@ -37,7 +39,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     f"user_{self.user_name}", self.channel_name
                 )
 
-                await self.channel_layer.group_add(f"global", self.channel_name)
+                await self.channel_layer.group_add(
+                    f"global", self.channel_name
+                )
 
                 await self.update_connected_state(True)
 
@@ -80,7 +84,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "chat.message",
                 "text": text,
                 "sender": self.user_name,
-                "channel": self.user_name,
+                "nickname": self.nickname,
+                "channel": self.nickname,
                 "datetime": int(
                     datetime.now().timestamp() * 1000
                 ),  # NOTE *1000 to make it js timestamp compatible
@@ -98,6 +103,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "type": "chat.message",
                 "text": text,
                 "sender": self.user_name,
+                "nickname": self.nickname,
                 "channel": "global",
                 "datetime": int(
                     datetime.now().timestamp() * 1000
@@ -113,6 +119,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "type": "chat.message",
                     "text": event["text"],
                     "sender": event["sender"],
+                    "nickname": event["nickname"],
                     "channel": event["channel"],
                     "datetime": event["datetime"],
                 }
@@ -137,7 +144,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 class StateUpdateConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
-            #await self.channel_layer.group_add("state-update", self.channel_name)
+            await self.channel_layer.group_add("state-update", self.channel_name)
             await self.accept()
         except Exception as e:
             logger.error(f"Error: {e}")

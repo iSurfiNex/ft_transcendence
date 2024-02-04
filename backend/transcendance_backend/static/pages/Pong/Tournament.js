@@ -32,6 +32,7 @@ class PongTournament extends Component {
 		</div>
 	</div>
 `
+//<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 
 	static css = css`
 	@keyframes fadeIn {

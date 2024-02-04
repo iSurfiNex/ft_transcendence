@@ -27,12 +27,12 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" id="messages" repeat="messages" as="message">
-				<div class="message" is-my-msg="{this.equals(message.sender,whoAmI)}" hidden="{this.isMessageInChannel(message.channel,message.sender,activeChannel)}">
+				<div class="message" is-my-msg="{this.equals(message.nickname,profile.name)}" hidden="{this.isMessageInChannel(message.channel,message.nickname,activeChannel)}">
 					<div class="msg-heading">
-						<a href="javascript:void(0)" @click="this.navigate(message.sender)">
-							<img class="message-player-img" src="{this.getProfilePicture(message.sender)}" alt="profile"/>
+						<a href="javascript:void(0)" @click="this.navigate(message.nickname)">
+							<img class="message-player-img" src="{this.getProfilePicture(message.nickname)}" alt="profile"/>
 						</a>
-						<div class="message-player-name">{this.getUserFullNameFromString(message.sender)}</div>
+						<div class="message-player-name">{this.getUserFullNameFromString(message.nickname)}</div>
 						<div class="message-player-date">{this.formatDatetime(message.date)}</div>
 					</div>
 					<div class="message-player-content">{message.text}</div>
@@ -59,7 +59,7 @@ class PongChat extends Component {
 				<div class="chat-list-player" repeat="users" as="user">
 					<div class="chat-player">
 						<a class="chat-player-link" href="javascript:void(0)" @click="this.navigate(user.nickname)">
-							<img class="chat-player-img" src="{this.getProfilePicture(user.nickname)}" alt="profile"/>
+							<img class="chat-player-img" src="{user.picture}" alt="profile"/>
 							<div class="chat-player-name">{this.getUserFullNameFromString(user.nickname)}</div>
 						</a>
 						<button @click="this.sendMessageToUser(user)" class="chat-player-message btn btn-primary" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
@@ -328,6 +328,7 @@ class PongChat extends Component {
 	}
 
 	.channels-bubble {
+		text-shadow: 0px 0px 8px #454545;
 		left: 10px;
 		bottom: -10px;
 		border-radius: 25px !important;
@@ -447,18 +448,22 @@ class PongChat extends Component {
 	}
 
 	.chat-player-img {
+		object-fit: cover;
+		object-position: center;
 		position: relative;
 		background-color: white;
 		border-radius: 25px;
 		left: 5px;
 		top: 5px;
 		width: 40px;
+		height: 40px;
 		border: 3px solid white;
 		box-shadow: 0px 0px 15px -3px white;
 	}
 
 	.chat-player-name {
 		position: absolute;
+		white-space: nowrap;
 		top: 16px;
 		left: 50px;
 		font-size: 13px;
@@ -535,6 +540,8 @@ class PongChat extends Component {
 	}
 
 	.message-player-img {
+		object-fit: cover;
+		object-position: center;
 		width: 40px;
 		height: 40px;
 		position: relative;
@@ -612,29 +619,34 @@ class PongChat extends Component {
 			console.log('Received message:', event.data);
 			// TODO try catch
 			const data = JSON.parse(event.data)
-			const {channel, sender, text, datetime} = data
+			const {channel, sender, nickname, text, datetime} = data
+
 			if (text === '/invite')
-				state.messages.push({text: sender + ' invite you in a game, type /join ' + sender + ' to join him/her.', sender: 'Pong', date: datetime, channel});
+				state.messages.push({text: nickname + ' invite you in a game, type /join to join him/her.', sender: 'Pong', nickname: 'Pong', date: datetime, channel});
 			else if (text === '/join')
-				state.messages.push({text: sender + ' is joining your game.', sender: 'Pong', date: datetime, channel});
+				state.messages.push({text: nickname + ' is joining your game.', sender: 'Pong', nickname: 'Pong', date: datetime, channel});
 			else
-				state.messages.push({text, sender, date: datetime, channel});
+				state.messages.push({text, sender, nickname, date: datetime, channel});
 
 			if (state.activeChannel == channel) {
 				var message = this.shadowRoot.getElementById("messages");
 				message.scrollTop = message.scrollHeight;
+
+				state.channels[tmpChan.id - 1].invite = text === '/invite' ? true : false;
 			}
 			else {
 				const tmp = channel;
 				const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 				const tmpChan = state.channels.find(channel => channel.name === tmp);
 
-				if (state.profile.blocked_users.some(user => user.name === sender))
+				if (state.profile.blocked_users.some(user => user.name === nickname))
 					return ;
-				else if (tmpChan)
+				else if (tmpChan) {
 					state.channels[tmpChan.id - 1].notifications++;
+					state.channels[tmpChan.id - 1].invite = text === '/invite' ? true : false;
+				}
 				else
-					state.channels.push({name: sender, id: maxId + 1, notifications: 1});
+					state.channels.push({name: channel, id: maxId + 1, notifications: 1, invite: text === '/invite' ? true : false});
 			}
 		});
 
@@ -704,11 +716,11 @@ class PongChat extends Component {
 			var indexToRemove = state.profile.blocked_users.findIndex(user => user.id === tmpUser.id);
 
 			state.profile.blocked_users.splice(indexToRemove, 1);
-			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', date: Date.now(), channel: 'global'});
+			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		else {
 			state.profile.blocked_users.push({id: tmpUser.id, name: tmpUser.nickname});
-			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', date: Date.now(), channel: 'global'});
+			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		if (state.activeChannel == 'global') {
 			var message = this.shadowRoot.getElementById("messages");
@@ -719,38 +731,40 @@ class PongChat extends Component {
 
 	getUserPictureFromString(string) {
 		const user = state.users.find(user => user.nickname === string);
+		const backgroundSize = 'cover';
+		const backgroundPos = 'center';
+		let backgroundImage = undefined;
 
 		if (user) {
-			const backgroundImage = 'url(/static/' + user.picture + ')';
-			const backgroundSize = 'cover';
-
-			return ('background-image: ' + backgroundImage + '; background-size: ' + backgroundSize + ';');
+			backgroundImage = 'url(' + user.picture + ')';
 		}
 		else {
-			return ('');
+			backgroundImage = 'url(/media/avatars/default.jpg';
 		}
+		return ('background-image: ' + backgroundImage + '; background-size: ' + backgroundSize + '; background-position: ' + backgroundPos + ';');
 	}
 
-	getProfilePicture(whoAmI) {
-		const user = state.users.find(user => user.nickname === whoAmI);
+	getProfilePicture(tmpUser) {
+		const user = state.users.find(user => user.nickname === tmpUser);
+
+		console.log(user);
+		console.log(tmpUser);
 
 		if (user) {
-			return '/static/' + user.picture;
+			return user.picture;
 		}
 		else {
-			return '/static/img/list.svg';
+			return '/media/avatars/default.jpg';
 		}
 	}
 
 	getUserFullNameFromString(string) {
 		const user = state.users.find(user => user.nickname === string);
 
-		if (user) {
+		if (user && user.fullname != 'Default Name')
 			return (user.fullname)
-		}
-		else {
+		else
 			return (string);
-		}
 	}
 
 	isMessageInChannel(message, sender, channelName) {
@@ -790,13 +804,14 @@ class PongChat extends Component {
 		else if (user.nickname === state.whoAmI)
 			return ;
 
-		state.channels.push({name: user.nickname, id: maxId + 1, notifications: 0});
+		state.channels.push({name: user.nickname, id: maxId + 1, notifications: 0, invite: false});
 	}
 
 	sendMessage() {
 		const inputNode = this.shadowRoot.getElementById("chat-input");
 		const text = inputNode.value
 		const tmp = state.users.find(user => user.nickname === state.activeChannel);
+		let send = true;
 
 		if (!text)
 			return ;
@@ -804,24 +819,36 @@ class PongChat extends Component {
 		console.log("SENDING: ", text, " TO: ", state.activeChannel)
 
 		if (text === '/invite') {
-			if (state.activeChannel != "global") {
-				state.messages.push({text: 'You have invite ' + tmp.nickname + ' to join you.', sender: 'Pong', date:Date.now(), channel: state.activeChannel});
-				this._sendWsMessage(state.activeChannel, text)
+			if (state.activeChannel != "global")
+				state.messages.push({text: 'You have invite ' + tmp.nickname + ' to join your current room.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
+			else {
+				state.messages.push({text: 'You need to be in a private channel to invite.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
+				send = false;
 			}
-			else
-				state.messages.push({text: 'You need to be in a private channel to invite.', sender: 'Pong', date:Date.now(), channel: state.activeChannel});
 		}
 		else if (text === '/join') {
-			if (state.activeChannel != "global")
-				this._sendWsMessage(state.activeChannel, text)
-			else
-				state.messages.push({text: 'You need to be in a private channel to join.', sender: 'Pong', date:Date.now(), channel: state.activeChannel});
-		}
-		else
-			this._sendWsMessage(state.activeChannel, text)
+			if (state.activeChannel != "global") {
+				const isInvite = state.channels.find(channel => channel.name === state.activeChannel);
 
-		if (state.activeChannel != "global")
-			state.messages.push({text, sender:state.whoAmI, date:Date.now(), channel: state.activeChannel})
+				if (isInvite.invite) {
+					state.messages.push({text: 'Joining ' + state.activeChannel + '.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
+					// TODO add whoAmI to activeChannel's game
+				}
+				else {
+					state.messages.push({text: state.activeChannel + ' didn\'t invite you.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
+					send = false;
+				}
+			}
+			else {
+				state.messages.push({text: 'You need to be in a private channel to join.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
+				send = false;
+			}
+		}
+		else if (state.activeChannel != "global")
+			state.messages.push({text, sender:state.profile.username, nickname: state.whoAmI, date:Date.now(), channel: state.activeChannel})
+
+		if (send == true)
+			this._sendWsMessage(tmp ? tmp.username : state.activeChannel, text)
 
 		var message = this.shadowRoot.getElementById("messages");
 		message.scrollTop = message.scrollHeight;

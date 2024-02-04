@@ -602,7 +602,7 @@ class WaitingRoom extends Component {
     isGameCreator() {
         const game = state.games.find(game => game.id == state.currentGame);
 
-        if (!game || state.username != game.creator)
+        if (!game || state.nickname != game.creator)
             return !(false);
 
         return !(true);
