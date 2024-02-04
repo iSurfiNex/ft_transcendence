@@ -250,9 +250,8 @@ function displayElement(element) {
 //////////////////             STATE UPDATE                    //////////////
 ////////////////////////////////////////////////////////////////////////////
 
-function stateUpdate(event)
+function stateUpdate(data)
 {
-	data = JSON.parse(event.data);
 	data_type = data.data_type;
 
 	if (data_type == 'tournament')//tournament update
@@ -267,16 +266,10 @@ function stateUpdate(event)
 	//else if (data_type == 'profile')
 	//	profileUpdate(data, data.action);
 
-	state.currentGame = -1;
-	state.currentTournament = -1;
+	//else if (data_type == 'all tournaments')
 
-	currentGame = state.games.find(game => game.players.find(player => player == state.whoAmI));
-	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.whoAmI));
-
-	if (currentGame)
-		state.currentGame = currentGame.id;
-	if (currentTournament)
-		state.currentTournament = currentTournament.id;
+	else if (data_type == 'all games')
+		gameUpdateAll(data);
 }
 
 
@@ -328,6 +321,10 @@ function tournamentUpdate(data, action) {
 		state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
 	}
 
+	state.currentTournament = -1;
+	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.whoAmI));
+	if (currentTournament)
+		state.currentTournament = currentTournament.id;
 }
 
 
@@ -350,6 +347,11 @@ function gameUpdate(data, action) {
 		state.games.push(newGame);
 	else if (action == 'update')
 		state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
+
+	state.currentGame = -1;
+	currentGame = state.games.find(game => game.players.find(player => player == state.whoAmI));
+	if (currentGame)
+		state.currentGame = currentGame.id;
 }
 
 
@@ -373,6 +375,7 @@ function userUpdate(data, action) {
 
 	var newUser = {
 		id: data.id,
+        isConnected: data.is_connected,
 		username: data.username,
 		nickname: data.name,
 		fullname: data.first_name + " " + data.last_name,
@@ -394,7 +397,27 @@ function userUpdate(data, action) {
 //
 //}
 
+function gameUpdateAll(data) {
+	objects = data.objects;
+	games_list = [];
 
+	objects.forEach((obj) => {
+		let gameInState = state.games.find(game => game.id == obj.id);
+		let score = gameInState.score;
+
+		let newGame = {
+			type: (obj.power_ups == true) ? "powerup" : "normal",
+			id: obj.id,
+			status: obj.state,
+			creator: obj.created_by.name,
+			players: obj.players.map(player => player.name),
+			score: score,
+			date: obj.created_at,
+		}
+		games_list.push(newGame);
+	});
+	state.games = games_list;
+}
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -403,11 +426,18 @@ function userUpdate(data, action) {
 
 
 function stateBuild() {
-	get("https://localhost:8000/api/build-state/")
+	get("/api/build-state/")
 	.then (data => {
-		var users_list = userBuild(data.users);
-		var games_list = gameBuild(data.games);
-		var	tournaments_list = tournamentBuild(data.tournaments);
+		var users_list = [];
+		var games_list = [];
+		var tournaments_list = [];
+
+		if (data.users)
+			users_list = userBuild(data.users);
+		if (data.games)
+			games_list = gameBuild(data.games);
+		if (data.tournaments)
+			tournaments_list = tournamentBuild(data.tournaments);
 //		var current_tournament = -1;
 //		var current_game = -1;
 
@@ -449,6 +479,7 @@ function userBuild(users) {
 
 		let user_data = {
 			id: user.id,
+            isConnected: user.is_connected,
 			username: user.username,
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,

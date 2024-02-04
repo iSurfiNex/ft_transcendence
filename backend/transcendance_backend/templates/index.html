@@ -35,7 +35,7 @@
 
 		{% if user.is_authenticated %}
 			setCookie('loggedin', true, 7);
-			window.whoAmI = '{{ user.player.name }}'
+			window.whoAmI = '{{ user.username }}'
 			window.profile = {{ user.player.serialized|safe }}
 		{% else %}
 			unsetCookie('loggedin')

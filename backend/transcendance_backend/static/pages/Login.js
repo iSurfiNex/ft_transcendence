@@ -218,6 +218,8 @@ class PongLogin extends Component {
         console.log(errors)
         if (errors !== undefined) {
             for (const [key, errMsg] of Object.entries(errors)) {
+                if (!Array.isArray(errMsg))
+                    continue
                 state.loginErrors[key] = errMsg.join('\n')
             }
             return
@@ -258,6 +260,8 @@ class PongLogin extends Component {
             const errors = data['errors']
             if (errors !== undefined) {
                 for (const [key, errMsg] of Object.entries(errors)) {
+                    if (!Array.isArray(errMsg))
+                        continue
                     state.registerErrors[key] = errMsg.join('\n')
                 }
             return

@@ -2,8 +2,6 @@ import { Component, register, html, css } from 'pouic'
 import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
-//<div class="rectangle-waitingRoom-T" hidden="{this.IsTournamentRunning()}">
-//<div class="title-waitingRoom-T"> {language.WaitingRoom} </div>
 
 class WaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
@@ -11,11 +9,11 @@ class WaitingRoom extends Component {
     <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
             <div class="nicknames-N">
-                <a type="button" class="btn btn-startGame" hidden="{this.isGameCreator()}">{language.GoButton}</a>
+                <button class="btn btn-startGame" @click="this.startGame()" hidden="{this.isGameCreator()}">{language.GoButton}</button>
                 <a class="playerOne-N" href="/profile"> {this.getPlayerOne(currentGame)} </a> 
                 <div class="VS-logo-N"> VS </div> 
                 <a class="playerTwo-N" href="/profile"> {this.getPlayerTwo(currentGame)} </a>
-                <a href="/" type="button" class="btn btn-giveUp">{language.ByeButton}</a>
+                <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
             </div>
 
             <div class="profil-pics-N">
@@ -491,46 +489,52 @@ class WaitingRoom extends Component {
         const game = state.games.find(game => game.id == state.currentGame);
         
         if (!game || game.players.length < 1 || state.currentGame == -1)
-            return ("/static/img/list.svg");
+            return ("/media/avatars/default.jpg");
         
         const playerNick = game.players[0];
         const user = state.users.find(elem => elem.nickname === playerNick);
 
         if (user)
-            return '/static/' + user.picture;
+            return user.picture;
 
-        return '/static/img/list.svg';
+        return '/media/avatars/default.jpg';
     }
 
     playerTwoPic() {
         const game = state.games.find(game => game.id == state.currentGame);
 
         if (!game || game.players.length < 2 || state.currentGame == -1)
-            return ("/static/img/list.svg");
+            return ("/media/avatars/default.jpg");
         
         const playerNick = game.players[1];
         const user = state.users.find(elem => elem.nickname === playerNick);
 
         if (user)
-            return '/static/' + user.picture;
+            return user.picture;
 
-        return '/static/img/list.svg';
+        return '/media/avatars/default.jpg';
     }
 
     getPlayerOne() {
         const game = state.games.find(game => game.id == state.currentGame);
-        const playerOne = game.players[0];
+        
+        if (game)
+            if (game.players.length > 0)
+                var playerOne = game.players[0];
         
         if (!game || game.players.length < 1 || !playerOne)
             return ("Unknown");
-
+        
         return (playerOne);
     }
 
     getPlayerTwo()
     {
         const game = state.games.find(game => game.id == state.currentGame);
-        const playerTwo = game.players[1];
+        
+        if (game)
+            if (game.players.length > 1)
+                var playerTwo = game.players[1];
 
         if (!game || game.players.length < 2 || !playerTwo)
             return ("Unknown");
@@ -538,185 +542,72 @@ class WaitingRoom extends Component {
         return (playerTwo);
     }
 
-    getCountdown() {
-        if (state.currentTournament == -1)
-            return ;
-        return state.tournaments[state.currentTournament - 1].countdown;
-    }
-
-    hasCountdownStarted() {
-        if (state.currentTournament == -1)
-            return ;
-        if (state.tournaments[state.currentTournament - 1].countdown == -1)
-            return (!false);
-        return (!true);
-    }
-
-    IsCurrentGame(gameId) {
-        return !(gameId == state.currentGame);
-    }
-
-    IsTournamentWaiting() {
-        if (state.currentTournament == -1 || state.tournaments[state.currentTournament - 1].status != 'waiting')
-            return !(false);
-        tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament); 
-        if (tournament.status != "waiting")
-            return !(false);
-        return !(true);
-    }
-
-    IsTournamentRunning() {
-        if (state.currentTournament == -1)
-            return !(false);
-
-        tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament); 
-        if (tournament.status != "running")
-            return !(false);
-        return !(true);
-    }
-
-    IsTournament() {
-        if (state.currentTournament == -1)
-            return !(false);
-        return !(true);
-    }
-
-    IsNormal() {
-        if (state.currentTournament != -1)
-            return !(false);
-        return !(true);
-    }
-    
-    getPlayerPic(nickname) {
-        const user = state.users.find(elem => elem.nickname === nickname);
-
-        if (user) {
-            return '/static/' + user.picture;
-        }
-
-        else {
-            return '/static/img/list.svg';
-        }
-    }
-
     isGameCreator() {
         const game = state.games.find(game => game.id == state.currentGame);
 
-        if (!game || state.nickname != game.creator)
+        if (!game || state.whoAmI != game.creator)
             return !(false);
 
         return !(true);
     }
 
-    isTournamentCreator() {
-        if (state.currentTournament == -1 )
-            return !(false);
-
-        if (state.username == state.tournaments[state.currentTournament - 1].creator)
-            return !(true);
-        return !(false);
-    }
-
-    IsCurrentTournament(tournamentId) {
-        return !(tournamentId == state.currentTournament);
-    }
-
-    IsTournamentGame(gameId, tournamentGameId) {
-        return !(gameId == tournamentGameId);
-    }
-
-    getPlayerCount() {
-        if (state.currentTournament == -1)
-            return (0);
-        return (state.tournaments[state.currentTournament - 1].players.length);
-    }
-
-	getCSRF() {
-		const token = document.cookie
-			.split('; ')
-			.find(row => row.startsWith('csrftoken='))
-			.split('=')[1];
-		return (token);
-	}
-
-    getGameID(data) {
-        for (const game of data.games)
-        {
-            const players = game.players;
-
-            if (players[0].name == state.username || players[1].name == state.username)
-                return (game.id);
-        }
-        return (null);
-    }
-
     startTournament() {
-        const nb_players = state.tournaments[state.currentTournament].players.length;
+        const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament);
         const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
 
-        if (nb_players != 4)
+        if (tournament.players.length != 4)
         {    
             console.error("not enought players");
             return ;
         }
 
-        const dataToPut = {
+        const dataToSend = {
             action: "start-tournament",
         }
 
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-				'X-CSRFToken': this.getCSRF(),
-            },
-            body: JSON.stringify(dataToPut), 
-        })
-        .then (response => {
-            if (!response.ok)
-				throw new Error('Problem starting Tournament');
-            return (response.json());	
-        })
+        put2(url, dataToSend)
         .then (data => {
-            state.currentGame = this.getGameID(data);//a degager, va se mettre a jour durant le gameUpdate()
-            //startCountdown();
             //navigateTo(LA-PAGE-DU-JEU)
         })
         .catch(error => {console.error(error)})
     }
 
     startGame() {
-        const nb_players = state.games[state.currentGame].players.lenght;
+        const game = state.games.find(game => game.id == state.currentGame);
         const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
 
-        if (nb_players != 2)
+        if (game.players.length != 2)
         {    
             console.error("not enought players");
             return ;
         }
 
-        const dataToPut = {
+        const dataToSend = {
             action: 'start-game'
         }
 
-        fetch(url,{
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-				'X-CSRFToken': this.getCSRF(),
-            },
-            body: JSON.stringify(dataToPut),
-        })
-        .then (response => {
-            if (!response.ok)
-                throw new Error('Problem starting Game');
-            return (response.json());    
-        })
+        put2(url, dataToSend)
         .then (data => {
-            //startCountdown();
             //navigateTo(LA-PAGE-DU-JEU)
         })
         .catch(error => {console.error(error)})
+    }
+
+    giveUp() {
+        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+        if (state.currentTournament != -1)
+            url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+
+        var dataToSend = {
+            action: 'rm-player',
+            username: state.whoAmI,
+        }
+
+        put2(url, dataToSend)
+        .then (data => {
+            navigateTo('/play/pong');
+        })
+        .catch(error => console.error(error));
     }
 
 }

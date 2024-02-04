@@ -401,6 +401,8 @@ class ManageTournamentView(View):
             elif data["action"] == "add-player":# A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
                 new_player = get_object_or_404(Player, user__username=data['username'])
                 tournament.players.add(new_player)
+            
+            #elif data["action"] == "rm-player":
 
             stateUpdate(tournament, 'update', 'tournament')
             response = tournament.serialize()
@@ -444,8 +446,7 @@ class ManageGameView(View):
     def post(self, request):
         try:
             data = json.loads(request.body)
-
-            #Player.objects.create(username=data['created_by'])# a degager plus tard
+            
             creator = get_object_or_404(Player, user__username=data['created_by'])
             game = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], ia=data['ia'], power_ups=data['power_ups'], created_by=creator)
             game.players.add(creator)
@@ -470,13 +471,25 @@ class ManageGameView(View):
                 game.started_at = (datetime.now().timestamp() + timedelta(seconds=5)) * 1000
                 game.state = "running"
                 createGameThread(id)
-                game.save()
 
-            if data['action'] == "add-player":
+            elif data['action'] == "add-player":
                 new_player = get_object_or_404(Player, user__username=data['username'])
                 game.players.add(new_player)
 
+            elif data["action"] == "rm-player":
+                playerToRm = get_object_or_404(Player, user__username=data['username'])
+                if playerToRm == game.created_by:
+                    if game.players.count() == 2:
+                        game.players.remove(playerToRm)
+                        game.created_by = game.players.first()
+                    else:
+                        game.delete()
+                        stateUpdateAll(Game.objects.all(), "all games")
+                        return JsonResponse({}, status=204)
+                else:
+                    game.players.remove(playerToRm)
 
+            game.save()
             stateUpdate(game, 'update', 'game')
             response = game.serialize()
             return JsonResponse(response, status=200)
