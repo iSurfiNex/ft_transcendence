@@ -26,6 +26,7 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 
 from .models import Player
+from .pong.init import createGameThread
 
 import logging
 
@@ -233,6 +234,7 @@ def request_42_login(request):
             login(request, user)
             logger.debug("======== User logged in")
 
+        createGameThread(id)
         return JsonResponse(
             {
                 "username": user.username,
@@ -468,6 +470,7 @@ class ManageGameView(View):
             if data['action'] == "start-game":
                 game.started_at = datetime
                 game.state = "running"
+                createGameThread(id)
                 game.save()
 
             if data['action'] == "add-player":
