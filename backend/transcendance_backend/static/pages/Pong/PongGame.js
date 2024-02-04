@@ -2,27 +2,26 @@ import { Component, register, html, css } from 'pouic'
 import * as THREE from 'three';
 import * as UNIFORMS from 'uniforms';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import {observe} from 'pouic'
 
 class PongGame extends Component {
 	static template = html`
 <div id="gameContainer">
 </div>
-<!--
-<div id="beforeGameLayer">
-  <h2>{language.Start}</h2>
+<div id="gameOverlay">
+  <div id="startIn" hidden={!runningGame.startIn}>
+	<div class="bg"></div>
+	<h2>{language.Start} {runningGame.startIn}</h2>
+  </div>
+  <div id="points" hidden={runningGame.startIn}>
+  	<span id="p1Points" class="points">{runningGame.p1Points}</span>
+  	<span id="p2Points" class="points">{runningGame.p2Points}</span>
+  </div>
+  <div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
+  	<span id="gameOverTxt">{language.gameOver}</span>
+	<span id="gameOverState" class="blinking">{lang(runningGame.gameOverState)}</span>
+  </div>
 </div>
-
-<div id="duringGameLayer">
-  <h2 id="p1-points">{currentGame.p1Points}</h2>
-  <h2 id="p2-points">{currentGame.p2Points}</h2>
-</div>
-
-<div id="afterGameLayer" hidden="{currentGame}">
-	Game over
-  	You win!
-  	You Loose!
-</div>
--->
 `
 
 	static css = css`
@@ -33,6 +32,8 @@ class PongGame extends Component {
 		background-color: rgba(255, 255, 255, 0.5);
 		height: calc(90% - 6px);
 		width: 100%;
+  		font-family: 'Press Start 2P', sans-serif;
+		font-weight: bold;
 	}
 
 	@media only screen and (min-width: 769px) and (min-height: 525px) {
@@ -45,12 +46,109 @@ class PongGame extends Component {
 	#gameContainer {
 		width: 100%;
 		height: 100%;
+		color: white;
 	}
 
 	canvas {
 		width: 100%;
 	}
+
+	#gameOverlay, #startIn, .bg, #gameOverLayer {
+		position: absolute;
+  		width: 100%;
+  		height: 100%;
+  		top: 0;
+	}
+
+	.bg {
+		background: black;
+		opacity: 0.8;
+	}
+
+	#startIn {
+		display: flex;
+		justify-content: center;
+	}
+
+	#startIn > h2 {
+		position: relative;
+		margin-top: 80px;
+		color: white;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+
+	.points {
+		position: absolute;
+  		font-size: 44px;
+		color: #8e8e8e;
+	}
+
+	#p1Points {
+		top: 40px;
+		right: 50%;
+		padding-right: 40px;
+	}
+
+	#p2Points {
+		top: 40px;
+		left: 50%;
+		padding-left: 40px;
+	}
+
+	#gameOverLayer {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		color: white;
+		text-align: center
+	}
+
+	#gameOverTxt {
+		font-size: 40px;
+	}
+
+	#gameOverState {
+		font-size: 60px;
+		margin-top: 20px;
+	}
+
+	@keyframes blink {
+      0% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .blinking {
+      animation: blink 1.5s infinite;
+    }
 `
+
+    constructor() {
+        super()
+        observe('runningGame.startedAt', this.updatedStartIn.bind(this))
+    }
+
+    updatedStartIn(startedAt) {
+        if (this.timeoutId)
+            clearTimeout(this.timeoutId)
+        const remainingTime = startedAt - Date.now()
+        if (remainingTime < 0)
+            state.runningGame.startIn = null
+        else {
+            state.runningGame.startIn = Math.round(remainingTime / 1000)
+            const nextSecDelay = Math.round(remainingTime % 1000)
+           this.timeoutId = setTimeout(this.updatedStartIn.bind(this, startedAt), nextSecDelay)
+        }
+    }
 
     connectedCallback() {
         Promise.all(PongGame.sheets).then(() => this.initGame());
@@ -68,7 +166,7 @@ class PongGame extends Component {
 
         if (h > this.gameContainer.clientHeight)  {
             h = this.gameContainer.clientHeight
-            w = h / canvasRatio
+            w = h / this.canvasRatio
         }
 
 	    renderer.setSize(w, h)
@@ -289,14 +387,7 @@ renderer.render(scene, camera);
 		}
 		window.addEventListener('resize', handleResize);
 
-		// Declare a global variable for the WebSocket connection
-		var socket = new WebSocket("ws://" + window.location.hostname + ":8080");
-
-		// Function to create or ensure the WebSocket connection is open
-		socket.onopen = (event) => {
-			console.log("WebSocket connection opened");
-		};
-		socket.onmessage = (event) => {
+		const onmessage = (event) => {
 
 		var jfile
 		const message = event.data;
@@ -362,11 +453,21 @@ renderer.render(scene, camera);
 		}
 
 		renderer.render(scene, camera);
-
 	}
-		socket.onclose = (event) => {
-			console.log("DED");
-		};
+
+
+    const connectWsGame = () => {
+        this.socket = ws(`game-running/${state.currentGame}/`)
+
+			this.socket.onmessage = onmessage
+
+            this.socket.onclose = (event) => {
+                console.log('Game webSocket connection closed, autoreconnect in 2 sec.');
+                setTimeout(() => connectWsGame(), 2000);
+            };
+        }
+
+    connectWsGame()
 
 animate();
 

@@ -79,6 +79,13 @@ var state_base = {
 	//],
 	currentTournament: -1,
 	currentGame: -1,
+	runningGame: {
+		startIn : null,
+		p1Points: null,
+		p2Points: null,
+		startedAt: null,
+		gameOverState: null,
+	},
 	language: undefined,
 
 	en: {
@@ -136,7 +143,6 @@ var state_base = {
 		WaitingRoom: 'Waiting Room',
 		GoButton: 'START',
 		ByeButton: 'GIVE UP',
-		Start: 'STARTING IN',
 
 		//create-game
 		GameEditor: 'Game Editor',
@@ -145,7 +151,13 @@ var state_base = {
 		Tournament: 'Tournament',
 		Size: 'Size:',
 		Create: 'Create',
-		Cancel: 'Cancel'
+		Cancel: 'Cancel',
+
+                //GAME
+		Start: 'STARTING IN',
+                gameOver: 'GAME OVER',
+                youWin: 'YOU WIN',
+                youLose: 'YOU LOSE',
 	},
 	fr: {
 		// LOGIN
@@ -202,7 +214,6 @@ var state_base = {
 		WaitingRoom: 'Salle d\'attente',
 		GoButton: 'GO',
 		ByeButton: 'ABANDON',
-		Start: 'DEBUT DANS',
 
 		//Create-game
 		GameEditor: 'Editeur',
@@ -211,7 +222,13 @@ var state_base = {
 		Tournament: 'Tournoi',
 		Size: 'Taille:',
 		Create: 'Creer',
-		Cancel: 'Annuler'
+		Cancel: 'Annuler',
+
+                //GAME
+		Start: 'DEBUT DANS',
+                gameOver: 'GAME OVER',
+                youWin: 'VICTOIRE',
+                youLose: 'DÉFAITE',
 	},
 	de: {
 		// LOGIN
@@ -268,7 +285,6 @@ var state_base = {
 		WaitingRoom: 'Wartezimmer',
 		GoButton: 'GO',
 		ByeButton: 'AUFGEBEN',
-		Start: 'BEGINN IN',
 
 		//Create-game
 		GameEditor: 'Spiel-Editor',
@@ -277,10 +293,17 @@ var state_base = {
 		Tournament: 'Turnier',
 		Size: 'Größe:',
 		Create: 'anlegen',
-		Cancel: 'abbrechen'
+		Cancel: 'abbrechen',
+
+                //GAME
+		Start: 'BEGINN IN',
+                gameOver: 'GAME OVER',
+                youWin: 'SIEG',
+                youLose: 'VERLUST',
 	},
 
     lang(key) {
+            console.log('========', key, state.language[key] || state.language.errUnknown)
         return state.language[key] || state.language.errUnknown
     }
 
