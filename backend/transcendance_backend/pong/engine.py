@@ -1,7 +1,7 @@
-from pong.collision import collisions_check
-from pong.types import Vec
-from pong.ai import PongAI
-from pong.entities import Player
+from .collision import collisions_check
+from .types import Vec
+from .ai import PongAI
+from .entities import Player
 
 
 # def obstacles_to_lines(contours: list[Contour]) -> list[Line]:

@@ -1,4 +1,4 @@
-from pong.types import Line, Vec
+from .types import Line, Vec
 
 
 class Moving:

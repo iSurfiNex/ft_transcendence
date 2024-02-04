@@ -1,9 +1,9 @@
 from time import time
 import math
-from pong.collision import ai_collisions_check, update_collisions_ts
-from pong.types import Vec, Line
-from pong.entities import Player
-from pong.collision import Collision
+from .collision import ai_collisions_check, update_collisions_ts
+from .types import Vec, Line
+from .entities import Player
+from .collision import Collision
 
 
 class PongAI:

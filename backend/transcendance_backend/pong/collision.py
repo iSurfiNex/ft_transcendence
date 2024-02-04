@@ -1,5 +1,4 @@
-from pygame import color
-from pong.types import (
+from .types import (
     Obstacle,
     Vec,
     Line,
