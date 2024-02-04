@@ -184,10 +184,15 @@ class PongLogin extends Component {
 			const response = fetch(hostname, {
 				method: 'GET',
 			}).then(async (response)=>{
+                if (!response.ok)
+                    throw(new Error('Error 42'))
 				const resp = await response.json()
 				sessionStorage.setItem("access_token", resp.access_token);
                 this.handleLogin(resp)
-			})
+			}).catch(err => {
+                state.loginErrors.__all__ = "Error 42"
+                state.loginLoading = false;
+            })
 		}
 	}
 
@@ -228,7 +233,7 @@ class PongLogin extends Component {
         state.whoAmI = data['username']
         state.profile = data['profile']
         navigateTo('/')
-
+        state.loginLoading = false;
     }
 
     onLoginFormSubmit(event) {
@@ -236,7 +241,6 @@ class PongLogin extends Component {
         event.preventDefault();
         state.loginLoading = true;
         const formData = new FormData(event.target);
-
         post('/api/login/',formData)
             .then(data => this.handleLogin(data))
     .catch(error => {
@@ -244,7 +248,6 @@ class PongLogin extends Component {
         // Handle errors
         console.error('Error:', error);
         state.loginErrors.__all__ = state.language.errUnknown
-    }).then(()=> {
         state.loginLoading = false;
     })
     }
@@ -272,12 +275,12 @@ class PongLogin extends Component {
         state.whoAmI = data['username']
         state.profile = data['profile']
         navigateTo('/')
+        state.loginLoading = false;
     })
     .catch(error => {
         // Handle errors
         console.error('Error:', error);
         state.registerErrors.__all__ = state.language.errUnknown
-    }).then(()=> {
         state.loginLoading = false;
     })
     }
