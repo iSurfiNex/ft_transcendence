@@ -45,7 +45,7 @@ def login_user(request):
         return JsonResponse(
             {
                 "status": "success!",
-                "username": user.username,
+                "username": user.player.name,
                 "profile": user.player.serialize(),
             }
         )
@@ -74,13 +74,13 @@ def register_user(request):
             username=username,
             password=password,
         )
-        user.first_name = "first_name_unknown"
-        user.last_name = "last_name_unknown"
+        user.first_name = "Default"
+        user.last_name = "Name"
         user.save()
         login(request, user)
         return JsonResponse(
             {
-                "username": user.username,
+                "username": user.player.name,
                 "profile": user.player.serialize(),
             }
         )
@@ -235,7 +235,7 @@ def request_42_login(request):
 
         return JsonResponse(
             {
-                "username": user.username,
+                "username": user.player.name,
                 "profile": user.player.serialize(),
             }
         )
@@ -337,7 +337,7 @@ class ManageTournamentView(View):
             else:
                 tournament = get_object_or_404(Tournament, id=id)
                 response = tournament.serialize()
-            
+
             return JsonResponse(response, status=200)
 
         except KeyError:
@@ -353,7 +353,7 @@ class ManageTournamentView(View):
 
             game1 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
             game2 = Game.objects.create(state='waiting', goal_objective=data['goal_objective'], power_ups=data['power_ups'], created_by=creator)
-            
+
             tournament = Tournament.objects.create(state='waiting', power_ups=data['power_ups'], created_by=creator)
             tournament.players.add(creator)
             tournament.games.add(game1, game2)
@@ -373,13 +373,13 @@ class ManageTournamentView(View):
             tournament = get_object_or_404(Tournament, id=id)
 
             if data["action"] == "start-1st-round":#POUR COMMENCER LE TOURNOI
-                
+
                 #player1 = Player.objects.create(name='taMere')#A DEGAGER
                 #player2 = Player.objects.create(name='taSoeur')#C'EST POUR TESTER
                 #player3 = Player.objects.create(name='taGrandMere')#
                 #player4 = Player.objects.create(name='taCouz')#
                 #players = [player1, player2, player3, player4]#
-                
+
                 players = list(tournament.players.all())
                 random.shuffle(players)
                 tournament.games.all()[0].players.add(players[0], players[1])
@@ -412,7 +412,7 @@ class ManageTournamentView(View):
             return JsonResponse({"errors": "Object not found"}, status=404)
 
     #def delete(self, request, id):
-    #        
+    #
     #        tournament.players.remove(gone_player)
     #        response = tournament.serialize()
     #        return response
@@ -425,7 +425,7 @@ class ManageTournamentView(View):
 
 class ManageGameView(View):
     def get(self, request, id=None):
-        try: 
+        try:
             if id is None:
                 games = Game.objects.all()
                 response = [game.serialize() for game in games]
@@ -435,7 +435,7 @@ class ManageGameView(View):
                 response = game.serialize()
 
             return JsonResponse(response, status=200)
-            
+
         except KeyError:
             return JsonResponse({"errors": "Invalid data"}, status=404)
         except Http404:
@@ -464,7 +464,7 @@ class ManageGameView(View):
         try:
             data = json.loads(request.body)
             game = get_object_or_404(Game, id=id)
-            
+
             if data['action'] == "start-game":
                 game.started_at = (datetime.now().timestamp() + timedelta(seconds=5)) * 1000
                 game.state = "running"
@@ -500,18 +500,18 @@ class ManageGameView(View):
 
 
 def BuildState(request):
-    
+
     #player = Player.objects.create(username='taMere')#A DEGAGER
     #Player.objects.create(username='taSoeur')#C'EST POUR TESTER
     #Player.objects.create(username='taGrandMere')#
     #Player.objects.create(username='taCousine')#
     #game1 = Game.objects.create(state='waiting', power_ups=False)#
     #game2 = Game.objects.create(state='waiting', power_ups=False)#
-    #tour = Tournament.objects.create(created_by=player , power_ups=False)# 
+    #tour = Tournament.objects.create(created_by=player , power_ups=False)#
     #tour.games.add(game1, game2)#
     #tour.players.add(player)#
 
-    users_list = Player.objects.all()
+    users_list = Player.objects.filter(user__is_superuser=False)
     games_list = Game.objects.all()
     tournaments_list = Tournament.objects.all()
 

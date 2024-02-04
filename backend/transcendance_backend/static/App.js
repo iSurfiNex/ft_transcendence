@@ -48,7 +48,7 @@ var state_base = {
 	],
 	profileLooking: window.whoAmI,
 	channels: [
-		{ name: 'global', id: 1, notifications: 0 },
+		{ name: 'global', id: 1, notifications: 0, invite: false },
 	],
 	activeChannel: 'global',
 	messages: [],

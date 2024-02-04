@@ -307,6 +307,8 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture-div img {
+			object-fit: cover;
+			object-position: center;
 			display: block;
 			max-height: 100%;
 			height: auto;

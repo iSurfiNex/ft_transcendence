@@ -13,6 +13,7 @@ from datetime import datetime
 
 from .utils import stateUpdate
 
+
 class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -49,10 +50,12 @@ class Player(models.Model):
 
     def serialize(self):
         return {
-            "id": self.id,
+            "id": self.user.id,
             "id_42": self.id_42,
+            "is_connected": self.is_connected,
             "url_profile_42": self.url_profile_42,
-            "name": self.user.username,
+            "name": self.name,
+            "username": self.user.username,
             "first_name": self.user.first_name,
             "last_name": self.user.last_name,
             "avatar_url": self.avatar.url,
@@ -71,7 +74,7 @@ class Player(models.Model):
 
     def serialize_summary(self):
         return {
-            "id": self.id,
+            "id": self.user.id,
             "name": self.user.username,
         }
 

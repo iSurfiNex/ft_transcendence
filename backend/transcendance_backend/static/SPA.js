@@ -257,7 +257,7 @@ function stateUpdate(data)
 	else if (data_type == 'game')//game update
 		gameUpdate(data, data.action);
 
-	else if (data_type == 'user') //user update									 
+	else if (data_type == 'user') //user update
 		userUpdate(data, data.action);
 
 	//else if (data_type == 'profile')
@@ -274,7 +274,7 @@ function tournamentUpdate(data, action) {
 	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == data.id);
 	if (TournamentAlreadyExist && action == "create")
 		return ;
-	
+
 	var newTournament = {
 		type: 'tournament',
 		id: data.id,
@@ -329,7 +329,7 @@ function gameUpdate(data, action) {
 	GameAlreadyExist = state.games.find(game => game.id == data.id);
 	if (GameAlreadyExist && action == "create")
 		return ;
-	
+
 	var newGame = {
 		type: (data.power_ups == true) ? "powerup" : "normal",
 		id: data.id,
@@ -372,6 +372,8 @@ function userUpdate(data, action) {
 
 	var newUser = {
 		id: data.id,
+        isConnected: data.is_connected,
+		username: data.username,
 		nickname: data.name,
 		fullname: data.first_name + " " + data.last_name,
 		picture: data.avatar_url,
@@ -381,12 +383,15 @@ function userUpdate(data, action) {
 
 	if (action == 'create')
 		state.users.push(newUser);
-	else if (action == 'update')
-		state.users.map(user => {return user.nickname == newUser.nickname ? newUser : user});
+	else if (action == 'update') {
+		const i = state.users.findIndex(user => user.id === newUser.id);
+
+		state.users[i] = newUser
+	}
 }
 
 //function profileUpdate() {
-//	
+//
 //}
 
 function gameUpdateAll(data) {
@@ -418,7 +423,7 @@ function gameUpdateAll(data) {
 
 
 function stateBuild() {
-	get("https://localhost:8000/api/build-state/")
+	get("/api/build-state/")
 	.then (data => {
 		var users_list = [];
 		var games_list = [];
@@ -439,10 +444,10 @@ function stateBuild() {
 //
 //		if (curr_game)
 //			current_game = curr_game.id;
-//		
+//
 //		if (curr_tournament)
 //			current_tournament = curr_tournament.id;
-		
+
 
 		state.users = users_list;
 		state.games = games_list;
@@ -455,21 +460,24 @@ function stateBuild() {
 function userBuild(users) {
 	var users_list = [];
 
-	for (let user of users) { 
+	for (let user of users) {
 		let friend_list = [];
 		let blocked_list = [];
-	
+
 		for (let friend in user.friend_users)
 		{
 			friend_list.push(friend.name);
 		}
-	
+
 		for (let blocked in user.blocked_list)
 		{
 			blocked_list.push(blocked.name);
 		}
-		
+
 		let user_data = {
+			id: user.id,
+            isConnected: user.is_connected,
+			username: user.username,
 			nickname: user.name,
 			fullname: user.first_name + " " + user.last_name,
 			picture: user.avatar_url,
@@ -477,7 +485,7 @@ function userBuild(users) {
 			friends: friend_list,
 		};
 		users_list.push(user_data);
-	}	
+	}
 	return (users_list);
 }
 
@@ -485,7 +493,7 @@ function gameBuild(games) {
 	var games_list = [];
 
 	for (let game of games) {
-			
+
 		let game_type = (game.power_ups === true) ? "powerup" : "normal";
 		let game_players;
 
@@ -511,11 +519,11 @@ function gameBuild(games) {
 function tournamentBuild(tournaments) {
 	var	tournaments_list = [];
 
-	for (let tournament of tournaments){ 
+	for (let tournament of tournaments){
 		let tournament_players;
 		let tournament_gamesId;
 
-		for (let player of tournament.players){ 
+		for (let player of tournament.players){
 			tournament_players.push(player.username);
 		}
 
