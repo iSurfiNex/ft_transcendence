@@ -83,7 +83,8 @@ class PongGame extends Component {
 	.points {
 		position: absolute;
   		font-size: 44px;
-		color: #8e8e8e;
+		color: white;
+		opacity: 0.4;
 	}
 
 	#p1Points {
@@ -130,6 +131,17 @@ class PongGame extends Component {
     .blinking {
       animation: blink 1.5s infinite;
     }
+
+	@media (max-width: 500px) {
+		#gameOverTxt {
+			font-size: 20px;
+		}
+
+		#gameOverState {
+			font-size: 30px;
+		}
+
+	}
 `
 
     constructor() {
@@ -170,6 +182,9 @@ class PongGame extends Component {
         }
 
 	    renderer.setSize(w, h)
+        const overlayNode = this.shadowRoot.getElementById('gameOverlay');
+        overlayNode.style.width = w+'px';
+        overlayNode.style.height = h+'px';
     }
 
     setupThreeJS() {
