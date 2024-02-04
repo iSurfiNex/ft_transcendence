@@ -663,10 +663,7 @@ class PongChat extends Component {
 
 		socket.addEventListener("message", (event) => {
 			let data = JSON.parse(event.data);
-			console.log('Received message:', data);
-			console.log('action: ', data.action);
-			console.log('data_type: ', data.data_type);
-			stateUpdate(event);
+			stateUpdate(data);
 		});
 	}
 

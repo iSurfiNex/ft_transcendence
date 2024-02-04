@@ -510,41 +510,10 @@ class PongCreateGame extends Component {
 	}
 
 	connectedCallback() {
-		//const socket = ws('state-update');
-		//
-		//socket.addEventListener("open", (event) => {
-		//	console.log("Websocket Connected");
-		//})
-		//
-		//socket.addEventListener("error", (event) => {
-		//	console.error("Websocket Error: ", event);
-		//})
-//
-		//socket.addEventListener("close", (event) => {
-		//	console.log("WebSocket connection closed: ", event);
-		//	console.log("Close code: ", event.code);
-		//	console.log("Error type: ", event.type);
-		//  });
-//
-		//socket.addEventListener("message", (event) => {
-		//	let data = JSON.parse(event.data);
-		//	console.log('Received message:', data);
-		//	console.log('action: ', data.action);
-		//	console.log('data_type: ', data.data_type);
-		//	stateUpdate(event);
-		//});
 	}
 	
 	$id(str) {
 		return this.shadowRoot.getElementById(str);
-	}
-
-	getCSRF() {
-		const token = document.cookie
-			.split('; ')
-			.find(row => row.startsWith('csrftoken='))
-			.split('=')[1];
-		return (token);
 	}
 
 	createGame() {
