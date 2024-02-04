@@ -694,10 +694,15 @@ class PongChat extends Component {
 	}
 
 	connectedCallback() {
+        this.chatInput = this.shadowRoot.getElementById('chat-input')
 		initPopover(this);
         this.connectWsChat();
 		this.connectWsStateUpdate();
 		stateBuild();
+        this.chatInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter')
+                this.sendMessage()
+        });
 	}
 
 	chatCheckHandler() {
@@ -869,6 +874,7 @@ class PongChat extends Component {
 
 		var message = this.shadowRoot.getElementById("messages");
 		message.scrollTop = message.scrollHeight;
+        this.chatInput.value = ""
 }
 
 	_sendWsMessage(to, text) {
