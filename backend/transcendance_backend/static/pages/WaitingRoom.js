@@ -18,8 +18,8 @@ class WaitingRoom extends Component {
 
             <div class="profil-pics-N">
                 <div class="gallery-N">
-                    <img src="{this.playerOnePic()}" alt="player 1">
-                    <img src="{this.playerTwoPic()}" alt="player 2">
+                    <img src="{this.playerOnePic(currentGame)}" alt="player 1">
+                    <img src="{this.playerTwoPic(currentGame)}" alt="player 2">
                 </div>
             </div>    
     </div>
@@ -517,35 +517,19 @@ class WaitingRoom extends Component {
 
     getPlayerOne() {
         const game = state.games.find(game => game.id == state.currentGame);
-        
-        if (game)
-            if (game.players.length > 0)
-                var playerOne = game.players[0];
-        
-        if (!game || game.players.length < 1 || !playerOne)
-            return ("Unknown");
-        
-        return (playerOne);
+        return game?.players[0] || "Unknown"
     }
 
     getPlayerTwo()
     {
         const game = state.games.find(game => game.id == state.currentGame);
-        
-        if (game)
-            if (game.players.length > 1)
-                var playerTwo = game.players[1];
-
-        if (!game || game.players.length < 2 || !playerTwo)
-            return ("Unknown");
-
-        return (playerTwo);
+        return game?.players[1] || "Unknown"
     }
 
     isGameCreator() {
         const game = state.games.find(game => game.id == state.currentGame);
 
-        if (!game || state.whoAmI != game.creator)
+        if (!game || state.profile.nickname != game.creator)
             return !(false);
 
         return !(true);
@@ -553,7 +537,7 @@ class WaitingRoom extends Component {
 
     startTournament() {
         const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament);
-        const url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+        const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         if (tournament.players.length != 4)
         {    
@@ -574,7 +558,7 @@ class WaitingRoom extends Component {
 
     startGame() {
         const game = state.games.find(game => game.id == state.currentGame);
-        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+        const url = "/api/manage-game/" + state.currentGame + "/";
 
         if (game.players.length != 2)
         {    
@@ -594,13 +578,12 @@ class WaitingRoom extends Component {
     }
 
     giveUp() {
-        const url = "https://localhost:8000/api/manage-game/" + state.currentGame + "/";
+        const url = "/api/manage-game/" + state.currentGame + "/";
         if (state.currentTournament != -1)
-            url = "https://localhost:8000/api/manage-tournament/" + state.currentTournament + "/";
+            url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         var dataToSend = {
-            action: 'rm-player',
-            username: state.whoAmI,
+            action: 'leave',
         }
 
         put2(url, dataToSend)

@@ -625,9 +625,6 @@ class PongChat extends Component {
 		background-color: black;
 	}
 `
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
 
     connectWsChat() {
         this.socket = ws('chat')
@@ -698,14 +695,31 @@ class PongChat extends Component {
 
 	connectedCallback() {
         this.chatInput = this.shadowRoot.getElementById('chat-input')
+        this.chatInput?.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter')
+                this.sendMessage()
+        });
 		initPopover(this);
         this.connectWsChat();
 		this.connectWsStateUpdate();
 		stateBuild();
-        this.chatInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter')
-                this.sendMessage()
-        });
+	}
+
+    sendMessageToUser = (user) => {
+		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
+		const channel = state.channels.find(channel => channel.name === 'user_'+user.id);
+
+		state.isPlayerListChecked = true;
+
+		if (channel)
+			return ;
+		else if (user.nickname === state.profile.nickname)
+			return ;
+
+		const channelName = "user_"+user.id
+			state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
+		state.activeChannel = channelName
+		this.chatInput?.focus()
 	}
 
 	chatCheckHandler() {
@@ -733,7 +747,7 @@ class PongChat extends Component {
 	}
 
 	blockUser(tmpUser) {
-		if (tmpUser.nickname === state.whoAmI)
+		if (tmpUser.nickname === state.profile.nickname)
 			return ;
 		else if (state.profile.blocked_users.some(user => user.name === tmpUser.nickname)) {
 			var indexToRemove = state.profile.blocked_users.findIndex(user => user.id === tmpUser.id);
@@ -769,9 +783,6 @@ class PongChat extends Component {
 
 	getProfilePicture(tmpUser) {
 		const user = state.users.find(user => user.nickname === tmpUser);
-
-		console.log(user);
-		console.log(tmpUser);
 
 		if (user) {
 			return user.picture;
@@ -811,26 +822,8 @@ class PongChat extends Component {
 	}
 
 	navigate(nickname) {
-		state.profileLooking = nickname
 		navigateTo('/profile');
 		return false;
-	}
-
-	sendMessageToUser(user) {
-		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
-		const channel = state.channels.find(channel => channel.name === 'user_'+user.id);
-
-		state.isPlayerListChecked = true;
-
-		if (channel)
-			return ;
-		else if (user.nickname === state.whoAmI)
-			return ;
-
-        const channelName = "user_"+user.id
-		state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
-        state.activeChannel = channelName
-        this.chatInput.focus()
 	}
 
 	sendMessage() {
@@ -871,7 +864,7 @@ class PongChat extends Component {
 			}
 		}
 		else if (state.activeChannel != "global")
-			state.messages.push({text, sender:state.profile.id, nickname: state.whoAmI, date:Date.now(), channel: state.activeChannel})
+			state.messages.push({text, sender:state.profile.id, nickname: state.profile.nickname, date:Date.now(), channel: state.activeChannel})
 
 		if (send == true)
 			this._sendWsMessage(tmp ? tmp.id : state.activeChannel, text)

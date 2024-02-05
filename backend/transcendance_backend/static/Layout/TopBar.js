@@ -31,7 +31,7 @@ class PongTopBar extends Component {
 			</div>
 		</div>
 		<div class="profile-picture">
-			<a class="profile-picture-div" href="javascript:void(0)" @click="this.navigate(whoAmI)">
+			<a class="profile-picture-div" href="javascript:void(0)" @click="this.navigate(profile.nickname)">
 				<img src="{profile.avatar_thumbnail_url}" alt="profile"/>
 			</a>
 		</div>
@@ -396,7 +396,6 @@ class PongTopBar extends Component {
 	}
 
 	navigate(nickname) {
-		state.profileLooking = nickname
 		navigateTo('/profile');
 		return false;
 	}
@@ -412,7 +411,7 @@ class PongTopBar extends Component {
         else if (lang.username === "Nutzername")
             langkey = 'de'
 
-        document.cookie = `lang=${langkey}; path=/`;
+        document.cookie = `lang=${langkey}; path=/; SameSite=Strict;`;
 	}
 }
 

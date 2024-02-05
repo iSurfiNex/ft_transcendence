@@ -18,7 +18,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def update_connected_state(self, new_value):
         player = self.scope["user"].player
-        self.nickname = player.name
+        self.nickname = player.nickname
 
         player.is_connected = new_value
         player.save()
@@ -149,10 +149,10 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
             logger.error(f"Error: {e}")
 
     async def disconnect(self, close_code):
-        #await self.channel_layer.group_discard("state-update", self.channel_name)
+        # await self.channel_layer.group_discard("state-update", self.channel_name)
         pass
 
-    #async def receive(self, text_data):
+    # async def receive(self, text_data):
     #    text_data_json = json.loads(text_data)
     #    message = text_data_json["message"]
     #    str_resp = json.dumps({"message": message})
@@ -160,7 +160,7 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
     #    #await self.send(text_data=str_resp)
 
     async def send_update(self, event):
-        await self.send(text_data=json.dumps(event['data']))
+        await self.send(text_data=json.dumps(event["data"]))
 
 
 class GameRunningConsumer(AsyncWebsocketConsumer):
@@ -203,4 +203,4 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
         await self.send_game_update(data)
 
     async def send_game_update(self, event):
-        await self.send(text_data=json.dumps(event['message']))
+        await self.send(text_data=json.dumps(event["message"]))
