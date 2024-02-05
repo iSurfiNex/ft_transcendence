@@ -6,6 +6,7 @@ from asgiref.sync import sync_to_async
 from .utils import stateUpdate
 
 logger = logging.getLogger(__name__)
+from .models import Player
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -15,7 +16,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def update_connected_state(self, new_value):
-        player = self.scope["user"].player
+        p = self.scope["user"].player
+        player = Player.objects.get(id=p.id)
         self.nickname = player.nickname
 
         player.is_connected = new_value
