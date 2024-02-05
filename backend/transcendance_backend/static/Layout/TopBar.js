@@ -438,6 +438,9 @@ class PongTopBar extends Component {
 	}
 
 	navigate(nickname) {
+		const user = state.users.find(user => user.nickname === nickname);
+
+		state.profileLooking = user.id;
 		navigateTo('/profile');
 		return false;
 	}
