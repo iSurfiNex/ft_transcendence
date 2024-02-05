@@ -74,8 +74,8 @@ def register_user(request):
             username=username,
             password=password,
         )
-        user.first_name = "Default"
-        user.last_name = "Name"
+        user.first_name = "Jean"
+        user.last_name = "Michel"
         user.save()
         login(request, user)
         return JsonResponse(
@@ -135,6 +135,15 @@ def update_profile(request):
 def get_user_profile(request, id):
     user = get_object_or_404(User, id=id)
     return JsonResponse(user.player.serialize())
+
+
+def get_unique_username(str):
+    if not User.objects.filter(username=str).exists():
+        return str
+    i = 2
+    while User.objects.filter(username=f"{str}{i}").exists():
+        i += 1
+    return f"{str}{i}"
 
 
 def request_42_login(request):
@@ -198,6 +207,7 @@ def request_42_login(request):
         first_name = me_response_data["first_name"]
         last_name = me_response_data["last_name"]
         username = me_response_data["login"]
+        username = get_unique_username(username)
 
         url_profile_42 = f"https://profile.intra.42.fr/users/{username}"
 

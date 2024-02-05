@@ -175,11 +175,22 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 
 
+def get_unique_nickname(str):
+    if not Player.objects.filter(name=str).exists():
+        return str
+    i = 2
+    while Player.objects.filter(name=f"{str}{i}").exists():
+        i += 1
+    return f"{str}{i}"
+
+
 # Automatically associate a Player when a User is created
 @receiver(post_save, sender=User)
 def create_player(sender, instance, created, **kwargs):
     if created:
-        Player.objects.create(user=instance, name=f"{instance.username}{instance.id}")
+        Player.objects.create(
+            user=instance, name=get_unique_nickname(f"_{instance.username}_")
+        )
 
 
 @receiver(post_save, sender=User)
