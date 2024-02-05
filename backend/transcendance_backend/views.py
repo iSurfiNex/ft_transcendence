@@ -191,7 +191,7 @@ def request_42_login(request):
         logger.debug("======== 42 API reached")
         me_response_data = me_response.json()
 
-        img_url = me_response_data["image"]["versions"]["medium"]
+        img_url = me_response_data["image"]["versions"]["large"]
         logger.debug("======== Downloading image at ")
         logger.debug(img_url)
         img_response = requests.get(img_url)
