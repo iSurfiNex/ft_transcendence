@@ -227,6 +227,7 @@ class PongLogin extends Component {
                     continue
                 state.loginErrors[key] = errMsg.join('\n')
             }
+            state.loginLoading = false;
             return
         }
 	    setCookie('loggedin', true, 7);
@@ -267,6 +268,7 @@ class PongLogin extends Component {
                         continue
                     state.registerErrors[key] = errMsg.join('\n')
                 }
+            state.loginLoading = false;
             return
         }
 		const formRegisterNode = this.shadowRoot.getElementById("form-register");
