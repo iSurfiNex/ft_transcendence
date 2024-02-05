@@ -39,23 +39,22 @@ class PongChat extends Component {
 				</div>
 			</div>
 
-				<div class="chat-player-list-header-text" hidden="{isPlayerListChecked}">{language.playerList}</div>
+			<div class="chat-player-list-header-text" hidden="{isPlayerListChecked}">{language.playerList}</div>
 			<div class="chat-player-list" hidden="{isPlayerListChecked}">
 				<div class="chat-list-player" repeat="users" as="user">
-					<div class="chat-player" hidden="{this.equals(user.id, profile.id)}">
+					<div class="chat-player">
 						<a class="chat-player-link" href="javascript:void(0)" @click="this.navigate(user.nickname)">
 							<img class="chat-player-img" src="{user.picture}" alt="profile"/>
 							<div class="chat-player-name">{user.nickname}</div>
 						</a>
 
-                       <div class="btn-group user-btn" role="group" aria-label="Basic example">
-						 <span hidden="{user.isConnected}" class="offline">offline</span>
-                         <button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
-                         <button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
-                         <button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
-                       </div>
+						<div class="btn-group user-btn" role="group" aria-label="Basic example">
+							<span hidden="{user.isConnected}" class="offline">{this.getUserStatus(user.isConnected)}</span>
+                        	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+                        	<button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
+                        	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
+						</div>
 						<div class="chat-player-seperator"></div>
-
 					</div>
 				</div>
 			</div>
@@ -170,6 +169,11 @@ class PongChat extends Component {
 			text-overflow: ellipsis;
 		}
 
+		.chat-player-list {
+			margin-top: 0;
+			height: 100%;
+		}
+
 		.bottom-bar {
 			position: fixed;
 			left: 10px;
@@ -275,6 +279,11 @@ class PongChat extends Component {
 			text-overflow: ellipsis;
 		}
 
+		.chat-player-list {
+			margin-top: 0;
+			height: 100%;
+		}
+
 		.messages {
 			position: absolute;
 			width: 100%;
@@ -305,6 +314,7 @@ class PongChat extends Component {
 		}
 
 		.chat-player-list-header-text {
+			margin-top: 10px;
 			position: fixed;
 			text-align: center;
 			color: white;
@@ -315,6 +325,11 @@ class PongChat extends Component {
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
+		}
+
+		.chat-player-list {
+			margin-top: 10px;
+			height: calc(100% + 10px);
 		}
 
 		.bottom-bar {
@@ -446,8 +461,7 @@ class PongChat extends Component {
 	.chat-player-list {
 		background-color: #5e5e5e;
 		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-		overflow: scroll;
-  		height: 100%;
+		overflow: auto;
 		position: relative;
 		padding-bottom: 80px;
 	}
@@ -460,6 +474,10 @@ class PongChat extends Component {
 	.chat-list-player::-webkit-scrollbar {
 		width: 10px;
 		background-color: #4e4e4e;
+	}
+
+	.chat-player-list::-webkit-scrollbar {
+		display: none;
 	}
 
 	.chat-player {
@@ -708,16 +726,15 @@ class PongChat extends Component {
     sendMessageToUser = (user) => {
 		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 		const channel = state.channels.find(channel => channel.name === 'user_'+user.id);
+		const channelName = "user_"+user.id
+
+
+		if (user.nickname === state.profile.nickname)
+			return ;
+		else if (!channel)
+			state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
 
 		state.isPlayerListChecked = true;
-
-		if (channel)
-			return ;
-		else if (user.nickname === state.profile.nickname)
-			return ;
-
-		const channelName = "user_"+user.id
-			state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
 		state.activeChannel = channelName
 		this.chatInput?.focus()
 	}
@@ -802,9 +819,14 @@ class PongChat extends Component {
 	}
 
 	isMessageInChannel(message, sender, channelName) {
+		console.log(message, sender, channelName);
 		if (state.profile.blocked_users.some(user => user.id === sender))
 			return true;
 		return !(message == channelName);
+	}
+
+	getUserStatus(status) {
+		return (status ? 'online' : 'offline');
 	}
 
 	getChannelNotifications(notifications) {
