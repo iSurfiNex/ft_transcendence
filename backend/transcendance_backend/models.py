@@ -84,7 +84,6 @@ class GameStat(models.Model):
     touch_nb = models.PositiveIntegerField(default=0)
     miss_nb = models.PositiveIntegerField(default=0)
     game = models.ForeignKey("Game", on_delete=models.CASCADE)
-    game = models.ForeignKey("Game", on_delete=models.CASCADE)
     player = models.ForeignKey("Player", on_delete=models.CASCADE)
 
 
