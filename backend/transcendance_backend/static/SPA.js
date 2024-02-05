@@ -476,7 +476,7 @@ function userBuild(users) {
 		let user_data = {
 			id: user.id,
             isConnected: user.is_connected,
-			username: user.nickname,
+			username: user.username,
 			nickname: user.nickname,
 			fullname: user.first_name + " " + user.last_name,
 			picture: user.avatar_url,
