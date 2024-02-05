@@ -230,8 +230,7 @@ class PongClassic extends Component {
 		var url = "/api/manage-game/" + game.id + "/";
 
 		var dataToSend = {
-			action: "add-player",
-			username: state.whoAmI,
+			action: "join"
 		};
 
 		put2(url, dataToSend)

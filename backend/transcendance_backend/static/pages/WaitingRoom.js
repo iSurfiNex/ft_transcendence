@@ -18,8 +18,8 @@ class WaitingRoom extends Component {
 
             <div class="profil-pics-N">
                 <div class="gallery-N">
-                    <img src="{this.playerOnePic()}" alt="player 1">
-                    <img src="{this.playerTwoPic()}" alt="player 2">
+                    <img src="{this.playerOnePic(currentGame)}" alt="player 1">
+                    <img src="{this.playerTwoPic(currentGame)}" alt="player 2">
                 </div>
             </div>    
     </div>
@@ -529,7 +529,7 @@ class WaitingRoom extends Component {
     isGameCreator() {
         const game = state.games.find(game => game.id == state.currentGame);
 
-        if (!game || state.whoAmI != game.creator)
+        if (!game || state.profile.nickname != game.creator)
             return !(false);
 
         return !(true);
@@ -583,8 +583,7 @@ class WaitingRoom extends Component {
             url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         var dataToSend = {
-            action: 'rm-player',
-            username: state.whoAmI,
+            action: 'leave',
         }
 
         put2(url, dataToSend)

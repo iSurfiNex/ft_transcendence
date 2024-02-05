@@ -15,7 +15,7 @@ class PongProfile extends Component {
 <!--
 TODO use this instead of pong-update-profile when viewing another user profile
 			<div class="profile-topbar-button">
-				<button @click="this.sendMessageToUser(profileLooking)" class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
+				<button @click="sendMessageToUser(user)" class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
 				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Add friend"><img class="profile-topbar-img" src="/static/img/plus.svg" alt="add friend"></img></button>
 				<button class="profile-topbar-button-block btn btn-danger btn-lg" title="Block"><img class="profile-topbar-img" src="/static/img/block.svg" alt="block"></img></button>
 			</div>
@@ -335,33 +335,19 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		initPopover(this);
 	}
 
-	sendMessageToUser(user) {
-		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
-		const channel = state.channels.find(channel => channel.name === user);
+	//getFullName(whoAmI) {
+	//	const user = state.users.find(user => user.nickname === whoAmI);
 
-		state.isPlayerListChecked = true;
-
-		if (channel)
-			return ;
-		else if (user === state.whoAmI)
-			return ;
-
-		state.channels.push({name: user, id: maxId + 1, notifications: 0});
-	}
-
-	getFullName(whoAmI) {
-		const user = state.users.find(user => user.nickname === whoAmI);
-
-		if (user) {
-			return user.fullname;
-		}
-		else {
-			return '';
-		}
-	}
+	//	if (user) {
+	//		return user.fullname;
+	//	}
+	//	else {
+	//		return '';
+	//	}
+	//}
 
 	getWin() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -369,7 +355,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getLose() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -377,7 +363,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getTotal() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -385,7 +371,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getWinRate() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -393,7 +379,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getBallHit() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -401,7 +387,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getGoal() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -409,7 +395,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getTournamentWin() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -417,7 +403,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getChartWin() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -429,7 +415,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getChartLose() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -441,7 +427,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getChartTotal() {
-		const profile = state.profiles.find(profile => profile.name === state.profileLooking);
+		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
 
 		if (!profile)
 			return '';
@@ -452,7 +438,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getHiddenStatus(game) {
-		const player = game.players.find(player => player === state.whoAmI);
+		const player = game.players.find(player => player === state.profile.nickname);
 
 		if (!player)
 			return (true);
@@ -466,19 +452,19 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getPlayerName(game) {
-		const player1 = game.players.find(player => player === state.whoAmI);
+		const player1 = game.players.find(player => player === state.profile.nickname);
 
 		return player1;
 	}
 
 	getOtherPlayerName(game) {
-		const player2 = game.players.find(player => player !== state.whoAmI);
+		const player2 = game.players.find(player => player !== state.profile.nickname);
 
 		return player2;
 	}
 
 	getPlayerScore(game) {
-		const player = game.players.find(player => player === state.whoAmI);
+		const player = game.players.find(player => player === state.profile.nickname);
 
 		if (!player)
 			return ;
@@ -488,12 +474,12 @@ TODO use this instead of pong-update-profile when viewing another user profile
 			return ;
 		if (game.creator == "tournament")
 			return ;
-		const score = game.score.find(score => score.name === player);
+		const score = game.score.find(score => score.nickname === player);
 		return '(' + score.points + ')';
 	}
 
 	getOtherPlayerScore(game) {
-		const player = game.players.find(player => player !== state.whoAmI);
+		const player = game.players.find(player => player !== state.profile.nickname);
 
 		if (!player)
 			return ;
@@ -503,13 +489,13 @@ TODO use this instead of pong-update-profile when viewing another user profile
 			return ;
 		if (game.creator == "tournament")
 			return ;
-		const score = game.score.find(score => score.name === player);
+		const score = game.score.find(score => score.nickname === player);
 		return '(' + score.points + ')';
 	}
 
 	getGameStatus(game) {
-		const player1 = game.players.find(player => player === state.whoAmI);
-		const player2 = game.players.find(player => player !== state.whoAmI);
+		const player1 = game.players.find(player => player === state.profile.nickname);
+		const player2 = game.players.find(player => player !== state.profile.nickname);
 
 		if (!player1)
 			return ;
@@ -519,8 +505,8 @@ TODO use this instead of pong-update-profile when viewing another user profile
 			return ;
 		if (game.creator == "tournament")
 			return ;
-		const score1 = game.score.find(score => score.name === player1);
-		const score2 = game.score.find(score => score.name === player2);
+		const score1 = game.score.find(score => score.nickname === player1);
+		const score2 = game.score.find(score => score.nickname === player2);
 		if (score1.points == score2.points)
 			return 'tie';
 		else
@@ -528,7 +514,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 
 	getHiddenStatusTournament(game) {
-		const player = game.players.find(player => player === state.whoAmI);
+		const player = game.players.find(player => player === state.profile.nickname);
 
 		if (!player)
 			return (true);
@@ -553,15 +539,15 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		if (!finalGame)
 			return ;
 
-		const player1 = finalGame.players.find(player => player == state.whoAmI);
-		const player2 = finalGame.players.find(player => player !== state.whoAmI);
+		const player1 = finalGame.players.find(player => player == state.profile.nickname);
+		const player2 = finalGame.players.find(player => player !== state.profile.nickname);
 		if (!player1)
 			return 'lose';
 		if (!player2)
 			return ;
 
-		const score1 = finalGame.score.find(score => score.name === player1);
-		const score2 = finalGame.score.find(score => score.name === player2);
+		const score1 = finalGame.score.find(score => score.nickname === player1);
+		const score2 = finalGame.score.find(score => score.nickname === player2);
 		if (score1.points == score2.points)
 			return 'tie';
 		else
@@ -573,7 +559,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player1 = game.players.find(player => player === state.whoAmI);
+		let player1 = game.players.find(player => player === state.profile.nickname);
 		if (!player1)
 			player1 = game.players[0];
 
@@ -584,8 +570,8 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player2 = game.players.find(player => player !== state.whoAmI);
-		const player1 = game.players.find(player => player === state.whoAmI);
+		let player2 = game.players.find(player => player !== state.profile.nickname);
+		const player1 = game.players.find(player => player === state.profile.nickname);
 		if (!player1)
 			player2 = game.players[1];
 
@@ -596,7 +582,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player = game.players.find(player => player === state.whoAmI);
+		let player = game.players.find(player => player === state.profile.nickname);
 
 		if (!player)
 			player = game.players[0];
@@ -606,7 +592,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 			return ;
 		if (game.creator != "tournament")
 			return ;
-		const score = game.score.find(score => score.name === player);
+		const score = game.score.find(score => score.nickname === player);
 		return '(' + score.points + ')';
 	}
 
@@ -614,8 +600,8 @@ TODO use this instead of pong-update-profile when viewing another user profile
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player1 = game.players.find(player => player === state.whoAmI);
-		let player2 = game.players.find(player => player !== state.whoAmI);
+		let player1 = game.players.find(player => player === state.profile.nickname);
+		let player2 = game.players.find(player => player !== state.profile.nickname);
 
 		if (!player1)
 			player2 = game.players[1];
@@ -627,7 +613,7 @@ TODO use this instead of pong-update-profile when viewing another user profile
 			return ;
 		if (game.creator != "tournament")
 			return ;
-		const score = game.score.find(score => score.name === player2);
+		const score = game.score.find(score => score.nickname === player2);
 		return '(' + score.points + ')';
 	}
 }

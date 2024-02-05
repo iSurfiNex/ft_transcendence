@@ -4,10 +4,8 @@ from django import forms
 
 
 class TournamentAdmin(admin.ModelAdmin):
-    filter_horizontal = (
-        "players",
-    )
-    #list_display = ("id", "created_by", "required_player_number")
+    filter_horizontal = ("players",)
+    # list_display = ("id", "created_by", "required_player_number")
     list_display = ("id", "created_by")
     search_fields = (
         "id",
@@ -17,7 +15,7 @@ class TournamentAdmin(admin.ModelAdmin):
 
 class GameAdmin(admin.ModelAdmin):
     filter_horizontal = ("players",)
-    #list_display = ("id", "state", "required_player_number", "goal_objective", "ia")
+    # list_display = ("id", "state", "required_player_number", "goal_objective", "ia")
     list_display = ("id", "state", "goal_objective", "ia")
     list_filter = ("state", "ia")
     search_fields = ("id",)
@@ -31,11 +29,11 @@ class PlayerAdmin(admin.ModelAdmin):
     )
     list_display = (
         "id",
-        "name",
+        "nickname",
     )
     search_fields = (
         "id",
-        "name",
+        "nickname",
     )
 
 
@@ -49,7 +47,7 @@ class GameStatAdmin(admin.ModelAdmin):
     search_fields = ("game__id",)
 
 
-#class PoolAdmin(admin.ModelAdmin):
+# class PoolAdmin(admin.ModelAdmin):
 #    list_display = (
 #        "id",
 #        "tournament",

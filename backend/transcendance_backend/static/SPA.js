@@ -134,7 +134,6 @@ function link42Account() {
                 return
             }
         }
-        state.whoAmI = data['username']
         state.profile = data['profile']
         state.profileErrors.global = ''
 	}, err => {
@@ -150,7 +149,7 @@ function displayContent(path) {
         // This request unsets the 'sessionid' cookie
         fetch('/api/logout/').then(()=>{
             unsetCookie('loggedin')
-            state.whoAmI = null
+            state.profile= {}
 		    navigateTo("/");
         }, ()=> {
             console.error('Logout request failed :(')
@@ -279,8 +278,8 @@ function tournamentUpdate(data, action) {
 		type: 'tournament',
 		id: data.id,
 		status: data.state,
-		creator: data.created_by.name,
-		players: data.players.map(player => player.name),
+		creator: data.created_by.nickname,
+		players: data.players.map(player => player.nickname),
 		gamesId: data.games.map(game => game.id),
 		date: data.created_at,
 	};
@@ -289,8 +288,8 @@ function tournamentUpdate(data, action) {
 		type: (data.power_ups == true) ? "powerup" : "normal",
 		id: data.games[0].id,
 		status: data.state,
-		creator: data.created_by.name,
-		players: (data.games[0].player) ? data.games.players.map(player => player.name) : [],
+		creator: data.created_by.nickname,
+		players: (data.games[0].player) ? data.games.players.map(player => player.nickname) : [],
 		score: [],
 		date: data.created_at,
 	};
@@ -299,8 +298,8 @@ function tournamentUpdate(data, action) {
 		type: (data.power_ups == true) ? "powerup" : "normal",
 		id: data.games[1].id,
 		status: data.state,
-		creator: data.created_by.name,
-		players: (data.games[1].player) ? data.games.players.map(player => player.name) : [],
+		creator: data.created_by.nickname,
+		players: (data.games[1].player) ? data.games.players.map(player => player.nickname) : [],
 		score: [],
 		date: data.created_at,
 	};
@@ -319,7 +318,7 @@ function tournamentUpdate(data, action) {
 	}
 
 	state.currentTournament = -1;
-	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.whoAmI));
+	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.profile.nickname));
 	if (currentTournament)
 		state.currentTournament = currentTournament.id;
 }
@@ -334,8 +333,8 @@ function gameUpdate(data, action) {
 		type: (data.power_ups == true) ? "powerup" : "normal",
 		id: data.id,
 		status: data.state,
-		creator: data.created_by.name,
-		players: data.players.map(player => player.name),
+		creator: data.created_by.nickname,
+		players: data.players.map(player => player.nickname),
 		score: [],
 		date: data.created_at,
 	};
@@ -346,14 +345,14 @@ function gameUpdate(data, action) {
 		state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
 
 	state.currentGame = -1;
-	currentGame = state.games.find(game => game.players.find(player => player == state.profile.name));
+	currentGame = state.games.find(game => game.players.find(player => player == state.profile.nickname));
 	if (currentGame)
 		state.currentGame = currentGame.id;
 }
 
 
 function userUpdate(data, action) {
-	UserAlreadyExist = state.users.find(user => user.nickname == data.name);
+	UserAlreadyExist = state.users.find(user => user.nickname == data.nickname);
 	if (UserAlreadyExist && action == "create")
 		return ;
 
@@ -362,19 +361,19 @@ function userUpdate(data, action) {
 
 	for (let friend in data.friend_users)
 	{
-		friend_list.push(friend.name);
+		friend_list.push(friend.nickname);
 	}
 
 	for (let blocked in data.blocked_list)
 	{
-		blocked_list.push(blocked.name);
+		blocked_list.push(blocked.nickname);
 	}
 
 	var newUser = {
 		id: data.id,
         isConnected: data.is_connected,
 		username: data.username,
-		nickname: data.name,
+		nickname: data.nickname,
 		fullname: data.first_name + " " + data.last_name,
 		picture: data.avatar_url,
 		blocked: blocked_list,
@@ -406,8 +405,8 @@ function gameUpdateAll(data) {
 			type: (obj.power_ups == true) ? "powerup" : "normal",
 			id: obj.id,
 			status: obj.state,
-			creator: obj.created_by.name,
-			players: obj.players.map(player => player.name),
+			creator: obj.created_by.nickname,
+			players: obj.players.map(player => player.nickname),
 			score: score,
 			date: obj.created_at,
 		}
@@ -439,8 +438,8 @@ function stateBuild() {
 //		var current_game = -1;
 
 
-//		let curr_game = games_list.find(game => game.players.find(player => player == state.whoAmI));
-//		let curr_tournament = tournaments_list.find(tournament => tournament.players.find(player => player == state.whoAmI));
+//		let curr_game = games_list.find(game => game.players.find(player => player == state.profile.nickname));
+//		let curr_tournament = tournaments_list.find(tournament => tournament.players.find(player => player == state.profile.nickname));
 //
 //		if (curr_game)
 //			current_game = curr_game.id;
@@ -466,19 +465,19 @@ function userBuild(users) {
 
 		for (let friend in user.friend_users)
 		{
-			friend_list.push(friend.name);
+			friend_list.push(friend.nickname);
 		}
 
 		for (let blocked in user.blocked_list)
 		{
-			blocked_list.push(blocked.name);
+			blocked_list.push(blocked.nickname);
 		}
 
 		let user_data = {
 			id: user.id,
             isConnected: user.is_connected,
-			username: user.name,
-			nickname: user.name,
+			username: user.nickname,
+			nickname: user.nickname,
 			fullname: user.first_name + " " + user.last_name,
 			picture: user.avatar_url,
 			blocked: blocked_list,
@@ -498,14 +497,14 @@ function gameBuild(games) {
 		let game_players = [];
 
 		for (let player of game.players) {
-			game_players.push(player.name);
+			game_players.push(player.nickname);
 		}
 
 		let game_data = {
 			type: game_type,
 			id: game.id,
 			status: game.state,
-			creator: game.created_by.name,
+			creator: game.created_by.nickname,
 			players: game_players,
 			//score:,
 			date: game.created_at,
@@ -523,7 +522,7 @@ function tournamentBuild(tournaments) {
 		let tournament_gamesId;
 
 		for (let player of tournament.players){
-			tournament_players.push(player.username);
+			tournament_players.push(player.nickname);
 		}
 
 		for (let game of tournament.games){
@@ -534,7 +533,7 @@ function tournamentBuild(tournaments) {
 			type: 'tournament',
 			id: tournament.id,
 			status: tournament.state,
-			creator: tournament.created_by.name,
+			creator: tournament.created_by.nickname,
 			players: tournament_players,
 			gamesId: tournament_gamesId,
 			date: tournament.created_at,

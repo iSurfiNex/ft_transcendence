@@ -33,7 +33,7 @@ class Player(models.Model):
         options={"quality": 60},
     )
 
-    name = models.CharField(max_length=32, unique=True)
+    nickname = models.CharField(max_length=32, unique=True)
     blocked_users = models.ManyToManyField(
         "self", related_name="blocked_by", symmetrical=False, blank=True
     )
@@ -54,7 +54,7 @@ class Player(models.Model):
             "id_42": self.id_42,
             "is_connected": self.is_connected,
             "url_profile_42": self.url_profile_42,
-            "name": self.name,
+            "nickname": self.nickname,
             "username": self.user.username,
             "first_name": self.user.first_name,
             "last_name": self.user.last_name,
@@ -75,7 +75,7 @@ class Player(models.Model):
     def serialize_summary(self):
         return {
             "id": self.user.id,
-            "name": self.name,
+            "nickname": self.nickname,
         }
 
 
@@ -104,7 +104,9 @@ class Game(models.Model):
         through="GameStat",
         related_name="games_played",
     )
-    created_by = models.ForeignKey(Player, on_delete=models.CASCADE, null=True, blank=True)
+    created_by = models.ForeignKey(
+        Player, on_delete=models.CASCADE, null=True, blank=True
+    )
     created_at = models.DateTimeField(default=datetime.now)
     started_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
@@ -125,9 +127,15 @@ class Game(models.Model):
             "power_ups": self.power_ups,
             "players": [player.serialize_summary() for player in self.players.all()],
             "created_by": self.created_by.serialize_summary(),
-            "created_at": int(self.created_at.timestamp() * 1000) if self.created_at else None,
-            "started_at": int(self.started_at.timestamp() * 1000) if self.started_at else None,
-            "ended_at": int(self.ended_at.timestamp() * 1000) if self.ended_at else None,
+            "created_at": int(self.created_at.timestamp() * 1000)
+            if self.created_at
+            else None,
+            "started_at": int(self.started_at.timestamp() * 1000)
+            if self.started_at
+            else None,
+            "ended_at": int(self.ended_at.timestamp() * 1000)
+            if self.ended_at
+            else None,
             "winner": self.winner.serialize_summary() if self.winner else None,
         }
 
@@ -148,7 +156,9 @@ class Tournament(models.Model):
     power_ups = models.BooleanField(default=False)
     players = models.ManyToManyField(Player, blank=True)
     games = models.ManyToManyField(Game, blank=True)
-    created_by = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="created_tournaments")
+    created_by = models.ForeignKey(
+        Player, on_delete=models.CASCADE, related_name="created_tournaments"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def serialize(self):
@@ -159,13 +169,16 @@ class Tournament(models.Model):
             "players": [player.serialize_summary() for player in self.players.all()],
             "games": [game.serialize() for game in self.games.all()],
             "created_by": self.created_by.serialize_summary(),
-            "created_at": int(self.created_at.timestamp() * 1000) if self.created_at else None,
+            "created_at": int(self.created_at.timestamp() * 1000)
+            if self.created_at
+            else None,
         }
 
     def serialize_summary(self):
         return {
             "id": self.id,
         }
+
 
 # === SIGNALS ===
 
@@ -175,10 +188,10 @@ from django.dispatch import receiver
 
 
 def get_unique_nickname(str):
-    if not Player.objects.filter(name=str).exists():
+    if not Player.objects.filter(nickname=str).exists():
         return str
     i = 2
-    while Player.objects.filter(name=f"{str}{i}").exists():
+    while Player.objects.filter(nickname=f"{str}{i}").exists():
         i += 1
     return f"{str}{i}"
 
@@ -188,7 +201,7 @@ def get_unique_nickname(str):
 def create_player(sender, instance, created, **kwargs):
     if created:
         Player.objects.create(
-            user=instance, name=get_unique_nickname(f"_{instance.username}_")
+            user=instance, nickname=get_unique_nickname(f"{instance.username}_")
         )
 
 

@@ -12,7 +12,7 @@ class PongUpdateProfile extends Component {
  	type="text"
  	class="form-control"
  	id="firstNameInput"
- 	placeholder="name@example.com"
+ 	placeholder="John"
 	value="{profile.first_name}"/>
    <label for="firstNameInput">{language.firstName}</label>
     <div class="invalid-feedback">{profileErrors.first_name}</div>
@@ -23,7 +23,7 @@ class PongUpdateProfile extends Component {
  	type="text"
  	class="form-control"
  	id="lastNameInput"
- 	placeholder="name@example.com"
+ 	placeholder="Doe"
 	value="{profile.last_name}">
    <label for="lastNameInput">{language.lastName}</label>
     <div class="invalid-feedback">{profileErrors.last_name}</div>
@@ -36,10 +36,10 @@ class PongUpdateProfile extends Component {
 	type="text"
 	class="form-control"
 	id="pseudoInput"
- 	placeholder="name@example.com"
-	value="{profile.name}">
+ 	placeholder="Toto"
+	value="{profile.nickname}">
    <label for="pseudoInput">{language.pseudo}</label>
-    <div class="invalid-feedback">{profileErrors.name}</div>
+    <div class="invalid-feedback">{profileErrors.nickname}</div>
 </div>
 
 <button class="btn btn-success">
@@ -83,13 +83,13 @@ button label {
     submitProfileUpdate() {
         const inputs = {
             avatar: this.shadowRoot.getElementById('avatarInput'),
-            name: this.shadowRoot.getElementById('pseudoInput'),
+            nickname: this.shadowRoot.getElementById('pseudoInput'),
             first_name: this.shadowRoot.getElementById('firstNameInput'),
             last_name: this.shadowRoot.getElementById('lastNameInput'),
         }
         const fields = {
             avatar: inputs.avatar.files && inputs.avatar.files[0],
-            name: inputs.name.value,
+            nickname: inputs.nickname.value,
             first_name: inputs.first_name.value,
             last_name: inputs.last_name.value
         }

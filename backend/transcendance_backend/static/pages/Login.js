@@ -220,8 +220,8 @@ class PongLogin extends Component {
 
     handleLogin(data) {
         const errors = data['errors']
-        console.log(errors)
         if (errors !== undefined) {
+            console.log(errors)
             for (const [key, errMsg] of Object.entries(errors)) {
                 if (!Array.isArray(errMsg))
                     continue
@@ -231,7 +231,6 @@ class PongLogin extends Component {
             return
         }
 	    setCookie('loggedin', true, 7);
-        state.whoAmI = data['username']
         state.profile = data['profile']
         navigateTo('/')
         state.loginLoading = false;
@@ -274,7 +273,6 @@ class PongLogin extends Component {
 		const formRegisterNode = this.shadowRoot.getElementById("form-register");
         formRegisterNode.reset()
 	    setCookie('loggedin', true, 7);
-        state.whoAmI = data['username']
         state.profile = data['profile']
         navigateTo('/')
         state.loginLoading = false;
