@@ -49,7 +49,7 @@ class PongChat extends Component {
 						</a>
 
 						<div class="btn-group user-btn" role="group" aria-label="Basic example">
-							<span hidden="{user.isConnected}" class="offline">{this.getUserStatus(user.isConnected)}</span>
+							<span class="offline">{this.getUserStatus(user)}</span>
                         	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
                         	<button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
                         	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
@@ -80,8 +80,12 @@ class PongChat extends Component {
 
 	static css = css`
 	.offline {
+		border-top-left-radius: 0.25rem;
+		border-bottom-left-radius: 0.25rem;
 		line-height: 32px;
-  		margin-right: 10px;
+		padding: 3px 9px;
+		line-height: 32px;
+		background-color: #ffc107;
 	}
 
 	.channels label::hover {
@@ -108,7 +112,7 @@ class PongChat extends Component {
 	@media only screen and (max-width: 768px) {
 		.chat-bubble {
 			display: block;
-			position: absolute;
+			position: fixed;
 			right: 10px;
 			bottom: 10px;
 			height: 60px;
@@ -246,7 +250,7 @@ class PongChat extends Component {
 
 		.chat-bubble {
 			display: block;
-			position: absolute;
+			position: fixed;
 			right: 20px;
 			bottom: 25px;
 			height: 60px;
@@ -468,7 +472,7 @@ class PongChat extends Component {
 
 	.chat-list-player {
 		overflow-y: auto;
-		padding-top: 70px;
+		padding-top: 60px;
 	}
 
 	.chat-list-player::-webkit-scrollbar {
@@ -825,8 +829,12 @@ class PongChat extends Component {
 		return !(message == channelName);
 	}
 
-	getUserStatus(status) {
-		return (status ? 'online' : 'offline');
+	getUserStatus(user) {
+		const tmp = state.games.find(game => game.players.find(player => player === user.nickname) && game.status === 'running');
+
+		if (tmp)
+			return 'IG';
+		return (user.isConnected ? 'ON' : 'OFF');
 	}
 
 	getChannelNotifications(notifications) {
