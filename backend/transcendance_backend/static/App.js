@@ -29,6 +29,7 @@ var state_base = {
                 nickname: '',
                 global: ''
         },
+	profileLooking: profile.id,
 	isMobile: (window.innerWidth < 769 || window.innerHeight < 525),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
@@ -40,7 +41,7 @@ var state_base = {
 	],
 	logginError: "",
 	profiles: [
-		{ nickname: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
+		{ nickname: 'rsterin_', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ nickname: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
 		{ nickname: 'jtoulous', win: 32, lose: 16, ballHit: 128, goal: 32, tournamentWin: 200 },
 		{ nickname: 'tlarraze', win: 64, lose: 8, ballHit: 512, goal: 64, tournamentWin: 2000 },
