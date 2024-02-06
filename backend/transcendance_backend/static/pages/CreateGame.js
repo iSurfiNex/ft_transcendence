@@ -526,7 +526,10 @@ class PongCreateGame extends Component {
 
 		post2("/api/manage-game/", dataToSend)
 		.then(data => {
-			navigateTo('/play/waiting-room');
+            // HACK add 100ms delay to let state-update ws update state.currentGame variable, otherwise, SPA would redirect from /waiting-room to / because currentGame would still be -1
+            setTimeout(()=> {
+			    navigateTo('/play/waiting-room');
+            }, 100);
 		})
 		.catch(error => console.error(error))
 	}

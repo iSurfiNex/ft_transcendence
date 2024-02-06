@@ -196,6 +196,11 @@ function displayContent(path) {
 			displayElement("pong-profile");
 		}
 		else if (path === "/play/waiting-room") {
+            if (!(state.currentGame > 0))
+            {
+                navigateTo('/')
+                return
+            }
 			displayElement("waiting-room");
 		}
 		else if (path === "/play/tournament-wr") {
