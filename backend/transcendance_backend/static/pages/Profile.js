@@ -321,20 +321,9 @@ class PongProfile extends Component {
 	}
 `
 
-	//getFullName(whoAmI) {
-	//	const user = state.users.find(user => user.nickname === whoAmI);
-
-	//	if (user) {
-	//		return user.fullname;
-	//	}
-	//	else {
-	//		return '';
-	//	}
-	//}
-
-	getAvatarUrl(profileLooking) {
+	getAvatarUrl(profileLooking, picture) {
         if (profileLooking === state.profile.id)
-            return state.profile.picture
+            return picture
 		const user = state.users.find(user => user.id === profileLooking);
 		return user.picture
 	}
