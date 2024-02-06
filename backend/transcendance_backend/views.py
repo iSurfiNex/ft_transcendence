@@ -464,6 +464,7 @@ class ManageGameView(View):
             game.players.add(creator)
 
             stateUpdate(game, "create", "game")
+            stateUpdate(creator, "update", "user")
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -497,12 +498,14 @@ class ManageGameView(View):
                     else:
                         game.delete()
                         stateUpdate(Game, "update", "all games")
+                        stateUpdate(my_player, "update", "user")
                         return JsonResponse({})
                 else:
                     game.players.remove(my_player)
 
             game.save()
             stateUpdate(game, "update", "game")
+            stateUpdate(my_player, "update", "user")
             response = game.serialize()
             return JsonResponse(response, status=200)
 
