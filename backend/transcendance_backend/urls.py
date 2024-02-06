@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
-from django.views.generic import TemplateView
 from .consumers import ChatConsumer, StateUpdateConsumer, GameRunningConsumer
 from .views import (
     PlayerView,
@@ -32,7 +31,7 @@ from .views import (
     get_user_profile,
     ManageTournamentView,
     ManageGameView,
-    BuildState,
+    CustomTemplateView,
 )
 
 websocket_urlpatterns = [
@@ -60,10 +59,17 @@ urlpatterns += [
     path("api/request_42_login/", request_42_login, name="request-42-login"),
     path("api/games/", GameView.as_view(), name="game-list"),
     path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
-    path("api/manage-tournament/", ManageTournamentView.as_view(), name="manage-tournament"),
-    path("api/manage-tournament/<int:id>/", ManageTournamentView.as_view(), name="tournament-detail"),
+    path(
+        "api/manage-tournament/",
+        ManageTournamentView.as_view(),
+        name="manage-tournament",
+    ),
+    path(
+        "api/manage-tournament/<int:id>/",
+        ManageTournamentView.as_view(),
+        name="tournament-detail",
+    ),
     path("api/manage-game/", ManageGameView.as_view(), name="manage-game"),
     path("api/manage-game/<int:id>/", ManageGameView.as_view(), name="game-detail"),
-    path("api/build-state/", BuildState, name="build-state"),
-    re_path(r"^.*", TemplateView.as_view(template_name="index.html")),
+    re_path(r"^.*", CustomTemplateView.as_view(template_name="index.html")),
 ]

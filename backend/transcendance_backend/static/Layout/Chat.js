@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongChat extends Component {
@@ -27,7 +26,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" id="messages" repeat="messages" as="message">
-				<div class="message" is-my-msg="{this.equals(message.nickname,profile.name)}" hidden="{this.isMessageInChannel(message.channel,message.nickname,activeChannel)}">
+				<div class="message" is-my-msg="{this.equals(message.nickname,profile.nickname)}" hidden="{this.isMessageInChannel(message.channel,message.nickname,activeChannel)}">
 					<div class="msg-heading">
 						<a href="javascript:void(0)" @click="this.navigate(message.nickname)">
 							<img class="message-player-img" src="{this.getProfilePicture(message.nickname)}" alt="profile"/>
@@ -39,7 +38,7 @@ class PongChat extends Component {
 				</div>
 			</div>
 
-				<div class="chat-player-list-header-text" hidden="{isPlayerListChecked}">{language.playerList}</div>
+			<div class="chat-player-list-header-text" hidden="{isPlayerListChecked}">{language.playerList}</div>
 			<div class="chat-player-list" hidden="{isPlayerListChecked}">
 				<div class="chat-list-player" repeat="users" as="user">
 					<div class="chat-player" hidden="{this.equals(user.id, profile.id)}">
@@ -48,14 +47,13 @@ class PongChat extends Component {
 							<div class="chat-player-name">{user.nickname}</div>
 						</a>
 
-                       <div class="btn-group user-btn" role="group" aria-label="Basic example">
-						 <span hidden="{user.isConnected}" class="offline">offline</span>
-                         <button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
-                         <button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
-                         <button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
-                       </div>
+						<div class="btn-group user-btn" role="group" aria-label="Basic example">
+							<span class="offline">{this.getUserStatus(user,user.current_game_id,user.current_tournament_id)}</span>
+                        	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+                        	<button type="button" class="btn btn-sm btn-success" @click="this.addFriend(user)" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
+                        	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" title="Block user"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
+						</div>
 						<div class="chat-player-seperator"></div>
-
 					</div>
 				</div>
 			</div>
@@ -81,8 +79,12 @@ class PongChat extends Component {
 
 	static css = css`
 	.offline {
+		border-top-left-radius: 0.25rem;
+		border-bottom-left-radius: 0.25rem;
 		line-height: 32px;
-  		margin-right: 10px;
+		padding: 3px 9px;
+		line-height: 32px;
+		background-color: #ffc107;
 	}
 
 	.channels label::hover {
@@ -109,7 +111,7 @@ class PongChat extends Component {
 	@media only screen and (max-width: 768px) {
 		.chat-bubble {
 			display: block;
-			position: absolute;
+			position: fixed;
 			right: 10px;
 			bottom: 10px;
 			height: 60px;
@@ -168,6 +170,11 @@ class PongChat extends Component {
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
+		}
+
+		.chat-player-list {
+			margin-top: 0;
+			height: 100%;
 		}
 
 		.bottom-bar {
@@ -242,7 +249,7 @@ class PongChat extends Component {
 
 		.chat-bubble {
 			display: block;
-			position: absolute;
+			position: fixed;
 			right: 20px;
 			bottom: 25px;
 			height: 60px;
@@ -275,6 +282,11 @@ class PongChat extends Component {
 			text-overflow: ellipsis;
 		}
 
+		.chat-player-list {
+			margin-top: 0;
+			height: 100%;
+		}
+
 		.messages {
 			position: absolute;
 			width: 100%;
@@ -305,6 +317,7 @@ class PongChat extends Component {
 		}
 
 		.chat-player-list-header-text {
+			margin-top: 10px;
 			position: fixed;
 			text-align: center;
 			color: white;
@@ -315,6 +328,11 @@ class PongChat extends Component {
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
+		}
+
+		.chat-player-list {
+			margin-top: 10px;
+			height: calc(100% + 10px);
 		}
 
 		.bottom-bar {
@@ -446,20 +464,23 @@ class PongChat extends Component {
 	.chat-player-list {
 		background-color: #5e5e5e;
 		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-		overflow: scroll;
-  		height: 100%;
+		overflow: auto;
 		position: relative;
 		padding-bottom: 80px;
 	}
 
 	.chat-list-player {
 		overflow-y: auto;
-		padding-top: 70px;
+		padding-top: 60px;
 	}
 
 	.chat-list-player::-webkit-scrollbar {
 		width: 10px;
 		background-color: #4e4e4e;
+	}
+
+	.chat-player-list::-webkit-scrollbar {
+		display: none;
 	}
 
 	.chat-player {
@@ -653,7 +674,7 @@ class PongChat extends Component {
 			else {
 				const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 
-				if (state.profile.blocked_users.some(user => user.name === nickname))
+				if (state.profile.blocked.some(user => user.nickname === nickname))
 					return ;
 				else if (tmpChan) {
 					state.channels[tmpChan.id - 1].notifications++;
@@ -699,25 +720,22 @@ class PongChat extends Component {
             if (event.key === 'Enter')
                 this.sendMessage()
         });
-		initPopover(this);
         this.connectWsChat();
 		this.connectWsStateUpdate();
-		stateBuild();
 	}
 
     sendMessageToUser = (user) => {
 		const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 		const channel = state.channels.find(channel => channel.name === 'user_'+user.id);
+		const channelName = "user_"+user.id
+
+
+		if (user.nickname === state.profile.nickname)
+			return ;
+		else if (!channel)
+			state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
 
 		state.isPlayerListChecked = true;
-
-		if (channel)
-			return ;
-		else if (user.nickname === state.profile.nickname)
-			return ;
-
-		const channelName = "user_"+user.id
-			state.channels.push({name: channelName, id: maxId + 1, notifications: 0, invite: false});
 		state.activeChannel = channelName
 		this.chatInput?.focus()
 	}
@@ -749,14 +767,34 @@ class PongChat extends Component {
 	blockUser(tmpUser) {
 		if (tmpUser.nickname === state.profile.nickname)
 			return ;
-		else if (state.profile.blocked_users.some(user => user.name === tmpUser.nickname)) {
-			var indexToRemove = state.profile.blocked_users.findIndex(user => user.id === tmpUser.id);
+		else if (state.profile.blocked.some(user => user.nickname === tmpUser.nickname)) {
+			var indexToRemove = state.profile.blocked.findIndex(user => user.id === tmpUser.id);
 
-			state.profile.blocked_users.splice(indexToRemove, 1);
+			state.profile.blocked.splice(indexToRemove, 1);
 			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		else {
-			state.profile.blocked_users.push({id: tmpUser.id, name: tmpUser.nickname});
+			state.profile.blocked.push({id: tmpUser.id, name: tmpUser.nickname});
+			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
+		}
+		if (state.activeChannel == 'global') {
+			var message = this.shadowRoot.getElementById("messages");
+			message.scrollTop = message.scrollHeight;
+		}
+		state.isPlayerListChecked = true;
+	}
+
+	addFriend(tmpUser) {
+		if (tmpUser.nickname === state.profile.nickname)
+			return ;
+		else if (state.profile.blocked.some(user => user.nickname === tmpUser.nickname)) {
+			var indexToRemove = state.profile.blocked.findIndex(user => user.id === tmpUser.id);
+
+			state.profile.blocked.splice(indexToRemove, 1);
+			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
+		}
+		else {
+			state.profile.blocked.push({id: tmpUser.id, name: tmpUser.nickname});
 			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		if (state.activeChannel == 'global') {
@@ -802,9 +840,17 @@ class PongChat extends Component {
 	}
 
 	isMessageInChannel(message, sender, channelName) {
-		if (state.profile.blocked_users.some(user => user.id === sender))
+		if (state.profile.blocked.some(user => user.id === sender))
 			return true;
 		return !(message == channelName);
+	}
+
+	getUserStatus(user, game_id, tournament_id) {
+		if (tournament_id > 0)
+			return 'IT';
+		else if (game_id > 0)
+			return 'IG';
+		return (user.is_connected ? 'ON' : 'OFF');
 	}
 
 	getChannelNotifications(notifications) {
@@ -822,6 +868,9 @@ class PongChat extends Component {
 	}
 
 	navigate(nickname) {
+		const user = state.users.find(user => user.nickname === nickname);
+
+		state.profileLooking = user.id
 		navigateTo('/profile');
 		return false;
 	}

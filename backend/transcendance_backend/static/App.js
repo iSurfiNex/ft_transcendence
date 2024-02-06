@@ -29,18 +29,18 @@ var state_base = {
                 nickname: '',
                 global: ''
         },
+	profileLooking: profile.id,
 	isMobile: (window.innerWidth < 769 || window.innerHeight < 525),
 	isChatBubbleChecked: true,
 	isPlayerListChecked: true,
-	users: [
-		//{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
+	users: window.users,
+		//[{ nickname: 'rsterin' , fullname: 'Remi Sterin', picture: 'img/list.svg' },
 		//{ nickname: 'fjullien' , fullname: 'Felix Jullien', picture: 'img/list.svg' },
 		//{id:3, nickname: 'jtoulous' , fullname: 'Joshua Toulouse', picture: 'img/list.svg', blocked: [], friends: []},
-		//{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },
-	],
+		//{ nickname: 'tlarraze' , fullname: 'Theo Larraze', picture: 'img/list.svg' },],
 	logginError: "",
 	profiles: [
-		{ nickname: 'rsterin', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
+		{ nickname: 'rsterin_', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
 		{ nickname: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
 		{ nickname: 'jtoulous', win: 32, lose: 16, ballHit: 128, goal: 32, tournamentWin: 200 },
 		{ nickname: 'tlarraze', win: 64, lose: 8, ballHit: 512, goal: 64, tournamentWin: 2000 },
@@ -50,13 +50,13 @@ var state_base = {
 	],
 	activeChannel: 'global',
 	messages: [],
-	tournaments: [],
+	tournaments: window.tournaments,
 		//{ type: 'tournament', id: 1, status: 'round 1', creator: 'rsterin', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [10, 11], date: '11/11/2023 04:38', countdown: 5 },
 		//{ type: 'tournament', id: 2, status: 'round 1', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '8', gamesId: [14, 15], date: '11/11/2023 04:38', countdown: 5},
 		//{ type: 'tournament', id: 3, status: 'waiting', creator: 'jtoulous', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '4', gamesId: [], date: '' , countdown: -1},
 		//{ type: 'tournament', id: 4, status: 'waiting', creator: 'tlarraze', players: ['rsterin', 'jtoulous', 'fjullien', 'tlarraze'], maxPlayer: '6', gamesId: [], date: '', countdown: -1},
 		//]
-	games: [],
+	games: window.games,
 		//{ type: 'normal', id: 1, status: 'done', creator: 'rsterin', players: ['rsterin', 'tlarraze'], maxPlayer: '2', score: [{ name: 'rsterin', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 		//{ type: 'normal', id: 2, status: 'waiting', creator: 'fjullien', players: ['fjullien'], maxPlayer: '2', score: [], date: '' },
 		//{ type: 'normal', id: 3, status: 'waiting', creator: 'jtoulous', players: ['jtoulous', 'fjullien'], maxPlayer: '2', score: [], date: '' },
@@ -75,8 +75,6 @@ var state_base = {
 		//{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	//],
-	currentTournament: -1,
-	currentGame: -1,
 	runningGame: {
 		startIn : null,
 		p1Points: null,

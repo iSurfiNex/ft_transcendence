@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 import './UpdateProfile.js'
 
@@ -9,17 +8,8 @@ class PongProfile extends Component {
 	<div class="profile">
 		<div class="profile-topbar">
 			<div id="user-card">
-				<img id="avatar-img" src="{profile.avatar_url}" alt="profile"/>
+				<img id="avatar-img" src="{this.getAvatarUrl(profileLooking, profile.picture)}" alt="profile"/>
 			</div>
-
-<!--
-TODO use this instead of pong-update-profile when viewing another user profile
-			<div class="profile-topbar-button">
-				<button @click="sendMessageToUser(user)" class="profile-topbar-button-message btn btn-primary btn-lg" title="Send message"><img class="profile-topbar-img" src="/static/img/message.svg" alt="send message"></img></button>
-				<button class="profile-topbar-button-invite btn btn-success btn-lg" title="Add friend"><img class="profile-topbar-img" src="/static/img/plus.svg" alt="add friend"></img></button>
-				<button class="profile-topbar-button-block btn btn-danger btn-lg" title="Block"><img class="profile-topbar-img" src="/static/img/block.svg" alt="block"></img></button>
-			</div>
--->
 
 			<pong-update-profile></pong-update-profile>
 		</div>
@@ -331,20 +321,12 @@ TODO use this instead of pong-update-profile when viewing another user profile
 	}
 `
 
-	connectedCallback() {
-		initPopover(this);
+	getAvatarUrl(profileLooking, picture) {
+        if (profileLooking === state.profile.id)
+            return picture
+		const user = state.users.find(user => user.id === profileLooking);
+		return user.picture
 	}
-
-	//getFullName(whoAmI) {
-	//	const user = state.users.find(user => user.nickname === whoAmI);
-
-	//	if (user) {
-	//		return user.fullname;
-	//	}
-	//	else {
-	//		return '';
-	//	}
-	//}
 
 	getWin() {
 		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);

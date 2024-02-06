@@ -1,83 +1,117 @@
 
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongUpdateProfile extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-<div class="input-group mb-3">
- <div class="form-floating">
-   <input
- 	type="text"
- 	class="form-control"
- 	id="firstNameInput"
- 	placeholder="John"
-	value="{profile.first_name}"/>
-   <label for="firstNameInput">{language.firstName}</label>
-    <div class="invalid-feedback">{profileErrors.first_name}</div>
- </div>
+	<div class="input-group mb-3">
+		<div class="form-floating">
+			<input
+				readonly="{this.notEquals(profileLooking,profile.id)}"
+				type="text"
+				class="form-control"
+				id="firstNameInput"
+				placeholder="John"
+				value="{this.getFirstName(profileLooking)}"/>
+			<label for="firstNameInput">{language.firstName}</label>
+			<div class="invalid-feedback">{profileErrors.first_name}</div>
+		</div>
 
- <div class="form-floating">
-   <input
- 	type="text"
- 	class="form-control"
- 	id="lastNameInput"
- 	placeholder="Doe"
-	value="{profile.last_name}">
-   <label for="lastNameInput">{language.lastName}</label>
-    <div class="invalid-feedback">{profileErrors.last_name}</div>
- </div>
+		<div class="form-floating">
+			<input
+				readonly="{this.notEquals(profileLooking,profile.id)}"
+				type="text"
+				class="form-control"
+				id="lastNameInput"
+				placeholder="Doe"
+				value="{this.getLastName(profileLooking)}"/>
+			<label for="lastNameInput">{language.lastName}</label>
+			<div class="invalid-feedback">{profileErrors.last_name}</div>
+		</div>
+	</div>
 
-</div>
+	<div class="form-floating mb-3">
+		<input
+			readonly="{this.notEquals(profileLooking,profile.id)}"
+			type="text"
+			class="form-control"
+			id="pseudoInput"
+			placeholder="Toto"
+			value="{this.getNickname(profileLooking)}"/>
+		<label for="pseudoInput">{language.pseudo}</label>
+		<div class="invalid-feedback">{profileErrors.nickname}</div>
+	</div>
 
-<div class="form-floating mb-3">
-  <input
-	type="text"
-	class="form-control"
-	id="pseudoInput"
- 	placeholder="Toto"
-	value="{profile.nickname}">
-   <label for="pseudoInput">{language.pseudo}</label>
-    <div class="invalid-feedback">{profileErrors.nickname}</div>
-</div>
+	<button id="avatarBtn" hidden="{this.notEquals(profileLooking,profile.id)}" class="btn btn-success">
+		<label for="avatarInput" class="custom-file-input">{language.avatar}</label>
+	</button>
+	<input
+		hidden
+		id="avatarInput"
+		type="file"
+		accept="image/png, image/jpeg"
+		@change="this.updatePictureFromInput()"
+		style="display:none;"/>
 
-<button class="btn btn-success">
-	<label for="avatarInput" class="custom-file-input">
-		{language.avatar}
-	</label>
-</button>
-<input
-	id="avatarInput"
-	type="file"
-	accept="image/png, image/jpeg"
-	@change="this.updatePictureFromInput()"
-	style="display:none;"/>
-
-    <div class="invalid-feedback">{profileErrors.avatar}</div>
-<a
-    hidden="{!profile.id_42}"
-    class="btn btn-primary"
-    href="{profile.url_profile_42}"
-    target="_blank"
->42</a>
-<button hidden="{profile.id_42}" class="btn btn-primary" @click="this.link42Account()">{language.link42}</button>
-<button class="btn btn-primary" @click="this.submitProfileUpdate()">{language.save}</button>
-<span class="text-light ps-3">{profileErrors.global}</span>
-
+	<div class="invalid-feedback">{profileErrors.avatar}</div>
+	<a
+		hidden="{this.hide42Profile(profileLooking)}"
+		class="btn btn-primary"
+		href="{profile.url_profile_42}"
+		target="_blank"
+	>42</a>
+	<button hidden="{this.hide42Link(profileLooking)}" class="btn btn-primary" @click="this.link42Account()">{language.link42}</button>
+	<button hidden="{this.notEquals(profileLooking,profile.id)}" class="btn btn-primary" @click="this.submitProfileUpdate()">{language.save}</button>
+	<span hidden="{this.notEquals(profileLooking,profile.id)}" class="text-light ps-3">{profileErrors.global}</span>
 `
 
 	static css = css`
+#avatarBtn {
+    padding: 0;
+}
+#avatarBtn > label {
+    padding: 8px 12px;
+}
 label {
-    font-size: 12px;
+	font-size: 12px;
 }
 button label {
-    cursor: inherit;
+	cursor: inherit;
 }
 `
+	getFirstName(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-	observers = {
-		'player.active': active => console.log("active?: ", active)
+		return (user.first_name ? user.first_name : 'Jean');
+	}
+
+	getLastName(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
+
+		return (user.last_name ? user.last_name : 'Michel');
+	}
+
+	getNickname(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
+
+		return (user.nickname ? user.nickname : 'unknown');
+	}
+
+	hide42Profile(profileLooking) {
+		if (profileLooking !== state.profile.id)
+			return true;
+		else if (state.profile.id_42)
+			return false;
+		return true
+	}
+
+	hide42Link(profileLooking) {
+		if (profileLooking !== state.profile.id)
+			return true;
+		else if (state.profile.id_42)
+			return true;
+		return false
 	}
 
     submitProfileUpdate() {
@@ -132,6 +166,7 @@ button label {
 
     /* Update the displayed avatar with the uploaded picture */
     updatePictureFromInput() {
+        console.log("update")
         const input = this.shadowRoot.getElementById('avatarInput');
 
         if (!input.files || !input.files[0])
@@ -139,7 +174,7 @@ button label {
         const reader = new FileReader();
 
         reader.onload = function (e) {
-            state.profile.avatar_url = e.target.result;
+            state.profile.picture = e.target.result;
         };
 
         reader.readAsDataURL(input.files[0]);
@@ -150,7 +185,11 @@ button label {
 		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=' + hostname + '&response_type=code';
 
 		window.location.href = apiUrl;
-    }
+	}
+
+	notEquals(a, b) {
+		return a !== b
+   }
 }
 
 register(PongUpdateProfile);

@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongTopBar extends Component {
@@ -102,20 +101,41 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture {
-			display: none;
+			position: fixed;
+			width: 12.5%;
+			height: 10%;
+			top: 0;
+			right: 12.5%;
 		}
 
 		.profile-picture-div {
-			display: none;
+			position: absolute;
+			width: 100%;
+			height: 90%;
+			top: 5%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		.profile-picture-div img {
-			display: none;
+			object-fit: cover;
+			object-position: center;
+			display: block;
+			max-height: 100%;
+			height: auto;
+			border-radius: 50%;
+			border: 3px solid #9f9f9f;
+			box-shadow: 0px 0px 15px -3px #9F9F9F;
+			background-color: #9F9F9F;
+			overflow: hidden;
+			margin: 10%;
 		}
 
 		.logout-div {
+			border-left: 8px solid #424242;
 			position: fixed;
-			width: 25%;
+			width: 12.5%;
 			height: 10%;
 			top: 0;
 			right: 0;
@@ -199,20 +219,41 @@ class PongTopBar extends Component {
 		}
 
 		.profile-picture {
-			display: none;
+			position: fixed;
+			width: 12.5%;
+			height: 10%;
+			top: 0;
+			right: 12.5%;
 		}
 
 		.profile-picture-div {
-			display: none;
+			position: absolute;
+			width: 100%;
+			height: 90%;
+			top: 5%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		.profile-picture-div img {
-			display: none;
+			object-fit: cover;
+			object-position: center;
+			display: block;
+			max-height: 100%;
+			height: auto;
+			border-radius: 50%;
+			border: 3px solid #9f9f9f;
+			box-shadow: 0px 0px 15px -3px #9F9F9F;
+			background-color: #9F9F9F;
+			overflow: hidden;
+			margin: 10%;
 		}
 
 		.logout-div {
+			border-left: 8px solid #424242;
 			position: fixed;
-			width: 25%;
+			width: 12.5%;
 			height: 10%;
 			top: 0;
 			right: 0;
@@ -381,13 +422,6 @@ class PongTopBar extends Component {
 		z-index: 1;
 	}
 `
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
-	connectedCallback() {
-		initPopover(this);
-	}
 
 	selectedLanguage(language) {
 		if (state.language.username == language.username)
@@ -396,6 +430,9 @@ class PongTopBar extends Component {
 	}
 
 	navigate(nickname) {
+		const user = state.users.find(user => user.nickname === nickname);
+
+		state.profileLooking = user.id;
 		navigateTo('/profile');
 		return false;
 	}

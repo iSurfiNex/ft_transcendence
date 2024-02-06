@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongClassic extends Component {
@@ -204,13 +203,6 @@ class PongClassic extends Component {
 		transform: translateY(-2px);
 	}
 `
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
-	connectedCallback() {
-		initPopover(this);
-	}
 
 	isGameHidden(game) {
 		if (game.type != "normal")
@@ -235,6 +227,8 @@ class PongClassic extends Component {
 
 		put2(url, dataToSend)
 		.then ( data => {
+            state.currentGame = data.id
+            state.profile.current_game_id = data.id
 			navigateTo('/play/waiting-room');
 		});
 		return (false);

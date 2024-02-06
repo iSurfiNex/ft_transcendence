@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongLogin extends Component {
@@ -170,12 +169,7 @@ class PongLogin extends Component {
 	}
 `
 
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
 	connectedCallback() {
-		initPopover(this)
 
 		const type = new URLSearchParams(window.location.search).get("code");
 		if (type) {
@@ -232,6 +226,11 @@ class PongLogin extends Component {
         }
 	    setCookie('loggedin', true, 7);
         state.profile = data['profile']
+        state.tournaments = data['tournaments']
+        state.games = data['games']
+        state.users = data['users']
+	    state.currentTournament = state.profile.current_tournament_id,
+	    state.currentGame = state.profile.current_game_id,
         navigateTo('/')
         state.loginLoading = false;
     }
@@ -274,6 +273,11 @@ class PongLogin extends Component {
         formRegisterNode.reset()
 	    setCookie('loggedin', true, 7);
         state.profile = data['profile']
+        state.tournaments = data['tournaments']
+        state.games = data['games']
+        state.users = data['users']
+	    state.currentTournament = state.profile.current_tournament_id,
+	    state.currentGame = state.profile.current_game_id,
         navigateTo('/')
         state.loginLoading = false;
     })

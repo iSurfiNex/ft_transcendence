@@ -32,6 +32,11 @@ class Player(models.Model):
         format="JPEG",
         options={"quality": 60},
     )
+    games = models.ManyToManyField(
+        "Game",
+        through="GameStat",
+        related_name="games_played",
+    )
 
     nickname = models.CharField(max_length=32, unique=True)
     blocked_users = models.ManyToManyField(
@@ -40,7 +45,6 @@ class Player(models.Model):
     friend_users = models.ManyToManyField(
         "self", related_name="friends", symmetrical=False, blank=True
     )
-    games = models.ManyToManyField("Game", blank=True)
     tournaments = models.ManyToManyField("Tournament", blank=True)
 
     # Get the object serialized as JS object
@@ -48,28 +52,38 @@ class Player(models.Model):
     def serialized(self):
         return json.dumps(self.serialize(), cls=DjangoJSONEncoder)
 
+    @classmethod
+    def all_serialized(cls):
+        return json.dumps(Player.serialize_all(), cls=DjangoJSONEncoder)
+
+    @classmethod
+    def serialize_all(cls):
+        users_list = Player.objects.filter(user__is_superuser=False)
+        return [user.serialize() for user in users_list]
+
     def serialize(self):
         return {
             "id": self.user.id,
             "id_42": self.id_42,
+            "current_game_id": self.games.filter(state__in=["running", "waiting"])
+            .values_list("id", flat=True)
+            .first()
+            or -1,
+            "current_tournament_id": self.tournament_set.exclude(state="done")
+            .values_list("id", flat=True)
+            .first()
+            or -1,
             "is_connected": self.is_connected,
             "url_profile_42": self.url_profile_42,
             "nickname": self.nickname,
             "username": self.user.username,
+            "fullname": self.user.first_name + " " + self.user.last_name,
             "first_name": self.user.first_name,
             "last_name": self.user.last_name,
-            "avatar_url": self.avatar.url,
+            "picture": self.avatar.url,
             "avatar_thumbnail_url": self.avatar_thumbnail.url,
-            "blocked_users": [
-                user.serialize_summary() for user in self.blocked_users.all()
-            ],
-            "friend_users": [
-                user.serialize_summary() for user in self.friend_users.all()
-            ],
-            "tournaments": [
-                tournament.serialize_summary() for tournament in self.tournaments.all()
-            ],
-            "games": [game.serialize_summary() for game in self.games.all()],
+            "blocked": [user.nickname for user in self.blocked_users.all()],
+            "friends": [user.nickname for user in self.friend_users.all()],
         }
 
     def serialize_summary(self):
@@ -118,16 +132,26 @@ class Game(models.Model):
         related_name="games_won",
     )
 
+    @classmethod
+    def all_serialized(cls):
+        return json.dumps(Game.serialize_all(), cls=DjangoJSONEncoder)
+
+    @classmethod
+    def serialize_all(cls):
+        games_list = Game.objects.all()
+        games = [game.serialize() for game in games_list]
+        return games
+
     def serialize(self):
         return {
             "id": self.id,
-            "state": self.state,
+            "status": self.state,
             "goal_objective": self.goal_objective,
             "ia": self.ia,
-            "power_ups": self.power_ups,
-            "players": [player.serialize_summary() for player in self.players.all()],
-            "created_by": self.created_by.serialize_summary(),
-            "created_at": int(self.created_at.timestamp() * 1000)
+            "type": "powerup" if self.power_ups else "normal",
+            "players": [player.nickname for player in self.players.all()],
+            "creator": self.created_by.nickname,
+            "date": int(self.created_at.timestamp() * 1000)
             if self.created_at
             else None,
             "started_at": int(self.started_at.timestamp() * 1000)
@@ -155,21 +179,56 @@ class Tournament(models.Model):
     state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
     power_ups = models.BooleanField(default=False)
     players = models.ManyToManyField(Player, blank=True)
-    games = models.ManyToManyField(Game, blank=True)
     created_by = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name="created_tournaments"
     )
+    goal_objective = models.PositiveIntegerField(
+        default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
+    )
     created_at = models.DateTimeField(auto_now_add=True)
+    games = models.ManyToManyField(Game, related_name="tournaments", blank=True)
+
+    def create_game(self):
+        return Game.objects.create(
+            state="waiting",
+            goal_objective=self.goal_objective,
+            power_ups=self.power_ups,
+            created_by=self.created_by,
+        )
+
+    def create_games(self):
+        # Create Game instances with player count derived from the Tournament
+        self.games.add(self.create_game())
+        self.games.add(self.create_game())
+        self.games.add(self.create_game())
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # If this is a new instance (not being updated)
+            # Call create_games() to create Game instances
+            self.create_games()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def all_serialized(cls):
+        return json.dumps(Tournament.serialize_all(), cls=DjangoJSONEncoder)
+
+    @classmethod
+    def serialize_all(cls):
+        tournaments_list = Tournament.objects.all()
+        tournaments = [tournament.serialize() for tournament in tournaments_list]
+        return tournaments
 
     def serialize(self):
         return {
             "id": self.id,
-            "state": self.state,
+            "type": "tournament",
+            "status": self.state,
             "power_ups": self.power_ups,
-            "players": [player.serialize_summary() for player in self.players.all()],
-            "games": [game.serialize() for game in self.games.all()],
-            "created_by": self.created_by.serialize_summary(),
-            "created_at": int(self.created_at.timestamp() * 1000)
+            "players": [player.nickname for player in self.players.all()],
+            "gamesId": [game.id for game in self.games.all()],
+            "creator": self.created_by.nickname,
+            "date": int(self.created_at.timestamp() * 1000)
             if self.created_at
             else None,
         }

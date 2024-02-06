@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongCreateGame extends Component {
@@ -505,13 +504,6 @@ class PongCreateGame extends Component {
 
 `
 
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
-	connectedCallback() {
-	}
-	
 	$id(str) {
 		return this.shadowRoot.getElementById(str);
 	}
@@ -534,6 +526,8 @@ class PongCreateGame extends Component {
 
 		post2("/api/manage-game/", dataToSend)
 		.then(data => {
+            state.currentGame = data.id
+            state.profile.current_game_id = data.id
 			navigateTo('/play/waiting-room');
 		})
 		.catch(error => console.error(error))
