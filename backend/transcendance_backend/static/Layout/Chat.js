@@ -48,7 +48,7 @@ class PongChat extends Component {
 						</a>
 
 						<div class="btn-group user-btn" role="group" aria-label="Basic example">
-							<span class="offline">{this.getUserStatus(user)}</span>
+							<span class="offline">{this.getUserStatus(user,user.current_game_id,user.current_tournament_id)}</span>
                         	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
                         	<button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
                         	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
@@ -820,16 +820,15 @@ class PongChat extends Component {
 	}
 
 	isMessageInChannel(message, sender, channelName) {
-		console.log(message, sender, channelName);
 		if (state.profile.blocked.some(user => user.id === sender))
 			return true;
 		return !(message == channelName);
 	}
 
-	getUserStatus(user) {
-		const tmp = state.games.find(game => game.players.find(player => player === user.nickname) && game.status === 'running');
-
-		if (tmp)
+	getUserStatus(user, game_id, tournament_id) {
+		if (tournament_id > 0)
+			return 'IT';
+		else if (game_id > 0)
 			return 'IG';
 		return (user.is_connected ? 'ON' : 'OFF');
 	}
