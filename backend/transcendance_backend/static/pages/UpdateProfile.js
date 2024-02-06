@@ -44,11 +44,11 @@ class PongUpdateProfile extends Component {
 		<div class="invalid-feedback">{profileErrors.nickname}</div>
 	</div>
 
-	<button hidden="{this.notEquals(profileLooking,profile.id)}" class="btn btn-success">
+	<button id="avatarBtn" hidden="{this.notEquals(profileLooking,profile.id)}" class="btn btn-success">
 		<label for="avatarInput" class="custom-file-input">{language.avatar}</label>
 	</button>
 	<input
-		hidden="{this.notEquals(profileLooking,profile.id)}"
+		hidden
 		id="avatarInput"
 		type="file"
 		accept="image/png, image/jpeg"
@@ -68,6 +68,12 @@ class PongUpdateProfile extends Component {
 `
 
 	static css = css`
+#avatarBtn {
+    padding: 0;
+}
+#avatarBtn > label {
+    padding: 8px 12px;
+}
 label {
 	font-size: 12px;
 }
@@ -161,6 +167,7 @@ button label {
 
     /* Update the displayed avatar with the uploaded picture */
     updatePictureFromInput() {
+        console.log("update")
         const input = this.shadowRoot.getElementById('avatarInput');
 
         if (!input.files || !input.files[0])

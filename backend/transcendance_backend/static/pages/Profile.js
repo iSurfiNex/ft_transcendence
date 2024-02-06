@@ -9,7 +9,7 @@ class PongProfile extends Component {
 	<div class="profile">
 		<div class="profile-topbar">
 			<div id="user-card">
-				<img id="avatar-img" src="{this.getAvatarUrl(profileLooking)}" alt="profile"/>
+				<img id="avatar-img" src="{this.getAvatarUrl(profileLooking, profile.picture)}" alt="profile"/>
 			</div>
 
 			<pong-update-profile></pong-update-profile>
@@ -338,9 +338,10 @@ class PongProfile extends Component {
 	//}
 
 	getAvatarUrl(profileLooking) {
+        if (profileLooking === state.profile.id)
+            return state.profile.picture
 		const user = state.users.find(user => user.id === profileLooking);
-
-		return (user.picture ? user.picture : '/media/avatars/default.jpg');
+		return user.picture
 	}
 
 	getWin() {
