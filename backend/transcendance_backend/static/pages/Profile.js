@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 import './UpdateProfile.js'
 
@@ -321,10 +320,6 @@ class PongProfile extends Component {
 		background: #555;
 	}
 `
-
-	connectedCallback() {
-		initPopover(this);
-	}
 
 	//getFullName(whoAmI) {
 	//	const user = state.users.find(user => user.nickname === whoAmI);

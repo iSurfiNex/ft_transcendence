@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 
@@ -687,24 +686,14 @@ class WaitingRoom extends Component {
     }
     `
 
-    observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
-	connectedCallback() {
-		initPopover(this)
-	}
-
     playerOnePic() {
         const game = state.games.find(game => game.id == state.currentGame);
-        console.log('GAME', game)
+
         if (!game || game.players.length < 1 || state.currentGame == -1)
             return ("/media/avatars/default.jpg");
 
         const playerNick = game.players[0];
-        console.log('NICK', playerNick)
         const user = state.users.find(elem => elem.nickname === playerNick);
-        console.log('user', user)
 
         if (user)
             return user.picture;

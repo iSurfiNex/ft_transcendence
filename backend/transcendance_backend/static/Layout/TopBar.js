@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongTopBar extends Component {
@@ -423,13 +422,6 @@ class PongTopBar extends Component {
 		z-index: 1;
 	}
 `
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
-	connectedCallback() {
-		initPopover(this);
-	}
 
 	selectedLanguage(language) {
 		if (state.language.username == language.username)

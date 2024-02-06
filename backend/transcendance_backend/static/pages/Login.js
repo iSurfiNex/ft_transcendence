@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongLogin extends Component {
@@ -170,12 +169,7 @@ class PongLogin extends Component {
 	}
 `
 
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
 	connectedCallback() {
-		initPopover(this)
 
 		const type = new URLSearchParams(window.location.search).get("code");
 		if (type) {

@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongChat extends Component {
@@ -721,7 +720,6 @@ class PongChat extends Component {
             if (event.key === 'Enter')
                 this.sendMessage()
         });
-		initPopover(this);
         this.connectWsChat();
 		this.connectWsStateUpdate();
 	}

@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongHome extends Component {
@@ -408,13 +407,6 @@ class PongHome extends Component {
 		-moz-osx-font-smoothing: grayscale;
 	}
 `
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
-	connectedCallback() {
-		initPopover(this);
-	}
 
 	pongHandler() {
 		this.shadowRoot.getElementById("pong").style.zIndex=50;

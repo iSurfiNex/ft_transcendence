@@ -1,5 +1,4 @@
 import { Component, register, html, css } from 'pouic'
-import { initPopover } from '/static/bootstrap/init_bootstrap_plugins.js'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class TournamentRunningWr extends Component {
@@ -375,10 +374,6 @@ class TournamentRunningWr extends Component {
         }
     }
     `
-
-    observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
 
     IsTournament() {
         if (state.currentTournament == -1)
