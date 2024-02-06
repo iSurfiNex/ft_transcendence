@@ -75,11 +75,6 @@ button label {
 	cursor: inherit;
 }
 `
-
-	observers = {
-		'player.active': active => console.log("active?: ", active)
-	}
-
 	getFirstName(profileLooking) {
 		const user = state.users.find(user => user.id === profileLooking);
 
@@ -114,72 +109,72 @@ button label {
 		return false
 	}
 
-	submitProfileUpdate() {
-		const inputs = {
-			avatar: this.shadowRoot.getElementById('avatarInput'),
-			nickname: this.shadowRoot.getElementById('pseudoInput'),
-			first_name: this.shadowRoot.getElementById('firstNameInput'),
-			last_name: this.shadowRoot.getElementById('lastNameInput'),
-		}
-		const fields = {
-			avatar: inputs.avatar.files && inputs.avatar.files[0],
-			nickname: inputs.nickname.value,
-			first_name: inputs.first_name.value,
-			last_name: inputs.last_name.value
-		}
+    submitProfileUpdate() {
+        const inputs = {
+            avatar: this.shadowRoot.getElementById('avatarInput'),
+            nickname: this.shadowRoot.getElementById('pseudoInput'),
+            first_name: this.shadowRoot.getElementById('firstNameInput'),
+            last_name: this.shadowRoot.getElementById('lastNameInput'),
+        }
+        const fields = {
+            avatar: inputs.avatar.files && inputs.avatar.files[0],
+            nickname: inputs.nickname.value,
+            first_name: inputs.first_name.value,
+            last_name: inputs.last_name.value
+        }
 
-		const formData = new FormData();
+        const formData = new FormData();
 
-		for (const [key, value] of Object.entries(fields)){
-		if (value)
-			formData.append(key, value);
-		}
+        for (const [key, value] of Object.entries(fields)){
+        if (value)
+            formData.append(key, value);
+        }
 
-		const resetFormErrors = () => {
-				for (const [key, input] of Object.entries(inputs)) {
-					input.classList.toggle('is-invalid', false)
-				}
-			state.profileErrors.global = ''
-		}
+        const resetFormErrors = () => {
+                for (const [key, input] of Object.entries(inputs)) {
+                    input.classList.toggle('is-invalid', false)
+                }
+            state.profileErrors.global = ''
+        }
 
-		const onSuccess = (resp) => {
-			state.profile.errors = {}
-			resetFormErrors()
-			if (resp.status === "success"){
-				state.profileErrors.global = state.language.success
-				state.profile = resp.profile
-			} else {
-			for (const [key, err] of Object.entries(resp.errors)) {
-				state.profileErrors[key] = err
-				inputs[key].classList.toggle('is-invalid', true)
-			}
-			}
-		}
+        const onSuccess = (resp) => {
+            state.profile.errors = {}
+            resetFormErrors()
+            if (resp.status === "success"){
+                state.profileErrors.global = state.language.success
+                state.profile = resp.profile
+            } else {
+            for (const [key, err] of Object.entries(resp.errors)) {
+                state.profileErrors[key] = err
+                inputs[key].classList.toggle('is-invalid', true)
+            }
+            }
+        }
 
-		const onFailure = (err) => {
-			state.profileErrors.global = state.language.errUnknown
-			console.error('update profile request failed :(')
-		}
-		post('/api/update_profile/', formData)
-			.then(onSuccess, onFailure);
-	}
+        const onFailure = (err) => {
+            state.profileErrors.global = state.language.errUnknown
+            console.error('update profile request failed :(')
+        }
+        post('/api/update_profile/', formData)
+            .then(onSuccess, onFailure);
+    }
 
-	/* Update the displayed avatar with the uploaded picture */
-	updatePictureFromInput() {
-		const input = this.shadowRoot.getElementById('avatarInput');
+    /* Update the displayed avatar with the uploaded picture */
+    updatePictureFromInput() {
+        const input = this.shadowRoot.getElementById('avatarInput');
 
-		if (!input.files || !input.files[0])
-			return
-		const reader = new FileReader();
+        if (!input.files || !input.files[0])
+            return
+        const reader = new FileReader();
 
-		reader.onload = function (e) {
-			state.profile.avatar_url = e.target.result;
-		};
+        reader.onload = function (e) {
+            state.profile.picture = e.target.result;
+        };
 
-		reader.readAsDataURL(input.files[0]);
-	}
+        reader.readAsDataURL(input.files[0]);
+    }
 
-	link42Account() {
+    link42Account() {
 		const hostname = encodeURIComponent(window.location.origin + '/profile/')
 		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=' + hostname + '&response_type=code';
 

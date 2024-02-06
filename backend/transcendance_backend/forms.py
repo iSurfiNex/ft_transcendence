@@ -37,6 +37,5 @@ class TournamentForm(forms.ModelForm):
             "state",
             "power_ups",
             "players",
-            "games",
             "created_by",
         ]

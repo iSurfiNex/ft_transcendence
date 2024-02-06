@@ -675,7 +675,7 @@ class PongChat extends Component {
 			else {
 				const maxId = Math.max(...state.channels.map(channel => channel.id), 0);
 
-				if (state.profile.blocked_users.some(user => user.name === nickname))
+				if (state.profile.blocked.some(user => user.nickname === nickname))
 					return ;
 				else if (tmpChan) {
 					state.channels[tmpChan.id - 1].notifications++;
@@ -724,7 +724,6 @@ class PongChat extends Component {
 		initPopover(this);
         this.connectWsChat();
 		this.connectWsStateUpdate();
-		stateBuild();
 	}
 
     sendMessageToUser = (user) => {
@@ -770,14 +769,14 @@ class PongChat extends Component {
 	blockUser(tmpUser) {
 		if (tmpUser.nickname === state.profile.nickname)
 			return ;
-		else if (state.profile.blocked_users.some(user => user.name === tmpUser.nickname)) {
-			var indexToRemove = state.profile.blocked_users.findIndex(user => user.id === tmpUser.id);
+		else if (state.profile.blocked.some(user => user.nickname === tmpUser.nickname)) {
+			var indexToRemove = state.profile.blocked.findIndex(user => user.id === tmpUser.id);
 
-			state.profile.blocked_users.splice(indexToRemove, 1);
+			state.profile.blocked.splice(indexToRemove, 1);
 			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		else {
-			state.profile.blocked_users.push({id: tmpUser.id, name: tmpUser.nickname});
+			state.profile.blocked.push({id: tmpUser.id, name: tmpUser.nickname});
 			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		if (state.activeChannel == 'global') {
@@ -824,7 +823,7 @@ class PongChat extends Component {
 
 	isMessageInChannel(message, sender, channelName) {
 		console.log(message, sender, channelName);
-		if (state.profile.blocked_users.some(user => user.id === sender))
+		if (state.profile.blocked.some(user => user.id === sender))
 			return true;
 		return !(message == channelName);
 	}
@@ -834,7 +833,7 @@ class PongChat extends Component {
 
 		if (tmp)
 			return 'IG';
-		return (user.isConnected ? 'ON' : 'OFF');
+		return (user.is_connected ? 'ON' : 'OFF');
 	}
 
 	getChannelNotifications(notifications) {

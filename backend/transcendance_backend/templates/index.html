@@ -36,9 +36,15 @@
 		{% if user.is_authenticated %}
 			setCookie('loggedin', true, 7);
 			window.profile = {{ user.player.serialized|safe }}
+			window.games = {{ games|safe }}
+			window.tournaments = {{ tournaments|safe }}
+			window.users = {{ users|safe }}
 		{% else %}
 			unsetCookie('loggedin')
 		 	window.profile = {}
+			window.games = []
+			window.tournaments = []
+			window.users = [] // TODO include self ?
 		{% endif %}
 		</script>
 	</head>

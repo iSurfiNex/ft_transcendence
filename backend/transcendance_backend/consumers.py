@@ -18,12 +18,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def update_connected_state(self, new_value):
         p = self.scope["user"].player
         player = Player.objects.get(id=p.id)
+
         self.nickname = player.nickname
 
         player.is_connected = new_value
         player.save()
 
-        logger.debug(f"CONNECTION STATE {self.scope['user'].player.is_connected}")
+        logger.debug(
+            f"CONNECTION STATE {new_value} - {Player.objects.get(id=p.id).is_connected}"
+        )
 
     async def connect(self):
         try:
@@ -42,10 +45,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 await self.channel_layer.group_add("global", self.channel_name)
 
                 await self.update_connected_state(True)
-
-                await sync_to_async(stateUpdate)(
-                    self.scope["user"].player, "update", "user"
-                )
 
             else:
                 await self.close()
@@ -68,9 +67,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             self.user_id = None
             self.group_name = None
-            await sync_to_async(stateUpdate)(
-                self.scope["user"].player, "update", "user"
-            )
+            self.nickname = None
 
     async def send_message_to_user(self, to, text):
         # Get the WebSocket channel name for the specified user

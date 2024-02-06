@@ -24,7 +24,6 @@ class GameAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     filter_horizontal = (
         "blocked_users",
-        "games",
         "tournaments",
     )
     list_display = (

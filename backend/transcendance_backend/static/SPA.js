@@ -149,7 +149,12 @@ function displayContent(path) {
         // This request unsets the 'sessionid' cookie
         fetch('/api/logout/').then(()=>{
             unsetCookie('loggedin')
-            state.profile= {}
+            state.profile = {}
+            state.games = []
+            state.tournaments = []
+            state.users = []
+            state.currentGame = -1
+            state.currentTournament = -1
 		    navigateTo("/");
         }, ()=> {
             console.error('Logout request failed :(')
@@ -176,7 +181,16 @@ function displayContent(path) {
 	else {
 		Layout();
 
+
+        if (path !== "/profile/" && path === "/profile" && state.currentGame >= 0) {
+		       navigateTo("/play/waiting-room")
+            return
+        }
 		if (path === "/") {
+            if (state.currentGame >= 0) {
+		        navigateTo("/play/waiting-room")
+                return
+            }
 			displayElement("pong-home");
 		}
         else if (path === "/profile/") {
@@ -256,9 +270,6 @@ function stateUpdate(data)
 	else if (data_type == 'game')//game update
 		gameUpdate(data, data.action);
 
-	else if (data_type == 'user') //user update
-		userUpdate(data, data.action);
-
 	//else if (data_type == 'profile')
 	//	profileUpdate(data, data.action);
 
@@ -266,126 +277,87 @@ function stateUpdate(data)
 
 	else if (data_type == 'all games')
 		gameUpdateAll(data);
+
+	else if (data_type == 'user') //user update
+		userUpdate(data, data.action);
+
 }
 
 
-function tournamentUpdate(data, action) {
-	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == data.id);
+function tournamentUpdate(newTournament, action) {
+	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == newTournament.id);
 	if (TournamentAlreadyExist && action == "create")
 		return ;
 
-	var newTournament = {
-		type: 'tournament',
-		id: data.id,
-		status: data.state,
-		creator: data.created_by.nickname,
-		players: data.players.map(player => player.nickname),
-		gamesId: data.games.map(game => game.id),
-		date: data.created_at,
-	};
+	//var newGame1 = {
+	//	type: (data.power_ups == true) ? "powerup" : "normal",
+	//	id: data.games[0].id,
+	//	status: data.state,
+	//	creator: data.creator,
+	//	players: (data.games[0].player) ? data.games.players.map(player => player.nickname) : [],
+	//	score: [],
+	//	date: data.created_at,
+	//};
 
-	var newGame1 = {
-		type: (data.power_ups == true) ? "powerup" : "normal",
-		id: data.games[0].id,
-		status: data.state,
-		creator: data.created_by.nickname,
-		players: (data.games[0].player) ? data.games.players.map(player => player.nickname) : [],
-		score: [],
-		date: data.created_at,
-	};
+	//var newGame2 = {
+	//	type: (data.power_ups == true) ? "powerup" : "normal",
+	//	id: data.games[1].id,
+	//	status: data.state,
+	//	creator: data.creator,
+	//	players: (data.games[1].player) ? data.games.players.map(player => player.nickname) : [],
+	//	score: [],
+	//	date: data.created_at,
+	//};
 
-	var newGame2 = {
-		type: (data.power_ups == true) ? "powerup" : "normal",
-		id: data.games[1].id,
-		status: data.state,
-		creator: data.created_by.nickname,
-		players: (data.games[1].player) ? data.games.players.map(player => player.nickname) : [],
-		score: [],
-		date: data.created_at,
-	};
+	//if (action == 'create')
+	//{
+	//	state.tournaments.push(newTournament);
+	//	state.games.push(newGame1);
+	//	state.games.push(newGame2);
+	//}
+	//else if (action == 'update')
+	//{
+	//	state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
+	//	state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
+	//}
 
-	if (action == 'create')
-	{
-		state.tournaments.push(newTournament);
-		state.games.push(newGame1);
-		state.games.push(newGame2);
-	}
-	else if (action == 'update')
-	{
-		state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
-		state.games = state.games.map(game => {return (game.id == newGame1.id) ? newGame1 : game;});
-		state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
-	}
-
-	state.currentTournament = -1;
-	currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.profile.nickname));
-	if (currentTournament)
-		state.currentTournament = currentTournament.id;
+	//state.currentTournament = -1;
+	//currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.profile.nickname));
+	//if (currentTournament)
+	//	state.currentTournament = currentTournament.id;
 }
 
 
-function gameUpdate(data, action) {
-	GameAlreadyExist = state.games.find(game => game.id == data.id);
+function gameUpdate(newGame, action) {
+	GameAlreadyExist = state.games.find(game => game.id == newGame.id);
 	if (GameAlreadyExist && action == "create")
 		return ;
 
-	var newGame = {
-		type: (data.power_ups == true) ? "powerup" : "normal",
-		id: data.id,
-		status: data.state,
-		creator: data.created_by.nickname,
-		players: data.players.map(player => player.nickname),
-		score: [],
-		date: data.created_at,
-	};
+    newGame.score = []
 
 	if (action == 'create')
 		state.games.push(newGame);
 	else if (action == 'update')
 		state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
 
-	state.currentGame = -1;
-	currentGame = state.games.find(game => game.players.find(player => player == state.profile.nickname));
-	if (currentGame)
-		state.currentGame = currentGame.id;
+	isMyGame = newGame.players.some(player => player === state.profile.nickname);
+	if (isMyGame)
+	    state.currentGame = newGame.id;
 }
 
 
-function userUpdate(data, action) {
-	UserAlreadyExist = state.users.find(user => user.nickname == data.nickname);
+function userUpdate(newUser, action) {
+	UserAlreadyExist = state.users.find(user => user.nickname == newUser.nickname);
 	if (UserAlreadyExist && action == "create")
 		return ;
-
-	friend_list = [];
-	blocked_list = [];
-
-	for (let friend in data.friend_users)
-	{
-		friend_list.push(friend.nickname);
-	}
-
-	for (let blocked in data.blocked_list)
-	{
-		blocked_list.push(blocked.nickname);
-	}
-
-	var newUser = {
-		id: data.id,
-        isConnected: data.is_connected,
-		username: data.username,
-		nickname: data.nickname,
-		fullname: data.first_name + " " + data.last_name,
-		picture: data.avatar_url,
-		blocked: blocked_list,
-		friends: friend_list,
-	};
 
 	if (action == 'create')
 		state.users.push(newUser);
 	else if (action == 'update') {
 		const i = state.users.findIndex(user => user.id === newUser.id);
-
 		state.users[i] = newUser
+        if (newUser.id === state.profile.id)
+            state.currentGame = newUser.current_game_id
 	}
 }
 
@@ -400,145 +372,8 @@ function gameUpdateAll(data) {
 	objects.forEach((obj) => {
 		let gameInState = state.games.find(game => game.id == obj.id);
 		let score = gameInState.score;
-
-		let newGame = {
-			type: (obj.power_ups == true) ? "powerup" : "normal",
-			id: obj.id,
-			status: obj.state,
-			creator: obj.created_by.nickname,
-			players: obj.players.map(player => player.nickname),
-			score: score,
-			date: obj.created_at,
-		}
-		games_list.push(newGame);
+        obj.score = score
+		games_list.push(obj);
 	});
 	state.games = games_list;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-///////////////                STATE BUILD                            //////
-///////////////////////////////////////////////////////////////////////////
-
-
-function stateBuild() {
-	get("/api/build-state/")
-	.then (data => {
-		var users_list = [];
-		var games_list = [];
-		var tournaments_list = [];
-
-		if (data.users)
-			users_list = userBuild(data.users);
-		if (data.games)
-			games_list = gameBuild(data.games);
-		if (data.tournaments)
-			tournaments_list = tournamentBuild(data.tournaments);
-//		var current_tournament = -1;
-//		var current_game = -1;
-
-
-//		let curr_game = games_list.find(game => game.players.find(player => player == state.profile.nickname));
-//		let curr_tournament = tournaments_list.find(tournament => tournament.players.find(player => player == state.profile.nickname));
-//
-//		if (curr_game)
-//			current_game = curr_game.id;
-//
-//		if (curr_tournament)
-//			current_tournament = curr_tournament.id;
-
-
-		state.users = users_list;
-		state.games = games_list;
-		state.tournaments = tournaments_list;
-//		state.currentTournament = current_tournament;
-//		state.currentGame = current_game;
-	})
-}
-
-function userBuild(users) {
-	var users_list = [];
-
-	for (let user of users) {
-		let friend_list = [];
-		let blocked_list = [];
-
-		for (let friend in user.friend_users)
-		{
-			friend_list.push(friend.nickname);
-		}
-
-		for (let blocked in user.blocked_list)
-		{
-			blocked_list.push(blocked.nickname);
-		}
-
-		let user_data = {
-			id: user.id,
-            isConnected: user.is_connected,
-			username: user.username,
-			nickname: user.nickname,
-			fullname: user.first_name + " " + user.last_name,
-			picture: user.avatar_url,
-			blocked: blocked_list,
-			friends: friend_list,
-		};
-		users_list.push(user_data);
-	}
-	return (users_list);
-}
-
-function gameBuild(games) {
-	var games_list = [];
-
-	for (let game of games) {
-
-		let game_type = (game.power_ups === true) ? "powerup" : "normal";
-		let game_players = [];
-
-		for (let player of game.players) {
-			game_players.push(player.nickname);
-		}
-
-		let game_data = {
-			type: game_type,
-			id: game.id,
-			status: game.state,
-			creator: game.created_by.nickname,
-			players: game_players,
-			//score:,
-			date: game.created_at,
-		}
-		games_list.push(game_data);
-	}
-	return (games_list);
-}
-
-function tournamentBuild(tournaments) {
-	var	tournaments_list = [];
-
-	for (let tournament of tournaments){
-		let tournament_players;
-		let tournament_gamesId;
-
-		for (let player of tournament.players){
-			tournament_players.push(player.nickname);
-		}
-
-		for (let game of tournament.games){
-			tournament_gamesId.push(game.id);
-		}
-
-		let tournament_data = {
-			type: 'tournament',
-			id: tournament.id,
-			status: tournament.state,
-			creator: tournament.created_by.nickname,
-			players: tournament_players,
-			gamesId: tournament_gamesId,
-			date: tournament.created_at,
-		}
-		tournaments_list.push(tournament_data);
-	}
-	return (tournaments_list);
 }

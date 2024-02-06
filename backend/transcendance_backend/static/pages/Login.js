@@ -232,6 +232,9 @@ class PongLogin extends Component {
         }
 	    setCookie('loggedin', true, 7);
         state.profile = data['profile']
+        state.tournaments = data['tournaments']
+        state.games = data['games']
+        state.users = data['users']
         navigateTo('/')
         state.loginLoading = false;
     }
@@ -274,6 +277,9 @@ class PongLogin extends Component {
         formRegisterNode.reset()
 	    setCookie('loggedin', true, 7);
         state.profile = data['profile']
+        state.tournaments = data['tournaments']
+        state.games = data['games']
+        state.users = data['users']
         navigateTo('/')
         state.loginLoading = false;
     })
