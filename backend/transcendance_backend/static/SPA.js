@@ -181,16 +181,12 @@ function displayContent(path) {
 	else {
 		Layout();
 
-
-        if (path !== "/profile/" && path === "/profile" && state.currentGame >= 0) {
-		       navigateTo("/play/waiting-room")
+        console.log(state.currentGame)
+        if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.currentGame >= 0) {
+		    navigateTo("/play/waiting-room")
             return
         }
 		if (path === "/") {
-            if (state.currentGame >= 0) {
-		        navigateTo("/play/waiting-room")
-                return
-            }
 			displayElement("pong-home");
 		}
         else if (path === "/profile/") {

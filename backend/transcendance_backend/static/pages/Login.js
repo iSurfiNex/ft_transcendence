@@ -235,6 +235,8 @@ class PongLogin extends Component {
         state.tournaments = data['tournaments']
         state.games = data['games']
         state.users = data['users']
+	    state.currentTournament = state.profile.current_tournament_id,
+	    state.currentGame = state.profile.current_game_id,
         navigateTo('/')
         state.loginLoading = false;
     }
@@ -280,6 +282,8 @@ class PongLogin extends Component {
         state.tournaments = data['tournaments']
         state.games = data['games']
         state.users = data['users']
+	    state.currentTournament = state.profile.current_tournament_id,
+	    state.currentGame = state.profile.current_game_id,
         navigateTo('/')
         state.loginLoading = false;
     })
