@@ -227,6 +227,8 @@ class PongClassic extends Component {
 
 		put2(url, dataToSend)
 		.then ( data => {
+            state.currentGame = data.id
+            state.profile.current_game_id = data.id
 			navigateTo('/play/waiting-room');
 		});
 		return (false);
