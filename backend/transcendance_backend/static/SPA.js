@@ -181,7 +181,6 @@ function displayContent(path) {
 	else {
 		Layout();
 
-        console.log(state.currentGame)
         if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.currentGame >= 0) {
 		    navigateTo("/play/waiting-room")
             return
@@ -361,10 +360,6 @@ function userUpdate(newUser, action) {
             state.currentGame = newUser.current_game_id
 	}
 }
-
-//function profileUpdate() {
-//
-//}
 
 function gameUpdateAll(data) {
 	objects = data.objects;
