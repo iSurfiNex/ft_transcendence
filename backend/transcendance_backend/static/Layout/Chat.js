@@ -49,9 +49,9 @@ class PongChat extends Component {
 
 						<div class="btn-group user-btn" role="group" aria-label="Basic example">
 							<span class="offline">{this.getUserStatus(user,user.current_game_id,user.current_tournament_id)}</span>
-                        	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
-                        	<button type="button" class="btn btn-sm btn-success" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
-                        	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" ><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
+                        	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+                        	<button type="button" class="btn btn-sm btn-success" @click="this.addFriend(user)" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
+                        	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" title="Block user"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
 						</div>
 						<div class="chat-player-seperator"></div>
 					</div>
@@ -765,6 +765,26 @@ class PongChat extends Component {
 	}
 
 	blockUser(tmpUser) {
+		if (tmpUser.nickname === state.profile.nickname)
+			return ;
+		else if (state.profile.blocked.some(user => user.nickname === tmpUser.nickname)) {
+			var indexToRemove = state.profile.blocked.findIndex(user => user.id === tmpUser.id);
+
+			state.profile.blocked.splice(indexToRemove, 1);
+			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
+		}
+		else {
+			state.profile.blocked.push({id: tmpUser.id, name: tmpUser.nickname});
+			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
+		}
+		if (state.activeChannel == 'global') {
+			var message = this.shadowRoot.getElementById("messages");
+			message.scrollTop = message.scrollHeight;
+		}
+		state.isPlayerListChecked = true;
+	}
+
+	addFriend(tmpUser) {
 		if (tmpUser.nickname === state.profile.nickname)
 			return ;
 		else if (state.profile.blocked.some(user => user.nickname === tmpUser.nickname)) {
