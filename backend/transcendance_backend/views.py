@@ -27,9 +27,11 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 
 from .models import Player
-from .pong.init import createGameThread
+from .pong.init import runPong
 
 import logging
+
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -247,7 +249,6 @@ def request_42_login(request):
             login(request, user)
             logger.debug("======== User logged in")
 
-        createGameThread(id)
         return getLoginResponse(user)
 
     except Exception as e:
@@ -488,7 +489,7 @@ class ManageGameView(View):
                     datetime.now().timestamp() + timedelta(seconds=5)
                 ) * 1000
                 game.state = "running"
-                createGameThread(id)
+                asyncio.run(runPong(id))
 
             elif data["action"] == "join":
                 game.players.add(my_player)
