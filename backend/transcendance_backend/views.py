@@ -495,7 +495,6 @@ class ManageGameView(View):
                         game.players.remove(my_player)
                         game.created_by = game.players.first()
                     else:
-                        game.players.remove(my_player)
                         game.delete()
                         stateUpdate(Game, "update", "all games")
                         return JsonResponse({})

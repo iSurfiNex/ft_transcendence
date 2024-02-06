@@ -32,6 +32,11 @@ class Player(models.Model):
         format="JPEG",
         options={"quality": 60},
     )
+    games = models.ManyToManyField(
+        "Game",
+        through="GameStat",
+        related_name="games_played",
+    )
 
     nickname = models.CharField(max_length=32, unique=True)
     blocked_users = models.ManyToManyField(
@@ -60,7 +65,7 @@ class Player(models.Model):
         return {
             "id": self.user.id,
             "id_42": self.id_42,
-            "current_game_id": self.game_set.filter(state__in=["running", "waiting"])
+            "current_game_id": self.games.filter(state__in=["running", "waiting"])
             .values_list("id", flat=True)
             .first()
             or -1,
