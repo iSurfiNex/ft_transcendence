@@ -26,7 +26,7 @@ class PongChat extends Component {
 			</div>
 
 			<div class="messages" id="messages" repeat="messages" as="message">
-				<div class="message" is-my-msg="{this.equals(message.nickname,profile.name)}" hidden="{this.isMessageInChannel(message.channel,message.nickname,activeChannel)}">
+				<div class="message" is-my-msg="{this.equals(message.nickname,profile.nickname)}" hidden="{this.isMessageInChannel(message.channel,message.nickname,activeChannel)}">
 					<div class="msg-heading">
 						<a href="javascript:void(0)" @click="this.navigate(message.nickname)">
 							<img class="message-player-img" src="{this.getProfilePicture(message.nickname)}" alt="profile"/>
