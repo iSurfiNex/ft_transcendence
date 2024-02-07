@@ -368,6 +368,7 @@ class ManageTournamentView(View):
             )
             tournament.players.add(creator)
 
+            stateUpdateAll(Game, "all games")
             stateUpdate(tournament, "create", "tournament")
             response = tournament.serialize()
             return JsonResponse(response, status=200)

@@ -282,8 +282,8 @@ class TournamentWr extends Component {
         .player-T {
             position: relative;
             flex-direction: column;
-            width: 50%;
-            left: 25%;
+            width: 100%;
+            left: 0;
             height: 20%;
         }
 
@@ -397,7 +397,7 @@ class TournamentWr extends Component {
         const user = state.users.find(elem => elem.nickname === nickname);
 
         if (user) {
-            return '/static/' + user.picture;
+            return user.picture;
         }
 
         else {
