@@ -234,16 +234,16 @@ class PongJoinList extends Component {
 `
 
 	isGameHidden(game, filter) {
-        if (game.players.length >= 2 || game.ia || !(game.status == "waiting"))
+        if (game.players.length >= 2 || game.ia || game.status !== "waiting")
             return false
         const isTournament = game.tournament_id >= 0
         const isPowerUps = game.type != 'normal'
         if (filter === 'pong')
-            return !isTournament && !isPowerUps
-        if (filter === 'powerUps')
-            return !isTournament && isPowerUps
+            return isTournament || isPowerUps
+        if (filter === 'pong-up')
+            return isTournament || !isPowerUps
         if (filter === 'tournament')
-            return isTournament
+            return !isTournament
 		return (false);
 	}
 
