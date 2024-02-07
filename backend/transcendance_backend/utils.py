@@ -19,7 +19,7 @@ def stateUpdate(dataToSend, action, dataType):
     async_to_sync(channel_layer.group_send)("state-update", data)
 
 
-def stateUpdateAll(dataTosend, dataType):
+def stateUpdateAll(dataToSend, dataType):
     content = {
         'objects': dataToSend.serialize_all(),
         'data_type': dataType,

@@ -380,9 +380,14 @@ function tournamentUpdateAll(data) {
 function currentGameUpdate() {
 	let currentGame = -1;
 	let currentTournament = -1;
+	var isMyGame;
+	var isMyTournament;
 
-	let isMyGame = state.games.players.find(player => player === state.profile.nickname);
-	let isMyTournament = state.tournaments.players.find(player => player === state.profile.nickname)
+	if (state.games && state.games.length != 0)
+		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname));
+	
+	if (state.tournaments && state.tournaments.length != 0)
+		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname))
 
 	if (isMyGame)
 	    currentGame = isMyGame.id;

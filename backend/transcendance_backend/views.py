@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 
 from .models import Player, Tournament, Game
 from .forms import PlayerForm, TournamentForm, GameForm
-from .utils import stateUpdate
+from .utils import stateUpdate, stateUpdateAll
 from typing import Type
 
 # from django.contrib.auth.models import User
@@ -408,17 +408,19 @@ class ManageTournamentView(View):
             ):  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
                 tournament.players.add(my_player)
 
-            #elif data["action"] == "leave":
-            #    if my_player == tournament.created_by:
-            #        if tournament.players.count() > 1:
-            #            tournament.players.remove(my_player)
-            #            tournament.created_by = tournament.players.first()
-            #        else:
-            #            tournament.delete()
-            #            stateUpdateAll(Tournament.objects.all(), "all tournaments")
-            #            return JsonResponse({}, status=204)
-            #    else:
-            #        tournament.players.remove(my_player)
+            elif data["action"] == "leave":
+                if my_player == tournament.created_by:
+                    if tournament.players.count() > 1:
+                        tournament.players.remove(my_player)
+                        tournament.created_by = tournament.players.first()
+                        #tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
+                        #tournament.game_set ...
+                    else:
+                        tournament.delete()
+                        stateUpdateAll(Tournament, "all tournaments")
+                        return JsonResponse({}, status=200)
+                else:
+                    tournament.players.remove(my_player)
 
             tournament.save()
             stateUpdate(tournament, "update", "tournament")
@@ -474,8 +476,8 @@ class ManageGameView(View):
             )
             game.players.add(creator)
 
-            stateUpdate(game, "create", "game")########################################################################
-            stateUpdate(creator, "update", "user")#####################################################################
+            stateUpdate(game, "create", "game")
+            stateUpdate(creator, "update", "user")
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -508,15 +510,15 @@ class ManageGameView(View):
                         game.created_by = game.players.first()
                     else:
                         game.delete()
-                        stateUpdateAll(Game, "all games")############################################
-                        stateUpdate(my_player, "update", "user")############################################
+                        stateUpdateAll(Game, "all games")
+                        stateUpdate(my_player, "update", "user")
                         return JsonResponse({}, status=200)
-               else:
+                else:
                    game.players.remove(my_player)
 
             game.save()
             stateUpdate(game, "update", "game")
-            stateUpdate(my_player, "update", "user")#####################################################
+            stateUpdate(my_player, "update", "user")
             response = game.serialize()
             return JsonResponse(response, status=200)
 
