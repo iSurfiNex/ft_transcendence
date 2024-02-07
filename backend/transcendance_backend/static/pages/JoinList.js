@@ -235,7 +235,7 @@ class PongJoinList extends Component {
 
 	isGameHidden(game, filter) {
         if (game.players.length >= 2 || game.ia || game.status !== "waiting")
-            return false
+            return true
         const isTournament = game.tournament_id >= 0
         const isPowerUps = game.type != 'normal'
         if (filter === 'pong')
