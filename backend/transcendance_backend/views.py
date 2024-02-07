@@ -417,7 +417,12 @@ class ManageTournamentView(View):
                         #tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
                         #tournament.game_set ...
                     else:
+                        tournamentGames = tournament.game_set.all()[0].delete()
+                        tournamentGames = tournament.game_set.all()[0].delete()
+                        tournamentGames = tournament.game_set.all()[0].delete()
                         tournament.delete()
+    
+                        stateUpdateAll(Tournament, "all games")
                         stateUpdateAll(Tournament, "all tournaments")
                         return JsonResponse({}, status=200)
                 else:

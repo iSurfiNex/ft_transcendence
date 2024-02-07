@@ -10,8 +10,9 @@ class TournamentWr extends Component {
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
         
             <div class="player-count">
-                <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
+                <button class="btn btn-startGame" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</button>
                 {this.getPlayerCount()}/{this.expectedPlayers()}
+                <button class="btn btn-giveUp" @click="this.giveUp()">GIVE UP</button>
             </div>
     
             <div class="tournament-room" repeat="tournaments" as="tournament"> 
@@ -104,7 +105,7 @@ class TournamentWr extends Component {
             overflow-y: auto;
         }
 
-        .btn-startGame-T {
+        .btn-startGame {
             position: absolute;
             left: 2%;
             top: 15%;
@@ -123,7 +124,7 @@ class TournamentWr extends Component {
             backdrop-filter: blur(1px);
         }
 
-        .btn-startGame-T:hover {
+        .btn-startGame:hover {
             background-color: #00ff00;
             color: #2a2a2a;
             opacity: 1;
@@ -254,7 +255,7 @@ class TournamentWr extends Component {
             overflow-y: auto;
         }
     
-        .btn-startGame-T {
+        .btn-startGame {
             position: absolute;
             left: 2%;
             bottom: 0;
@@ -273,12 +274,37 @@ class TournamentWr extends Component {
             backdrop-filter: blur(1px);
         }
 
-        .btn-startGame-T:hover {
+        .btn-startGame:hover {
             background-color: #00ff00;
             color: #2a2a2a;
             opacity: 1;
         }
+        
+        .btn-giveUp {
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            right: 2%;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            overflow: hidden;
 
+            font-size: 1vw;
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-giveUp:hover {
+            background-color: #ff0000;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+        
         .player-T {
             position: relative;
             flex-direction: column;
@@ -388,7 +414,7 @@ class TournamentWr extends Component {
             return !(false);
         
         let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-        if (state.username == tournament.creator && tournament.status == "waiting")
+        if (state.profile.nickname == tournament.creator && tournament.status == "waiting")
             return !(true);
         return !(false);
     }
@@ -401,8 +427,22 @@ class TournamentWr extends Component {
         }
 
         else {
-            return '/static/img/list.svg';
+            return '/media/avatars/default.jpg';
         }
+    }
+
+    giveUp() {
+        let url = "/api/manage-tournament/" + state.currentTournament + "/";
+
+        let dataToSend = {
+            action: 'leave',
+        }
+
+        put2(url, dataToSend)
+        .then (data => {
+            navigateTo('/');
+        })
+        .catch(error => console.error(error));
     }
 
     startTournament() {

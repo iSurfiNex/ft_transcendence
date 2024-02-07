@@ -730,8 +730,8 @@ class WaitingRoom extends Component {
 
     giveUp() {
         let url = "/api/manage-game/" + state.currentGame + "/";
-        if (state.currentTournament != -1)
-            url = "/api/manage-tournament/" + state.currentTournament + "/";
+        //if (state.currentTournament != -1)
+        //    url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         var dataToSend = {
             action: 'leave',
@@ -739,8 +739,8 @@ class WaitingRoom extends Component {
 
         put2(url, dataToSend)
         .then (data => {
-            state.profile.current_game_id = -1
-            state.currentGame = -1
+            //state.profile.current_game_id = -1
+            //state.currentGame = -1
             navigateTo('/');
         })
         .catch(error => console.error(error));
