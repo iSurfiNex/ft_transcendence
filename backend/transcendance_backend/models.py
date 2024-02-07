@@ -193,6 +193,7 @@ class Game(models.Model):
             if self.ended_at
             else None,
             "winner": self.winner.serialize_summary() if self.winner else None,
+            "tournament_id": self.tournament_id or -1,
         }
 
     def serialize_summary(self):
