@@ -1,26 +1,44 @@
 import { Component, register, html, css } from 'pouic'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
-class PongClassic extends Component {
+class PongJoinList extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<div class="pong">
 		<div class="content">
-			<div class="pong-title">PONG</div>
+			<div class="pong-title">
+				<a selected="{this.equals(gameListFilter,'pong')}" onclick="navigateTo('/play/pong')">CLASSIC</a>
+				<a selected="{this.equals(gameListFilter,'pong-up')}"  onclick="navigateTo('/play/pong-up')">POWER-UPS</a>
+				<a selected="{this.equals(gameListFilter,'tournament')}"  onclick="navigateTo('/play/tournament')">{language.tournament}</a>
+			</div>
 			<div class="pong-content">
 				<div class="pong-create">
 					<button id="pong-button" class="pushable" onclick="navigateTo('/play/create-game'); return false;">
 						<span class="front">{language.createGame}</span>
 					</button>
 				</div>
+
 				<div class="pong-list">
-					<div repeat="games" as="game">
-						<div class="pong-desc" hidden="{this.isGameHidden(game)}">
+					<div repeat="games" as="game" hidden="{this.equals(gameListFilter,'tournament')}">
+						<div class="pong-desc" hidden="{this.isGameHidden(game, gameListFilter)}">
 							<div class="pong-type">ID:{game.id}</div>
 							<div class="pong-players" repeat="players" as="player">
 								<div class="pong-player">{player}</div>
 							</div>
 							<div class="pong-player-count">{game.players.length}/2</div>
+							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
+								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
+							</a>
+						</div>
+					</div>
+
+					<div repeat="tournaments" as="game" hidden="{!this.equals(gameListFilter,'tournament')}">
+						<div class="pong-desc" hidden="{this.isGameHidden(game)}">
+							<div class="pong-type">ID:{game.id}</div>
+							<div class="pong-players" repeat="players" as="player">
+								<div class="pong-player">{player}</div>
+							</div>
+							<div class="pong-player-count">{game.players.length}/4</div>
 							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
 								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 							</a>
@@ -72,21 +90,32 @@ class PongClassic extends Component {
 	}
 
 	.content {
-		position: absolute;
-		top: 0;
-		height: 100%;
-		width: 100%;
+		display: flex;
+		justify-item: center;
+		flex-direction: column;
 		animation: fadeIn 0.5s;
 	}
 
 	.pong-title {
-		position: absolute;
-		padding-top: 15px;
 		color: white;
-		font-size: 30px;
-		word-wrap: break-word;
-		width: 100%;
-		text-align: center;
+		font-size: 20px;
+		justify-content: center;
+		display: flex;
+		gap: 20px;
+		flex-wrap: wrap;
+		margin-top: 20px;
+	}
+
+	.pong-title > a {
+		color: white;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.pong-title > a[selected] {
+		color: white;
+		text-decoration: underline !important;
+		text-decoration-thickness: 3px;
 	}
 
 	.pong-content {
@@ -204,21 +233,21 @@ class PongClassic extends Component {
 	}
 `
 
-	isGameHidden(game) {
-		if (game.type != "normal")
-			return (true);
-		if (game.status != "waiting")
-			return (true);
-		if (game.creator == "tournament")
-			return (true);
-		if (game.players.length >= 2)
-			return (true);
+	isGameHidden(game, filter) {
+        if (game.players.length >= 2 || game.ia || !(game.status == "waiting"))
+            return false
+        const isTournament = game.tournament_id >= 0
+        const isPowerUps = game.type != 'normal'
+        if (filter === 'pong')
+            return !isTournament && !isPowerUps
+        if (filter === 'powerUps')
+            return !isTournament && isPowerUps
+        if (filter === 'tournament')
+            return isTournament
 		return (false);
 	}
 
 	navigateUpdate(game) {
-		//state.currentGame = game.id;
-		//console.log(state.currentGame + ' ' + game.id);
 		var url = "/api/manage-game/" + game.id + "/";
 
 		var dataToSend = {
@@ -233,6 +262,10 @@ class PongClassic extends Component {
 		});
 		return (false);
 	}
+
+    equals(a, b) {
+        return a === b
+    }
 }
 
-register(PongClassic);
+register(PongJoinList);

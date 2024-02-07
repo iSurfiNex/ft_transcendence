@@ -208,6 +208,27 @@ function displayContent(path) {
 		else if (path === "/play/tournament-running-wr") {
 			displayElement("tournament-running-wr");
 		}
+		else if (path === "/play/pong") {
+            state.createGamePresets.tournament = false
+            state.createGamePresets.powerUps = false
+            state.gameListFilter= 'pong'
+			displayElement("pong-join-list");
+        }
+		else if (path === "/play/pong-up") {
+            state.createGamePresets.tournament = false
+            state.createGamePresets.powerUps = true
+            state.gameListFilter= 'pong-up'
+			displayElement("pong-join-list");
+        }
+		else if (path === "/play/tournament") {
+            state.createGamePresets.tournament = true
+            state.createGamePresets.powerUps = false
+            state.gameListFilter= 'tournament'
+			displayElement("pong-join-list");
+        }
+		else if (path === "/play") {
+            navigateTo('/play/pong')
+		}
 		else if (path === "/play/create-game") {
 			displayElement("pong-create-game");
 		}

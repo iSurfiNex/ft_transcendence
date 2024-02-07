@@ -24,6 +24,7 @@ var state_base = {
                 tournament: false,
                 powerUps: false,
         },
+        gameListFilter: 'pong',
 	profile: window.profile,
         loginLoading: false,
         loginErrors : {

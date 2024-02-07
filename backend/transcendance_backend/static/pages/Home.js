@@ -423,9 +423,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-            state.createGamePresets.tournament = false
-            state.createGamePresets.powerUps = false
-			navigateTo("/play/create-game");
+			navigateTo("/play/pong");
 		}, 400);
 	}
 
@@ -444,9 +442,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-            state.createGamePresets.tournament = false
-            state.createGamePresets.powerUps = true
-			navigateTo("/play/create-game");
+			navigateTo("/play/pong-up");
 		}, 400);
 	}
 
@@ -465,9 +461,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-            state.createGamePresets.tournament = true
-            state.createGamePresets.powerUps = false
-			navigateTo("/play/create-game");
+			navigateTo("/play/tournament");
 		}, 400);
 	}
 }
