@@ -1,4 +1,5 @@
-import {setup} from "./pouic/state.js"
+import {setup, computedProperty} from "./pouic/state.js"
+
 
 /* Global function to start a WebSocket connection. If page protocol is https, start wss connection otherwise ws. Exemple if page is https://localhost:8000/start-game and you call ws('chat'), a connection will open at wss://localhost:8000/ws/chat */
 window.ws = route => {
@@ -10,6 +11,15 @@ window.ws = route => {
 }
 
 var state_base = {
+        game: computedProperty(['games', 'currentGame', 'profile.id'], function (games, currentGameId, myId) {
+                if (!games && !Array.isArray(games) || !(currentGameId>=0))
+                        return {}
+                const my_game =  games.find(game => game.id === currentGameId)
+                if (!my_game)
+                        return {}
+                my_game.creator_is_me = my_game.creator_id === myId
+                return my_game
+        }),
 	profile: window.profile,
         loginLoading: false,
         loginErrors : {

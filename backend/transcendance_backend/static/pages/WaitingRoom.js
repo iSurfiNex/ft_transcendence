@@ -8,17 +8,17 @@ class WaitingRoom extends Component {
     <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
             <div class="nicknames-N">
-                <button class="btn btn-startGame" @click="this.startGame()" hidden="{this.isGameCreator()}">{language.GoButton}</button>
-                <a class="playerOne-N" href="/profile"> {this.getPlayerOne(currentGame)} </a>
+                <button class="btn btn-startGame" @click="this.startGame()" hidden="{!game.creator_is_me}">{language.GoButton}</button>
+                <a class="playerOne-N" href="/profile"> {game.p1.nickname} </a>
                 <div class="VS-logo-N"> VS </div>
-                <a class="playerTwo-N" href="/profile"> {this.getPlayerTwo(currentGame)} </a>
+                <a class="playerTwo-N" href="/profile"> {game.p2.nickname} </a>
                 <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
             </div>
 
             <div class="profil-pics-N">
                 <div class="gallery-N">
-                    <img src="{this.playerOnePic(currentGame)}" alt="player 1">
-                    <img src="{this.playerTwoPic(currentGame)}" alt="player 2">
+                    <img src="{game.p1.picture}" alt="player 1">
+                    <img src="{game.p2.picture}" alt="player 2">
                 </div>
             </div>
     </div>
@@ -685,56 +685,6 @@ class WaitingRoom extends Component {
         display: none;
     }
     `
-
-    playerOnePic() {
-        const game = state.games.find(game => game.id == state.currentGame);
-
-        if (!game || game.players.length < 1 || state.currentGame == -1)
-            return ("/media/avatars/default.jpg");
-
-        const playerNick = game.players[0];
-        const user = state.users.find(elem => elem.nickname === playerNick);
-
-        if (user)
-            return user.picture;
-
-        return '/media/avatars/default.jpg';
-    }
-
-    playerTwoPic() {
-        const game = state.games.find(game => game.id == state.currentGame);
-
-        if (!game || game.players.length < 2 || state.currentGame == -1)
-            return ("/media/avatars/default.jpg");
-
-        const playerNick = game.players[1];
-        const user = state.users.find(elem => elem.nickname === playerNick);
-
-        if (user)
-            return user.picture;
-
-        return '/media/avatars/default.jpg';
-    }
-
-    getPlayerOne() {
-        const game = state.games.find(game => game.id == state.currentGame);
-        return game?.players[0] || "Unknown"
-    }
-
-    getPlayerTwo()
-    {
-        const game = state.games.find(game => game.id == state.currentGame);
-        return game?.players[1] || "Unknown"
-    }
-
-    isGameCreator() {
-        const game = state.games.find(game => game.id == state.currentGame);
-
-        if (!game || state.profile.nickname != game.creator)
-            return !(false);
-
-        return !(true);
-    }
 
     startTournament() {
         const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament);

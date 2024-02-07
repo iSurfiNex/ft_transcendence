@@ -57,6 +57,15 @@ class Player(models.Model):
         return json.dumps(Player.serialize_all(), cls=DjangoJSONEncoder)
 
     @classmethod
+    def empty_summary(cls):
+        return {
+            "id": -1,
+            "nickname": "Unknown",
+            "picture": "/media/avatars/default.jpg",
+            "avatar_thumbnail_url": "/media/avatars/default.jpg",
+        }
+
+    @classmethod
     def serialize_all(cls):
         users_list = Player.objects.filter(user__is_superuser=False)
         return [user.serialize() for user in users_list]
@@ -90,6 +99,8 @@ class Player(models.Model):
         return {
             "id": self.user.id,
             "nickname": self.nickname,
+            "picture": self.avatar.url,
+            "avatar_thumbnail_url": self.avatar_thumbnail.url,
         }
 
 
@@ -143,6 +154,21 @@ class Game(models.Model):
         return games
 
     def serialize(self):
+        players = self.players.all()
+        player_count = len(players)
+        p1 = (
+            players[0].serialize_summary()
+            if player_count > 0
+            else Player.empty_summary()
+        )
+        p2 = (
+            players[1].serialize_summary()
+            if player_count > 1
+            else Player.empty_summary()
+        )
+        p1["is_creator"] = p1["id"] == self.created_by.id
+        p2["is_creator"] = p2["id"] == self.created_by.id
+
         return {
             "id": self.id,
             "status": self.state,
@@ -150,7 +176,10 @@ class Game(models.Model):
             "ia": self.ia,
             "type": "powerup" if self.power_ups else "normal",
             "players": [player.nickname for player in self.players.all()],
+            "p1": p1,
+            "p2": p2,
             "creator": self.created_by.nickname,
+            "creator_id": self.created_by.id,
             "date": int(self.created_at.timestamp() * 1000)
             if self.created_at
             else None,

@@ -1,5 +1,7 @@
 # Pouic
 
+=> THIS README IS NOT UP-TO-DATE
+
 Pouic is a micro-framework design to work with WebComponent. It provides DOM variable binding with a global state variable. When the state object is modifies, the DOM updates by it-self.
 
 ## Quickstart
