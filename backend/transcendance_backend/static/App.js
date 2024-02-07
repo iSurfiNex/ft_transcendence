@@ -1,4 +1,4 @@
-import {setup, computedProperty} from "./pouic/state.js"
+import {setup, computedProperty, observe} from "./pouic/state.js"
 
 
 /* Global function to start a WebSocket connection. If page protocol is https, start wss connection otherwise ws. Exemple if page is https://localhost:8000/start-game and you call ws('chat'), a connection will open at wss://localhost:8000/ws/chat */
@@ -302,6 +302,12 @@ var state_base = {
 state_base.language = {...state_base.en}
 const state = setup(state_base)
 
+observe('game.status', (newStatus, oldStatus) => {
+        if (newStatus === "running" && oldStatus !== "running") {
+                console.log("GAME STARTING")
+                navigateTo('/game')
+        }
+})
 
 function checkScreenWidth() {
 	state.isMobile = (window.innerWidth < 769 || window.innerHeight < 525);
