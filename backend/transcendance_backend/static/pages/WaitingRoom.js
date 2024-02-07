@@ -741,7 +741,7 @@ class WaitingRoom extends Component {
         .then (data => {
             state.profile.current_game_id = -1
             state.currentGame = -1
-            navigateTo('/play/pong');
+            navigateTo('/');
         })
         .catch(error => console.error(error));
     }
