@@ -20,6 +20,10 @@ var state_base = {
                 my_game.creator_is_me = my_game.creator_id === myId
                 return my_game
         }),
+        createGamePresets: {
+                tournament: false,
+                powerUps: false,
+        },
 	profile: window.profile,
         loginLoading: false,
         loginErrors : {
