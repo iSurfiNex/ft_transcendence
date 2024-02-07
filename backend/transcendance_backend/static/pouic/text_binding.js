@@ -1,4 +1,4 @@
-import {extractPathScope, addPathObserver, get_prop, bracketEval} from './utils.js'
+import {bracketEval} from './utils.js'
 
 // Function to split a text node based on a regex pattern
 export const bindTextNode = (scope, prefixes, textNode) => {
@@ -22,6 +22,13 @@ export const bindTextNode = (scope, prefixes, textNode) => {
       parentNode.insertAdjacentText("beforeend", "")
       let newTextNode = parentNode.lastChild
       let onTextChange = (varVal) => { newTextNode.nodeValue = varVal; }
+      //let onTextChange = (varVal) => {
+      //  if (varVal instanceof Node) {
+      //    newTextNode.replaceWith(varVal)
+      //    return;
+      //  }
+      //  newTextNode.nodeValue = varVal;
+      //}
       // if bracketEval returns false, the variable could not be found in the state, continue to the fallback value
       if (bracketEval(part, scope, prefixes, onTextChange))
         return

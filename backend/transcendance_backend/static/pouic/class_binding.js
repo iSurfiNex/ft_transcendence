@@ -1,10 +1,10 @@
-import {bracketEval, get_prop, addPathObserver} from './utils.js'
+import {bracketEval} from './utils.js'
 
 const attach_class_obs = (scope, prefixes, query, i, classList) => {
   let oldVal
-  let onClassBindingChange = (newVal, negate, useValue, forwardVal) => {
-    if (negate)
-      val = !val
+  let onClassBindingChange = (newVal, transform, useValue, forwardVal) => {
+    if (transform)
+      newVal = transform(newVal)
     if (useValue) {
       if (oldVal !== newVal)
         classList.toggle(oldVal, false);

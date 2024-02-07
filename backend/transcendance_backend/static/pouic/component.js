@@ -1,4 +1,6 @@
-import {bindAttr, bindText, evalRepeat, observe} from 'pouic'
+import {bindAttr, bindText} from './binding.js'
+        import {evalRepeat} from './repeat_binding.js'
+import {observe} from './state.js'
 
 export class Component extends HTMLElement {
     constructor() {
@@ -29,8 +31,9 @@ const camelToDashCase = (input)=> {
   return input.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-export const register = (TargetClass) => {
-  const name = camelToDashCase(TargetClass.name);
+export const register = (TargetClass, name) => {
+  if (!name)
+     name = camelToDashCase(TargetClass.name);
   if (TargetClass.template)
   {
     TargetClass.templateEl = document.createElement('template');
@@ -46,4 +49,13 @@ export const register = (TargetClass) => {
         TargetClass.sheets.push(sheetPromise)
     }
   customElements.define(name, TargetClass)
+}
+
+export const pouic = (name, html, css) => {
+  const Cls = class extends Component {
+    static template = html
+    static css = css
+  }
+  register(Cls, name)
+  return Cls
 }

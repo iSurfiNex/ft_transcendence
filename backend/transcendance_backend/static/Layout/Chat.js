@@ -850,7 +850,7 @@ class PongChat extends Component {
 			return 'IT';
 		else if (game_id > 0)
 			return 'IG';
-		return (user.is_connected ? 'ON' : 'OFF');
+		return (user?.is_connected ? 'ON' : 'OFF');
 	}
 
 	getChannelNotifications(notifications) {

@@ -1,5 +1,4 @@
-
-import {extractPathScope, get_prop, isIterable, addPathObserver } from './utils.js'
+import {extractPathScope, get_prop, isIterable, addPathObserver, invalidPathSymbol } from './utils.js'
 import {bindText, bindAttr } from './binding.js'
 
 export const evalRepeat = (node, scope, prefixes = {}) => {
@@ -23,6 +22,14 @@ export const evalRepeat = (node, scope, prefixes = {}) => {
     let onchange = (newLen) => {
       if (newLen === undefined)
         newLen = 0
+      if (!Number.isInteger(newLen)) // happens if (  initialVal === invalidPathSymbol)
+        return
+
+      //const len = Array.isArray(newVal) ? newVal.length : Object.keys(newVal).length
+  // if (!isIterable(newVal)) {
+      //  console.warn(newVal, "Value is not iterable")
+      //  return
+      //}
 
       let nodesDiff = newLen - nodePool.length
       // Restore pool nodes
