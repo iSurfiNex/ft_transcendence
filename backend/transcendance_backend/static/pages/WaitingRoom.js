@@ -8,7 +8,7 @@ class WaitingRoom extends Component {
     <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
             <div class="nicknames-N">
-                <button class="btn btn-startGame" @click="this.startGame()" hidden="{!this.canStart(game.creator_is_me,game.players.length,ia)}">{language.GoButton}</button>
+                <button class="btn btn-startGame" @click="this.startGame()" hidden="{!this.canStart(game.creator_is_me,game.players.length,game.ia)}">{language.GoButton}</button>
                 <a class="playerOne-N" href="/profile"> {game.p1.nickname} </a>
                 <div class="VS-logo-N"> VS </div>
                 <a class="playerTwo-N" href="/profile"> {game.p2.nickname} </a>
