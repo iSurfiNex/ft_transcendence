@@ -387,9 +387,7 @@ class ManageTournamentView(View):
             def start_game(i, p1, p2):
                 game = tournament.games.all()[i]
                 game.players.add(p1, p2)
-                game.started_at = (
-                    datetime.now() + timedelta(seconds=5)
-                ).timestamp() * 1000
+                game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
 
             if data["action"] == "start-1st-round":  # POUR COMMENCER LE TOURNOI
@@ -501,9 +499,7 @@ class ManageGameView(View):
             my_player = request.user.player
 
             if data["action"] == "start-game":
-                game.started_at = (
-                    datetime.now().timestamp() + timedelta(seconds=5)
-                ) * 1000
+                game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
 
             elif data["action"] == "join":
@@ -520,7 +516,7 @@ class ManageGameView(View):
                         stateUpdate(my_player, "update", "user")
                         return JsonResponse({}, status=200)
                 else:
-                   game.players.remove(my_player)
+                    game.players.remove(my_player)
 
             game.save()
             stateUpdate(game, "update", "game")
