@@ -208,15 +208,6 @@ function displayContent(path) {
 		else if (path === "/play/tournament-running-wr") {
 			displayElement("tournament-running-wr");
 		}
-		else if (path === "/play/pong") {
-			displayElement("pong-classic");
-		}
-		else if (path === "/play/pong-powerup") {
-			displayElement("pong-power-up");
-		}
-		else if (path === "/play/tournament") {
-			displayElement("pong-tournament");
-		}
 		else if (path === "/play/create-game") {
 			displayElement("pong-create-game");
 		}
