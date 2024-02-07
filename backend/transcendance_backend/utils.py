@@ -8,37 +8,25 @@ logger = logging.getLogger(__name__)
 
 
 def stateUpdate(dataToSend, action, dataType):
-    if dataType == "all games":
-        theData = {"objects": dataToSend.serialize_all()}
-    else:
-        # if data_type != "all games" and data_type != "all tournaments":
-        theData = dataToSend.serialize()
-    # else:
-    #    theData = []
-    #    for obj in dataToSend:
-    #        serialized = obj.serialize()
-    #        theData.append(serialized)
-
-    theData['action'] = action
-    theData['data_type'] = dataType
+    content = dataToSend.serialize()
+    content['action'] = action
+    content['data_type'] = dataType
     data = {
         'type': 'send.update',
-        'data': theData,
+        'data': content,
     }
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)("state-update", data)
 
-#def stateUpdateAll(dataTosend, dataType)
-#{
-#    serializedObj = [obj.serialize() for obj in dataToSend]
-#    theData = {
-#        'objects': serializedObj,
-#        'data_type': dataType,
-#    }
-#    data = {
-#        'type': 'send.update',
-#        'data': theData,
-#    }
-#    channel_layer = get_channel_layer()
-#    async_to_sync(channel_layer.group_send)("state-update", data)
-#}   
+
+def stateUpdateAll(dataTosend, dataType):
+    content = {
+        'objects': dataToSend.serialize_all(),
+        'data_type': dataType,
+    }
+    data = {
+        'type': 'send.update',
+        'data': content,
+    }
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)("state-update", data)

@@ -1,5 +1,4 @@
 export * from "./state.js"
-export * from "./statekit/index.js"
 export * from "./utils.js"
 export * from "./repeat_binding.js"
 export * from "./observer.js"

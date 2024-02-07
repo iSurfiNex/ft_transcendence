@@ -273,7 +273,8 @@ function stateUpdate(data)
 	//else if (data_type == 'profile')
 	//	profileUpdate(data, data.action);
 
-	//else if (data_type == 'all tournaments')
+	else if (data_type == 'all tournaments')
+		tournamentUpdateAll(data);
 
 	else if (data_type == 'all games')
 		gameUpdateAll(data);
@@ -281,6 +282,7 @@ function stateUpdate(data)
 	else if (data_type == 'user') //user update
 		userUpdate(data, data.action);
 
+	currentGameUpdate();
 }
 
 
@@ -320,11 +322,6 @@ function tournamentUpdate(newTournament, action) {
 	//	state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
 	//	state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
 	//}
-
-	//state.currentTournament = -1;
-	//currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.profile.nickname));
-	//if (currentTournament)
-	//	state.currentTournament = currentTournament.id;
 }
 
 
@@ -339,10 +336,6 @@ function gameUpdate(newGame, action) {
 		state.games.push(newGame);
 	else if (action == 'update')
 		state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
-
-	isMyGame = newGame.players.some(player => player === state.profile.nickname);
-	if (isMyGame)
-	    state.currentGame = newGame.id;
 }
 
 
@@ -372,4 +365,30 @@ function gameUpdateAll(data) {
 		games_list.push(obj);
 	});
 	state.games = games_list;
+}
+
+function tournamentUpdateAll(data) {
+	tournaments = data.objects;
+	tournament_list = [];
+
+	tournaments.forEach((tournament) => {
+		tournament_list.push(tournament);
+	});
+	state.tournaments = tournament_list;
+}
+
+function currentGameUpdate() {
+	let currentGame = -1;
+	let currentTournament = -1;
+
+	let isMyGame = state.games.players.find(player => player === state.profile.nickname);
+	let isMyTournament = state.tournaments.players.find(player => player === state.profile.nickname)
+
+	if (isMyGame)
+	    currentGame = isMyGame.id;
+	if (isMyTournament)
+		currentTournament = isMyTournament.id
+	
+	state.currentGame = currentGame;
+	state.currentTournament = currentTournament;
 }

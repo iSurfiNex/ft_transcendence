@@ -404,12 +404,23 @@ class ManageTournamentView(View):
             # elif data['action'] == "start-2nd-round"
 
             elif (
-                data["action"] == "add-player"
+                data["action"] == "join"
             ):  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
                 tournament.players.add(my_player)
 
-            # elif data["action"] == "rm-player":
+            #elif data["action"] == "leave":
+            #    if my_player == tournament.created_by:
+            #        if tournament.players.count() > 1:
+            #            tournament.players.remove(my_player)
+            #            tournament.created_by = tournament.players.first()
+            #        else:
+            #            tournament.delete()
+            #            stateUpdateAll(Tournament.objects.all(), "all tournaments")
+            #            return JsonResponse({}, status=204)
+            #    else:
+            #        tournament.players.remove(my_player)
 
+            tournament.save()
             stateUpdate(tournament, "update", "tournament")
             response = tournament.serialize()
             return JsonResponse(response, status=200)
@@ -463,8 +474,8 @@ class ManageGameView(View):
             )
             game.players.add(creator)
 
-            stateUpdate(game, "create", "game")
-            stateUpdate(creator, "update", "user")
+            stateUpdate(game, "create", "game")########################################################################
+            stateUpdate(creator, "update", "user")#####################################################################
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -492,20 +503,20 @@ class ManageGameView(View):
 
             elif data["action"] == "leave":
                 if my_player == game.created_by:
-                    if game.players.count() == 2:
+                    if game.players.count() > 1:
                         game.players.remove(my_player)
                         game.created_by = game.players.first()
                     else:
                         game.delete()
-                        stateUpdate(Game, "update", "all games")
-                        stateUpdate(my_player, "update", "user")
-                        return JsonResponse({})
-                else:
-                    game.players.remove(my_player)
+                        stateUpdateAll(Game, "all games")############################################
+                        stateUpdate(my_player, "update", "user")############################################
+                        return JsonResponse({}, status=200)
+               else:
+                   game.players.remove(my_player)
 
             game.save()
             stateUpdate(game, "update", "game")
-            stateUpdate(my_player, "update", "user")
+            stateUpdate(my_player, "update", "user")#####################################################
             response = game.serialize()
             return JsonResponse(response, status=200)
 
