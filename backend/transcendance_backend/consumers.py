@@ -24,10 +24,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         player.is_connected = new_value
         player.save()
 
-        logger.debug(
-            f"CONNECTION STATE {new_value} - {Player.objects.get(id=p.id).is_connected}"
-        )
-
     async def connect(self):
         try:
             logger.debug("=================WS CONNECT START============")
