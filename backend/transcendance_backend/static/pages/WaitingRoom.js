@@ -729,7 +729,7 @@ class WaitingRoom extends Component {
     }
 
     giveUp() {
-        const url = "/api/manage-game/" + state.currentGame + "/";
+        let url = "/api/manage-game/" + state.currentGame + "/";
         if (state.currentTournament != -1)
             url = "/api/manage-tournament/" + state.currentTournament + "/";
 

@@ -142,6 +142,9 @@ class Game(models.Model):
         on_delete=models.CASCADE,
         related_name="games_won",
     )
+    tournament = models.ForeignKey(
+        "Tournament", on_delete=models.SET_NULL, blank=True, null=True
+    )
 
     @classmethod
     def all_serialized(cls):
@@ -215,28 +218,6 @@ class Tournament(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    games = models.ManyToManyField(Game, related_name="tournaments", blank=True)
-
-    def create_game(self):
-        return Game.objects.create(
-            state="waiting",
-            goal_objective=self.goal_objective,
-            power_ups=self.power_ups,
-            created_by=self.created_by,
-        )
-
-    def create_games(self):
-        # Create Game instances with player count derived from the Tournament
-        self.games.add(self.create_game())
-        self.games.add(self.create_game())
-        self.games.add(self.create_game())
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            # If this is a new instance (not being updated)
-            # Call create_games() to create Game instances
-            self.create_games()
-        super().save(*args, **kwargs)
 
     @classmethod
     def all_serialized(cls):
@@ -255,7 +236,7 @@ class Tournament(models.Model):
             "status": self.state,
             "power_ups": self.power_ups,
             "players": [player.nickname for player in self.players.all()],
-            "gamesId": [game.id for game in self.games.all()],
+            "gamesId": [game.id for game in self.game_set.all()],
             "creator": self.created_by.nickname,
             "date": int(self.created_at.timestamp() * 1000)
             if self.created_at
@@ -270,7 +251,7 @@ class Tournament(models.Model):
 
 # === SIGNALS ===
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 
@@ -291,6 +272,34 @@ def create_player(sender, instance, created, **kwargs):
         Player.objects.create(
             user=instance, nickname=get_unique_nickname(f"{instance.username}_")
         )
+
+
+def create_tournament_game(tournament):
+    return Game.objects.create(
+        state="waiting",
+        goal_objective=tournament.goal_objective,
+        power_ups=tournament.power_ups,
+        created_by=tournament.created_by,
+        tournament=tournament,
+    )
+
+
+@receiver(post_save, sender=Tournament)
+def on_tournament_created(sender, instance, created, **kwargs):
+    if created:
+        create_tournament_game(instance)
+        create_tournament_game(instance)
+        create_tournament_game(instance)
+
+
+@receiver(pre_save, sender=Tournament)
+def on_tournament_field_change(sender, instance, **kwargs):
+    if instance.id is not None:  # Not created
+        previous = sender.objects.get(id=instance.id)
+        if previous.created_by != instance.created_by:  # field will be updated
+            Game.objects.filter(tournament=instance).update(
+                created_by=instance.created_by
+            )
 
 
 @receiver(post_save, sender=User)
