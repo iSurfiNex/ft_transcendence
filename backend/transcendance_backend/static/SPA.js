@@ -181,17 +181,26 @@ function displayContent(path) {
 	else {
 		Layout();
 
-        if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.game.status === 'waiting') {
-		    console.log("REDIRECT - WAITING ROOM", state.game.status)
-            navigateTo("/play/waiting-room")
-            return
+        if (path !== "/profile/" && path !== "/profile") {
+            // While player is in game or in waiting root, he can only naviagte to profile
+
+            if (path !== "/play/tournament-wr" && state.tournament.status === 'waiting') {
+		        console.log("REDIRECT - TOURNAMENT WAITING ROOM")
+                navigateTo("/play/tournament-wr")
+                return;
+            }
+            else if (path !== "/play/waiting-room" && state.game.status === 'waiting') {
+		        console.log("REDIRECT - WAITING ROOM")
+                navigateTo("/play/waiting-room")
+                return;
+            }
+            if (path !== "/play/game" && state.game.status === 'running') {
+		        console.log("REDIRECT - RUNNING GAME")
+                navigateTo("/play/game")
+                return;
+            }
         }
 
-        if (path !== "/play/game" && path !== "/profile/" && path !== "/profile" && state.game.status === 'running') {
-		    console.log("REDIRECT - RUNNING GAME", state.game.status)
-            navigateTo("/play/game")
-            return
-        }
 		if (path === "/") {
 			displayElement("pong-home");
 		}
