@@ -339,12 +339,18 @@ const state = setup(state_base)
 
 observe('game.status', (newStatus, oldStatus) => {
         const gameStarts = (newStatus === "running" && oldStatus !== "running")
+        const gameOver = (newStatus !== "running" && oldStatus === "running")
         const leaveWaitingRoom = (newStatus !== "waiting" && oldStatus === "waiting")
-        const enterWaitingRoom = (newStatus == "waiting" && oldStatus !== "waiting")
+        const enterWaitingRoom = (newStatus === "waiting" && oldStatus !== "waiting")
         if (gameStarts) {
                 console.log("GAME STARTING")
                 navigateTo('/play/game')
-
+        } else if(gameOver) {
+                console.log("GAME OVER")
+                //if (state.currentTournament.status === ???)
+                //        navigateTo('play/tournament-wr')
+                //else
+                navigateTo('/')
         } else if (enterWaitingRoom) {
                 console.log("ENTER WAITING ROOM")
                 navigateTo('/play/waiting-room');

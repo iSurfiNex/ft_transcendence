@@ -211,7 +211,7 @@ function displayContent(path) {
 			displayElement("pong-profile");
 		}
 		else if (path === "/play/waiting-room") {
-            if (!(state.currentGame > 0))
+            if (!(state.currentGame >= 0))
             {
                 navigateTo('/')
                 return
@@ -219,6 +219,11 @@ function displayContent(path) {
 			displayElement("pong-waiting-room");
 		}
 		else if (path === "/play/tournament-wr") {
+            if (!(state.currentTournament >= 0))
+            {
+                navigateTo('/')
+                return
+            }
 			displayElement("tournament-wr")
 		}
 		else if (path === "/play/tournament-running-wr") {
@@ -249,6 +254,11 @@ function displayContent(path) {
 			displayElement("pong-create-game");
 		}
 		else if (path === "/play/game") {
+            if (!(state.currentGame >= 0))
+            {
+                navigateTo('/')
+                return
+            }
 			displayElement("pong-game");
 		}
 		else {
