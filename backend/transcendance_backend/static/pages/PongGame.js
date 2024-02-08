@@ -518,7 +518,8 @@ renderer.render(scene, camera);
             };
         }
 
-    connectWsGame()
+    // TODO
+    //connectWsGame()
 
 animate();
 
