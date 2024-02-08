@@ -16,7 +16,7 @@ class Collision:
 
 def compute_collision(
     pos: Vec, vec: Vec, obstacles: list[Obstacle], ignore
-) -> tuple[Collision | None, Vec | None]:
+) -> tuple[Collision or None, Vec or None]:
     for obstacle in obstacles:
         for line in obstacle:
             p1, p2 = line
@@ -49,7 +49,7 @@ def ai_collisions_check(
     vec: Vec,
     obstacles: list[Obstacle],
     until_coll_with: list[Line],
-) -> tuple[list[Collision], Vec | None, Line | None]:
+) -> tuple[list[Collision], Vec or None, Line or None]:
     collisions, pos, r_dir, line = collisions_check(
         pos, vec, obstacles, until_coll_with=until_coll_with
     )
@@ -78,7 +78,7 @@ def collisions_check(
     obstacles: list[Obstacle],
     max_coll=100,
     until_coll_with: list[Line] = [],
-) -> tuple[list[Collision], Vec, Vec | None, Line | None]:
+) -> tuple[list[Collision], Vec, Vec or None, Line or None]:
     remaining_dist: float = vec.len
     collisions: list[Collision] = []
     r_dir = None
