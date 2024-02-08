@@ -66,17 +66,17 @@ class PongProfile extends Component {
 
 			<div class="profile-game-history">
 				<div class="profile-title">{language.gameHistory}</div>
-				<div class="profile-games" repeat="games" as="game">
-					<div class="profile-game" hidden={this.getHiddenStatus(game)}>
-						<span class="profile-game-date">{game.date}</span>
+				<div class="profile-games" repeat="games" as="item">
+					<div class="profile-game" hidden={this.getHiddenStatus(item)}>
+						<span class="profile-game-date">{item.date}</span>
 						<div class="profile-game-score">
- 							<span class="profile-game-score-name">{this.getPlayerName(game)}</span>
-							<span class="profile-game-score">{this.getPlayerScore(game)}</span>
+ 							<span class="profile-game-score-name">{this.getPlayerName(item)}</span>
+							<span class="profile-game-score">{this.getPlayerScore(item)}</span>
 							<span class="profile-game-versus">VS</span>
-							<span class="profile-game-score">{this.getOtherPlayerScore(game)}</span>
-							<span class="profile-game-score-name">{this.getOtherPlayerName(game)}</span>
+							<span class="profile-game-score">{this.getOtherPlayerScore(item)}</span>
+							<span class="profile-game-score-name">{this.getOtherPlayerName(item)}</span>
 						</div>
-						<span class="profile-game-status {this.getGameStatus(game)}">{this.getGameStatus(game)}</span>
+						<span class="profile-game-status {this.getGameStatus(item)}">{this.getGameStatus(item)}</span>
 					</div>
 				</div>
 			</div>

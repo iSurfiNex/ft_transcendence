@@ -10,8 +10,9 @@ class TournamentWr extends Component {
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
         
             <div class="player-count">
-                <a type="button" class="btn btn-startGame-T" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</a>
-                {this.getPlayerCount()}/{this.expectedPlayers()}
+                <button class="btn btn-startGame" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</button>
+                {tournament.players.length}/{tournament.expectedPlayers}
+                <button class="btn btn-giveUp" @click="this.giveUp()">GIVE UP</button>
             </div>
     
             <div class="tournament-room" repeat="tournaments" as="tournament"> 
@@ -104,7 +105,7 @@ class TournamentWr extends Component {
             overflow-y: auto;
         }
 
-        .btn-startGame-T {
+        .btn-startGame {
             position: absolute;
             left: 2%;
             top: 15%;
@@ -123,7 +124,7 @@ class TournamentWr extends Component {
             backdrop-filter: blur(1px);
         }
 
-        .btn-startGame-T:hover {
+        .btn-startGame:hover {
             background-color: #00ff00;
             color: #2a2a2a;
             opacity: 1;
@@ -254,7 +255,7 @@ class TournamentWr extends Component {
             overflow-y: auto;
         }
     
-        .btn-startGame-T {
+        .btn-startGame {
             position: absolute;
             left: 2%;
             bottom: 0;
@@ -273,17 +274,42 @@ class TournamentWr extends Component {
             backdrop-filter: blur(1px);
         }
 
-        .btn-startGame-T:hover {
+        .btn-startGame:hover {
             background-color: #00ff00;
             color: #2a2a2a;
             opacity: 1;
         }
+        
+        .btn-giveUp {
+            position: absolute;
+            width: 20%;
+            height: 70%;
+            right: 2%;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            overflow: hidden;
 
+            font-size: 1vw;
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-giveUp:hover {
+            background-color: #ff0000;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+        
         .player-T {
             position: relative;
             flex-direction: column;
-            width: 50%;
-            left: 25%;
+            width: 100%;
+            left: 0;
             height: 20%;
         }
 
@@ -362,23 +388,6 @@ class TournamentWr extends Component {
             setInterval(checkPlayersSize, 1000); 
     }
 
-    expectedPlayers() {
-        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-        if (tournament.status == "waiting")
-            return (4);
-        if (tournament.status == "round 1")
-            return (2);
-    }
-
-    getPlayerCount() {
-        if (state.currentTournament == -1)
-            return (0);
-        
-        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-
-        return (tournament.players.length);
-    }
-
     IsCurrentTournament(tournamentId) {
         return !(tournamentId == state.currentTournament);
     }
@@ -388,7 +397,7 @@ class TournamentWr extends Component {
             return !(false);
         
         let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-        if (state.username == tournament.creator && tournament.status == "waiting")
+        if (state.profile.nickname == tournament.creator && tournament.status == "waiting")
             return !(true);
         return !(false);
     }
@@ -397,16 +406,27 @@ class TournamentWr extends Component {
         const user = state.users.find(elem => elem.nickname === nickname);
 
         if (user) {
-            return '/static/' + user.picture;
+            return user.picture;
         }
 
         else {
-            return '/static/img/list.svg';
+            return '/media/avatars/default.jpg';
         }
     }
 
+    giveUp() {
+        let url = "/api/manage-tournament/" + state.currentTournament + "/";
+
+        let dataToSend = {
+            action: 'leave',
+        }
+
+        put2(url, dataToSend)
+        .catch(error => console.error(error));
+    }
+
     startTournament() {
-        const nb_players = state.tournaments[state.currentTournament].players.length;
+        const nb_players = state.tournament.players.length;
         const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         if (nb_players != 4)
@@ -419,24 +439,7 @@ class TournamentWr extends Component {
             action: "start-1st-round",
         }
 
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-				'X-CSRFToken': this.getCSRF(),
-            },
-            body: JSON.stringify(dataToPut),
-        })
-        .then (response => {
-            if (!response.ok)
-				throw new Error('Problem starting Tournament');
-            return (response.json());	
-        })
-        .then (data => {
-            //startCountdown();
-            //navigateTo('PAGE DU JEU');
-        })
-        .catch(error => {console.error(error)})
+        put2(url, dataToPut).catch(error => console.error(error));
     }
 }
 

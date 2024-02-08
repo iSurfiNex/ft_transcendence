@@ -19,7 +19,7 @@ class PongCreateGame extends Component {
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-Powerups">
+        				    <input type="checkbox" id="toggle-Powerups" checked="{createGamePresets.powerUps}">
         				    <span class="slider"></span>
         				</label>
 					</span>	
@@ -27,10 +27,10 @@ class PongCreateGame extends Component {
 				</div> 
 				
 
-				<div class="option"> 
+				<div class="option {createGamePresets.tournament?disabled}">
 					<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-IA">
+        				    <input type="checkbox" id="toggle-IA" disabled="{createGamePresets.tournament}">
         				    <span class="slider"></span>
         				</label>
 					</span>
@@ -40,7 +40,7 @@ class PongCreateGame extends Component {
 				<div class="option">   
 			    	<span class="switch">
         				<label class="slider">
-        				    <input type="checkbox" id="toggle-Tournament">
+        				    <input type="checkbox" id="toggle-Tournament" checked="{createGamePresets.tournament}" @change="this.onTournamentCheckedChange(node)">
         				    <span class="slider"></span>
         				</label>
 					</span>	
@@ -60,6 +60,17 @@ class PongCreateGame extends Component {
 `
 
 	static css = css`
+    .disabled:after {
+        background: grey;
+        opacity: 0.6;
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
 	@keyframes fadeIn {
 		0% { opacity: 0; }
 		100% { opacity: 1; }
@@ -525,12 +536,8 @@ class PongCreateGame extends Component {
 		}
 
 		post2("/api/manage-game/", dataToSend)
-		.then(data => {
-            state.currentGame = data.id
-            state.profile.current_game_id = data.id
-			navigateTo('/play/waiting-room');
-		})
 		.catch(error => console.error(error))
+        //NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
 	}
 
 
@@ -542,15 +549,20 @@ class PongCreateGame extends Component {
 		}	
 
 		post2("/api/manage-tournament/", dataToSend)
-		.then(data => {
-			navigateTo('/play/tournament-wr');
-		})
-	}	
+		.catch(error => console.error(error))
+	}
 
 	cancelGame() {
-		navigateTo('/play/pong'); 
+		navigateTo('/');
 		return false;
 	}
+
+    onTournamentCheckedChange(node) {
+        const tournamentChecked = node.checked
+        state.createGamePresets.tournament = tournamentChecked
+        if (tournamentChecked)
+            this.shadowRoot.getElementById('toggle-IA').checked = false
+    }
 
 }
 

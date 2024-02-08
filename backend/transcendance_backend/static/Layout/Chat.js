@@ -78,6 +78,10 @@ class PongChat extends Component {
 `
 
 	static css = css`
+	.bottom-bar {
+ 		background: #363636;
+	}
+
 	.offline {
 		border-top-left-radius: 0.25rem;
 		border-bottom-left-radius: 0.25rem;

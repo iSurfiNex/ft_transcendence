@@ -215,8 +215,8 @@ const fnEval = (bindName,bindArgsStr, scope, prefixes, transform, onChange) => {
       args[i] = evalVar
       const onArgChange = newArg => {
         // HACK ignore undefined values
-        if (newArg === undefined)
-          return
+        //if (newArg === undefined)
+        //  return
         args[i] = newArg
         callFn()
       }

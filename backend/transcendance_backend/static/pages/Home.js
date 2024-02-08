@@ -442,7 +442,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
 		setTimeout(function() {
-			navigateTo("/play/pong-powerup");
+			navigateTo("/play/pong-up");
 		}, 400);
 	}
 

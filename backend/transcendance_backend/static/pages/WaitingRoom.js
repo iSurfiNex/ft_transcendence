@@ -2,13 +2,13 @@ import { Component, register, html, css } from 'pouic'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 
-class WaitingRoom extends Component {
+class PongWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
             <div class="nicknames-N">
-                <button class="btn btn-startGame" @click="this.startGame()" hidden="{!game.creator_is_me}">{language.GoButton}</button>
+                <button class="btn btn-startGame" @click="this.startGame()" hidden="{!this.canStart(game.creator_is_me,game.players.length,game.ia)}">{language.GoButton}</button>
                 <a class="playerOne-N" href="/profile"> {game.p1.nickname} </a>
                 <div class="VS-logo-N"> VS </div>
                 <a class="playerTwo-N" href="/profile"> {game.p2.nickname} </a>
@@ -711,7 +711,7 @@ class WaitingRoom extends Component {
         const game = state.games.find(game => game.id == state.currentGame);
         const url = "/api/manage-game/" + state.currentGame + "/";
 
-        if (game.players.length != 2)
+        if (!game.ia && game.players.length != 2)
         {
             console.error("not enought players");
             return ;
@@ -730,22 +730,21 @@ class WaitingRoom extends Component {
 
     giveUp() {
         let url = "/api/manage-game/" + state.currentGame + "/";
-        if (state.currentTournament != -1)
-            url = "/api/manage-tournament/" + state.currentTournament + "/";
+        //if (state.currentTournament != -1)
+        //    url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         var dataToSend = {
             action: 'leave',
         }
 
-        put2(url, dataToSend)
-        .then (data => {
-            state.profile.current_game_id = -1
-            state.currentGame = -1
-            navigateTo('/play/pong');
-        })
-        .catch(error => console.error(error));
+        put2(url, dataToSend).catch(error => console.error(error));
+        //NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
+    }
+
+    canStart(creatorIsMe,playersCount,ia) {
+       return creatorIsMe && (ia || playersCount === 2)
     }
 
 }
 
-register(WaitingRoom)
+register(PongWaitingRoom)

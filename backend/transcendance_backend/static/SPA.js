@@ -181,10 +181,26 @@ function displayContent(path) {
 	else {
 		Layout();
 
-        if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.currentGame >= 0) {
-		    navigateTo("/play/waiting-room")
-            return
+        if (path !== "/profile/" && path !== "/profile") {
+            // While player is in game or in waiting root, he can only naviagte to profile
+
+            if (path !== "/play/tournament-wr" && state.tournament.status === 'waiting') {
+		        console.log("REDIRECT - TOURNAMENT WAITING ROOM")
+                navigateTo("/play/tournament-wr")
+                return;
+            }
+            else if (path !== "/play/waiting-room" && state.game.status === 'waiting') {
+		        console.log("REDIRECT - WAITING ROOM")
+                navigateTo("/play/waiting-room")
+                return;
+            }
+            if (path !== "/play/game" && state.game.status === 'running') {
+		        console.log("REDIRECT - RUNNING GAME")
+                navigateTo("/play/game")
+                return;
+            }
         }
+
 		if (path === "/") {
 			displayElement("pong-home");
 		}
@@ -200,7 +216,7 @@ function displayContent(path) {
                 navigateTo('/')
                 return
             }
-			displayElement("waiting-room");
+			displayElement("pong-waiting-room");
 		}
 		else if (path === "/play/tournament-wr") {
 			displayElement("tournament-wr")
@@ -209,23 +225,36 @@ function displayContent(path) {
 			displayElement("tournament-running-wr");
 		}
 		else if (path === "/play/pong") {
-			displayElement("pong-classic");
-		}
-		else if (path === "/play/pong-powerup") {
-			displayElement("pong-power-up");
-		}
+            state.createGamePresets.tournament = false
+            state.createGamePresets.powerUps = false
+            state.gameListFilter= 'pong'
+			displayElement("pong-join-list");
+        }
+		else if (path === "/play/pong-up") {
+            state.createGamePresets.tournament = false
+            state.createGamePresets.powerUps = true
+            state.gameListFilter= 'pong-up'
+			displayElement("pong-join-list");
+        }
 		else if (path === "/play/tournament") {
-			displayElement("pong-tournament");
+            state.createGamePresets.tournament = true
+            state.createGamePresets.powerUps = false
+            state.gameListFilter= 'tournament'
+			displayElement("pong-join-list");
+        }
+		else if (path === "/play") {
+            navigateTo('/play/pong')
 		}
 		else if (path === "/play/create-game") {
 			displayElement("pong-create-game");
 		}
-		else if (path === "/game/") {
+		else if (path === "/play/game") {
 			displayElement("pong-game");
 		}
 		else {
 			displayElement("pong-not-found");
 		}
+
 	}
 }
 
@@ -246,6 +275,8 @@ function Layout() {
 
 function displayElement(element) {
 	let tmp = document.getElementById('pong-content');
+    if (tmp && tmp.localName === element)
+        return
 	if (tmp)
 		tmp.parentNode.removeChild(tmp);
 
@@ -276,7 +307,8 @@ function stateUpdate(data)
 	//else if (data_type == 'profile')
 	//	profileUpdate(data, data.action);
 
-	//else if (data_type == 'all tournaments')
+	else if (data_type == 'all tournaments')
+		tournamentUpdateAll(data);
 
 	else if (data_type == 'all games')
 		gameUpdateAll(data);
@@ -284,6 +316,7 @@ function stateUpdate(data)
 	else if (data_type == 'user') //user update
 		userUpdate(data, data.action);
 
+	currentGameUpdate();
 }
 
 
@@ -291,43 +324,34 @@ function tournamentUpdate(newTournament, action) {
 	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == newTournament.id);
 	if (TournamentAlreadyExist && action == "create")
 		return ;
-
+//
 	//var newGame1 = {
 	//	type: (data.power_ups == true) ? "powerup" : "normal",
 	//	id: data.games[0].id,
-	//	status: data.state,
+	//	status: data.status,
 	//	creator: data.creator,
 	//	players: (data.games[0].player) ? data.games.players.map(player => player.nickname) : [],
 	//	score: [],
 	//	date: data.created_at,
 	//};
-
+//
 	//var newGame2 = {
 	//	type: (data.power_ups == true) ? "powerup" : "normal",
 	//	id: data.games[1].id,
-	//	status: data.state,
+	//	status: data.status,
 	//	creator: data.creator,
 	//	players: (data.games[1].player) ? data.games.players.map(player => player.nickname) : [],
 	//	score: [],
 	//	date: data.created_at,
 	//};
-
-	//if (action == 'create')
-	//{
-	//	state.tournaments.push(newTournament);
-	//	state.games.push(newGame1);
-	//	state.games.push(newGame2);
-	//}
-	//else if (action == 'update')
-	//{
-	//	state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
-	//	state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
-	//}
-
-	//state.currentTournament = -1;
-	//currentTournament = state.tournaments.find(tournament => tournament.players.find(player => player == state.profile.nickname));
-	//if (currentTournament)
-	//	state.currentTournament = currentTournament.id;
+//
+	if (action == 'create')
+		state.tournaments.push(newTournament);
+	else if (action == 'update')
+	{
+		state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
+		//state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
+	}
 }
 
 
@@ -342,10 +366,6 @@ function gameUpdate(newGame, action) {
 		state.games.push(newGame);
 	else if (action == 'update')
 		state.games = state.games.map(game => {return game.id == newGame.id ? newGame : game;});
-
-	isMyGame = newGame.players.some(player => player === state.profile.nickname);
-	if (isMyGame)
-	    state.currentGame = newGame.id;
 }
 
 
@@ -367,12 +387,45 @@ function userUpdate(newUser, action) {
 function gameUpdateAll(data) {
 	objects = data.objects;
 	games_list = [];
+	score = [];
 
 	objects.forEach((obj) => {
 		let gameInState = state.games.find(game => game.id == obj.id);
-		let score = gameInState.score;
+		if (gameInState && gameInState.score)
+			score = gameInState.score;
         obj.score = score
 		games_list.push(obj);
 	});
 	state.games = games_list;
+}
+
+function tournamentUpdateAll(data) {
+	tournaments = data.objects;
+	tournament_list = [];
+
+	tournaments.forEach((tournament) => {
+		tournament_list.push(tournament);
+	});
+	state.tournaments = tournament_list;
+}
+
+function currentGameUpdate() {
+	let currentGame = -1;
+	let currentTournament = -1;
+	var isMyGame;
+	var isMyTournament;
+
+	if (state.games && state.games.length != 0)
+		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname));
+	
+	if (state.tournaments && state.tournaments.length != 0)
+		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname))
+
+	if (isMyGame)
+	    currentGame = isMyGame.id;
+	if (isMyTournament)
+		currentTournament = isMyTournament.id
+	
+	state.currentGame = currentGame;
+	state.currentTournament = currentTournament;
 }
