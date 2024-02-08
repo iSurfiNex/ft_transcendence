@@ -48,8 +48,8 @@ class PongChat extends Component {
 						</a>
 
 						<div class="btn-group user-btn" role="group" aria-label="Basic example">
-							<span class="offline">{this.getUserStatus(user,user.current_game_id,user.current_tournament_id)}</span>
-                        	<button type="button" class="btn btn-sm btn-primary" @click="this.sendMessageToUser(user)" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
+							<span hidden="{this.isMyFriend(profile.friends.length,user)}" class="offline">{this.getUserStatus(user,user.current_game_id,user.current_tournament_id)}</span>
+                        	<button is-my-friend="{this.isMyFriend(profile.friends.length,user)}" type="button" class="first-button btn btn-sm btn-primary" @click="this.sendMessageToUser(user)" title="Send message"><img class="chat-player-button-img" src="/static/img/message.svg" alt="send message"/></button>
                         	<button type="button" class="btn btn-sm btn-success" @click="this.addFriend(user)" title="Add friend"><img class="chat-player-button-img" src="/static/img/plus.svg" alt="Add friend"/></button>
                         	<button type="button" class="btn btn-sm btn-danger" @click="this.blockUser(user)" title="Block user"><img class="chat-player-button-img" src="/static/img/block.svg" alt="block"/></button>
 						</div>
@@ -78,6 +78,11 @@ class PongChat extends Component {
 `
 
 	static css = css`
+	.first-button[is-my-friend] {
+		border-top-left-radius: 0.25rem !important;
+		border-bottom-left-radius: 0.25rem !important;
+	}
+
 	.bottom-bar {
  		background: #363636;
 	}
@@ -778,7 +783,7 @@ class PongChat extends Component {
 			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		else {
-			state.profile.blocked.push({id: tmpUser.id, name: tmpUser.nickname});
+			state.profile.blocked.push({id: tmpUser.id, nickname: tmpUser.nickname});
 			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		if (state.activeChannel == 'global') {
@@ -791,15 +796,15 @@ class PongChat extends Component {
 	addFriend(tmpUser) {
 		if (tmpUser.nickname === state.profile.nickname)
 			return ;
-		else if (state.profile.blocked.some(user => user.nickname === tmpUser.nickname)) {
-			var indexToRemove = state.profile.blocked.findIndex(user => user.id === tmpUser.id);
+		else if (state.profile.friends.some(user => user.nickname === tmpUser.nickname)) {
+			var indexToRemove = state.profile.friends.findIndex(user => user.id === tmpUser.id);
 
-			state.profile.blocked.splice(indexToRemove, 1);
-			state.messages.push({text: 'You have unblock ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
+			state.profile.friends.splice(indexToRemove, 1);
+			state.messages.push({text: 'You have remove ' + tmpUser.nickname + ' from your friends list.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		else {
-			state.profile.blocked.push({id: tmpUser.id, name: tmpUser.nickname});
-			state.messages.push({text: 'You have block ' + tmpUser.nickname + '.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
+			state.profile.friends.push({id: tmpUser.id, nickname: tmpUser.nickname});
+			state.messages.push({text: 'You have added ' + tmpUser.nickname + ' to your friends list.', sender: 'Pong', nickname: 'Pong', date: Date.now(), channel: 'global'});
 		}
 		if (state.activeChannel == 'global') {
 			var message = this.shadowRoot.getElementById("messages");
@@ -843,10 +848,16 @@ class PongChat extends Component {
 			return (string);
 	}
 
-	isMessageInChannel(message, sender, channelName) {
-		if (state.profile.blocked.some(user => user.id === sender))
+	isMessageInChannel(messageChannel, sender, activeChannel) {
+		if (state.profile.blocked.some(user => user.nickname === sender))
 			return true;
-		return !(message == channelName);
+		return !(messageChannel == activeChannel);
+	}
+
+	isMyFriend(friendsList, sender) {
+		if (state.profile.friends.some(user => user.nickname === sender.nickname))
+			return false;
+		return true;
 	}
 
 	getUserStatus(user, game_id, tournament_id) {
