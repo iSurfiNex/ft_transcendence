@@ -21,6 +21,17 @@ var state_base = {
                 my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
         }),
+        tournament: computedProperty(['currentTournament'], function (currentTournamentId) {
+                const tournaments = state.tournaments
+                if (!tournaments && !Array.isArray(tournaments) || !(currentTournamentId>=0))
+                        return {id: -1, status: 'no-tournament'}
+                const my_tournament =  tournaments.find(tournament => tournament.id === currentTournamentId)
+                if (!my_tournament)
+                        return {id: -1, status: 'no-tournament'}
+                my_tournament.creator_is_me = my_tournament.creator_id === state.profile.id
+                my_tournament.expectedPlayers = my_tournament.status === "waiting" ? 4 : 2
+                return my_tournament
+        }),
         createGamePresets: {
                 tournament: false,
                 powerUps: false,

@@ -11,7 +11,7 @@ class TournamentWr extends Component {
         
             <div class="player-count">
                 <button class="btn btn-startGame" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</button>
-                {this.getPlayerCount()}/{this.expectedPlayers()}
+                {tournament.players.length}/{tournament.expectedPlayers}
                 <button class="btn btn-giveUp" @click="this.giveUp()">GIVE UP</button>
             </div>
     
@@ -386,23 +386,6 @@ class TournamentWr extends Component {
         }
         else 
             setInterval(checkPlayersSize, 1000); 
-    }
-
-    expectedPlayers() {
-        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-        if (tournament.status == "waiting")
-            return (4);
-        if (tournament.status == "round 1")
-            return (2);
-    }
-
-    getPlayerCount() {
-        if (state.currentTournament == -1)
-            return (0);
-        
-        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-
-        return (tournament.players.length);
     }
 
     IsCurrentTournament(tournamentId) {
