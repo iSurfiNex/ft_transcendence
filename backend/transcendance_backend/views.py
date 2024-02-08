@@ -373,6 +373,7 @@ class ManageTournamentView(View):
 
             stateUpdateAll(Game, "all games")
             stateUpdate(tournament, "create", "tournament")
+            stateUpdate(creator, "update", "user")
             response = tournament.serialize()
             return JsonResponse(response, status=200)
 
@@ -405,11 +406,8 @@ class ManageTournamentView(View):
 
             # elif data['action'] == "start-2nd-round"
 
-            elif (
-                data["action"] == "join"
-            ):  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
+            elif data["action"] == "join":  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
                 tournament.players.add(my_player)
-
             elif data["action"] == "leave":
                 if my_player == tournament.created_by:
                     if tournament.players.count() > 1:
@@ -422,14 +420,16 @@ class ManageTournamentView(View):
                         tournamentGames = tournament.game_set.all()[0].delete()
                         tournamentGames = tournament.game_set.all()[0].delete()
                         tournament.delete()
-    
+
                         stateUpdateAll(Tournament, "all games")
                         stateUpdateAll(Tournament, "all tournaments")
+                        stateUpdate(my_player, "update", "user")
                         return JsonResponse({}, status=200)
                 else:
                     tournament.players.remove(my_player)
 
             tournament.save()
+            stateUpdate(my_player, "update", "user")
             stateUpdate(tournament, "update", "tournament")
             response = tournament.serialize()
             return JsonResponse(response, status=200)
