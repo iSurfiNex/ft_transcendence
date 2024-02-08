@@ -504,7 +504,7 @@ class ManageGameView(View):
             if data["action"] == "start-game":
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
-                run_pong_thread()
+                run_pong_thread(game.id)
 
             elif data["action"] == "join":
                 game.players.add(my_player)
