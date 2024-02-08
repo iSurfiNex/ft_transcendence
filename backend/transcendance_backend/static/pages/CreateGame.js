@@ -536,12 +536,8 @@ class PongCreateGame extends Component {
 		}
 
 		post2("/api/manage-game/", dataToSend)
-		.then(data => {
-            state.currentGame = data.id
-            state.profile.current_game_id = data.id
-			navigateTo('/play/waiting-room');
-		})
 		.catch(error => console.error(error))
+        //NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
 	}
 
 

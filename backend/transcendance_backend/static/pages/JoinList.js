@@ -234,7 +234,7 @@ class PongJoinList extends Component {
 `
 
 	isGameHidden(game, filter) {
-        if (game.players.length >= 2 || game.ia || game.status !== "waiting")
+        if (!game || game.players.length >= 2 || game.ia || game.status !== "waiting")
             return true
         const isTournament = game.tournament_id >= 0
         const isPowerUps = game.type != 'normal'
@@ -255,11 +255,9 @@ class PongJoinList extends Component {
 		};
 
 		put2(url, dataToSend)
-		.then ( data => {
-            state.currentGame = data.id
-            state.profile.current_game_id = data.id
-			navigateTo('/play/waiting-room');
-		});
+		    .catch ( err => console.log('ERROR', err))
+        //NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
+
 		return (false);
 	}
 

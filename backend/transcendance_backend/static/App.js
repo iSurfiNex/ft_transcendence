@@ -11,13 +11,14 @@ window.ws = route => {
 }
 
 var state_base = {
-        game: computedProperty(['games', 'currentGame', 'profile.id'], function (games, currentGameId, myId) {
+        game: computedProperty(['currentGame'], function (currentGameId) {
+                const games = state.games
                 if (!games && !Array.isArray(games) || !(currentGameId>=0))
-                        return {}
+                        return {id: -1, status: 'no-game'}
                 const my_game =  games.find(game => game.id === currentGameId)
                 if (!my_game)
-                        return {}
-                my_game.creator_is_me = my_game.creator_id === myId
+                        return {id: -1, status: 'no-game'}
+                my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
         }),
         createGamePresets: {
@@ -303,11 +304,24 @@ state_base.language = {...state_base.en}
 const state = setup(state_base)
 
 observe('game.status', (newStatus, oldStatus) => {
-        if (newStatus === "running" && oldStatus !== "running") {
+        const gameStarts = (newStatus === "running" && oldStatus !== "running")
+        const leaveWaitingRoom = (newStatus !== "waiting" && oldStatus === "waiting")
+        const enterWaitingRoom = (newStatus == "waiting" && oldStatus !== "waiting")
+        if (gameStarts) {
                 console.log("GAME STARTING")
-                navigateTo('/game')
+                navigateTo('/play/game')
+
+        } else if (enterWaitingRoom) {
+                console.log("ENTER WAITING ROOM")
+                navigateTo('/play/waiting-room');
+        } else if (leaveWaitingRoom) {
+                console.log("LEAVE WAITING ROOM")
+                navigateTo('/play/'+state.gameListFilter)
         }
 })
+
+// TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer
+state.game.status
 
 function checkScreenWidth() {
 	state.isMobile = (window.innerWidth < 769 || window.innerHeight < 525);

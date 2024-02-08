@@ -737,13 +737,8 @@ class PongWaitingRoom extends Component {
             action: 'leave',
         }
 
-        put2(url, dataToSend)
-        .then (data => {
-            //state.profile.current_game_id = -1
-            //state.currentGame = -1
-            navigateTo('/');
-        })
-        .catch(error => console.error(error));
+        put2(url, dataToSend).catch(error => console.error(error));
+        //NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
     }
 
     canStart(creatorIsMe,playersCount,ia) {

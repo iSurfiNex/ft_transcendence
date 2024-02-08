@@ -181,8 +181,15 @@ function displayContent(path) {
 	else {
 		Layout();
 
-        if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.currentGame >= 0) {
-		    navigateTo("/play/waiting-room")
+        if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.game.status === 'waiting') {
+		    console.log("REDIRECT - WAITING ROOM", state.game.status)
+            navigateTo("/play/waiting-room")
+            return
+        }
+
+        if (path !== "/play/game" && path !== "/profile/" && path !== "/profile" && state.game.status === 'running') {
+		    console.log("REDIRECT - RUNNING GAME", state.game.status)
+            navigateTo("/play/game")
             return
         }
 		if (path === "/") {
@@ -232,9 +239,13 @@ function displayContent(path) {
 		else if (path === "/play/create-game") {
 			displayElement("pong-create-game");
 		}
+		else if (path === "/play/game") {
+			displayElement("pong-running-game");
+		}
 		else {
 			displayElement("pong-not-found");
 		}
+
 	}
 }
 
@@ -255,6 +266,8 @@ function Layout() {
 
 function displayElement(element) {
 	let tmp = document.getElementById('pong-content');
+    if (tmp && tmp.localName === element)
+        return
 	if (tmp)
 		tmp.parentNode.removeChild(tmp);
 
