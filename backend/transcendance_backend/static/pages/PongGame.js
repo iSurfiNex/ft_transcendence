@@ -22,10 +22,39 @@ class PongGame extends Component {
   	<span id="gameOverTxt">{language.gameOver}</span>
 	<span id="gameOverState" class="blinking">{lang(runningGame.gameOverState)}</span>
   </div>
+
 </div>
+  <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton} LOSER</button>
 `
 
 	static css = css`
+
+        .btn-giveUp {
+            cursor: pointer;
+            font-size: 25px;
+		    font-family: 'Press Start 2P', sans-serif;
+			position: fixed;
+			bottom: 40px;
+			right: 40px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            white-space: nowrap;
+            overflow: hidden;
+
+            background-color: rgba(42, 42, 42, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            transition: background-color 0.3s, color 0.3s;
+            opacity: 0.6;
+        }
+
+        .btn-giveUp:hover {
+            background-color: #ff0000;
+            color: #2a2a2a;
+            opacity: 1;
+        }
+
 	:host {
 		position: absolute;
 		right: 0;
@@ -148,6 +177,10 @@ class PongGame extends Component {
     constructor() {
         super()
         observe('runningGame.startedAt', this.updatedStartIn.bind(this))
+    }
+
+    giveUp() {
+        get('/api/giveup/')
     }
 
     updatedStartIn(startedAt) {

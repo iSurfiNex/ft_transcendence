@@ -536,6 +536,21 @@ class ManageGameView(View):
             return JsonResponse({"errors": str(e)}, status=400)
 
 
+# Let Player giveup his running game
+@require_GET
+def giveup(request):
+    my_player = request.user.player
+    game = my_player.games.filter(state__in=["running"]).first()
+    if game is None:
+        return JsonResponse({"errors": {"__all__": "No game running"}}, status=400)
+    game.state = "done"
+    game.save()
+    stateUpdate(game, "update", "game")
+    stateUpdate(my_player, "update", "user")
+    # TODO update users ?
+    return JsonResponse({"status": "ok"}, status=200)
+
+
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")
 TournamentView = create_rest_api_endpoint(Tournament, TournamentForm, "Tournament")
 GameView = create_rest_api_endpoint(Game, GameForm, "Game")
