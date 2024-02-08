@@ -159,6 +159,8 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
 
 
 class GameRunningConsumer(AsyncWebsocketConsumer):
+    game_group_name = None
+
     async def connect(self):
         try:
             if not self.scope["user"].is_authenticated:
