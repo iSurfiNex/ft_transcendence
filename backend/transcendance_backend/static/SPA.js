@@ -200,7 +200,7 @@ function displayContent(path) {
                 navigateTo('/')
                 return
             }
-			displayElement("waiting-room");
+			displayElement("pong-waiting-room");
 		}
 		else if (path === "/play/tournament-wr") {
 			displayElement("tournament-wr")

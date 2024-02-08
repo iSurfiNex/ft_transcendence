@@ -2,7 +2,7 @@ import { Component, register, html, css } from 'pouic'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 
-class WaitingRoom extends Component {
+class PongWaitingRoom extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
     <meta name="csrf-token" content="{% csrf_token %}">
@@ -752,4 +752,4 @@ class WaitingRoom extends Component {
 
 }
 
-register(WaitingRoom)
+register(PongWaitingRoom)
