@@ -32,14 +32,14 @@ class PongJoinList extends Component {
 						</div>
 					</div>
 
-					<div repeat="tournaments" as="game" hidden="{!this.equals(gameListFilter,'tournament')}">
-						<div class="pong-desc" hidden="{this.isGameHidden(game)}">
-							<div class="pong-type">ID:{game.id}</div>
+					<div repeat="tournaments" as="tournament" hidden="{!this.equals(gameListFilter,'tournament')}">
+						<div class="pong-desc" hidden="{this.isTournamentHidden(tournament)}">
+							<div class="pong-type">ID:{tournament.id}</div>
 							<div class="pong-players" repeat="players" as="player">
 								<div class="pong-player">{player}</div>
 							</div>
-							<div class="pong-player-count">{game.players.length}/4</div>
-							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
+							<div class="pong-player-count">{tournament.players.length}/4</div>
+							<a @click="this.navigateUpdate(tournament)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
 								<img class="pong-player-img" src="/static/img/share.svg" alt="join"/>
 							</a>
 						</div>
@@ -247,8 +247,18 @@ class PongJoinList extends Component {
 		return (false);
 	}
 
-	navigateUpdate(game) {
-		var url = "/api/manage-game/" + game.id + "/";
+	isTournamentHidden(tournament) {
+        if (!tournament || tournament.players.length >= 4 || tournament.status !== "waiting")
+            return true
+		return (false);
+	}
+
+	navigateUpdate(item) {
+        let url;
+        if(state.gameListFilter === 'tournament')
+		    url = "/api/manage-tournament/" + item.id + "/";
+        else
+		    url = "/api/manage-game/" + item.id + "/";
 
 		var dataToSend = {
 			action: "join"

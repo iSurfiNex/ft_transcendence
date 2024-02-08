@@ -331,8 +331,21 @@ observe('game.status', (newStatus, oldStatus) => {
         }
 })
 
+observe('tournament.status', (newStatus, oldStatus) => {
+        const leaveWaitingRoom = (newStatus !== "waiting" && oldStatus === "waiting")
+        const enterWaitingRoom = (newStatus == "waiting" && oldStatus !== "waiting")
+        if (enterWaitingRoom) {
+                console.log("ENTER TOURNAMENT WAITING ROOM")
+                navigateTo('/play/tournament-wr');
+        } else if (leaveWaitingRoom && newStatus !== 'round 1' && newStatus !== 'round 2') {
+                console.log("LEAVE TOURNAMENT WAITING ROOM")
+                navigateTo('/play/tournament')
+        }
+})
+
 // TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer
 state.game.status
+state.tournament.status
 
 function checkScreenWidth() {
 	state.isMobile = (window.innerWidth < 769 || window.innerHeight < 525);

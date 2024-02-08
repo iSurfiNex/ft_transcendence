@@ -422,14 +422,11 @@ class TournamentWr extends Component {
         }
 
         put2(url, dataToSend)
-        .then (data => {
-            navigateTo('/');
-        })
         .catch(error => console.error(error));
     }
 
     startTournament() {
-        const nb_players = state.tournaments[state.currentTournament].players.length;
+        const nb_players = state.tournament.players.length;
         const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         if (nb_players != 4)
@@ -442,24 +439,7 @@ class TournamentWr extends Component {
             action: "start-1st-round",
         }
 
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-				'X-CSRFToken': this.getCSRF(),
-            },
-            body: JSON.stringify(dataToPut),
-        })
-        .then (response => {
-            if (!response.ok)
-				throw new Error('Problem starting Tournament');
-            return (response.json());	
-        })
-        .then (data => {
-            //startCountdown();
-            //navigateTo('PAGE DU JEU');
-        })
-        .catch(error => {console.error(error)})
+        put2(url, dataToPut).catch(error => console.error(error));
     }
 }
 

@@ -549,10 +549,8 @@ class PongCreateGame extends Component {
 		}	
 
 		post2("/api/manage-tournament/", dataToSend)
-		.then(data => {
-			navigateTo('/play/tournament-wr');
-		})
-	}	
+		.catch(error => console.error(error))
+	}
 
 	cancelGame() {
 		navigateTo('/');

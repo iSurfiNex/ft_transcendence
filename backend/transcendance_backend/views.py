@@ -385,7 +385,7 @@ class ManageTournamentView(View):
             my_player = request.user.player
 
             def start_game(i, p1, p2):
-                game = tournament.games.all()[i]
+                game = tournament.game_set.all()[i]
                 game.players.add(p1, p2)
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
