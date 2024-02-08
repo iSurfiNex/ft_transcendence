@@ -429,7 +429,7 @@ function currentGameUpdate() {
 		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname) && game.status !== 'done');
 	
 	if (state.tournaments && state.tournaments.length != 0)
-		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname) && game.status !== 'done')
+		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname) && tournament.status !== 'done')
 
 	if (isMyGame)
 	    currentGame = isMyGame.id;
