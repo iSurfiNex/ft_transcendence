@@ -553,7 +553,7 @@ class PongCreateGame extends Component {
 	}
 
 	cancelGame() {
-		navigateTo('/');
+		navigateTo('/play/' + state.gameListFilter);
 		return false;
 	}
 
