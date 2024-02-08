@@ -27,7 +27,7 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 
 from .models import Player
-from .pong.init import runPong
+from .pong.init import run_pong_thread
 
 import logging
 
@@ -413,8 +413,8 @@ class ManageTournamentView(View):
                     if tournament.players.count() > 1:
                         tournament.players.remove(my_player)
                         tournament.created_by = tournament.players.first()
-                        #tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
-                        #tournament.game_set ...
+                        # tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
+                        # tournament.game_set ...
                     else:
                         tournamentGames = tournament.game_set.all()[0].delete()
                         tournamentGames = tournament.game_set.all()[0].delete()
@@ -504,7 +504,7 @@ class ManageGameView(View):
             if data["action"] == "start-game":
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
-                asyncio.run(runPong(id))
+                run_pong_thread()
 
             elif data["action"] == "join":
                 game.players.add(my_player)
