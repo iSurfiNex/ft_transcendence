@@ -9,9 +9,9 @@ class PongWaitingRoom extends Component {
     <div class="available-space">
             <div class="nicknames">
                 <button class="btn btn-startGame" @click="this.startGame()" hidden="{!this.canStart(game.creator_is_me,game.players.length,game.ia)}">{language.GoButton}</button>
-                <a class="playerOne" href="/profile"> {game.p1.nickname} </a>
+                <a class="playerOne" href="javascript:void(0)" @click="this.navigate(game.p1.nickname)"> {game.p1.nickname} </a>
                 <div class="VS-logo"> VS </div>
-                <a class="playerTwo" href="/profile"> {game.p2.nickname} </a>
+                <a class="playerTwo" href="javascript:void(0)" @click="this.navigate(game.p2.nickname)"> {game.p2.nickname} </a>
                 <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
             </div>
 
@@ -743,6 +743,13 @@ class PongWaitingRoom extends Component {
        return creatorIsMe && (ia || playersCount === 2)
     }
 
+    navigate(nickname) {
+		const user = state.users.find(user => user.nickname === nickname);
+
+		state.profileLooking = user.id
+		navigateTo('/profile');
+		return false;
+	}
 }
 
 register(PongWaitingRoom)

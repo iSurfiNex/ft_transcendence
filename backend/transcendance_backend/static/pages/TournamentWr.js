@@ -18,7 +18,7 @@ class TournamentWr extends Component {
             <div class="tournament-room" repeat="tournaments" as="tournament">
                 <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}">
                     <div class="player-T" repeat="tournament.players" as="player">
-                        <a href="/profile" class="profil-T">
+                        <a href="javascript:void(0)" @click="this.navigate(player.nickname)" class="profil-T">
                             <img src="{this.getPlayerPic(player)}">
                             <div class="profil-nick-T"> {player} </div>
                         </a>
@@ -583,8 +583,16 @@ class TournamentWr extends Component {
         }
 
         put2(url, dataToPut).catch(error => console.error(error));
-        //GERER LA REDIRECTION 
+        //GERER LA REDIRECTION
     }
+
+    navigate(nickname) {
+		const user = state.users.find(user => user.nickname === nickname);
+
+		state.profileLooking = user.id
+		navigateTo('/profile');
+		return false;
+	}
 }
 
 register(TournamentWr)
