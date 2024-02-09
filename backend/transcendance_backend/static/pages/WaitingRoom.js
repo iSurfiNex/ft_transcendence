@@ -7,16 +7,16 @@ class PongWaitingRoom extends Component {
 	static template = html`
     <meta name="csrf-token" content="{% csrf_token %}">
     <div class="available-space">
-            <div class="nicknames-N">
+            <div class="nicknames">
                 <button class="btn btn-startGame" @click="this.startGame()" hidden="{!this.canStart(game.creator_is_me,game.players.length,game.ia)}">{language.GoButton}</button>
-                <a class="playerOne-N" href="/profile"> {game.p1.nickname} </a>
-                <div class="VS-logo-N"> VS </div>
-                <a class="playerTwo-N" href="/profile"> {game.p2.nickname} </a>
+                <a class="playerOne" href="/profile"> {game.p1.nickname} </a>
+                <div class="VS-logo"> VS </div>
+                <a class="playerTwo" href="/profile"> {game.p2.nickname} </a>
                 <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
             </div>
 
-            <div class="profil-pics-N">
-                <div class="gallery-N">
+            <div class="profil-pics">
+                <div class="gallery">
                     <img src="{game.p1.picture}" alt="player 1">
                     <img src="{game.p2.picture}" alt="player 2">
                 </div>
@@ -37,7 +37,7 @@ class PongWaitingRoom extends Component {
 
         }
 
-        .nicknames-N {
+        .nicknames {
             position: absolute;
             width: 100%;
             height: 15%;
@@ -120,7 +120,7 @@ class PongWaitingRoom extends Component {
 
 
 
-        .playerOne-N {
+        .playerOne {
             position: absolute;
             width: 27%;
             height: 100%;
@@ -137,7 +137,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #993300;
         }
 
-        .playerTwo-N {
+        .playerTwo {
             position: absolute;
             width: 27%;
             height: 100%;
@@ -154,7 +154,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #993300;
         }
 
-        .VS-logo-N {
+        .VS-logo {
             position: absolute;
             height: 100%;
             width: 14%;
@@ -171,7 +171,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #003300;
         }
 
-        .profil-pics-N {
+        .profil-pics {
             position: absolute;
             width: 100%;
             height: 85%;
@@ -180,7 +180,7 @@ class PongWaitingRoom extends Component {
             justify-content: center;
         }
 
-        .gallery-N {
+        .gallery {
             --z: 32px;
             --s: 360px;
             --g: 8px;
@@ -192,7 +192,7 @@ class PongWaitingRoom extends Component {
             height: 100%;
         }
 
-        .gallery-N > img {
+        .gallery > img {
             width: 0;
             min-width: calc(100% + var(--z)/2);
             height: var(--s);
@@ -207,13 +207,13 @@ class PongWaitingRoom extends Component {
             filter: brightness(100%);
         }
 
-        .gallery-N > img:hover {
+        .gallery > img:hover {
             width: calc(var(--s)/2);
             //opacity: 1;
             filter: brightness(120%);
         }
 
-        .gallery-N > img:first-child {
+        .gallery > img:first-child {
             place-self: center start;
             clip-path: polygon(calc(2*var(--z)) 0,100% 0,100% 100%,0 100%);
             --mask:
@@ -221,7 +221,7 @@ class PongWaitingRoom extends Component {
                 50%/100% calc(2*var(--z)) repeat-y;
         }
 
-        .gallery-N > img:last-child {
+        .gallery > img:last-child {
             place-self: center end;
             clip-path: polygon(0 0,100% 0,calc(100% - 2*var(--z)) 100%,0 100%);
             --mask:
@@ -249,7 +249,7 @@ class PongWaitingRoom extends Component {
 
         }
 
-        .nicknames-N {
+        .nicknames {
             position: absolute;
             width: 100%;
             height: 15%;
@@ -332,7 +332,7 @@ class PongWaitingRoom extends Component {
 
 
 
-        .playerOne-N {
+        .playerOne {
             position: absolute;
             width: 27%;
             height: 100%;
@@ -349,7 +349,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #993300;
         }
 
-        .playerTwo-N {
+        .playerTwo {
             position: absolute;
             width: 27%;
             height: 100%;
@@ -366,7 +366,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #993300;
         }
 
-        .VS-logo-N {
+        .VS-logo {
             position: absolute;
             height: 100%;
             width: 14%;
@@ -383,7 +383,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #003300;
         }
 
-        .profil-pics-N {
+        .profil-pics {
             position: absolute;
             width: 100%;
             height: 85%;
@@ -392,7 +392,7 @@ class PongWaitingRoom extends Component {
             justify-content: center;
         }
 
-        .gallery-N {
+        .gallery {
             --z: 32px;
             --s: 360px;
             --g: 8px;
@@ -404,7 +404,7 @@ class PongWaitingRoom extends Component {
             height: 100%;
         }
 
-        .gallery-N > img {
+        .gallery > img {
             width: 0;
             min-width: calc(100% + var(--z)/2);
             height: var(--s);
@@ -419,13 +419,13 @@ class PongWaitingRoom extends Component {
             filter: brightness(100%);
         }
 
-        .gallery-N > img:hover {
+        .gallery > img:hover {
             width: calc(var(--s)/2);
             //opacity: 1;
             filter: brightness(120%);
         }
 
-        .gallery-N > img:first-child {
+        .gallery > img:first-child {
             place-self: center start;
             clip-path: polygon(calc(2*var(--z)) 0,100% 0,100% 100%,0 100%);
             --mask:
@@ -433,7 +433,7 @@ class PongWaitingRoom extends Component {
                 50%/100% calc(2*var(--z)) repeat-y;
         }
 
-        .gallery-N > img:last-child {
+        .gallery > img:last-child {
             place-self: center end;
             clip-path: polygon(0 0,100% 0,calc(100% - 2*var(--z)) 100%,0 100%);
             --mask:
@@ -476,7 +476,7 @@ class PongWaitingRoom extends Component {
             font-family: 'Press Start 2P', sans-serif;
         }
 
-        .nicknames-N {
+        .nicknames {
             position: absolute;
             width: 100%;
             height: 20%;
@@ -559,7 +559,7 @@ class PongWaitingRoom extends Component {
 
 
 
-        .playerOne-N {
+        .playerOne {
             position: absolute;
             width: 30%;
             height: 100%;
@@ -576,7 +576,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #993300;
         }
 
-        .playerTwo-N {
+        .playerTwo {
             position: absolute;
             width: 30%;
             height: 100%;
@@ -593,7 +593,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #993300;
         }
 
-        .VS-logo-N {
+        .VS-logo {
             position: absolute;
             height: 100%;
             width: 10%;
@@ -609,7 +609,7 @@ class PongWaitingRoom extends Component {
                 6px 6px 9px #003300;
         }
 
-        .profil-pics-N {
+        .profil-pics {
             position: absolute;
             width: 100%;
             height: 80%;
@@ -618,7 +618,7 @@ class PongWaitingRoom extends Component {
             justify-content: center;
         }
 
-        .gallery-N {
+        .gallery {
             --z: 32px;
             --s: 440px;
             --g: 8px;
@@ -630,7 +630,7 @@ class PongWaitingRoom extends Component {
             height: 100%;
         }
 
-        .gallery-N > img {
+        .gallery > img {
             width: 0;
             min-width: calc(100% + var(--z)/2);
             height: var(--s);
@@ -644,12 +644,12 @@ class PongWaitingRoom extends Component {
             filter: brightness(100%);
         }
 
-        .gallery-N > img:hover {
+        .gallery > img:hover {
             width: calc(var(--s)/2);
             filter: brightness(120%);
         }
 
-        .gallery-N > img:first-child {
+        .gallery > img:first-child {
             place-self: center start;
             clip-path: polygon(calc(2*var(--z)) 0,100% 0,100% 100%,0 100%);
             --mask:
@@ -657,7 +657,7 @@ class PongWaitingRoom extends Component {
                 50%/100% calc(2*var(--z)) repeat-y;
         }
 
-        .gallery-N > img:last-child {
+        .gallery > img:last-child {
             place-self: center end;
             clip-path: polygon(0 0,100% 0,calc(100% - 2*var(--z)) 100%,0 100%);
             --mask:
@@ -730,8 +730,6 @@ class PongWaitingRoom extends Component {
 
     giveUp() {
         let url = "/api/manage-game/" + state.currentGame + "/";
-        //if (state.currentTournament != -1)
-        //    url = "/api/manage-tournament/" + state.currentTournament + "/";
 
         var dataToSend = {
             action: 'leave',

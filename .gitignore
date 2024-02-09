@@ -2,6 +2,7 @@
 *.log
 tmp/
 .env
+Makefile
 __pycache__/
 node_modules/
 backend/media/

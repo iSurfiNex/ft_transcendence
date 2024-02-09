@@ -334,33 +334,12 @@ function tournamentUpdate(newTournament, action) {
 	TournamentAlreadyExist = state.tournaments.find(tournament => tournament.id == newTournament.id);
 	if (TournamentAlreadyExist && action == "create")
 		return ;
-//
-	//var newGame1 = {
-	//	type: (data.power_ups == true) ? "powerup" : "normal",
-	//	id: data.games[0].id,
-	//	status: data.status,
-	//	creator: data.creator,
-	//	players: (data.games[0].player) ? data.games.players.map(player => player.nickname) : [],
-	//	score: [],
-	//	date: data.created_at,
-	//};
-//
-	//var newGame2 = {
-	//	type: (data.power_ups == true) ? "powerup" : "normal",
-	//	id: data.games[1].id,
-	//	status: data.status,
-	//	creator: data.creator,
-	//	players: (data.games[1].player) ? data.games.players.map(player => player.nickname) : [],
-	//	score: [],
-	//	date: data.created_at,
-	//};
-//
+
 	if (action == 'create')
 		state.tournaments.push(newTournament);
 	else if (action == 'update')
 	{
 		state.tournaments = state.tournaments.map(tournament => {return (tournament.id == newTournament.id) ? newTournament : tournament;});
-		//state.games = state.games.map(game => {return (game.id == newGame2.id) ? newGame2 : game;});
 	}
 }
 
