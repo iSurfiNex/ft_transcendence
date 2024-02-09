@@ -1,16 +1,18 @@
 import sys
 from time import time
+import asyncio
+import json
 
 from .engine import PongEngine
 from .entities import Ball, Pad, Player
 from .ai import PongAI
 from .types import DrawDebug, Vec, Pos, Line
 
-import json
+from .communication import get_user_inputs
 
 # from pong.test.draw import draw_contours, draw_arrow, draw_obstacles, draw_text
 
-W, H = 800, 800
+W, H = 1000, 900
 WHITE = (255, 255, 255)
 GREY = (150, 150, 150)
 CYAN = (35, 150, 150)
@@ -106,31 +108,9 @@ class Pong:
     # else:
     #    self.ai.player.stay_still()
 
-    # keys = pygame.key.get_pressed()
-    # if keys[pygame.K_a]:
-    #    self.engine.players[0].go_up()
-    # if keys[pygame.K_z] and self.pad1.bottom < H:
-    #    self.engine.players[0].go_down()
-    #    self.engine.players[1].go_up()
-    # if keys[pygame.K_DOWN] and self.pad2.bottom < H:
-    #    self.engine.players[1].go_down()
-
-    # def updateLayout(self):
-    #    self.ball.center = tuple(self.engine.ball.p)
-    #    self.pad1.center = tuple(self.engine.players[0].pad.p)
-    #    self.pad2.center = tuple(self.engine.players[1].pad.p)
-
     def sendData(self):
         pass
 
-    # def handle_quit(self):
-    #    for event in pygame.event.get():
-    #        if event.type == pygame.QUIT or (
-    #            event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
-    #        ):
-    #            self.stop_game()
-    #        if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
-    #            self.pause = not self.pause
     def serialize_line(self, line: Line):
         return {"x1": line.a.x, "y1": line.a.y, "x2": line.b.x, "y2": line.b.y}
 
@@ -152,15 +132,28 @@ class Pong:
             "obstacles": obstacles,
             "camp_p1": camp_p1,
             "camp_p2": camp_p2,
+            "bonus": {"y": 0},
         }
 
-    async def run(self, asend):
-        print(f"----------------- PONG: starting---------------")
+    def handle_player_inputs(self, id, idx):
+        inputs = get_user_inputs(id, idx)
+        player = self.engine.players[idx]
+        if inputs is not None:
+            print(f"P{idx+1} INPUT: {inputs}")
+            if inputs["up"] == inputs["down"]:
+                player.stay_still()
+            elif inputs["up"]:
+                player.go_up()
+            elif inputs["down"]:
+                player.go_down()
+
+    async def run(self, asend, id):
+        print(f"----------------- pong: starting---------------")
+
         current_time = time()
         delta = 1 / FPS
-        ia_last_tick_ts = current_time - 1
+        # ia_last_tick_ts = current_time - 1
         game_last_tick_ts = current_time - delta
-        i = 0
 
         while True:
             if self.pause:
@@ -174,12 +167,13 @@ class Pong:
 
             game_last_tick_ts = current_time
 
+            self.handle_player_inputs(id, 0)
+            self.handle_player_inputs(id, 1)  # TODO handle not for IA
+
             game_data = self.getFormattedData()
             # json_game_data = json.dumps(game_data)
 
             await asend(game_data)
-            print(f"----------------- PONG: tick {i}---------------")
-            i += 1
 
             self.engine.update(delta)
             # ia_elapsed_time = current_time - ia_last_tick_ts
