@@ -24,75 +24,42 @@ RED = (255, 50, 50)
 # Set initial speed
 ball_vec = Vec(2.0, 2.0)
 
-# ball_reset_pos = Vec(W / 2 - BALL_RADIUS, H / 2 - BALL_RADIUS)
 ball_reset_pos = Vec(0, 0)
 d = Vec(6, 5).normalized
-ball = Ball(pos=ball_reset_pos, speed=100, radius=25, direction=d)
+ball = Ball(
+    reset_pos=ball_reset_pos, pos=ball_reset_pos, speed=100, radius=25, direction=d
+)
 
 
 wall_contours = [
-    (PAD_SHIFT + BALL_RADIUS + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
-    (-PAD_SHIFT - BALL_RADIUS - PAD_W / 2 + W / 2, -BALL_RADIUS + H / 2),
-    (-PAD_SHIFT - BALL_RADIUS - PAD_W / 2 + W / 2, BALL_RADIUS - H / 2),
-    (PAD_SHIFT + BALL_RADIUS + PAD_W / 2 - W / 2, BALL_RADIUS - H / 2),
-    # (PAD_SHIFT / 2 + BALL_RADIUS + PAD_W / 2, BALL_RADIUS),
-    # (W - PAD_SHIFT / 2 - BALL_RADIUS - PAD_W / 2, BALL_RADIUS),
-    # (W - PAD_SHIFT / 2 - BALL_RADIUS - PAD_W / 2, H - BALL_RADIUS),
-    # (PAD_SHIFT / 2 + BALL_RADIUS + PAD_W / 2, H - BALL_RADIUS),
+    Vec(PAD_SHIFT + BALL_RADIUS + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
+    Vec(-PAD_SHIFT - BALL_RADIUS - PAD_W / 2 + W / 2, -BALL_RADIUS + H / 2),
+    Vec(-PAD_SHIFT - BALL_RADIUS - PAD_W / 2 + W / 2, BALL_RADIUS - H / 2),
+    Vec(PAD_SHIFT + BALL_RADIUS + PAD_W / 2 - W / 2, BALL_RADIUS - H / 2),
 ]
-
-
-# pad_left_path = "pad_left.png"
-# pad_right_path = "pad_right.png"
-# ball_path = "ball.png"
-# pad_left_image = pygame.image.load(pad_left_path)
-# pad_right_image = pygame.image.load(pad_right_path)
-# ball_image = pygame.image.load(ball_path)
-
-
-# def contour_to_lines(contour: list[Pos]) -> list[Line]:
-#    lines = []
-#
-#    pt_count = len(contour)
-#    for i, _ in enumerate(contour):
-#        p1 = contour[i]
-#        p2 = contour[(i + 1) % pt_count]
-#        lines.append((p1, p2))
-#    return lines
-
 
 player1_pad_line = Line()
 player2_pad_line = Line()
 
 
-# thread = threading.Thread(target=ai_periodic_function, args=(game,))
-# thread.start()
 class Pong:
     def __init__(self):
         self.pause = False
-        # self.pad1 = pygame.Rect(PAD_SHIFT, H / 2 - PAD_H / 2, PAD_W, PAD_H)
-        # self.pad2 = pygame.Rect(
-        #    W - PAD_SHIFT - PAD_W / 2,
-        #    H / 2 - PAD_H / 2,
-        #    PAD_W,
-        #    PAD_H,
-        # )
-        # self.ball = pygame.Rect(
-        #    0,
-        #    0,
-        #    BALL_RADIUS,
-        #    BALL_RADIUS,
-        # )
 
-        player1_camp_line = Line(Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
-        player2_camp_line = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
+        player1_camp_line = Line(
+            Vec(W / 2 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT, H / 2)
+        )
+        player2_camp_line = Line(
+            Vec(PAD_SHIFT - W / 2, -H / 2), Vec(PAD_SHIFT - W / 2, H / 2)
+        )
+
         topLine = Line(wall_contours[0], wall_contours[1])
         bottomLine = Line(wall_contours[2], wall_contours[3])
-        # lines_obstacles = [[player1_camp_line, player2_camp_line, topLine, bottomLine]]
+
         lines_obstacles = [[player1_pad_line, player2_pad_line, topLine, bottomLine]]
-        ai_collision_lines = [
-            [player1_camp_line, player2_camp_line, topLine, bottomLine]
-        ]
+        # ai_collision_lines = [
+        #    [player1_camp_line, player2_camp_line, topLine, bottomLine]
+        # ]
 
         padPlayer1 = Pad(
             # pos=Vec(PAD_SHIFT, H / 2 + 30),
@@ -112,19 +79,19 @@ class Pong:
         )
         player1 = Player(pad=padPlayer1, camp_line=player1_camp_line)
         player2 = Player(pad=padPlayer2, camp_line=player2_camp_line)
-        self.ai = PongAI(
-            speed=ball.s,
-            player=player2,
-            opponent=player1,
-            collision_lines=ai_collision_lines,
-        )
+        # self.ai = PongAI(
+        #    speed=ball.s,
+        #    player=player2,
+        #    opponent=player1,
+        #    collision_lines=ai_collision_lines,
+        # )
 
         self.engine = PongEngine(
             lines_obstacles=lines_obstacles,
             ball=ball,
             players=[player1, player2],
-            dim=(W, H),
-            ai=[self.ai],
+            dim=Vec(W, H),
+            # ai=[self.ai],
         )
 
     def stop_game(self):
@@ -164,16 +131,27 @@ class Pong:
     #            self.stop_game()
     #        if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
     #            self.pause = not self.pause
+    def serialize_line(self, line: Line):
+        return {"x1": line.a.x, "y1": line.a.y, "x2": line.b.x, "y2": line.b.y}
 
     def getFormattedData(self):
-        p1 = self.engine.players[0].pad.p
-        p2 = self.engine.players[1].pad.p
+        p1 = self.engine.players[0]
+        p2 = self.engine.players[1]
+        ppp1 = p1.pad.p  # player pad pos
+        ppp2 = p2.pad.p  # player pad pos
+        camp_p1 = self.serialize_line(p1.camp_line)
+        camp_p2 = self.serialize_line(p2.camp_line)
         ball = self.engine.ball.p
-
+        obstacles = [
+            self.serialize_line(line) for line in self.engine.lines_obstacles[0]
+        ]
         return {
-            "paddleL": {"x": p1.x, "y": p1.y, "z": 0, "up": -1, "down": -1},
-            "paddleR": {"x": p2.x, "y": p2.y, "z": 0, "up": -1, "down": -1},
+            "paddleL": {"x": ppp1.x, "y": ppp1.y, "z": 0, "up": -1, "down": -1},
+            "paddleR": {"x": ppp2.x, "y": ppp2.y, "z": 0, "up": -1, "down": -1},
             "ball": {"x": ball.x, "y": ball.x, "z": 0, "w": "r", "s": 0.1},
+            "obstacles": obstacles,
+            "camp_p1": camp_p1,
+            "camp_p2": camp_p2,
         }
 
     async def run(self, asend):
@@ -204,10 +182,10 @@ class Pong:
             i += 1
 
             self.engine.update(delta)
-            ia_elapsed_time = current_time - ia_last_tick_ts
+            # ia_elapsed_time = current_time - ia_last_tick_ts
 
-            if ia_elapsed_time >= 1:
-                self.ai.update_data(self.engine)
-                ia_last_tick_ts = current_time
+            # if ia_elapsed_time >= 1:
+            #    self.ai.update_data(self.engine)
+            #    ia_last_tick_ts = current_time
 
             self.sendData()

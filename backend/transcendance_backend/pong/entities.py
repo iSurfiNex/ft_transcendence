@@ -15,9 +15,13 @@ class Moving:
 
 
 class Ball(Moving):
-    def __init__(self, pos, speed, radius, direction):
-        super().__init__(pos, speed, direction)
+    def __init__(self, reset_pos, pos, speed, radius, direction):
+        super().__init__(reset_pos, speed, direction)
+        self.reset_pos = reset_pos
         self.r = radius
+
+    def reset(self):
+        self.p = self.reset_pos
 
     def __str__(self):
         return f"Ball(pos={self.p}, speed={self.s}, radius={self.r}, direction={self.d.__dict__})"
