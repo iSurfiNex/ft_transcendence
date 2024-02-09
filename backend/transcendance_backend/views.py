@@ -398,16 +398,15 @@ class ManageTournamentView(View):
                 start_game(0, players[0], players[1])
                 start_game(1, players[2], players[3])
                 tournament.state = "round 1"
-                # tournament.games.clear()
-                # tournament.players.clear()
+                #tournament.games.clear()
+                #tournament.players.clear()
                 tournament.save()
 
-            # elif data['action'] == "start-2nd-round"
+            #elif data['action'] == "start-2nd-round"
 
-            elif (
-                data["action"] == "join"
-            ):  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
+            elif (data["action"] == "join"):                 
                 tournament.players.add(my_player)
+
 
             elif data["action"] == "leave":
                 if my_player == tournament.created_by:
