@@ -855,7 +855,7 @@ class PongChat extends Component {
 	}
 
 	isMyFriend(friendsList, sender) {
-		if (state.profile.friends.some(user => user.nickname === sender.nickname))
+		if (state.profile.friends?.some(user => user.nickname === sender.nickname))
 			return false;
 		return true;
 	}
