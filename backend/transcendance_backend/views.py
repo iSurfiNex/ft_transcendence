@@ -393,6 +393,8 @@ class ManageTournamentView(View):
                 game.players.add(p1, p2)
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
+                game.save()
+                stateUpdate(game, "update", "game")
 
             if data["action"] == "start-1st-round":  # POUR COMMENCER LE TOURNOI
                 players = list(tournament.players.all())
