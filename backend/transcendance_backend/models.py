@@ -13,6 +13,8 @@ from datetime import datetime
 
 from .utils import stateUpdate
 
+from .pong.init import run_pong_thread
+
 
 class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
@@ -313,6 +315,16 @@ def on_tournament_field_change(sender, instance, **kwargs):
             Game.objects.filter(tournament=instance).update(
                 created_by=instance.created_by
             )
+
+
+@receiver(pre_save, sender=Game)
+def on_game_field_change(sender, instance, **kwargs):
+    if instance.id is not None:  # Not created
+        previous = Game.objects.get(id=instance.id)
+        if (
+            previous.state != "running" and instance.state == "running"
+        ):  # field will be updated
+            run_pong_thread(instance.id)
 
 
 @receiver(post_save, sender=User)
