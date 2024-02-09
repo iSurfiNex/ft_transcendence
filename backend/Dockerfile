@@ -13,7 +13,7 @@ RUN apt -y upgrade
 RUN apt -y install curl
 RUN apt -y install sudo
 RUN apt -y install systemctl
-RUN apt -y install python3 python3-pip graphviz graphviz-dev
+RUN apt -y install python3 python3-pip redis-server
 RUN apt -y install postgresql postgresql-contrib
 
 RUN rm -rf /var/lib/apt/lists/*
