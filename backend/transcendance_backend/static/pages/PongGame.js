@@ -252,6 +252,8 @@ class PongGame extends Component {
 	const material_paint_L = new THREE.MeshBasicMaterial( {color: 0xb50202} );
 	const material_paint_R = new THREE.MeshBasicMaterial( {color: 0x00fff7} );
 	const material_line = new THREE.MeshBasicMaterial( {color: 0xffffff,opacity:0.1} );
+    const material_line_green = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+    const material_line_yellow = new THREE.LineBasicMaterial({ color: 0xffff00 });
 	const line = new THREE.Mesh( geometry_line, material_line);
 	const paddleL = new THREE.Mesh( geometry_paddle, UNIFORMS.uniform_red );
 	const paddleR = new THREE.Mesh( geometry_paddle, UNIFORMS.uniform_blue );
@@ -502,6 +504,32 @@ renderer.render(scene, camera);
 			//bonus.position.set(0, jfile['bonus']['y'], 50);
 			//bonus.rotation.z += 0.01;
 		}
+
+
+            // ==== DEBUG TOOL: DRAWS PLAYER CAMP LINE IN YELLOW AND OBSTACLES IN GREEN
+            // =
+
+            const lineData = jfile.obstacles
+
+            const drawLine = (line, mat) => {
+                var geometry = new THREE.BufferGeometry();
+                var vertices = new Float32Array([
+                    line.x1, line.y1, 0,
+                    line.x2, line.y2, 0
+                ]);
+                geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+                var lineObject = new THREE.Line(geometry, mat);
+                scene.add(lineObject);
+            }
+            const drawLineGreen = line => drawLine(line, material_line_green)
+            const drawLineYellow = line => drawLine(line, material_line_yellow)
+
+            lineData.forEach(drawLineGreen);
+            drawLineYellow(jfile.camp_p1)
+            drawLineYellow(jfile.camp_p2)
+
+            // =
+            // =============================================================
 
 		renderer.render(scene, camera);
 	}
