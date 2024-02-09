@@ -214,4 +214,5 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
     async def broadcast_message(self, event):
         message = event["message"]
 
+        print("++++++ SENDING")
         await self.send(text_data=json.dumps({"message": message}))

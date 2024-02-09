@@ -3,3 +3,4 @@ from .types import *
 from .collision import *
 from .entities import *
 from .init import *
+from .communication import get_asend
