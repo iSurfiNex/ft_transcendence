@@ -6,9 +6,11 @@ from asgiref.sync import sync_to_async
 from .utils import stateUpdate
 from .models import Game
 from django.core.exceptions import ObjectDoesNotExist
+from channels.db import database_sync_to_async
 
 logger = logging.getLogger(__name__)
 from .models import Player
+from .pong.communication import player_input_setter
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -159,30 +161,47 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
 
 
 class GameRunningConsumer(AsyncWebsocketConsumer):
-    game_group_name = None
+    group_name = None
+    game_id = -1
+    player_idx = -1
+    set_user_input = None
+
+    @database_sync_to_async
+    def get_player_idx_in_game(self, game):
+        # Convert game.players to a list and find the index of my_player
+        players_list = list(game.players.all())
+        my_player = self.scope["user"].player
+        return players_list.index(my_player) if my_player in players_list else -1
 
     async def connect(self):
         try:
             if not self.scope["user"].is_authenticated:
                 raise Exception(f"Authentification required.")
-            id = self.scope["url_route"]["kwargs"]["id"]
+            self.game_id = self.scope["url_route"]["kwargs"]["id"]
 
             try:
-                game = await Game.objects.aget(id=id)
+                game = await Game.objects.aget(id=self.game_id)
             except ObjectDoesNotExist:
-                raise Exception(f"Game with id={id} not found.")
+                raise Exception(f"Game with id={self.game_id} not found.")
 
             assert game.state in [
                 "waiting",
                 "running",
             ], "The game state must be 'waiting' or 'running' to join."
-            # my_player = await sync_to_async(lambda: self.scope["user"].player)()
-            # assert my_player in game.players
 
-            self.game_group_name = f"game_{id}"
-            await self.channel_layer.group_add(self.game_group_name, self.channel_name)
+            self.player_idx = await self.get_player_idx_in_game(game)
+
+            assert self.player_idx >= 0, "You must be part of the game to join."
+
+            self.group_name = f"game_{self.game_id}"
+            await self.channel_layer.group_add(self.group_name, self.channel_name)
+
+            self.set_user_input = player_input_setter(self.game_id, self.player_idx)
+
             await self.accept()
+
             logger.debug("======WS GAME: USER ACCEPTED======")
+
         except Exception as e:
             await self.close()
             logger.debug("======WS GAME: USER REJECTED======")
@@ -191,28 +210,13 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
     async def disconnect(
         self, close_code
     ):  # PAS OUBLIER DE DECONNECTER LES JOUEURS DU WS A LA FIN DE LA GAME
-        if self.game_group_name:
-            await self.channel_layer.group_discard(
-                self.game_group_name, self.channel_name
-            )
+        if self.group_name:
+            await self.channel_layer.group_discard(self.group_name, self.channel_name)
         logger.debug("======WS GAME: USER DISCONNECTED======")
 
     async def receive(self, text_data):
         message = json.loads(text_data)
-        logger.debug("======WS GAME: MSG RECEIVED======")
-        await self.channel_layer.group_send(
-            self.game_group_name,
-            {
-                "type": "broadcast.message",
-                "message": message,
-                "datetime": int(
-                    datetime.now().timestamp() * 1000
-                ),  # NOTE *1000 to make it js timestamp compatible
-            },
-        )
+        self.set_user_input(message)
 
     async def broadcast_message(self, event):
-        message = event["message"]
-
-        print("++++++ SENDING")
-        await self.send(text_data=json.dumps({"message": message}))
+        await self.send(text_data=json.dumps({"message": event["message"]}))

@@ -271,8 +271,8 @@ class PongGame extends Component {
 	line.renderOrder = 5003;
 
 	light.position.set(0, 0, 610);
-	paddleL.position.set(-290, 0, 0);
-	paddleR.position.set(290, 0, 0);
+	paddleL.position.set(-450, 0, 0);
+	paddleR.position.set(450, 0, 0);
 	line.position.set(0, 0, 0);
 
     const baseURL = '/static/pong/'; // Set your base URL here
@@ -350,10 +350,7 @@ renderer.render(scene, camera);
 			// Render the scene
 			renderer.render(scene, camera);
 		};
-		var	up = -1;
-		var	down = -1;
-		var	w = -1;
-		var	s = -1;
+
 		document.addEventListener('keydown', function(event) {
 			if (event.key == "p" && bonus) {
 				bonus.traverse((child) => {
@@ -366,73 +363,24 @@ renderer.render(scene, camera);
 				});
 			}
 		});
-		document.addEventListener('keydown', function(event) {
-			if (event.key == "ArrowUp" && up == -1)
-			{
-				up = 1
-				send_json(event)
-			}
-			else if (event.key == "ArrowDown" && down == -1)
-			{
-				down = 1
-				send_json(event)
-			}
-			else if (event.key == "w" && w == -1)
-			{
-				w = 1
-				send_json(event)
-			}
-			else if (event.key == "s" && s == -1)
-			{
-				s = 1
-				send_json(event)
-			}
-		});
-		document.addEventListener('keyup', function(event) {
-			if (event.key == "ArrowUp")
-			{
-				up = -1
-				send_json(event)
-			}
-			else if (event.key == "ArrowDown")
-			{
-				down = -1
-				send_json(event)
-			}
-			else if (event.key == "w")
-			{
-				w = -1
-				send_json(event)
-			}
-			else if (event.key == "s")
-			{
-				s = -1
-				send_json(event)
-			}
-		});
-		function send_json(event){
-			console.log(event.key);
-			if (event.key != "s" && event.key != "w" && event.key != "t" && event.key != "ArrowUp" && event.key != "ArrowDown")
-				return
-			if (event.key == "ArrowDown" || event.key == "ArrowUp")
-			{
-				var obj = {
-					"key": event.key,
-					"user": "Paddle Right"
-			};
-		}
-			else
-			{
-				var obj = {
-					"key": event.key,
-					"user": "Paddle Left"
-				}
-			};
-			console.log(obj);
-			if (event.key) {
-					socket.send(JSON.stringify(obj)); // Send the typed message to the server
-			}
-		}
+
+
+        const inputs = {up: false, down: false}
+		const send_inputs = () => this.socket.send(JSON.stringify(inputs)); // Send the typed message to the server
+        // return false if the key was ignored
+        const handleInput = (keyList, inputKey, key, value) => {
+            // key not pressed or held down
+            if (!keyList.includes(key) || (value === inputs[inputKey])) return false
+            inputs[inputKey] = value
+            return true
+        }
+        const updateInputs = (key, value) => {
+            if (handleInput(["ArrowUp","w"], 'up', key, value) || handleInput(["ArrowDown","s"], 'down', key, value))
+                send_inputs()
+        }
+		document.addEventListener('keydown', ({key}) => updateInputs(key, true));
+		document.addEventListener('keyup', ({key}) => updateInputs(key, false));
+
 		const handleResize = ()=>{
             this.setCanvasSize(renderer)
 		}
@@ -450,13 +398,13 @@ renderer.render(scene, camera);
 		// else
 		//paddleR.setSize(jfile["paddleR"]["sizeY"], jfile["paddleR"]["sizeX"], 20);
 		//au pire il faut mettre la size des paddle a 1 et les scale a fond
-		paddleR.position.set(390, jfile['paddleR']['y'], 10);
+		paddleR.position.set(jfile['paddleR']['x'], jfile['paddleR']['y'], 10);
 
 		// if (jfile['bonus']['size_minus'] == 'l')
 		// 	paddleL.scale.set(1, 2);
 		// else
 		// 	paddleL.scale.set(1, 1);
-		paddleL.position.set(-390, jfile['paddleL']['y'], 10);
+		paddleL.position.set(jfile['paddleL']['x'], jfile['paddleL']['y'], 10);
 
 		if (ball)
 		{

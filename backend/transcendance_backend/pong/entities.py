@@ -35,7 +35,7 @@ class Pad(Moving):
         clamp_line: Line,
         pad_line: Line,
         speed=100,
-        direction=(0, 1),
+        direction=(0, 0),
         orientation=Vec(0, 1),
     ):
         self.orientation = orientation
@@ -104,10 +104,10 @@ class Player:
         self.camp_line = camp_line
 
     def go_down(self):
-        self.pad.d = Vec(0, 1)
+        self.pad.d = Vec(0, -1)
 
     def go_up(self):
-        self.pad.d = Vec(0, -1)
+        self.pad.d = Vec(0, 1)
 
     def stay_still(self):
         self.pad.d = Vec(0, 0)

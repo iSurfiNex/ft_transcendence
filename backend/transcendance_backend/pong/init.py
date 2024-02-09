@@ -10,7 +10,7 @@ from .pong import Pong
 async def run_pong_async(id):
     asend = get_asend(id)
     pong = Pong()
-    await pong.run(asend)
+    await pong.run(asend, id)
 
 
 # async def test_broadcast_async(id):
