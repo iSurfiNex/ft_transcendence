@@ -15,12 +15,12 @@ class TournamentRunningWr extends Component {
                         <div class="match-info">
                             <div class="player-1">
                                 <img src="{this.playerOnePic(matchId)}">
-                                <a href="/profile">{this.getPlayerOne(matchId)}</a>
+                                <a href="javascript:void(0)" @click="this.navigate({this.getPlayerOne(matchId)})">{this.getPlayerOne(matchId)}</a>
                             </div>
                             <div class="VS-logo"> VS </div>
                             <div class="player-2">
                                 <img src="{this.playerTwoPic(matchId)}">
-                                <a href="/profile">{this.getPlayerTwo(matchId)}</a>
+                                <a href="javascript:void(0)" @click="this.navigate({this.getPlayerTwo(matchId)})">{this.getPlayerTwo(matchId)}</a>
                             </div>
                         </div>
                     </div>
@@ -608,5 +608,13 @@ class TournamentRunningWr extends Component {
 
         return (playerTwo);
     }
+
+    navigate(nickname) {
+		const user = state.users.find(user => user.nickname === nickname);
+
+		state.profileLooking = user.id
+		navigateTo('/profile');
+		return false;
+	}
 }
 register (TournamentRunningWr)
