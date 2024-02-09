@@ -438,11 +438,10 @@ renderer.render(scene, camera);
 
 		const onmessage = (event) => {
             console.log("RECEIVED: ", event.data)
-            return;
 
 		var jfile
 		const message = event.data;
-		jfile = JSON.parse(event.data)
+		jfile = JSON.parse(message).message
 
 		// if (jfile['bonus']['size_minus'] == 'r')
 		// 	paddleR.scale.set(1, 2);
@@ -499,8 +498,9 @@ renderer.render(scene, camera);
 		}
 		if (bonus)
 		{
-			bonus.position.set(0, jfile['bonus']['y'], 50);
-			bonus.rotation.z += 0.01;
+            // TODO @tlarraze c'est quoi bonus ?
+			//bonus.position.set(0, jfile['bonus']['y'], 50);
+			//bonus.rotation.z += 0.01;
 		}
 
 		renderer.render(scene, camera);
