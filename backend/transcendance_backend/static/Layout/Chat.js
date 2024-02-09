@@ -915,7 +915,22 @@ class PongChat extends Component {
 
 				if (isInvite.invite) {
 					state.messages.push({text: 'Joining ' + state.activeChannel + '.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
-					// TODO add whoAmI to activeChannel's game
+
+					let url;
+					const user = state.users.find(user => 'user_'+user.id === state.activeChannel);
+					var dataToSend = {
+						action: "join"
+					};
+
+					if (user.current_tournament_id !== -1)
+						url = "/api/manage-tournament/" + user.current_tournament_id + "/";
+					else
+						url = "/api/manage-game/" + user.current_game_id + "/";
+
+					put2(url, dataToSend)
+						.catch ( err => console.log('ERROR', err))
+
+					isInvite.invite = false;
 				}
 				else {
 					state.messages.push({text: state.activeChannel + ' didn\'t invite you.', sender: 'Pong', nickname: 'Pong', date:Date.now(), channel: state.activeChannel});
