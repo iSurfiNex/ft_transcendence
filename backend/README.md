@@ -146,3 +146,13 @@ To try the pong with a python frontend
 cd backend/
 python ./pong/test/app.py
 ```
+
+### Dev tool
+
+You can prepare a game to be started by running
+
+``` sh
+python manage.py start_game -p1=yolo_ -p2=root_
+```
+
+where yolo_ and root_ are the nickname of existing players
