@@ -181,10 +181,26 @@ function displayContent(path) {
 	else {
 		Layout();
 
-        if (path !== "/play/waiting-room" && path !== "/profile/" && path !== "/profile" && state.currentGame >= 0) {
-		    navigateTo("/play/waiting-room")
-            return
+        if (path !== "/profile/" && path !== "/profile") {
+            // While player is in game or in waiting root, he can only naviagte to profile
+
+            if (path !== "/play/tournament-wr" && state.tournament.status === 'waiting') {
+		        console.log("REDIRECT - TOURNAMENT WAITING ROOM")
+                navigateTo("/play/tournament-wr")
+                return;
+            }
+            else if (path !== "/play/waiting-room" && state.game.status === 'waiting') {
+		        console.log("REDIRECT - WAITING ROOM")
+                navigateTo("/play/waiting-room")
+                return;
+            }
+            if (path !== "/play/game" && state.game.status === 'running') {
+		        console.log("REDIRECT - RUNNING GAME")
+                navigateTo("/play/game")
+                return;
+            }
         }
+
 		if (path === "/") {
 			displayElement("pong-home");
 		}
@@ -195,14 +211,19 @@ function displayContent(path) {
 			displayElement("pong-profile");
 		}
 		else if (path === "/play/waiting-room") {
-            if (!(state.currentGame > 0))
+            if (!(state.currentGame >= 0))
             {
                 navigateTo('/')
                 return
             }
-			displayElement("waiting-room");
+			displayElement("pong-waiting-room");
 		}
 		else if (path === "/play/tournament-wr") {
+            if (!(state.currentTournament >= 0))
+            {
+                navigateTo('/')
+                return
+            }
 			displayElement("tournament-wr")
 		}
 		else if (path === "/play/tournament-running-wr") {
@@ -232,9 +253,18 @@ function displayContent(path) {
 		else if (path === "/play/create-game") {
 			displayElement("pong-create-game");
 		}
+		else if (path === "/play/game") {
+            if (!(state.currentGame >= 0))
+            {
+                navigateTo('/')
+                return
+            }
+			displayElement("pong-game");
+		}
 		else {
 			displayElement("pong-not-found");
 		}
+
 	}
 }
 
@@ -255,6 +285,8 @@ function Layout() {
 
 function displayElement(element) {
 	let tmp = document.getElementById('pong-content');
+    if (tmp && tmp.localName === element)
+        return
 	if (tmp)
 		tmp.parentNode.removeChild(tmp);
 
@@ -394,10 +426,10 @@ function currentGameUpdate() {
 	var isMyTournament;
 
 	if (state.games && state.games.length != 0)
-		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname));
+		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname) && game.status !== 'done');
 	
 	if (state.tournaments && state.tournaments.length != 0)
-		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname))
+		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname) && tournament.status !== 'done')
 
 	if (isMyGame)
 	    currentGame = isMyGame.id;

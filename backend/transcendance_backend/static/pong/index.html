@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebSocket Chat</title>
+</head>
+<body>
+	<div>
+		<input type="text" id="messageInput" placeholder="Type your message">
+		<button onclick="sendMessage()">Send</button>
+	</div>
+
+	<script>
+		// Declare a global variable for the WebSocket connection
+		var socket = new WebSocket("ws://localhost:8000");
+
+		// Function to create or ensure the WebSocket connection is open
+		socket.onopen = (event) => {
+			console.log("WebSocket connection opened");
+		// You can send an initial message to the server if needed
+			//socket.send("Hello from the client");
+		};
+			var jfile
+
+			socket.onmessage = (event) => {
+			const message = event.data;
+			jfile = JSON.parse(event.data)
+			console.log(jfile['msg'] + "from " + jfile['user']);
+		};
+		socket.onclose = (event) => {
+			const message = event.data;
+			console.log("DED");
+		};
+		// Function to send a message to the server
+		 sendMessage = () => {
+
+			const messageInput = document.getElementById("messageInput");
+			const message = messageInput.value.trim();
+			var	obj = 
+			{
+				"msg" : message,
+				"user" : "User 1"
+			};
+			if (message) {
+					socket.send(JSON.stringify(obj)); // Send the typed message to the server
+					messageInput.value = ""; // Clear the input field
+//					const message = activeSocket.event.data;
+//					console.log(`Received: ${message}`)		
+				}
+				};
+	</script>
+</body>
+</html>

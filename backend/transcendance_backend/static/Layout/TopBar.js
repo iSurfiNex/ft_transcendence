@@ -102,7 +102,7 @@ class PongTopBar extends Component {
 
 		.profile-picture {
 			position: fixed;
-			width: 12.5%;
+			width: calc(12.5% - 4px);
 			height: 10%;
 			top: 0;
 			right: 12.5%;
@@ -135,7 +135,7 @@ class PongTopBar extends Component {
 		.logout-div {
 			border-left: 8px solid #424242;
 			position: fixed;
-			width: 12.5%;
+			width: calc(12.5% + 4px);
 			height: 10%;
 			top: 0;
 			right: 0;
@@ -220,7 +220,7 @@ class PongTopBar extends Component {
 
 		.profile-picture {
 			position: fixed;
-			width: 12.5%;
+			width: calc(12.5% - 4px);
 			height: 10%;
 			top: 0;
 			right: 12.5%;
@@ -253,7 +253,7 @@ class PongTopBar extends Component {
 		.logout-div {
 			border-left: 8px solid #424242;
 			position: fixed;
-			width: 12.5%;
+			width: calc(12.5% + 4px);
 			height: 10%;
 			top: 0;
 			right: 0;

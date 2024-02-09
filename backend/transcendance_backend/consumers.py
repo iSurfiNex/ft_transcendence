@@ -4,6 +4,8 @@ import json
 from datetime import datetime
 from asgiref.sync import sync_to_async
 from .utils import stateUpdate
+from .models import Game
+from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger(__name__)
 from .models import Player
@@ -23,10 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         player.is_connected = new_value
         player.save()
-
-        logger.debug(
-            f"CONNECTION STATE {new_value} - {Player.objects.get(id=p.id).is_connected}"
-        )
 
     async def connect(self):
         try:
@@ -161,21 +159,59 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
 
 
 class GameRunningConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.id = self.scope["url_route"]["kwargs"]["id"]
-        self.game_group_name = f"game_{self.id}"
+    game_group_name = None
 
-        await self.channel_layer.group_add(self.game_group_name, self.channel_name)
-        await self.accept()
+    async def connect(self):
+        try:
+            if not self.scope["user"].is_authenticated:
+                raise Exception(f"Authentification required.")
+            id = self.scope["url_route"]["kwargs"]["id"]
+
+            try:
+                game = await Game.objects.aget(id=id)
+            except ObjectDoesNotExist:
+                raise Exception(f"Game with id={id} not found.")
+
+            assert game.state in [
+                "waiting",
+                "running",
+            ], "The game state must be 'waiting' or 'running' to join."
+            # my_player = await sync_to_async(lambda: self.scope["user"].player)()
+            # assert my_player in game.players
+
+            self.game_group_name = f"game_{id}"
+            await self.channel_layer.group_add(self.game_group_name, self.channel_name)
+            await self.accept()
+            logger.debug("======WS GAME: USER ACCEPTED======")
+        except Exception as e:
+            await self.close()
+            logger.debug("======WS GAME: USER REJECTED======")
+            raise e
 
     async def disconnect(
         self, close_code
     ):  # PAS OUBLIER DE DECONNECTER LES JOUEURS DU WS A LA FIN DE LA GAME
-        await self.channel_layer.group_discard(self.game_group_name, self.channel_name)
+        if self.game_group_name:
+            await self.channel_layer.group_discard(
+                self.game_group_name, self.channel_name
+            )
+        logger.debug("======WS GAME: USER DISCONNECTED======")
 
     async def receive(self, text_data):
-        data = json.loads(text_data)
-        await self.send_game_update(data)
+        message = json.loads(text_data)
+        logger.debug("======WS GAME: MSG RECEIVED======")
+        await self.channel_layer.group_send(
+            self.game_group_name,
+            {
+                "type": "broadcast.message",
+                "message": message,
+                "datetime": int(
+                    datetime.now().timestamp() * 1000
+                ),  # NOTE *1000 to make it js timestamp compatible
+            },
+        )
 
-    async def send_game_update(self, event):
-        await self.send(text_data=json.dumps(event["message"]))
+    async def broadcast_message(self, event):
+        message = event["message"]
+
+        await self.send(text_data=json.dumps({"message": message}))

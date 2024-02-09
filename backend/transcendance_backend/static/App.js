@@ -1,4 +1,4 @@
-import {setup, computedProperty} from "./pouic/state.js"
+import {setup, computedProperty, observe} from "./pouic/state.js"
 
 
 /* Global function to start a WebSocket connection. If page protocol is https, start wss connection otherwise ws. Exemple if page is https://localhost:8000/start-game and you call ws('chat'), a connection will open at wss://localhost:8000/ws/chat */
@@ -11,14 +11,26 @@ window.ws = route => {
 }
 
 var state_base = {
-        game: computedProperty(['games', 'currentGame', 'profile.id'], function (games, currentGameId, myId) {
+        game: computedProperty(['currentGame'], function (currentGameId) {
+                const games = state.games
                 if (!games && !Array.isArray(games) || !(currentGameId>=0))
-                        return {}
+                        return {id: -1, status: 'no-game'}
                 const my_game =  games.find(game => game.id === currentGameId)
                 if (!my_game)
-                        return {}
-                my_game.creator_is_me = my_game.creator_id === myId
+                        return {id: -1, status: 'no-game'}
+                my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
+        }),
+        tournament: computedProperty(['currentTournament'], function (currentTournamentId) {
+                const tournaments = state.tournaments
+                if (!tournaments && !Array.isArray(tournaments) || !(currentTournamentId>=0))
+                        return {id: -1, status: 'no-tournament'}
+                const my_tournament =  tournaments.find(tournament => tournament.id === currentTournamentId)
+                if (!my_tournament)
+                        return {id: -1, status: 'no-tournament'}
+                my_tournament.creator_is_me = my_tournament.creator_id === state.profile.id
+                my_tournament.expectedPlayers = my_tournament.status === "waiting" ? 4 : 2
+                return my_tournament
         }),
         createGamePresets: {
                 tournament: false,
@@ -90,6 +102,13 @@ var state_base = {
 		//{ type: 'normal', id: 16, status: 'running', creator: 'tournament', players: ['jtoulous', 'tlarraze'], maxPlayer: '2', score: [{ name: 'jtoulous', points: 2 }, { name: 'tlarraze', points: 3 }], date: '11/11/2023 04:38' },
 
 	//],
+	runningGame: {
+		startIn : null,
+		p1Points: null,
+		p2Points: null,
+		startedAt: null,
+		gameOverState: null,
+	},
 	currentTournament: window.profile.current_tournament_id,
 	currentGame: window.profile.current_game_id,
 	language: undefined,
@@ -149,7 +168,6 @@ var state_base = {
 		WaitingRoom: 'Waiting Room',
 		GoButton: 'START',
 		ByeButton: 'GIVE UP',
-		Start: 'STARTING IN',
 
 		//create-game
 		GameEditor: 'Game Editor',
@@ -158,7 +176,13 @@ var state_base = {
 		Tournament: 'Tournament',
 		Size: 'Size:',
 		Create: 'Create',
-		Cancel: 'Cancel'
+		Cancel: 'Cancel',
+
+                //GAME
+		Start: 'STARTING IN',
+                gameOver: 'GAME OVER',
+                youWin: 'YOU WIN',
+                youLose: 'YOU LOSE',
 	},
 	fr: {
 		// LOGIN
@@ -215,7 +239,6 @@ var state_base = {
 		WaitingRoom: 'Salle d\'attente',
 		GoButton: 'GO',
 		ByeButton: 'ABANDON',
-		Start: 'DEBUT DANS',
 
 		//Create-game
 		GameEditor: 'Editeur',
@@ -224,7 +247,13 @@ var state_base = {
 		Tournament: 'Tournoi',
 		Size: 'Taille:',
 		Create: 'Creer',
-		Cancel: 'Annuler'
+		Cancel: 'Annuler',
+
+                //GAME
+		Start: 'DEBUT DANS',
+                gameOver: 'GAME OVER',
+                youWin: 'VICTOIRE',
+                youLose: 'DÉFAITE',
 	},
 	de: {
 		// LOGIN
@@ -281,7 +310,6 @@ var state_base = {
 		WaitingRoom: 'Wartezimmer',
 		GoButton: 'GO',
 		ByeButton: 'AUFGEBEN',
-		Start: 'BEGINN IN',
 
 		//Create-game
 		GameEditor: 'Spiel-Editor',
@@ -290,10 +318,17 @@ var state_base = {
 		Tournament: 'Turnier',
 		Size: 'Größe:',
 		Create: 'anlegen',
-		Cancel: 'abbrechen'
+		Cancel: 'abbrechen',
+
+                //GAME
+		Start: 'BEGINN IN',
+                gameOver: 'GAME OVER',
+                youWin: 'SIEG',
+                youLose: 'VERLUST',
 	},
 
     lang(key) {
+            console.log('========', key, state.language[key] || state.language.errUnknown)
         return state.language[key] || state.language.errUnknown
     }
 
@@ -302,6 +337,44 @@ var state_base = {
 state_base.language = {...state_base.en}
 const state = setup(state_base)
 
+observe('game.status', (newStatus, oldStatus) => {
+        const gameStarts = (newStatus === "running" && oldStatus !== "running")
+        const gameOver = (newStatus !== "running" && oldStatus === "running")
+        const leaveWaitingRoom = (newStatus !== "waiting" && oldStatus === "waiting")
+        const enterWaitingRoom = (newStatus === "waiting" && oldStatus !== "waiting")
+        if (gameStarts) {
+                console.log("GAME STARTING")
+                navigateTo('/play/game')
+        } else if(gameOver) {
+                console.log("GAME OVER")
+                //if (state.currentTournament.status === ???)
+                //        navigateTo('play/tournament-wr')
+                //else
+                navigateTo('/')
+        } else if (enterWaitingRoom) {
+                console.log("ENTER WAITING ROOM")
+                navigateTo('/play/waiting-room');
+        } else if (leaveWaitingRoom) {
+                console.log("LEAVE WAITING ROOM")
+                navigateTo('/play/'+state.gameListFilter)
+        }
+})
+
+observe('tournament.status', (newStatus, oldStatus) => {
+        const leaveWaitingRoom = (newStatus !== "waiting" && oldStatus === "waiting")
+        const enterWaitingRoom = (newStatus == "waiting" && oldStatus !== "waiting")
+        if (enterWaitingRoom) {
+                console.log("ENTER TOURNAMENT WAITING ROOM")
+                navigateTo('/play/tournament-wr');
+        } else if (leaveWaitingRoom && newStatus !== 'round 1' && newStatus !== 'round 2') {
+                console.log("LEAVE TOURNAMENT WAITING ROOM")
+                navigateTo('/play/tournament')
+        }
+})
+
+// TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer
+state.game.status
+state.tournament.status
 
 function checkScreenWidth() {
 	state.isMobile = (window.innerWidth < 769 || window.innerHeight < 525);

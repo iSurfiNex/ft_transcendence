@@ -27,8 +27,11 @@ from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
 
 from .models import Player
+from .pong.init import run_pong_thread
 
 import logging
+
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -370,6 +373,7 @@ class ManageTournamentView(View):
 
             stateUpdateAll(Game, "all games")
             stateUpdate(tournament, "create", "tournament")
+            stateUpdate(creator, "update", "user")
             response = tournament.serialize()
             return JsonResponse(response, status=200)
 
@@ -385,11 +389,9 @@ class ManageTournamentView(View):
             my_player = request.user.player
 
             def start_game(i, p1, p2):
-                game = tournament.games.all()[i]
+                game = tournament.game_set.all()[i]
                 game.players.add(p1, p2)
-                game.started_at = (
-                    datetime.now() + timedelta(seconds=5)
-                ).timestamp() * 1000
+                game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
 
             if data["action"] == "start-1st-round":  # POUR COMMENCER LE TOURNOI
@@ -413,21 +415,23 @@ class ManageTournamentView(View):
                     if tournament.players.count() > 1:
                         tournament.players.remove(my_player)
                         tournament.created_by = tournament.players.first()
-                        #tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
-                        #tournament.game_set ...
+                        # tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
+                        # tournament.game_set ...
                     else:
                         tournamentGames = tournament.game_set.all()[0].delete()
                         tournamentGames = tournament.game_set.all()[0].delete()
                         tournamentGames = tournament.game_set.all()[0].delete()
                         tournament.delete()
-    
+
                         stateUpdateAll(Tournament, "all games")
                         stateUpdateAll(Tournament, "all tournaments")
+                        stateUpdate(my_player, "update", "user")
                         return JsonResponse({}, status=200)
                 else:
                     tournament.players.remove(my_player)
 
             tournament.save()
+            stateUpdate(my_player, "update", "user")
             stateUpdate(tournament, "update", "tournament")
             response = tournament.serialize()
             return JsonResponse(response, status=200)
@@ -500,10 +504,9 @@ class ManageGameView(View):
             my_player = request.user.player
 
             if data["action"] == "start-game":
-                game.started_at = (
-                    datetime.now().timestamp() + timedelta(seconds=5)
-                ) * 1000
+                game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
+                run_pong_thread(game.id)
 
             elif data["action"] == "join":
                 game.players.add(my_player)
@@ -519,7 +522,7 @@ class ManageGameView(View):
                         stateUpdate(my_player, "update", "user")
                         return JsonResponse({}, status=200)
                 else:
-                   game.players.remove(my_player)
+                    game.players.remove(my_player)
 
             game.save()
             stateUpdate(game, "update", "game")
@@ -533,6 +536,21 @@ class ManageGameView(View):
             return JsonResponse({"errors": "Object not found"}, status=404)
         except IntegrityError as e:
             return JsonResponse({"errors": str(e)}, status=400)
+
+
+# Let Player giveup his running game
+@require_GET
+def giveup(request):
+    my_player = request.user.player
+    game = my_player.games.filter(state__in=["running"]).first()
+    if game is None:
+        return JsonResponse({"errors": {"__all__": "No game running"}}, status=400)
+    game.state = "done"
+    game.save()
+    stateUpdate(game, "update", "game")
+    stateUpdate(my_player, "update", "user")
+    # TODO update users ?
+    return JsonResponse({"status": "ok"}, status=200)
 
 
 PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")

@@ -32,6 +32,7 @@ from .views import (
     ManageTournamentView,
     ManageGameView,
     CustomTemplateView,
+    giveup,
 )
 
 websocket_urlpatterns = [
@@ -45,6 +46,7 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     path("admin/", admin.site.urls),
+    path("api/giveup/", giveup, name="giveup"),
     path("api/register/", register_user, name="register-user"),
     path("api/login/", login_user, name="login-user"),
     path("api/logout/", logout_user, name="logout-user"),
