@@ -1,4 +1,4 @@
-VOLUME_PATH = /sgoinfre/goinfre/Perso/rsterin/data
+VOLUME_PATH = /sgoinfre/goinfre/Perso/jtoulous/data
 
 all: volumes up
 

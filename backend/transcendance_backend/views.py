@@ -393,6 +393,8 @@ class ManageTournamentView(View):
                 game.players.add(p1, p2)
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
+                game.save()
+                stateUpdate(game, "update", "game")
 
             if data["action"] == "start-1st-round":  # POUR COMMENCER LE TOURNOI
                 players = list(tournament.players.all())
@@ -400,29 +402,33 @@ class ManageTournamentView(View):
                 start_game(0, players[0], players[1])
                 start_game(1, players[2], players[3])
                 tournament.state = "round 1"
-                # tournament.games.clear()
-                # tournament.players.clear()
+                tournament.players.clear()
                 tournament.save()
 
-            # elif data['action'] == "start-2nd-round"
+            #elif data['action'] == "start-2nd-round"
 
-            elif data["action"] == "join":  # A LANCER AU MOMENT OU UN JOUEUR REJOIN LE TOURNOI ET LE RELANCER A LA FIN DU PREMIER ROUND POUR RAJOUTER LE WINNER AU TOURNOI
+            elif (data["action"] == "join"):                 
                 tournament.players.add(my_player)
+
+
             elif data["action"] == "leave":
                 if my_player == tournament.created_by:
                     if tournament.players.count() > 1:
                         tournament.players.remove(my_player)
-                        tournament.created_by = tournament.players.first()
-                        # tournament.game_set ...      POUR CHANGER LE CREATOR DES GAMES ASSOCIE AU TOURNOI
-                        # tournament.game_set ...
+                        newCreator = tournament.players.first()
+                        tournament.created_by = newCreator
+                        for game in tournament.game_set.all():
+                            game.created_by = newCreator
+                            game.save()
+                        stateUpdateAll(Game, "all games")
+
                     else:
-                        tournamentGames = tournament.game_set.all()[0].delete()
-                        tournamentGames = tournament.game_set.all()[0].delete()
-                        tournamentGames = tournament.game_set.all()[0].delete()
+                        for i in range(3):
+                            tournament.game_set.all()[0].delete()
                         tournament.delete()
 
-                        stateUpdateAll(Tournament, "all games")
                         stateUpdateAll(Tournament, "all tournaments")
+                        stateUpdateAll(Game, "all games")
                         stateUpdate(my_player, "update", "user")
                         return JsonResponse({}, status=200)
                 else:
@@ -438,17 +444,6 @@ class ManageTournamentView(View):
             return JsonResponse({"errors": "Invalid data"}, status=404)
         except Http404:
             return JsonResponse({"errors": "Object not found"}, status=404)
-
-    # def delete(self, request, id):
-    #
-    #        tournament.players.remove(gone_player)
-    #        response = tournament.serialize()
-    #        return response
-    #
-    #    except KeyError:
-    #        return JsonResponse({"errors": "Invalid data"}, status=404)
-    #    except Http404:
-    #        return JsonResponse({"errors": "Object not found"}, status=404)
 
 
 class ManageGameView(View):

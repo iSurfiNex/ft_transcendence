@@ -583,6 +583,7 @@ class TournamentWr extends Component {
         }
 
         put2(url, dataToPut).catch(error => console.error(error));
+        //GERER LA REDIRECTION 
     }
 }
 
