@@ -224,7 +224,7 @@ class Tournament(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     winner = models.ForeignKey(
-        "Player",
+        Player,
         null=True,
         blank=True,
         on_delete=models.CASCADE,

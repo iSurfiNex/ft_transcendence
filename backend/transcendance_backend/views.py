@@ -421,7 +421,7 @@ class ManageTournamentView(View):
                             tournament.players.add(get_object_or_404(Player, nickname=data["winner"]))
 
                         elif tournament.state == "round 2":
-                            tournament.winner = data["winner"]
+                            tournament.winner = get_object_or_404(Player, nickname=data["winner"])
                             tournament.state = "done"
 
             elif (data["action"] == "join"):        
@@ -509,6 +509,12 @@ class ManageGameView(View):
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
                 run_pong_thread(game.id)
+
+            elif data["action"] == "end-game":
+                game.state = "done"
+                game.p1_score = data["p1_score"]
+                game.p2_score = data["p2_score"]
+                game.winner = data["winner"]
 
             elif data["action"] == "join":
                 game.players.add(my_player)
