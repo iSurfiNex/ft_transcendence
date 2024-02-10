@@ -9,7 +9,7 @@ class PongEndGame extends Component {
         <div class="rectangle-stats">
             <div class="title">Resume</div>
             <div class="stats">
-                <>
+                <div class="">
             </div>
         </div>
     </div>

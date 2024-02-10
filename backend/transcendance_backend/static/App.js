@@ -350,7 +350,7 @@ observe('game.status', (newStatus, oldStatus) => {
                 //if (state.currentTournament.status === ???)
                 //        navigateTo('play/tournament-wr')
                 //else
-                navigateTo('/')
+                //navigateTo('/')
         } else if (enterWaitingRoom) {
                 console.log("ENTER WAITING ROOM")
                 navigateTo('/play/waiting-room');
