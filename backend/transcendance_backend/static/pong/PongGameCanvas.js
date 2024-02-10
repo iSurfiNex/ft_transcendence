@@ -299,7 +299,7 @@ export class PongGameCanvas {
         }
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Ball");
+        // console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Ball");
       },
       (error) => {
         console.error("Error loading GLTF model", error);
@@ -329,7 +329,7 @@ export class PongGameCanvas {
         }
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Bonus");
+        // console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Bonus");
       },
       (error) => {
         console.error("Error loading GLTF model", error);
