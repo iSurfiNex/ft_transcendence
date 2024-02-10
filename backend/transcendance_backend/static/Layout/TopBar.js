@@ -113,6 +113,7 @@ class PongTopBar extends Component {
 			width: 100%;
 			height: 90%;
 			top: 5%;
+			right: 5%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
