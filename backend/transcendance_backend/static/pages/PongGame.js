@@ -185,7 +185,7 @@ class PongGame extends Component {
 
   constructor() {
     super();
-    observe("runningGame.startedAt", this.updatedStartIn.bind(this));
+    observe("game.startedAt", this.updatedStartIn.bind(this));
   }
 
   giveUp() {
