@@ -36,7 +36,6 @@ SESSION_COOKIE_SECURE = True
 SECURE_URL_SCHEME = "https"
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [os.environ.get("GF_IP"), "localhost"]
