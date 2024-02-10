@@ -148,8 +148,6 @@ class Pong:
                 player.go_down()
 
     async def run(self, asend, id):
-        print(f"----------------- pong: starting---------------")
-
         current_time = time()
         delta = 1 / FPS
         # ia_last_tick_ts = current_time - 1
@@ -187,4 +185,3 @@ class Pong:
 
             self.sendData()
 
-        print(f"----------------- pong: GAME OVER---------------")

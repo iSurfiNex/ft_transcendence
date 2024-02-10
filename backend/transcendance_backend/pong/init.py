@@ -1,4 +1,3 @@
-# from asgiref.sync import async_to_sync
 import asyncio
 
 import threading
@@ -12,29 +11,15 @@ async def run_pong_async(id):
     pong = Pong()
     await pong.run(asend, id)
 
-
-# async def test_broadcast_async(id):
-#    message = {"type": "broadcast.message", "message": "Hello World! from game thread"}
-#    asend = get_asend(id)
-#    print(f"----------------- GAME {id} : starting---------------")
-#    i = 0
-#    while i < 50:
-#        i += 1
-#        print(f"--------------- GAME {id} : game ping {i}/50 -----------------")
-#        await asend(message)
-#        await asyncio.sleep(5)
-#
-#    print(f"--------------- GAME {id} : finishing -----------------")
-
-
 def run_pong(id):
-    # Create an event loop
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    # Run the async function in the event loop
+    print(f"----------------- game id:{id} thread: starting---------------")
+
     loop.run_until_complete(run_pong_async(id))
-    # loop.run_until_complete(test_broadcast_async(id))
+
+    print(f"----------------- game id:{id} thread: stopping---------------")
 
 
 def run_pong_thread(id):
