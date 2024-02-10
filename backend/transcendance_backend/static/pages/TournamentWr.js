@@ -579,11 +579,11 @@ class TournamentWr extends Component {
         }
 
         const dataToPut = {
-            action: "start-1st-round",
+            action: "start-round",
         }
 
         put2(url, dataToPut).catch(error => console.error(error));
-        //GERER LA REDIRECTION 
+        //navigateTo("/");
     }
 }
 

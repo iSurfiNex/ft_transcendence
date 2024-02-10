@@ -33,6 +33,7 @@ from .views import (
     ManageGameView,
     CustomTemplateView,
     giveup,
+    reconnectUpdate,
 )
 
 websocket_urlpatterns = [
@@ -73,5 +74,6 @@ urlpatterns += [
     ),
     path("api/manage-game/", ManageGameView.as_view(), name="manage-game"),
     path("api/manage-game/<int:id>/", ManageGameView.as_view(), name="game-detail"),
+    path("api/reconnect-update/", reconnectUpdate, name="reconnect"),
     re_path(r"^.*", CustomTemplateView.as_view(template_name="index.html")),
 ]

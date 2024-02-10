@@ -145,6 +145,8 @@ class Game(models.Model):
     tournament = models.ForeignKey(
         "Tournament", on_delete=models.SET_NULL, blank=True, null=True
     )
+    p1_score = models.IntegerField(default=None, null=True, blank=True)
+    p2_score = models.IntegerField(default=None, null=True, blank=True)
 
     @classmethod
     def all_serialized(cls):
@@ -181,6 +183,8 @@ class Game(models.Model):
             "players": [player.nickname for player in self.players.all()],
             "p1": p1,
             "p2": p2,
+            "p1_score": self.p1_score if self.p1_score else None,
+            "p2_score": self.p2_score if self.p2_score else None,
             "creator": self.created_by.nickname,
             "creator_id": self.created_by.id,
             "date": int(self.created_at.timestamp() * 1000)
@@ -219,6 +223,13 @@ class Tournament(models.Model):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    winner = models.ForeignKey(
+        "Player",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="tournaments_won",
+    )
 
     @classmethod
     def all_serialized(cls):
@@ -239,6 +250,7 @@ class Tournament(models.Model):
             "players": [player.nickname for player in self.players.all()],
             "gamesId": [game.id for game in self.game_set.all()],
             "creator": self.created_by.nickname,
+            "winner": self.winner.serialize_summary() if self.winner else None,
             "date": int(self.created_at.timestamp() * 1000)
             if self.created_at
             else None,

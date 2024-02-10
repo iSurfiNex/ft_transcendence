@@ -1,5 +1,11 @@
 FROM debian:bullseye-slim
 
+#ENV DB_NAME=transcendance_db
+#ENV DB_USER=my_postgres_user
+#ENV DB_PASSWORD=my_postgres_pw
+#ENV SITE_DOMAIN=localhost
+#ENV GF_IP=localhost
+
 RUN mkdir -p /var/run/postgresql/
 
 RUN apt -y update

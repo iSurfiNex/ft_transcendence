@@ -27,6 +27,8 @@ class GameForm(forms.ModelForm):
             "started_at",
             "ended_at",
             "winner",
+            "p1_score",
+            "p2_score",
         ]
 
 
