@@ -15,9 +15,13 @@ class Moving:
 
 
 class Ball(Moving):
-    def __init__(self, pos, speed, radius, direction):
-        super().__init__(pos, speed, direction)
+    def __init__(self, reset_pos, pos, speed, radius, direction):
+        super().__init__(reset_pos, speed, direction)
+        self.reset_pos = reset_pos
         self.r = radius
+
+    def reset(self):
+        self.p = self.reset_pos
 
     def __str__(self):
         return f"Ball(pos={self.p}, speed={self.s}, radius={self.r}, direction={self.d.__dict__})"
@@ -31,7 +35,7 @@ class Pad(Moving):
         clamp_line: Line,
         pad_line: Line,
         speed=100,
-        direction=(0, 1),
+        direction=(0, 0),
         orientation=Vec(0, 1),
     ):
         self.orientation = orientation
@@ -94,16 +98,16 @@ class Pad(Moving):
 
 
 class Player:
-    def __init__(self, pad: Pad, camp_line: Line):
+    def __init__(self, pad: Pad, goal_line: Line):
         self.pad = pad
         self.score = 0
-        self.camp_line = camp_line
+        self.goal_line = goal_line
 
     def go_down(self):
-        self.pad.d = Vec(0, 1)
+        self.pad.d = Vec(0, -1)
 
     def go_up(self):
-        self.pad.d = Vec(0, -1)
+        self.pad.d = Vec(0, 1)
 
     def stay_still(self):
         self.pad.d = Vec(0, 0)

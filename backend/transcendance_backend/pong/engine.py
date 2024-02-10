@@ -3,6 +3,9 @@ from .types import Vec
 from .ai import PongAI
 from .entities import Player
 
+import math
+import random
+
 
 # def obstacles_to_lines(contours: list[Contour]) -> list[Line]:
 #    contours_as_lines = map(contour_to_lines, contours)
@@ -12,7 +15,12 @@ from .entities import Player
 
 class PongEngine:
     def __init__(
-        self, lines_obstacles, ball, players: list[Player], dim: Vec, ai: list[PongAI]
+        self,
+        lines_obstacles,
+        ball,
+        players: list[Player],
+        dim: Vec,
+        ai: list[PongAI] = [],
     ):
         self.dim = Vec(dim)
         self.pause = False
@@ -44,14 +52,24 @@ class PongEngine:
             self.ball.d = next_dir
 
     def score_update(self):
-        if self.ball.p.x <= 0:
+        if self.ball.p.x <= -self.dim.x / 2:
             self.players[0].score += 1
-        elif self.ball.p.x >= self.dim.x:
+        elif self.ball.p.x >= self.dim.x / 2:
             self.players[1].score += 1
         else:
             return
 
         # reset ball pos to the middle of the board
-        self.ball.p = self.dim / 2
+        self.ball.reset()
         # reverse the direction of the ball on the x axis
-        self.ball.d *= Vec(-1, 0)
+        # self.ball.d *= Vec(-1, 0)
+        # Generate a random angle between -pi/4 and pi/4 (45 degrees in either direction)
+        # random_angle = random.uniform(-math.pi / 4, math.pi / 4)
+
+        ## Rotate the direction vector by the random angle
+        # self.ball.d = Vec(
+        #    self.ball.d.x * math.cos(random_angle)
+        #    - self.ball.y * math.sin(random_angle),
+        #    self.ball.d.x * math.sin(random_angle)
+        #    + self.ball.d.y * math.cos(random_angle),
+        # )
