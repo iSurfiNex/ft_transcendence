@@ -102,6 +102,7 @@ class Player:
         self.pad = pad
         self.score = 0
         self.goal_line = goal_line
+        self.score = 0
 
     def go_down(self):
         self.pad.d = Vec(0, -1)

@@ -141,11 +141,13 @@ class Pong:
                 "paddle": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y},
                 "goal": goal_p1,
                 "clamp": clamp_p1,
+                "score": p1.score
             },
             "pR": {
                 "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y},
                 "goal": goal_p2,
                 "clamp": clamp_p2,
+                "score": p2.score
             },
             "ball": {"x": ball.x, "y": ball.x},
             "obstacles": obstacles,

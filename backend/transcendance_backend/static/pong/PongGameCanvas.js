@@ -3,6 +3,9 @@ import * as THREE from "three";
 import * as UNIFORMS from "uniforms";
 
 export class PongGameCanvas {
+  pLScore = undefined
+  pRScore = undefined
+
   light = new THREE.DirectionalLight(0xffffff, 10);
   geometry_line = new THREE.BoxGeometry(2, 1000, 1);
   geometry_paddle = new THREE.BoxGeometry(10, 150, 20, 5, 5, 5);
@@ -233,7 +236,15 @@ export class PongGameCanvas {
   onmessage(event) {
     const message = event.data;
     const data = JSON.parse(message).message;
-
+    if (this.pLScore !== data.pL.score) {
+      console.log(data.pL.score)
+      state.runningGame.pLPoints = data.pL.score
+      this.pLScore = data.pL.score
+    }
+    if (this.pRScore !== data.pR.score) {
+      state.runningGame.pRPoints = data.pR.score
+      this.pRScore = data.pR.score
+    }
     // if (data.bonus.size_minus == 'r')
     // 	paddleR.scale.set(1, 2);
     // else

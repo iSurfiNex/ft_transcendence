@@ -60,6 +60,10 @@ class PongCreateGame extends Component {
 `
 
 	static css = css`
+	#max-score {
+		min-width: 50px;
+	}
+
 	.disabled:after {
 		background: grey;
 		opacity: 0.6;

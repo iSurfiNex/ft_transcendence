@@ -11,8 +11,8 @@ class PongGame extends Component {
         <h2>{language.Start} {runningGame.startIn}</h2>
       </div>
       <div id="points" hidden="{runningGame.startIn}">
-        <span id="p1Points" class="points">{runningGame.p1Points}</span>
-        <span id="p2Points" class="points">{runningGame.p2Points}</span>
+        <span id="pLPoints" class="points">{runningGame.pLPoints}</span>
+        <span id="pRPoints" class="points">{runningGame.pRPoints}</span>
       </div>
       <div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
         <div class="bg"></div>
@@ -22,12 +22,18 @@ class PongGame extends Component {
         >
       </div>
     </div>
+    <span id="info">Score to win: {game.goal_objective}</span>
     <button class="btn btn-giveUp" @click="this.giveUp()">
       {language.ByeButton} LOSER
     </button>
   `;
 
   static css = css`
+    #info {
+      position: absolute;
+      bottom: 100px;
+    }
+
     .btn-giveUp {
       cursor: pointer;
       font-size: 25px;
@@ -121,13 +127,13 @@ class PongGame extends Component {
       opacity: 0.4;
     }
 
-    #p1Points {
+    #pLPoints {
       top: 40px;
       right: 50%;
       padding-right: 40px;
     }
 
-    #p2Points {
+    #pRPoints {
       top: 40px;
       left: 50%;
       padding-left: 40px;
