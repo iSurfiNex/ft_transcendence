@@ -521,7 +521,7 @@ class ManageGameView(View):
                     else:
                         game.delete()
                         Update(game="all", user=my_player)
-                        return JsonResponse({}, status=200)
+                        return JsonResponse({"status": "ok"}, status=200)
                 else:
                     game.players.remove(my_player)
 
@@ -555,6 +555,7 @@ def giveup(request):
 @require_GET
 def reconnectUpdate(request):
     Update(game="all", tournament="all", user=request.user.player)
+    return JsonResponse({"status": "ok"}, status=200)
 
 def Update(game=None, game_action=None, tournament=None, tournament_action=None, user=None):
     if (game == "all"):

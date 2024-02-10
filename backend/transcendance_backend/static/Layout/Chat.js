@@ -704,15 +704,16 @@ class PongChat extends Component {
 		const socket = ws('state-update');
 
 		socket.addEventListener("open", (event) => {
-			console.log("Websocket Connected");
+			console.log("state-update Websocket Connected");
+			get("/api/reconnect-update/", {}).catch(error => console.error(error))
 		})
 
 		socket.addEventListener("error", (event) => {
-			console.error("Websocket Error: ", event);
+			console.error("state-update Websocket Error: ", event);
 		})
 
 		socket.addEventListener("close", (event) => {
-			console.log("WebSocket connection closed: ", event);
+			console.log("state-update WebSocket connection closed: ", event);
 			console.log("Close code: ", event.code);
 			console.log("Error type: ", event.type);
 		  });
