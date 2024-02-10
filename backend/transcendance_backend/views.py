@@ -162,7 +162,7 @@ def request_42_login(request):
             raise Exception("Invalid type")
 
         url = "https://api.intra.42.fr/oauth/token"
-        secret_key = os.environ.get("42_API_SECRETKEY")
+        secret_key = os.environ.get("API_SECRETKEY", "")
         base_uri = os.environ.get("SITE_ORIGIN", "")
         redirect_uri = f"{base_uri}/{type}/"
         data = {
