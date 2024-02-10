@@ -56,10 +56,10 @@ class Pong:
         )
 
         player1_clamp_line = Line(
-            Vec(PAD_SHIFT+ 100 - W / 2, -H / 2), Vec(PAD_SHIFT +100- W / 2, H / 2)
+            Vec(PAD_SHIFT + 100 - W / 2, -H / 2), Vec(PAD_SHIFT + 100 - W / 2, H / 2)
         )
         player2_clamp_line = Line(
-            Vec(W / 2 - 100 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT -100, H / 2)
+            Vec(W / 2 - 100 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT - 100, H / 2)
         )
 
         topLine = Line(wall_contours[0], wall_contours[1])
@@ -137,15 +137,19 @@ class Pong:
         ]
 
         return {
-            "paddleL": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y},
-            "paddleR": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y},
+            "pL": {
+                "paddle": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y},
+                "goal": goal_p1,
+                "clamp": clamp_p1,
+            },
+            "pR": {
+                "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y},
+                "goal": goal_p2,
+                "clamp": clamp_p2,
+            },
             "ball": {"x": ball.x, "y": ball.x},
             "obstacles": obstacles,
-            "goal_p1": goal_p1,
-            "goal_p2": goal_p2,
             "bonus": {"y": 0},
-            "clamp_p1": clamp_p1,
-            "clamp_p2": clamp_p2,
         }
 
     def handle_player_inputs(self, id, idx):
@@ -197,4 +201,3 @@ class Pong:
             #    ia_last_tick_ts = current_time
 
             self.sendData()
-

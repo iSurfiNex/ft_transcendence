@@ -41,9 +41,9 @@ export class PongGameCanvas {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   loader = new GLTFLoader().setPath("/static/pong/");
 
-  obstacleLinesContainer = new THREE.Object3D()
-  goalLinesContainer = new THREE.Object3D()
-  clampLinesContainer = new THREE.Object3D()
+  obstacleLinesContainer = new THREE.Object3D();
+  goalLinesContainer = new THREE.Object3D();
+  clampLinesContainer = new THREE.Object3D();
 
   constructor(gameContainerNode) {
     this.gameContainerNode = gameContainerNode;
@@ -181,36 +181,53 @@ export class PongGameCanvas {
     this.bonus.rotation.z += 0.01;
   }
 
-  updateLinesContainer(data, linesContainer, color, opacity=1) {
-   linesContainer.children.forEach((line, index) => {
-        const lineData = data[index];
-        if (lineData) {
-            const points = [
-                new THREE.Vector3(lineData.x1, lineData.y1, 0),
-                new THREE.Vector3(lineData.x2, lineData.y2, 0)
-            ];
-            line.geometry.setFromPoints(points);
-        } else {
-          linesContainer.remove(line);
-        }
+  updateLinesContainer(data, linesContainer, color, opacity = 1) {
+    linesContainer.children.forEach((line, index) => {
+      const lineData = data[index];
+      if (lineData) {
+        const points = [
+          new THREE.Vector3(lineData.x1, lineData.y1, 0),
+          new THREE.Vector3(lineData.x2, lineData.y2, 0),
+        ];
+        line.geometry.setFromPoints(points);
+      } else {
+        linesContainer.remove(line);
+      }
     });
 
-   for (let i = linesContainer.children.length; i < data.length; i++) {
-        const lineData = data[i];
-        const geometry = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(lineData.x1, lineData.y1, 0),
-            new THREE.Vector3(lineData.x2, lineData.y2, 0)
-        ]);
-     const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity});
-        const line = new THREE.Line(geometry, material);
-     linesContainer.add(line);
+    for (let i = linesContainer.children.length; i < data.length; i++) {
+      const lineData = data[i];
+      const geometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(lineData.x1, lineData.y1, 0),
+        new THREE.Vector3(lineData.x2, lineData.y2, 0),
+      ]);
+      const material = new THREE.LineBasicMaterial({
+        color,
+        transparent: true,
+        opacity,
+      });
+      const line = new THREE.Line(geometry, material);
+      linesContainer.add(line);
     }
-}
+  }
 
   drawDebugLines(data) {
-    this.updateLinesContainer(data.obstacles, this.obstacleLinesContainer, 0x00ff00)
-    this.updateLinesContainer([data.goal_p1, data.goal_p2], this.goalLinesContainer, 0xffff00)
-    this.updateLinesContainer([data.clamp_p1, data.clamp_p2], this.clampLinesContainer, 0x0000ff, 0.4)
+    this.updateLinesContainer(
+      data.obstacles,
+      this.obstacleLinesContainer,
+      0x00ff00,
+    );
+    this.updateLinesContainer(
+      [data.pL.goal, data.pR.goal],
+      this.goalLinesContainer,
+      0xffff00,
+    );
+    this.updateLinesContainer(
+      [data.pL.clamp, data.pR.clamp],
+      this.clampLinesContainer,
+      0x0000ff,
+      0.4,
+    );
   }
 
   onmessage(event) {
@@ -228,8 +245,8 @@ export class PongGameCanvas {
     // else
     // 	paddleL.scale.set(1, 1);
 
-    this.paddleR.position.set(data.paddleR.x, data.paddleR.y, 10);
-    this.paddleL.position.set(data.paddleL.x, data.paddleL.y, 10);
+    this.paddleR.position.set(data.pR.paddle.x, data.pR.paddle.y, 10);
+    this.paddleL.position.set(data.pL.paddle.x, data.pL.paddle.y, 10);
 
     this.updateBall(data);
     this.updateBonus(data);
