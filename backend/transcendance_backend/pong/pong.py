@@ -122,7 +122,7 @@ class Pong:
     def serialize_line(self, line: Line):
         return {"x1": line.a.x, "y1": line.a.y, "x2": line.b.x, "y2": line.b.y}
 
-    def get_formatted_data(self):
+    def serialize(self):
         p1 = self.engine.players[0]
         p2 = self.engine.players[1]
         ppp1 = p1.pad.p  # player pad pos
@@ -135,9 +135,10 @@ class Pong:
         obstacles = [
             self.serialize_line(line) for line in self.engine.lines_obstacles[0]
         ]
+
         return {
-            "paddleL": {"x": ppp1.x, "y": ppp1.y},
-            "paddleR": {"x": ppp2.x, "y": ppp2.y},
+            "paddleL": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y},
+            "paddleR": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y},
             "ball": {"x": ball.x, "y": ball.x},
             "obstacles": obstacles,
             "goal_p1": goal_p1,
@@ -183,7 +184,7 @@ class Pong:
             self.handle_player_inputs(id, 0)
             self.handle_player_inputs(id, 1)  # TODO handle not for IA
 
-            game_data = self.get_formatted_data()
+            game_data = self.serialize()
             # json_game_data = json.dumps(game_data)
 
             await asend(game_data)
