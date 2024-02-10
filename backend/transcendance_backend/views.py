@@ -162,12 +162,13 @@ def request_42_login(request):
             raise Exception("Invalid type")
 
         url = "https://api.intra.42.fr/oauth/token"
+        secret_key = os.environ.get("42_API_SECRETKEY")
         base_uri = os.environ.get("SITE_ORIGIN", "")
         redirect_uri = f"{base_uri}/{type}/"
         data = {
             "grant_type": "authorization_code",
             "client_id": "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080",
-            "client_secret": "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",
+            "client_secret": secret_key,
             "code": token_42,
             "redirect_uri": redirect_uri,
         }
@@ -392,7 +393,7 @@ class ManageTournamentView(View):
                 game.started_at = datetime.now() + timedelta(seconds=5)
                 game.state = "running"
                 game.save()
-                
+
             if data['action'] == "start-round":
                 if tournament.state == "waiting":
                     players = list(tournament.players.all())
@@ -401,12 +402,12 @@ class ManageTournamentView(View):
                     start_game(1, players[2], players[3])
                     tournament.state = "round 1"
                     #tournament.players.clear()
-                
+
                 elif tournament.state == "round 1":
                     players = list(tournament.players_r2.all())
                     start_game(3, players[0], players[1])
                     tournament.state = "round 2"
-            
+
             elif data['action'] == "end-round":
                 tournament_games = tournament.game_set.all()
                 for game in tournament_games:
@@ -416,7 +417,7 @@ class ManageTournamentView(View):
                         game.winner = data["winner"]
                         game.state = "done"
                         game.save()
-                        
+
                         if tournament.state == "round 1":
                             tournament.players_r2.add(get_object_or_404(Player, nickname=data["winner"]))
                             tournament.losers.add(get_object_or_404(Player, nickname=data["loser"]))
@@ -426,7 +427,7 @@ class ManageTournamentView(View):
                             tournament.losers.add(get_object_or_404(Player, nickname=data["loser"]))
                             tournament.state = "done"
 
-            elif (data["action"] == "join"):        
+            elif (data["action"] == "join"):
                 tournament.players.add(my_player)
 
             elif data["action"] == "leave":
