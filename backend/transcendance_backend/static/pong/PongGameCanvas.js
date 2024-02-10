@@ -8,7 +8,7 @@ export class PongGameCanvas {
 
   light = new THREE.DirectionalLight(0xffffff, 10);
   geometry_line = new THREE.BoxGeometry(2, 1000, 1);
-  geometry_paddle = new THREE.BoxGeometry(10, 150, 20, 5, 5, 5);
+  geometry_paddle = new THREE.BoxGeometry(10, 1, 20, 5, 5, 5);
   material_paddleL = new THREE.MeshBasicMaterial({
     color: 0xb50202,
     depthTest: false,
@@ -255,6 +255,9 @@ export class PongGameCanvas {
     // 	paddleL.scale.set(1, 2);
     // else
     // 	paddleL.scale.set(1, 1);
+
+    this.paddleR.scale.set(1, data.pR.paddle.h, 1);
+    this.paddleL.scale.set(1, data.pR.paddle.h, 1);
 
     this.paddleR.position.set(data.pR.paddle.x, data.pR.paddle.y, 10);
     this.paddleL.position.set(data.pL.paddle.x, data.pL.paddle.y, 10);

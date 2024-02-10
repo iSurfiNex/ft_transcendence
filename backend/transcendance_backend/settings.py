@@ -164,19 +164,19 @@ TEST_DATABASE_USER = os.environ.get("TEST_DB_USER")
 
 ASGI_APPLICATION = "transcendance_backend.asgi.application"
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "DEBUG",
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "root": {
+#         "handlers": ["console"],
+#         "level": "DEBUG",
+#     },
+# }
 
 CHANNEL_LAYERS = {
 	"default": {
