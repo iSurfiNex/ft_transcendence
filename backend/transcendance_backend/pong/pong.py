@@ -17,7 +17,7 @@ WHITE = (255, 255, 255)
 GREY = (150, 150, 150)
 CYAN = (35, 150, 150)
 BALL_RADIUS = 25
-PAD_W, PAD_H = 20, 140
+PAD_W, PAD_H = 20, 300
 FPS = 5
 PAD_SHIFT = 50
 
@@ -48,26 +48,32 @@ class Pong:
     def __init__(self):
         self.pause = False
 
-        player1_camp_line = Line(
+        player1_goal_line = Line(
+            Vec(PAD_SHIFT - W / 2, -H / 2), Vec(PAD_SHIFT - W / 2, H / 2)
+        )
+        player2_goal_line = Line(
             Vec(W / 2 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT, H / 2)
         )
-        player2_camp_line = Line(
-            Vec(PAD_SHIFT - W / 2, -H / 2), Vec(PAD_SHIFT - W / 2, H / 2)
+
+        player1_clamp_line = Line(
+            Vec(PAD_SHIFT+ 100 - W / 2, -H / 2), Vec(PAD_SHIFT +100- W / 2, H / 2)
+        )
+        player2_clamp_line = Line(
+            Vec(W / 2 - 100 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT -100, H / 2)
         )
 
         topLine = Line(wall_contours[0], wall_contours[1])
         bottomLine = Line(wall_contours[2], wall_contours[3])
 
-        lines_obstacles = [[player1_pad_line, player2_pad_line, topLine, bottomLine]]
         # ai_collision_lines = [
-        #    [player1_camp_line, player2_camp_line, topLine, bottomLine]
+        #    [player1_goal_line, player2_goal_line, topLine, bottomLine]
         # ]
 
         padPlayer1 = Pad(
             # pos=Vec(PAD_SHIFT, H / 2 + 30),
             pos=Vec(PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
-            clamp_line=player1_camp_line,
+            clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
             speed=100,
         )
@@ -75,12 +81,14 @@ class Pong:
             # pos=Vec(W - PAD_SHIFT, H / 2),
             pos=Vec(W - PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
-            clamp_line=player2_camp_line,
+            clamp_line=player2_clamp_line,
             pad_line=player2_pad_line,
             speed=100,
         )
-        player1 = Player(pad=padPlayer1, camp_line=player1_camp_line)
-        player2 = Player(pad=padPlayer2, camp_line=player2_camp_line)
+
+        player1 = Player(pad=padPlayer1, goal_line=player1_goal_line)
+        player2 = Player(pad=padPlayer2, goal_line=player2_goal_line)
+        lines_obstacles = [[player1.pad.line, player2.pad.line, topLine, bottomLine]]
         # self.ai = PongAI(
         #    speed=ball.s,
         #    player=player2,
@@ -119,20 +127,24 @@ class Pong:
         p2 = self.engine.players[1]
         ppp1 = p1.pad.p  # player pad pos
         ppp2 = p2.pad.p  # player pad pos
-        camp_p1 = self.serialize_line(p1.camp_line)
-        camp_p2 = self.serialize_line(p2.camp_line)
+        goal_p1 = self.serialize_line(p1.goal_line)
+        goal_p2 = self.serialize_line(p2.goal_line)
+        clamp_p1 = self.serialize_line(p1.pad.clamp_line)
+        clamp_p2 = self.serialize_line(p2.pad.clamp_line)
         ball = self.engine.ball.p
         obstacles = [
             self.serialize_line(line) for line in self.engine.lines_obstacles[0]
         ]
         return {
-            "paddleL": {"x": ppp1.x, "y": ppp1.y, "z": 0, "up": -1, "down": -1},
-            "paddleR": {"x": ppp2.x, "y": ppp2.y, "z": 0, "up": -1, "down": -1},
-            "ball": {"x": ball.x, "y": ball.x, "z": 0, "w": "r", "s": 0.1},
+            "paddleL": {"x": ppp1.x, "y": ppp1.y},
+            "paddleR": {"x": ppp2.x, "y": ppp2.y},
+            "ball": {"x": ball.x, "y": ball.x},
             "obstacles": obstacles,
-            "camp_p1": camp_p1,
-            "camp_p2": camp_p2,
+            "goal_p1": goal_p1,
+            "goal_p2": goal_p2,
             "bonus": {"y": 0},
+            "clamp_p1": clamp_p1,
+            "clamp_p2": clamp_p2,
         }
 
     def handle_player_inputs(self, id, idx):

@@ -98,10 +98,10 @@ class Pad(Moving):
 
 
 class Player:
-    def __init__(self, pad: Pad, camp_line: Line):
+    def __init__(self, pad: Pad, goal_line: Line):
         self.pad = pad
         self.score = 0
-        self.camp_line = camp_line
+        self.goal_line = goal_line
 
     def go_down(self):
         self.pad.d = Vec(0, -1)

@@ -79,32 +79,32 @@ class PyPong:
             BALL_RADIUS,
         )
 
-        player1_camp_line = Line(Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
-        player2_camp_line = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
+        player1_goal_line = Line(Vec(PAD_SHIFT, 0), Vec(PAD_SHIFT, H))
+        player2_goal_line = Line(Vec(W - PAD_SHIFT, 0), Vec(W - PAD_SHIFT, H))
         topLine = Line(wall_contours[0], wall_contours[1])
         bottomLine = Line(wall_contours[2], wall_contours[3])
-        # lines_obstacles = [[player1_camp_line, player2_camp_line, topLine, bottomLine]]
+        # lines_obstacles = [[player1_goal_line, player2_goal_line, topLine, bottomLine]]
         lines_obstacles = [[player1_pad_line, player2_pad_line, topLine, bottomLine]]
         ai_collision_lines = [
-            [player1_camp_line, player2_camp_line, topLine, bottomLine]
+            [player1_goal_line, player2_goal_line, topLine, bottomLine]
         ]
 
         padPlayer1 = Pad(
             pos=(PAD_SHIFT, H / 2 + 30),
             dim=(PAD_W, PAD_H),
-            clamp_line=player1_camp_line,
+            clamp_line=player1_goal_line,
             pad_line=player1_pad_line,
             speed=100,
         )
         padPlayer2 = Pad(
             pos=(W - PAD_SHIFT, H / 2),
             dim=(PAD_W, PAD_H),
-            clamp_line=player2_camp_line,
+            clamp_line=player2_goal_line,
             pad_line=player2_pad_line,
             speed=100,
         )
-        player1 = Player(pad=padPlayer1, camp_line=player1_camp_line)
-        player2 = Player(pad=padPlayer2, camp_line=player2_camp_line)
+        player1 = Player(pad=padPlayer1, goal_line=player1_goal_line)
+        player2 = Player(pad=padPlayer2, goal_line=player2_goal_line)
         self.ai = PongAI(
             speed=ball.s,
             player=player2,

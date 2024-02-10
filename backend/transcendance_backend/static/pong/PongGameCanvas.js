@@ -41,6 +41,10 @@ export class PongGameCanvas {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   loader = new GLTFLoader().setPath("/static/pong/");
 
+  obstacleLinesContainer = new THREE.Object3D()
+  goalLinesContainer = new THREE.Object3D()
+  clampLinesContainer = new THREE.Object3D()
+
   constructor(gameContainerNode) {
     this.gameContainerNode = gameContainerNode;
     this.time = new Date().getTime();
@@ -71,8 +75,9 @@ export class PongGameCanvas {
     this.scene.add(this.paddleR);
     this.scene.add(this.line);
     this.scene.add(this.light);
-
-    this.render();
+    this.scene.add(this.obstacleLinesContainer);
+    this.scene.add(this.goalLinesContainer);
+    this.scene.add(this.clampLinesContainer);
   }
 
   connectWebsocket() {
@@ -165,7 +170,7 @@ export class PongGameCanvas {
   updateBall(data) {
     if (!this.ball) return;
     this.updateBallPaint(data);
-    this.ball.position.set(data.ball.x, data.ball.y, data.ball.z);
+    this.ball.position.set(data.ball.x, data.ball.y, 0);
     this.ball.rotation.x += 0.01;
     this.ball.rotation.y += 0.01;
   }
@@ -176,26 +181,36 @@ export class PongGameCanvas {
     this.bonus.rotation.z += 0.01;
   }
 
-  drawLine(line, mat) {
-    var geometry = new THREE.BufferGeometry();
-    var vertices = new Float32Array([line.x1, line.y1, 0, line.x2, line.y2, 0]);
-    geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-    var lineObject = new THREE.Line(geometry, mat);
-    this.scene.add(lineObject);
-  }
+  updateLinesContainer(data, linesContainer, color, opacity=1) {
+   linesContainer.children.forEach((line, index) => {
+        const lineData = data[index];
+        if (lineData) {
+            const points = [
+                new THREE.Vector3(lineData.x1, lineData.y1, 0),
+                new THREE.Vector3(lineData.x2, lineData.y2, 0)
+            ];
+            line.geometry.setFromPoints(points);
+        } else {
+          linesContainer.remove(line);
+        }
+    });
 
-  // DEBUG TOOL: DRAWS PLAYER CAMP LINE IN YELLOW AND OBSTACLES IN GREEN
+   for (let i = linesContainer.children.length; i < data.length; i++) {
+        const lineData = data[i];
+        const geometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(lineData.x1, lineData.y1, 0),
+            new THREE.Vector3(lineData.x2, lineData.y2, 0)
+        ]);
+     const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity});
+        const line = new THREE.Line(geometry, material);
+     linesContainer.add(line);
+    }
+}
+
   drawDebugLines(data) {
-    const lineData = data.obstacles;
-
-    const drawLineGreen = (line) =>
-      this.drawLine(line, this.material_line_green);
-    const drawLineYellow = (line) =>
-      this.drawLine(line, this.material_line_yellow);
-
-    lineData.forEach(drawLineGreen);
-    drawLineYellow(data.camp_p1);
-    drawLineYellow(data.camp_p2);
+    this.updateLinesContainer(data.obstacles, this.obstacleLinesContainer, 0x00ff00)
+    this.updateLinesContainer([data.goal_p1, data.goal_p2], this.goalLinesContainer, 0xffff00)
+    this.updateLinesContainer([data.clamp_p1, data.clamp_p2], this.clampLinesContainer, 0x0000ff, 0.4)
   }
 
   onmessage(event) {
@@ -228,7 +243,6 @@ export class PongGameCanvas {
       if (opacity > 0.001) {
         opacity -= 0.01;
         material.opacity = opacity;
-        this.render();
       } else {
         clearInterval(reduceOpacityInterval); // Stop the interval when opacity reaches 0.01
       }

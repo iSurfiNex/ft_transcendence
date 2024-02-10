@@ -23,7 +23,7 @@ class PongAI:
         self.collision_lines = collision_lines
 
     def choose_goal_pos(self) -> Vec:
-        line = self.opponent.camp_line
+        line = self.opponent.goal_line
         p = line.project(self.opponent.pad.p)
         opponent_progression_vec = p - line.a
         opponent_line_vec = line.vec
@@ -50,7 +50,7 @@ class PongAI:
             prev_pos = self.player.pad.p
         vec = prev_pos - target_pos
         if dir == None:
-            dir = self.player.camp_line.vec @ vec
+            dir = self.player.goal_line.vec @ vec
 
         if until == None:
             duration = vec.len / self.player.pad.s
@@ -78,8 +78,8 @@ class PongAI:
         self.pad_actions = []
         self.add_pad_goto(next_impact_pos)
         self.add_pad_goto(target_pos, dir=0, until=next_impact.ts)
-        self.add_pad_goto(self.player.camp_line.center)
-        self.player.camp_line.center
+        self.add_pad_goto(self.player.goal_line.center)
+        self.player.goal_line.center
         self.goal_pos = goal_pos
         self.target_pos = target_pos
         self.goal_pos_proj = goal_pos_proj
@@ -121,8 +121,8 @@ class PongAI:
 
     def update_data(self, game):
         self.game = game
-        camp = self.player.camp_line
-        opponent_camp = self.opponent.camp_line
+        camp = self.player.goal_line
+        opponent_camp = self.opponent.goal_line
         self.ball_path.clear()
         self.ball_path.append(game.ball.p)
         if not self.frames_data:
