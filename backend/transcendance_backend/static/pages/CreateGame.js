@@ -9,42 +9,44 @@ class PongCreateGame extends Component {
 	<div class="available-space">
 		<div class="create-game">
 			<div class="top-bar"><span class="title">{language.GameEditor}</span></div>
-			<div class="options-list">
+			<div class="options-list-div">
+				<div class="options-list">
 
-				<div class="option">
-					<input class="input-score" id="max-score" type="number" min="1" max="100" step="1" value="10">
-					<span class="mode">Max Score</span>
-				</div>
+					<div class="option">
+						<input class="input-score" id="max-score" type="number" min="1" max="100" step="1" value="10">
+						<span class="mode">Max Score</span>
+					</div>
 
-				<div class="option">
-					<span class="switch">
-						<label class="slider">
-							<input type="checkbox" id="toggle-Powerups" checked="{createGamePresets.powerUps}">
-							<span class="slider"></span>
-						</label>
-					</span>
-					<span class="mode">{language.PowerUp}</span>
-				</div>
+					<div class="option">
+						<span class="switch">
+							<label class="slider">
+								<input type="checkbox" id="toggle-Powerups" checked="{createGamePresets.powerUps}">
+								<span class="slider"></span>
+							</label>
+						</span>
+						<span class="mode">{language.PowerUp}</span>
+					</div>
 
 
-				<div class="option {createGamePresets.tournament?disabled}">
-					<span class="switch">
-						<label class="slider">
-							<input type="checkbox" id="toggle-IA" disabled="{createGamePresets.tournament}">
-							<span class="slider"></span>
-						</label>
-					</span>
-					<span class="mode">IA</span>
-				</div>
+					<div class="option {createGamePresets.tournament?disabled}">
+						<span class="switch">
+							<label class="slider">
+								<input type="checkbox" id="toggle-IA" disabled="{createGamePresets.tournament}">
+								<span class="slider"></span>
+							</label>
+						</span>
+						<span class="mode">IA</span>
+					</div>
 
-				<div class="option">
-					<span class="switch">
-						<label class="slider">
-							<input type="checkbox" id="toggle-Tournament" checked="{createGamePresets.tournament}" @change="this.onTournamentCheckedChange(node)">
-							<span class="slider"></span>
-						</label>
-					</span>
-					<span class="mode">{language.Tournament}</span>
+					<div class="option">
+						<span class="switch">
+							<label class="slider">
+								<input type="checkbox" id="toggle-Tournament" checked="{createGamePresets.tournament}" @change="this.onTournamentCheckedChange(node)">
+								<span class="slider"></span>
+							</label>
+						</span>
+						<span class="mode">{language.Tournament}</span>
+					</div>
 				</div>
 			</div>
 
@@ -514,45 +516,45 @@ class PongCreateGame extends Component {
 			width: 100%;
 		}
 
-		.options-list {
-			position: absolute;
-			top: 15%;
+		.options-list-div {
+			display: flex;
 			width: 100%;
 			height: 75%;
 			background-color: rgb(86, 86, 86);
+		}
+
+		.options-list {
+			height: 100%;
+			background-color: rgb(86, 86, 86);
 			overflow: auto;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			align-items: flex-start;
+			margin: auto;
 		}
 
 		.option {
-			position: relative;
 			display: flex;
 			align-items: center;
-			top: 8%;
-			left: 0%;
-			width: 100%;
-			height: 10%;
-			margin-bottom: 4%;
+    		gap: 10px;
 			white-space: nowrap;
+			flex-direction: row;
+			justify-content: center;
 		}
 
 		.mode {
-			position: absolute;
-			left: calc(40% + 10px);
 			font-family: 'Press Start 2P', sans-serif;
-			font-size: 1vw;
+			font-size: 12px;
 			overflow: hidden;
 			color: white;
 		}
 
 		.switch {
-			position: absolute;
-			left: 30%;
-			top: 50%;
-			transform: translate(0%, -50%);
+			transform: translate(0%, 0%);
 			display: inline-block;
-			width: 7%;
-			height: 45%;
-			margin-right: 10px;
+			width: 45px;
+			height: 25px;
 		}
 
 		.switch input {
@@ -607,6 +609,8 @@ class PongCreateGame extends Component {
 			height: 60%;
 			left: 3%;
 			top: 27%;
+			display: flex;
+			justify-content: center;
 			align-items: center;
 			white-space: nowrap;
 			overflow: hidden;
@@ -632,6 +636,8 @@ class PongCreateGame extends Component {
 			height: 60%;
 			right: 3%;
 			top: 27%;
+			display: flex;
+			justify-content: center;
 			align-items: center;
 			white-space: nowrap;
 			overflow: hidden;
@@ -680,10 +686,8 @@ class PongCreateGame extends Component {
 		}
 
 		.input-score {
-			position: absolute;
-			left: 30%;
-			width: 7%;
-			height: 55%;
+			width: 45px;
+			height: 25px;
 		}
 	}
 
