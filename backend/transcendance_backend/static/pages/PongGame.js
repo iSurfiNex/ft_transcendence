@@ -387,7 +387,6 @@ renderer.render(scene, camera);
 		window.addEventListener('resize', handleResize);
 
 		const onmessage = (event) => {
-            console.log("RECEIVED: ", event.data)
 
 		var jfile
 		const message = event.data;

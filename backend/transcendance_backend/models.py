@@ -15,6 +15,8 @@ from .utils import stateUpdate
 
 from .pong.init import run_pong_thread
 
+from .pong.communication import set_game_stopped, init_threadsafe_game_data
+
 
 class Player(models.Model):
     # TODO user default avatar by requesting https://thispersondoesnotexist.com/
@@ -307,12 +309,18 @@ def on_tournament_field_change(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Game)
 def on_game_field_change(sender, instance, **kwargs):
-    if instance.id is not None:  # Not created
-        previous = Game.objects.get(id=instance.id)
-        if (
-            previous.state != "running" and instance.state == "running"
-        ):  # field will be updated
-            run_pong_thread(instance.id)
+    id = instance.id
+    if id is not None:  # Not created
+        previous = Game.objects.get(id=id)
+        game_start = previous.state != "running" and instance.state == "running"
+        game_stop = previous.state == "running" and instance.state != "running"
+        if game_start:  # field will be updated
+            init_threadsafe_game_data(id)
+            run_pong_thread(id)
+            print(">> GAME RUNNING : thread started")
+        elif game_stop:  # field will be updated
+            set_game_stopped(id)
+            print(">> GAME STOP RUNNING : tell game thread to stop")
 
 
 @receiver(post_save, sender=User)

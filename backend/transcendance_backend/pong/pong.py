@@ -8,7 +8,7 @@ from .entities import Ball, Pad, Player
 from .ai import PongAI
 from .types import DrawDebug, Vec, Pos, Line
 
-from .communication import get_user_inputs
+from .communication import get_game_stopped, get_user_inputs
 
 # from pong.test.draw import draw_contours, draw_arrow, draw_obstacles, draw_text
 
@@ -114,7 +114,7 @@ class Pong:
     def serialize_line(self, line: Line):
         return {"x1": line.a.x, "y1": line.a.y, "x2": line.b.x, "y2": line.b.y}
 
-    def getFormattedData(self):
+    def get_formatted_data(self):
         p1 = self.engine.players[0]
         p2 = self.engine.players[1]
         ppp1 = p1.pad.p  # player pad pos
@@ -167,10 +167,13 @@ class Pong:
 
             game_last_tick_ts = current_time
 
+            if get_game_stopped(id):
+                break
+
             self.handle_player_inputs(id, 0)
             self.handle_player_inputs(id, 1)  # TODO handle not for IA
 
-            game_data = self.getFormattedData()
+            game_data = self.get_formatted_data()
             # json_game_data = json.dumps(game_data)
 
             await asend(game_data)
@@ -183,3 +186,5 @@ class Pong:
             #    ia_last_tick_ts = current_time
 
             self.sendData()
+
+        print(f"----------------- pong: GAME OVER---------------")
