@@ -401,9 +401,10 @@ class ManageTournamentView(View):
                     start_game(0, players[0], players[1])
                     start_game(1, players[2], players[3])
                     tournament.state = "round 1"
-                    tournament.players.clear()
+                    #tournament.players.clear()
                 
                 elif tournament.state == "round 1":
+                    players = list(tournament.players_r2.all())
                     start_game(3, players[0], players[1])
                     tournament.state = "round 2"
             
@@ -418,10 +419,12 @@ class ManageTournamentView(View):
                         game.save()
                         
                         if tournament.state == "round 1":
-                            tournament.players.add(get_object_or_404(Player, nickname=data["winner"]))
+                            tournament.players_r2.add(get_object_or_404(Player, nickname=data["winner"]))
+                            tournament.losers.add(get_object_or_404(Player, nickname=data["loser"]))
 
                         elif tournament.state == "round 2":
                             tournament.winner = get_object_or_404(Player, nickname=data["winner"])
+                            tournament.losers.add(get_object_or_404(Player, nickname=data["loser"]))
                             tournament.state = "done"
 
             elif (data["action"] == "join"):        

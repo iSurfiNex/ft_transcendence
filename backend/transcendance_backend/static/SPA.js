@@ -406,14 +406,20 @@ function currentGameUpdate() {
 
 	if (state.games && state.games.length != 0)
 		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname) && game.status !== 'done');
-	
-	if (state.tournaments && state.tournaments.length != 0)
-		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname) && tournament.status !== 'done')
-
 	if (isMyGame)
 	    currentGame = isMyGame.id;
-	if (isMyTournament)
-		currentTournament = isMyTournament.id
+	
+	
+	if (state.tournaments && state.tournaments.length != 0)
+	{
+		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname) && tournament.status !== 'done')
+		if (isMyTournament)
+		{
+			iAmLoser = isMyTournament.losers.find(loser => loser == state.profile.nickname)
+			if (!iAmLoser)
+				currentTournament = isMyTournament.id
+		}
+	}
 	
 	state.currentGame = currentGame;
 	state.currentTournament = currentTournament;
