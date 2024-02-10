@@ -346,9 +346,9 @@ renderer.render(scene, camera);
 
 // load a resource
 		const animate = () => {
-			requestAnimationFrame(animate);
 			// Render the scene
 			renderer.render(scene, camera);
+			requestAnimationFrame(animate);
 		};
 
 		document.addEventListener('keydown', function(event) {
@@ -447,9 +447,8 @@ renderer.render(scene, camera);
 		}
 		if (bonus)
 		{
-            // TODO @tlarraze c'est quoi bonus ?
-			//bonus.position.set(0, jfile['bonus']['y'], 50);
-			//bonus.rotation.z += 0.01;
+			bonus.position.set(0, jfile['bonus']['y'], 50);
+			bonus.rotation.z += 0.01;
 		}
 
 
