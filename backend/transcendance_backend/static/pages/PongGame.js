@@ -22,11 +22,10 @@ class PongGame extends Component {
           >{lang(runningGame.gameOverState)}</span
         >
         <ul class="stat-list">
-          <li>Ball hit: {this.getPaddleHits()} times</li>
-          <li>Wall hit: {this.getWallHits()} times</li>
-          <li></li>
+          <li>Ball hit: {this.getPaddleHits(runningGame.gameOverState)} times</li>
+          <li>Wall hit: {this.getWallHits(runningGame.gameOverState)} times</li>
+          <li>\n</li>
           <li>{this.getEndMsg()}</li>
-          <li><button>EXIT</button></li>
         </ul>
       </div>
     </div>
@@ -166,8 +165,8 @@ class PongGame extends Component {
 
     .stat-list {
       position: relative;
+      list-style-type: none;
     }
-
 
     @keyframes blink {
       0% {
@@ -281,7 +280,7 @@ class PongGame extends Component {
   }
 
   getPaddleHits() {
-    let my_user = state.users.find(user => user.nickname == state.profile.nickname);
+    let my_user = state.users.find(user => user.id == state.profile.id);
     let game = state.games.find(game => game.id == my_user.lastGameId);
 
     if (game)
@@ -290,7 +289,7 @@ class PongGame extends Component {
   }
 
   getWallHits() {
-    let my_user = state.users.find(user => user.nickname == state.profile.nickname);
+    let my_user = state.users.find(user =>{console.log('=======',user.nickname); console.log(state.profile.nickname);console.log(user.nickname == state.profile.nickname); return user.nickname == state.profile.nickname});
     let game = state.games.find(game => game.id == my_user.lastGameId);
 
     if (game)

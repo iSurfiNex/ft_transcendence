@@ -184,7 +184,12 @@ function displayContent(path) {
         if (path !== "/profile/" && path !== "/profile") {
             // While player is in game or in waiting root, he can only naviagte to profile
 
-            if (path !== "/play/tournament-wr" && state.tournament.status === 'waiting') {
+			if (path !== "/play/game" && state.game.status === 'running') {
+		        console.log("REDIRECT - RUNNING GAME")
+                navigateTo("/play/game")
+                return;
+            }
+			else if (path !== "/play/tournament-wr" && state.tournament.status === 'waiting') {
 		        console.log("REDIRECT - TOURNAMENT WAITING ROOM")
                 navigateTo("/play/tournament-wr")
                 return;
@@ -192,11 +197,6 @@ function displayContent(path) {
             else if (path !== "/play/waiting-room" && state.game.status === 'waiting') {
 		        console.log("REDIRECT - WAITING ROOM")
                 navigateTo("/play/waiting-room")
-                return;
-            }
-            if (path !== "/play/game" && state.game.status === 'running') {
-		        console.log("REDIRECT - RUNNING GAME")
-                navigateTo("/play/game")
                 return;
             }
         }

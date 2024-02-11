@@ -398,15 +398,18 @@ class ManageTournamentView(View):
                 if tournament.state == "waiting":
                     players = list(tournament.players.all())
                     random.shuffle(players)
+                    tournament.state = "round 1"
+                    tournament.save()
                     start_game(0, players[0], players[1])
                     start_game(1, players[2], players[3])
-                    tournament.state = "round 1"
+                    #tournament.state = "round 1"
                     #tournament.players.clear()
 
                 elif tournament.state == "round 1":
                     players = list(tournament.players_r2.all())
-                    start_game(3, players[0], players[1])
                     tournament.state = "round 2"
+                    tournament.save()
+                    start_game(3, players[0], players[1])
 
             elif data['action'] == "end-round":
                 tournament_games = tournament.game_set.all()

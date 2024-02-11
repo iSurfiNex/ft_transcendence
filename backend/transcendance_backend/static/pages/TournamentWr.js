@@ -26,9 +26,9 @@ class TournamentWr extends Component {
                 </div>
             </div>
         </div>
-        <script>document.addEventListener("DOMContentLoaded", this.startRound2())</script>
     </div>
     `
+        //<script>document.addEventListener("DOMContentLoaded", this.startRound2())</script>
 
     static css = css`
 	@media only screen and (max-width: 768px) {
