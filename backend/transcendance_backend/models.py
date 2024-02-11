@@ -124,7 +124,7 @@ class Game(models.Model):
     )
     state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
     goal_objective = models.PositiveIntegerField(
-        default=1, validators=[MinValueValidator(1), MaxValueValidator(15)]
+        default=3, validators=[MinValueValidator(1), MaxValueValidator(15)]
     )
     ia = models.BooleanField(default=False)
     power_ups = models.BooleanField(default=False)
