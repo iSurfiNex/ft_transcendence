@@ -328,7 +328,8 @@ var state_base = {
 	},
 
     lang(key) {
-            console.log('========', key, state.language[key] || state.language.errUnknown)
+        if (key == undefined)
+                return ''
         return state.language[key] || state.language.errUnknown
     }
 
