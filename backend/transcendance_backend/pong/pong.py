@@ -150,7 +150,7 @@ class Pong:
                 "clamp": clamp_p2,
                 "score": p2.score,
             },
-            "ball": {"x": ball.x, "y": ball.x},
+            "ball": {"x": ball.x, "y": ball.y},
             "obstacles": obstacles,
             "bonus": {"y": 0},
             "gameOver": self.engine.game_over,
