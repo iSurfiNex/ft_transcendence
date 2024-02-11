@@ -84,6 +84,11 @@ export class PongGameCanvas {
   }
 
   connectWebsocket() {
+    if (state.currentGame < 0) {
+      console.warn("Game webSocket connection canceled because current game id is " + state.currentGame)
+      setTimeout(() => this.connectWebsocket(), 2000);
+    }
+
     this.socket = ws(`game-running/${state.currentGame}/`);
 
     this.socket.onmessage = this.onmessage.bind(this);
