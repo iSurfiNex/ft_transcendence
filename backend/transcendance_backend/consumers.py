@@ -184,14 +184,16 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
             except ObjectDoesNotExist:
                 raise Exception(f"Game with id={self.game_id} not found.")
 
-            assert game.state in [
+            if not game.state in [
                 "waiting",
                 "running",
-            ], "The game state must be 'waiting' or 'running' to join."
+            ]:
+                raise Exception(f"The game state must be 'waiting' or 'running' to join. Current state is {game.state}")
 
             self.player_idx = await self.get_player_idx_in_game(game)
 
-            assert self.player_idx >= 0, "You must be part of the game to join."
+            if self.player_idx < 0:
+                raise Exception(f"You must be part of the game to join.")
 
             self.group_name = f"game_{self.game_id}"
             await self.channel_layer.group_add(self.group_name, self.channel_name)
@@ -204,8 +206,8 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
 
         except Exception as e:
             await self.close()
-            logger.debug("======WS GAME: USER REJECTED======")
-            raise e
+            logger.debug("======WS GAME: USER REJECTED, reason below ======")
+            logger.debug(str(e))
 
     async def disconnect(
         self, close_code
