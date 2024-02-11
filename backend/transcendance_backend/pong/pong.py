@@ -188,23 +188,22 @@ class Pong:
 
             game_last_tick_ts = current_time
 
-            if get_game_stopped(id) or self.engine.max_score_reached:
-                break
 
             self.handle_player_inputs(id, 0)
             self.handle_player_inputs(id, 1)  # TODO handle not for IA
 
-            game_data = self.serialize()
-            # json_game_data = json.dumps(game_data)
+            self.engine.update(delta)
 
+            game_data = self.serialize()
             await asend(game_data)
 
-            self.engine.update(delta)
             # ia_elapsed_time = current_time - ia_last_tick_ts
 
             # if ia_elapsed_time >= 1:
             #    self.ai.update_data(self.engine)
             #    ia_last_tick_ts = current_time
 
-            self.sendData()
+            if get_game_stopped(id) or self.engine.max_score_reached:
+                break
         print(f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}")
+

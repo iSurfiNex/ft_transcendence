@@ -62,6 +62,8 @@ class PongEngine:
         else:
             return
 
+        self.ball.reset()
+
         if (
             self.players[0].score >= self.win_score
             or self.players[1].score >= self.win_score
@@ -69,7 +71,6 @@ class PongEngine:
             self.max_score_reached = True
 
         # reset ball pos to the middle of the board
-        self.ball.reset()
         # reverse the direction of the ball on the x axis
         # self.ball.d *= Vec(-1, 0)
         # Generate a random angle between -pi/4 and pi/4 (45 degrees in either direction)
