@@ -50,7 +50,7 @@ class Player(models.Model):
         "self", related_name="friends", symmetrical=False, blank=True
     )
     tournaments = models.ManyToManyField("Tournament", blank=True)
-
+    lastGameId = models.IntegerField(null=True, default=-1)
     # Get the object serialized as JS object
     @property
     def serialized(self):
@@ -97,6 +97,7 @@ class Player(models.Model):
             "avatar_thumbnail_url": self.avatar_thumbnail.url,
             "blocked": [user.nickname for user in self.blocked_users.all()],
             "friends": [user.nickname for user in self.friend_users.all()],
+            "lastGameId": self.lastGameId,
         }
 
     def serialize_summary(self):
@@ -105,6 +106,7 @@ class Player(models.Model):
             "nickname": self.nickname,
             "picture": self.avatar.url,
             "avatar_thumbnail_url": self.avatar_thumbnail.url,
+            "lastGameId": self.lastGameId,
         }
 
 
@@ -151,6 +153,8 @@ class Game(models.Model):
     )
     p1_score = models.IntegerField(default=None, null=True, blank=True)
     p2_score = models.IntegerField(default=None, null=True, blank=True)
+    paddle_hits = models.IntegerField(default=-1, null=True, blank=True)
+    wall_hits = models.IntegerField(default=-1, null=True, blank=True)
 
     @classmethod
     def all_serialized(cls):
@@ -201,6 +205,8 @@ class Game(models.Model):
             if self.ended_at
             else None,
             "winner": self.winner.serialize_summary() if self.winner else None,
+            "paddle_hits": self.paddle_hits,
+            "wall_hits": self.wall_hits,
             "tournament_id": self.tournament_id or -1,
         }
 

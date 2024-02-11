@@ -412,10 +412,20 @@ class ManageTournamentView(View):
                 tournament_games = tournament.game_set.all()
                 for game in tournament_games:
                     if my_player in game.players and game.state != "done":
+                        if game.players.all()[0].nickname != my_player.nickname:
+                            player2 = get_object_or_404(Player, nickname=game.players.all()[0].nickname)
+                        else:
+                            player2 = get_object_or_404(Player, nickname=game.players.all()[1].nickname)
+                        my_player.lastGameId = game.id
+                        player2.lastGameId = game.id
                         game.p1_score = data["p1_score"]
                         game.p2_score = data["p2_score"]
                         game.winner = data["winner"]
+                        game.paddle_hits = data["paddle_hits"]
+                        game.wall_hits = data["wall_hits"]
                         game.state = "done"
+                        my_player.save()
+                        player2.save()
                         game.save()
 
                         if tournament.state == "round 1":
@@ -513,10 +523,20 @@ class ManageGameView(View):
                 game.state = "running"
 
             elif data["action"] == "end-game":
-                game.state = "done"
+                if game.players.all()[0].nickname != my_player.nickname:
+                    player2 = get_object_or_404(Player, game.players.all()[0].nickname)
+                else:
+                    player2 = get_object_or_404(Player, game.players.all()[1].nickname)
                 game.p1_score = data["p1_score"]
                 game.p2_score = data["p2_score"]
                 game.winner = data["winner"]
+                game.paddle_hits = data["paddle_hits"]
+                game.wall_hits = data["wall_hits"]
+                game.state = "done"
+                my_player.lastGameId = game.id
+                player2.lastGameId = game.id
+                my_player.save()
+                player2.save()
 
             elif data["action"] == "join":
                 game.players.add(my_player)

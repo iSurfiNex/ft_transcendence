@@ -23,9 +23,10 @@ class PongGame extends Component {
         >
         <ul class="stat-list">
           <li>Ball hit: {this.getPaddleHits()} times</li>
-          <li>Wall hit: {this.getWallHits()}</li>
+          <li>Wall hit: {this.getWallHits()} times</li>
           <li></li>
           <li>{this.getEndMsg()}</li>
+          <li><button>EXIT</button></li>
         </ul>
       </div>
     </div>
@@ -275,20 +276,32 @@ class PongGame extends Component {
   }
 
   getPaddleHits() {
-    return (666);
+    let my_user = state.users.find(user => user.nickname == state.profile.nickname);
+    let game = state.games.find(game => game.id == my_user.lastGameId);
+
+    if (game)
+      return (game.paddle_hits);
+    return (69);
   }
 
   getWallHits() {
-    return (666);
+    let my_user = state.users.find(user => user.nickname == state.profile.nickname);
+    let game = state.games.find(game => game.id == my_user.lastGameId);
+
+    if (game)
+      return (game.wall_hits);
+    return (69);  
   }
 
   getEndMsg() {
-    let randomNb = this.getRandomInt()
-    
-    //if (isWinner)
+    let randomNb = this.getRandomInt();
+    //let my_user = state.users.find(user => user.nickname == state.profile.nickname);
+    //let game = state.games.find(game => game.id == my_user.lastGameId);
+
+    //if (game.winner == state.profile.nickname)
       return(this.getWinnerMsg(randomNb));
     
-    //else if (isLoser)
+    //else
     //  return(this.getLoserMsg(randomNb));
   }
 
