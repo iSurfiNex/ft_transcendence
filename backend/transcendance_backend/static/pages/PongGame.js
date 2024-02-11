@@ -36,12 +36,18 @@ class PongGame extends Component {
     <button hidden="{runningGame.gameOverState}" class="btn btn-giveUp" @click="this.giveUp()">
       {language.ByeButton} LOSER
     </button>
+	<button class="btn btn-mobileButtonUp" @touchstart="this.upButtonStart()" @touchend="this.upButtonEnd()" hidden="{!this.checkMobile()}">
+		UP
+	</button>
+	<button class="btn btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!this.checkMobile()}">
+		DOWN
+	</button>
   `;
 
   static css = css`
     #info {
       position: absolute;
-      bottom: 100px;
+      bottom: 65px;
     }
 
     .btn {
@@ -62,6 +68,52 @@ class PongGame extends Component {
         color 0.3s;
       opacity: 0.6;
     }
+
+	.btn-mobileButtonUp {
+		cursor: pointer;
+		font-size: 50px;
+		font-family: "Press Start 2P", sans-serif;
+		position: fixed;
+		bottom: 200px;
+		width: 100vw;
+		height: 100px;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		white-space: nowrap;
+		overflow: hidden;
+
+		background-color: rgba(42, 42, 42, 0.2);
+		color: #ffffff;
+		border: 1px solid #ffffff;
+		transition:
+			background-color 0.3s,
+			color 0.3s;
+		opacity: 1;
+	}
+
+	.btn-mobileButtonDown {
+		cursor: pointer;
+		font-size: 50px;
+		font-family: "Press Start 2P", sans-serif;
+		position: fixed;
+		bottom: 100px;
+		width: 100vw;
+		height: 100px;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		white-space: nowrap;
+		overflow: hidden;
+
+		background-color: rgba(42, 42, 42, 0.2);
+		color: #ffffff;
+		border: 1px solid #ffffff;
+		transition:
+			background-color 0.3s,
+			color 0.3s;
+		opacity: 1;
+	}
 
     .btn-giveUp:hover {
       background-color: #ff0000;
@@ -221,6 +273,26 @@ class PongGame extends Component {
   giveUp() {
     get("/api/giveup/");
   }
+
+	checkMobile() {
+		return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+	}
+
+	upButtonStart() {
+		this.game?.updateInputs("w", true);
+	}
+
+	upButtonEnd() {
+		this.game?.updateInputs("w", false);
+	}
+
+	downButtonStart() {
+		this.game?.updateInputs("s", true);
+	}
+
+	downButtonEnd() {
+		this.game?.updateInputs("s", false);
+	}	
 
   leave() {
     //if (state.tournament.status == 'round 1')
