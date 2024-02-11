@@ -13,23 +13,18 @@ from .communication import get_game_stopped, get_user_inputs
 # from pong.test.draw import draw_contours, draw_arrow, draw_obstacles, draw_text
 
 W, H = 1000, 900
-WHITE = (255, 255, 255)
-GREY = (150, 150, 150)
-CYAN = (35, 150, 150)
 BALL_RADIUS = 25
 PAD_W, PAD_H = 20, 150
 FPS = 20
 PAD_SHIFT = 50
 
-RED = (255, 50, 50)
-
-# Set initial speed
-ball_vec = Vec(2.0, 2.0)
+BALL_SPEED=150
+PADDLE_SPEED=250
 
 ball_reset_pos = Vec(0, 0)
 d = Vec(6, 5).normalized
 ball = Ball(
-    reset_pos=ball_reset_pos, pos=ball_reset_pos, speed=100, radius=25, direction=d
+    reset_pos=ball_reset_pos, pos=ball_reset_pos, speed=BALL_SPEED, radius=25, direction=d
 )
 
 
@@ -75,7 +70,7 @@ class Pong:
             dim=Vec(PAD_W, PAD_H),
             clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
-            speed=100,
+            speed=PADDLE_SPEED,
         )
         padPlayer2 = Pad(
             # pos=Vec(W - PAD_SHIFT, H / 2),
@@ -83,7 +78,7 @@ class Pong:
             dim=Vec(PAD_W, PAD_H),
             clamp_line=player2_clamp_line,
             pad_line=player2_pad_line,
-            speed=100,
+            speed=PADDLE_SPEED,
         )
 
         player1 = Player(pad=padPlayer1, goal_line=player1_goal_line)
