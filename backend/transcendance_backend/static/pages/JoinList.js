@@ -104,6 +104,7 @@ class PongJoinList extends Component {
 		gap: 20px;
 		flex-wrap: wrap;
 		margin-top: 20px;
+		overflow: hidden;
 	}
 
 	.pong-title > a {
@@ -224,6 +225,7 @@ class PongJoinList extends Component {
 		font-size: 1.25rem;
 		background: hsl(123, 100%, 39%);
 		color: white;
+		text-wrap: nowrap;
 		transform: translateY(-6px);
 		font-family: 'Press Start 2P', sans-serif;
 	}
