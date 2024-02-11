@@ -11,8 +11,9 @@ async def run_pong_async(game):
     win_score = game["goal_objective"]
     use_powerups = game["type"] == "powerup"
     use_ai = game["ia"]
+    start_at = game["started_at"] / 1000
     asend = get_asend(id)
-    pong = Pong(win_score, use_powerups, use_ai)
+    pong = Pong(win_score, use_powerups, use_ai, start_at)
     await pong.run(asend, id)
 
 def run_pong(game):

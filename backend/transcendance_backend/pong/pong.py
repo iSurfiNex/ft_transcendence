@@ -1,5 +1,5 @@
 import sys
-from time import time
+from time import time, sleep
 import asyncio
 import json
 
@@ -40,8 +40,9 @@ player2_pad_line = Line()
 
 
 class Pong:
-    def __init__(self, win_score, use_powerups, use_ai):
+    def __init__(self, win_score, use_powerups, use_ai, start_at):
         self.pause = False
+        self.start_at = start_at
 
         player1_goal_line = Line(
             Vec(PAD_SHIFT - W / 2, -H / 2), Vec(PAD_SHIFT - W / 2, H / 2)
@@ -170,6 +171,10 @@ class Pong:
         delta = 1 / FPS
         # ia_last_tick_ts = current_time - 1
         game_last_tick_ts = current_time - delta
+        start_in = self.start_at - current_time
+
+        if start_in > 0:
+            sleep(start_in)
 
         while True:
             if self.pause:
