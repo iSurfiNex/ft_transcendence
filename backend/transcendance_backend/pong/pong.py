@@ -9,6 +9,7 @@ from .ai import PongAI
 from .types import DrawDebug, Vec, Pos, Line
 
 from .communication import get_game_stopped, get_user_inputs
+from transcendance_backend.manager import set_game_done
 
 # from pong.test.draw import draw_contours, draw_arrow, draw_obstacles, draw_text
 
@@ -107,10 +108,6 @@ class Pong:
             use_powerups=use_powerups,
             ai=self.ai,
         )
-
-    def stop_game(self):
-        self.running = False
-        sys.exit()
 
     # def handle_keypress(self):
     # if "up" in self.ai.keypressed:
@@ -213,6 +210,7 @@ class Pong:
 
         game_data = self.serialize()
         await asend(game_data)
+        await set_game_done(id)
         print(
             f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}"
         )

@@ -51,13 +51,8 @@ class Command(BaseCommand):
 
         game.started_at = datetime.now() + timedelta(seconds=5)
         game.state = "waiting"
-        game.goal_objective = 1
+        game.goal_objective = 2
         game.save()
-
-        stateUpdate(game, "update", "game")
-
-        stateUpdate(p1, "update", "user")
-        stateUpdate(p2, "update", "user")
 
         self.stdout.write(
             self.style.SUCCESS(f"{nickname_p1} Vs {nickname_p2} - Game started")

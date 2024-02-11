@@ -30,8 +30,11 @@ class PongGame extends Component {
         </ul>
       </div>
     </div>
-    <span id="info">Score to win: {game.goal_objective}</span>
-    <button class="btn btn-giveUp" @click="this.giveUp()">
+    <span hidden="{runningGame.gameOverState}" id="info">Score to win: {game.goal_objective}</span>
+    <button hidden="{!runningGame.gameOverState}" class="btn btn-leave" @click="this.leave()">
+      {language.leave}
+    </button>
+    <button hidden="{runningGame.gameOverState}" class="btn btn-giveUp" @click="this.giveUp()">
       {language.ByeButton} LOSER
     </button>
   `;
@@ -42,7 +45,7 @@ class PongGame extends Component {
       bottom: 100px;
     }
 
-    .btn-giveUp {
+    .btn {
       cursor: pointer;
       font-size: 25px;
       font-family: "Press Start 2P", sans-serif;
@@ -55,9 +58,6 @@ class PongGame extends Component {
       white-space: nowrap;
       overflow: hidden;
 
-      background-color: rgba(42, 42, 42, 0.2);
-      color: #ff0000;
-      border: 1px solid #ff0000;
       transition:
         background-color 0.3s,
         color 0.3s;
@@ -68,6 +68,24 @@ class PongGame extends Component {
       background-color: #ff0000;
       color: #2a2a2a;
       opacity: 1;
+    }
+
+    .btn-leave:hover {
+      background-color: #00ff00;
+      color: #2a2a2a;
+      opacity: 1;
+    }
+
+    .btn-giveUp {
+          border: 1px solid #ff0000;
+          background-color: rgba(42, 42, 42, 0.2);
+          color: #ff0000;
+    }
+
+    .btn-leave {
+          border: 1px solid #00ff00;
+          background-color: rgba(42, 42, 42, 0.2);
+          color: #00ff00;
     }
 
     :host {
@@ -203,6 +221,11 @@ class PongGame extends Component {
 
   giveUp() {
     get("/api/giveup/");
+  }
+
+  leave() {
+    //if (state.tournament.status == 'round 1')
+    navigateTo('/')
   }
 
   updatedStartIn(startedAt) {
