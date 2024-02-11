@@ -254,7 +254,6 @@ export class PongGameCanvas {
 		const message = event.data;
 		const data = JSON.parse(message).message;
 		if (this.pLScore !== data.pL.score) {
-			console.log(data.pL.score);
 			state.runningGame.pLPoints = data.pL.score;
 			this.pLScore = data.pL.score;
 		}

@@ -11,8 +11,6 @@ from .types import DrawDebug, Vec, Pos, Line
 from .communication import get_game_stopped, get_user_inputs
 from transcendance_backend.manager import set_game_done
 
-# from pong.test.draw import draw_contours, draw_arrow, draw_obstacles, draw_text
-
 W, H = 1000, 900
 BALL_RADIUS = 25
 PAD_W, PAD_H = 20, 150
@@ -23,7 +21,7 @@ BALL_SPEED = 150
 PADDLE_SPEED = 250
 
 ball_reset_pos = Vec(0, 0)
-d = Vec(6, 5).normalized
+d = Vec(-6, 4).normalized
 ball = Ball(
     reset_pos=ball_reset_pos,
     pos=ball_reset_pos,
@@ -46,6 +44,7 @@ player2_pad_line = Line()
 
 class Pong:
     def __init__(self, win_score, use_powerups, use_ai, start_at):
+        self.use_ai = use_ai
         self.pause = False
         self.start_at = start_at
 
@@ -66,9 +65,9 @@ class Pong:
         topLine = Line(wall_contours[0], wall_contours[1])
         bottomLine = Line(wall_contours[2], wall_contours[3])
 
-        # ai_collision_lines = [
-        #    [player1_goal_line, player2_goal_line, topLine, bottomLine]
-        # ]
+        ai_collision_lines = [
+           [player1_goal_line, player2_goal_line, topLine, bottomLine]
+        ]
 
         padPlayer1 = Pad(
             # pos=Vec(PAD_SHIFT, H / 2 + 30),
@@ -79,7 +78,6 @@ class Pong:
             speed=PADDLE_SPEED,
         )
         padPlayer2 = Pad(
-            # pos=Vec(W - PAD_SHIFT, H / 2),
             pos=Vec(W - PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
             clamp_line=player2_clamp_line,
@@ -90,14 +88,14 @@ class Pong:
         player1 = Player(pad=padPlayer1, goal_line=player1_goal_line)
         player2 = Player(pad=padPlayer2, goal_line=player2_goal_line)
         lines_obstacles = [[player1.pad.line, player2.pad.line, topLine, bottomLine]]
-        self.ai = []
-        # if use_ai:
-        #    self.ai.append(PongAI(
-        #        speed=ball.s,
-        #        player=player2,
-        #        opponent=player1,
-        #        collision_lines=lines_obstacles
-        #    ))
+        self.ai_list = []
+        if use_ai:
+           self.ai_list.append(PongAI(
+               speed=ball.s,
+               player=player2,
+               opponent=player1,
+               collision_lines=ai_collision_lines
+           ))
 
         self.engine = PongEngine(
             lines_obstacles=lines_obstacles,
@@ -106,16 +104,9 @@ class Pong:
             dim=Vec(W, H),
             win_score=win_score,
             use_powerups=use_powerups,
-            ai=self.ai,
+            ai=self.ai_list,
         )
 
-    # def handle_keypress(self):
-    # if "up" in self.ai.keypressed:
-    #    self.ai.player.go_up()
-    # elif "down" in self.ai.keypressed:
-    #    self.ai.player.go_down()
-    # else:
-    #    self.ai.player.stay_still()
 
     def sendData(self):
         pass
@@ -154,13 +145,13 @@ class Pong:
             "obstacles": obstacles,
             "bonus": {"y": 0},
             "gameOver": self.engine.game_over,
+            "ai": [ai.serialize() for ai in self.ai_list]
         }
 
     def handle_player_inputs(self, id, idx):
         inputs = get_user_inputs(id, idx)
         player = self.engine.players[idx]
         if inputs is not None:
-            print(f"P{idx+1} INPUT: {inputs}")
             if inputs["up"] == inputs["down"]:
                 player.stay_still()
             elif inputs["up"]:
@@ -168,10 +159,18 @@ class Pong:
             elif inputs["down"]:
                 player.go_down()
 
+    def handle_ai_inputs(self, ai):
+        if "down" in ai.keypressed:
+           ai.player.go_up()
+        elif "up" in ai.keypressed:
+           ai.player.go_down()
+        else:
+           ai.player.stay_still()
+
     async def run(self, asend, id):
         current_time = time()
         delta = 1 / FPS
-        # ia_last_tick_ts = current_time - 1
+        ia_last_tick_ts = current_time - 1
         game_last_tick_ts = current_time - delta
         start_in = self.start_at - current_time
 
@@ -191,18 +190,21 @@ class Pong:
             game_last_tick_ts = current_time
 
             self.handle_player_inputs(id, 0)
-            self.handle_player_inputs(id, 1)  # TODO handle not for IA
+            if not self.use_ai:
+              self.handle_player_inputs(id, 1)  # TODO handle not for IA
+            [self.handle_ai_inputs(ai) for ai in self.ai_list]
 
             self.engine.update(delta)
 
             game_data = self.serialize()
             await asend(game_data)
 
-            # ia_elapsed_time = current_time - ia_last_tick_ts
+            ia_elapsed_time = current_time - ia_last_tick_ts
 
-            # if ia_elapsed_time >= 1:
-            #    self.ai.update_data(self.engine)
-            #    ia_last_tick_ts = current_time
+            if ia_elapsed_time >= 1:
+               [ai.update_data(self.engine) for ai in self.ai_list]
+               ia_last_tick_ts = current_time
+
             if get_game_stopped(id):
                 self.engine.game_over = True
             if self.engine.game_over:

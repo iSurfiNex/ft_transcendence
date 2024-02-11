@@ -9,7 +9,12 @@ from .collision import Collision
 class PongAI:
     frames_data = []
     ball_path = []
-    keypressed = {"yoo"}
+    keypressed = {'yoo'}
+
+    def serialize(self):
+        return {
+            "ball_path": [{"x": b.x, "y": b.y} for b in self.ball_path],
+        }
 
     def __init__(self, speed: float, player: Player, opponent: Player, collision_lines):
         self.frames_data
