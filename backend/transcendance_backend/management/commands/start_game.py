@@ -51,6 +51,7 @@ class Command(BaseCommand):
 
         game.started_at = datetime.now() + timedelta(seconds=5)
         game.state = "waiting"
+        game.goal_objective = 1
         game.save()
 
         stateUpdate(game, "update", "game")

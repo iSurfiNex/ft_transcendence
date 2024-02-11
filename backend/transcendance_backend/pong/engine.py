@@ -14,14 +14,19 @@ import random
 
 
 class PongEngine:
+    game_over = False
+
     def __init__(
         self,
         lines_obstacles,
         ball,
         players: list[Player],
         dim: Vec,
+        win_score,
+        use_powerups,
         ai: list[PongAI] = [],
     ):
+        self.win_score = win_score
         self.dim = Vec(dim)
         self.pause = False
         self.lines_obstacles = lines_obstacles
@@ -30,8 +35,7 @@ class PongEngine:
         self.players = players
         self.bounces = []
         self.ai = ai
-        for bot in ai:
-            bot.engine = self
+        self.use_powerups = use_powerups
 
     def update(self, delta):
         self.physic_update(delta)
@@ -59,8 +63,15 @@ class PongEngine:
         else:
             return
 
-        # reset ball pos to the middle of the board
         self.ball.reset()
+
+        if (
+            self.players[0].score >= self.win_score
+            or self.players[1].score >= self.win_score
+        ):
+            self.game_over = True
+
+        # reset ball pos to the middle of the board
         # reverse the direction of the ball on the x axis
         # self.ball.d *= Vec(-1, 0)
         # Generate a random angle between -pi/4 and pi/4 (45 degrees in either direction)

@@ -193,7 +193,7 @@ class PongGame extends Component {
 
   constructor() {
     super();
-    observe("game.startedAt", this.updatedStartIn.bind(this));
+    this.updatedStartIn(state.game.started_at);
   }
 
   giveUp() {
