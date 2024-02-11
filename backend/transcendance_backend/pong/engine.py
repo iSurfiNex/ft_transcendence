@@ -14,7 +14,7 @@ import random
 
 
 class PongEngine:
-    max_score_reached = False
+    game_over = False
     def __init__(
         self,
         lines_obstacles,
@@ -68,7 +68,7 @@ class PongEngine:
             self.players[0].score >= self.win_score
             or self.players[1].score >= self.win_score
         ):
-            self.max_score_reached = True
+            self.game_over = True
 
         # reset ball pos to the middle of the board
         # reverse the direction of the ball on the x axis

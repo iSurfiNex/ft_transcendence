@@ -152,6 +152,7 @@ class Pong:
             "ball": {"x": ball.x, "y": ball.x},
             "obstacles": obstacles,
             "bonus": {"y": 0},
+            "gameOver": self.engine.game_over,
         }
 
     def handle_player_inputs(self, id, idx):
@@ -202,8 +203,12 @@ class Pong:
             # if ia_elapsed_time >= 1:
             #    self.ai.update_data(self.engine)
             #    ia_last_tick_ts = current_time
-
-            if get_game_stopped(id) or self.engine.max_score_reached:
+            if get_game_stopped(id):
+                self.engine.game_over = True
+            if self.engine.game_over:
                 break
+
+        game_data = self.serialize()
+        await asend(game_data)
         print(f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}")
 

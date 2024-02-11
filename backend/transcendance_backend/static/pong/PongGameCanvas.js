@@ -237,6 +237,13 @@ export class PongGameCanvas {
     );
   }
 
+  updateGameOverState(pLScore, pRScore) {
+      const pLWin = pLScore > pRScore
+    const imPL = state.game.p1.id === state.profile.id
+    const iWin = pLWin == imPL
+    state.runningGame.gameOverState = iWin ? "youWin" : "youLose"
+  }
+
   onmessage(event) {
     const message = event.data;
     const data = JSON.parse(message).message;
@@ -248,6 +255,10 @@ export class PongGameCanvas {
     if (this.pRScore !== data.pR.score) {
       state.runningGame.pRPoints = data.pR.score
       this.pRScore = data.pR.score
+    }
+    if (data.gameOver) {
+      this.updateGameOverState(data.pL.score, data.pR.score)
+      return
     }
     // if (data.bonus.size_minus == 'r')
     // 	paddleR.scale.set(1, 2);
