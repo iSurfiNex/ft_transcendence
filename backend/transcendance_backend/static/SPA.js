@@ -401,14 +401,11 @@ function tournamentUpdateAll(data) {
 function currentGameUpdate() {
 	let currentGame = -1;
 	let currentTournament = -1;
-	var isMyGame;
 	var isMyTournament;
 
 	if (state.games && state.games.length != 0)
 		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname) && game.status !== 'done');
-	if (isMyGame)
-	    currentGame = isMyGame.id;
-	
+
 	
 	if (state.tournaments && state.tournaments.length != 0)
 	{
@@ -421,6 +418,5 @@ function currentGameUpdate() {
 		}
 	}
 	
-	state.currentGame = currentGame;
 	state.currentTournament = currentTournament;
 }

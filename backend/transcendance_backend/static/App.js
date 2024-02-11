@@ -11,7 +11,7 @@ window.ws = route => {
 }
 
 var state_base = {
-        game: computedProperty(['currentGame'], function (currentGameId) {
+        game: computedProperty(['currentGame', 'games'], function (currentGameId) {
                 const games = state.games
                 if (!games && !Array.isArray(games) || !(currentGameId>=0))
                         return {id: -1, status: 'no-game'}
@@ -21,7 +21,7 @@ var state_base = {
                 my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
         }),
-        tournament: computedProperty(['currentTournament'], function (currentTournamentId) {
+        tournament: computedProperty(['currentTournament', 'tournaments'], function (currentTournamentId) {
                 const tournaments = state.tournaments
                 if (!tournaments && !Array.isArray(tournaments) || !(currentTournamentId>=0))
                         return {id: -1, status: 'no-tournament'}
@@ -183,6 +183,7 @@ var state_base = {
                 gameOver: 'GAME OVER',
                 youWin: 'YOU WIN',
                 youLose: 'YOU LOSE',
+                leave: 'Leave',
 	},
 	fr: {
 		// LOGIN
@@ -254,6 +255,7 @@ var state_base = {
                 gameOver: 'GAME OVER',
                 youWin: 'VICTOIRE',
                 youLose: 'DÉFAITE',
+                leave: 'Partir',
 	},
 	de: {
 		// LOGIN
@@ -325,6 +327,7 @@ var state_base = {
                 gameOver: 'GAME OVER',
                 youWin: 'SIEG',
                 youLose: 'VERLUST',
+                leave: 'Verlassen',
 	},
 
     lang(key) {
@@ -341,10 +344,11 @@ const state = setup(state_base)
 observe('game.status', (newStatus, oldStatus) => {
         const gameStarts = (newStatus === "running" && oldStatus !== "running")
         const gameOver = (newStatus !== "running" && oldStatus === "running")
-        const leaveWaitingRoom = (newStatus !== "waiting" && oldStatus === "waiting")
+        const leaveWaitingRoom = (newStatus !== "running" && newStatus !== "waiting" && oldStatus === "waiting")
         const enterWaitingRoom = (newStatus === "waiting" && oldStatus !== "waiting")
         if (gameStarts) {
                 console.log("GAME STARTING")
+                state.runningGame.gameOverState = null
                 navigateTo('/play/game')
         } else if(gameOver) {
                 console.log("GAME OVER")

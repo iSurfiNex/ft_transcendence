@@ -503,8 +503,8 @@ class ManageGameView(View):
                 created_by=creator,
             )
             game.players.add(creator)
+            game.save()
 
-            Update(game=game, game_action="create", user=creator)
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -551,13 +551,13 @@ class ManageGameView(View):
                         game.created_by = game.players.first()
                     else:
                         game.delete()
-                        Update(game="all", user=my_player)
+                        stateUpdateAll(Game, "all games")
                         return JsonResponse({"status": "ok"}, status=200)
                 else:
                     game.players.remove(my_player)
 
             game.save()
-            Update(game=game, game_action="update", user=my_player)
+            #Update(game=game, game_action="update", user=my_player)
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -578,8 +578,6 @@ def giveup(request):
         return JsonResponse({"errors": {"__all__": "No game running"}}, status=400)
     game.state = "done"
     game.save()
-    stateUpdate(game, "update", "game")
-    stateUpdate(my_player, "update", "user")
     # TODO update users ?
     return JsonResponse({"status": "ok"}, status=200)
 
