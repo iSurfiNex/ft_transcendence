@@ -348,6 +348,7 @@ observe('game.status', (newStatus, oldStatus) => {
         const enterWaitingRoom = (newStatus === "waiting" && oldStatus !== "waiting")
         if (gameStarts) {
                 console.log("GAME STARTING")
+                state.runningGame.gameOverState = null
                 navigateTo('/play/game')
         } else if(gameOver) {
                 console.log("GAME OVER")
