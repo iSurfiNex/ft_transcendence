@@ -332,7 +332,7 @@ def on_game_field_change(sender, instance, **kwargs):
         game_stop = previous.state == "running" and instance.state != "running"
         if game_start:  # field will be updated
             init_threadsafe_game_data(id)
-            run_pong_thread(id)
+            run_pong_thread(instance.serialize())
             print(">> GAME RUNNING : thread started")
         elif game_stop:  # field will be updated
             set_game_stopped(id)

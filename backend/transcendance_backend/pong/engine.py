@@ -20,8 +20,11 @@ class PongEngine:
         ball,
         players: list[Player],
         dim: Vec,
+        win_score,
+        use_powerups,
         ai: list[PongAI] = [],
     ):
+        self.win_score = win_score
         self.dim = Vec(dim)
         self.pause = False
         self.lines_obstacles = lines_obstacles
@@ -30,8 +33,7 @@ class PongEngine:
         self.players = players
         self.bounces = []
         self.ai = ai
-        for bot in ai:
-            bot.engine = self
+        self.use_powerups = use_powerups
 
     def update(self, delta):
         self.physic_update(delta)
@@ -58,6 +60,11 @@ class PongEngine:
             self.players[1].score += 1
         else:
             return
+
+        if self.players[0].score >= self.win_score:
+           pass;
+        elif self.players[0].score >= self.win_score:
+           pass;
 
         # reset ball pos to the middle of the board
         self.ball.reset()

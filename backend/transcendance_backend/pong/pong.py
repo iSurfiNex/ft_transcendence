@@ -40,7 +40,7 @@ player2_pad_line = Line()
 
 
 class Pong:
-    def __init__(self):
+    def __init__(self, win_score, use_powerups, use_ai):
         self.pause = False
 
         player1_goal_line = Line(
@@ -84,19 +84,23 @@ class Pong:
         player1 = Player(pad=padPlayer1, goal_line=player1_goal_line)
         player2 = Player(pad=padPlayer2, goal_line=player2_goal_line)
         lines_obstacles = [[player1.pad.line, player2.pad.line, topLine, bottomLine]]
-        # self.ai = PongAI(
-        #    speed=ball.s,
-        #    player=player2,
-        #    opponent=player1,
-        #    collision_lines=ai_collision_lines,
-        # )
+        self.ai = []
+        #if use_ai:
+        #    self.ai.append(PongAI(
+        #        speed=ball.s,
+        #        player=player2,
+        #        opponent=player1,
+        #        collision_lines=lines_obstacles
+        #    ))
 
         self.engine = PongEngine(
             lines_obstacles=lines_obstacles,
             ball=ball,
             players=[player1, player2],
             dim=Vec(W, H),
-            # ai=[self.ai],
+            win_score=win_score,
+            use_powerups=use_powerups,
+            ai=self.ai,
         )
 
     def stop_game(self):
