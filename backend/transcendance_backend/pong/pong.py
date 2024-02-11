@@ -183,7 +183,7 @@ class Pong:
 
             game_last_tick_ts = current_time
 
-            if get_game_stopped(id):
+            if get_game_stopped(id) or self.engine.max_score_reached:
                 break
 
             self.handle_player_inputs(id, 0)
@@ -202,3 +202,4 @@ class Pong:
             #    ia_last_tick_ts = current_time
 
             self.sendData()
+        print(f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}")

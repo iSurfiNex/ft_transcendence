@@ -14,6 +14,7 @@ import random
 
 
 class PongEngine:
+    max_score_reached = False
     def __init__(
         self,
         lines_obstacles,
@@ -61,10 +62,11 @@ class PongEngine:
         else:
             return
 
-        if self.players[0].score >= self.win_score:
-           pass;
-        elif self.players[0].score >= self.win_score:
-           pass;
+        if (
+            self.players[0].score >= self.win_score
+            or self.players[1].score >= self.win_score
+        ):
+            self.max_score_reached = True
 
         # reset ball pos to the middle of the board
         self.ball.reset()
