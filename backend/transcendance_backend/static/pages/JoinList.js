@@ -22,8 +22,9 @@ class PongJoinList extends Component {
 					<div repeat="games" as="game" hidden="{this.equals(gameListFilter,'tournament')}">
 						<div class="pong-desc" hidden="{this.isGameHidden(game, gameListFilter)}">
 							<div class="pong-type">ID:{game.id}</div>
-							<div class="pong-players" repeat="players" as="player">
-								<div class="pong-player">{player}</div>
+							<div class="pong-players">
+								<div class="pong-player">{this.getPlayerNickname(game.p1.nickname)}</div>
+								<div class="pong-player">{this.getPlayerNickname(game.p2.nickname)}</div>
 							</div>
 							<div class="pong-player-count">{game.players.length}/2</div>
 							<a @click="this.navigateUpdate(game)" href="#" class="pong-player-join btn btn-primary btn-lg" title="Join">
@@ -91,9 +92,11 @@ class PongJoinList extends Component {
 
 	.content {
 		display: flex;
-		justify-item: center;
 		flex-direction: column;
 		animation: fadeIn 0.5s;
+		width: 100%;
+		height: 100%;
+		align-items: center;
 	}
 
 	.pong-title {
@@ -104,7 +107,6 @@ class PongJoinList extends Component {
 		gap: 20px;
 		flex-wrap: wrap;
 		margin-top: 20px;
-		overflow: hidden;
 	}
 
 	.pong-title > a {
@@ -120,28 +122,26 @@ class PongJoinList extends Component {
 	}
 
 	.pong-content {
-		position: absolute;
-		bottom: 0;
-		left: 25%;
+		margin-top: 25px;
 		width: 50%;
-		height: calc(100% - 70px);
+		height: 100%;
 		background-color: rgb(112, 112, 112);
 		overflow: hidden;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.pong-create {
-		position: absolute;
+		margin-top: 20px;
+		margin-bottom: 15px;
 		text-align: center;
-		top: 25px;
-		width: 100%;
 	}
 
 	.pong-list {
-		position: absolute;
-		bottom: 0;
 		width: 100%;
-		height: calc(100% - 95px);
+		height: 100%;
 		background-color: rgb(86, 86, 86);
+		overflow-y: auto;
 	}
 
 	.pong-desc {
@@ -233,6 +233,19 @@ class PongJoinList extends Component {
 	.pushable:active .front {
 		transform: translateY(-2px);
 	}
+
+	::-webkit-scrollbar {
+		width: 15px;
+		background-color: #424242;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #666666;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #5d5d5d;
+	}
 `
 
 	isGameHidden(game, filter) {
@@ -271,6 +284,12 @@ class PongJoinList extends Component {
         //NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
 
 		return (false);
+	}
+
+	getPlayerNickname(nickname)	{
+		if (nickname === "Unknown")
+			return '';
+		return nickname;
 	}
 
     equals(a, b) {
