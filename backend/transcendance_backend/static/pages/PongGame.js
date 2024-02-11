@@ -164,6 +164,11 @@ class PongGame extends Component {
       margin-top: 20px;
     }
 
+    .stat-list {
+      position: relative;
+    }
+
+
     @keyframes blink {
       0% {
         opacity: 1;
