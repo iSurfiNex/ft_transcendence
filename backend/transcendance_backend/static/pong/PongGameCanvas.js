@@ -62,9 +62,7 @@ export class PongGameCanvas {
     this.paddleR.renderOrder = 5001;
     this.line.renderOrder = 5003;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-    //this.setCanvasSize(this.renderer);
     this.gameContainerNode.appendChild(this.renderer.domElement);
-    console.log("Three js version is r" + THREE.REVISION);
 
     this.camera.position.set(0, 0, 600);
 
