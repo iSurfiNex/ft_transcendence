@@ -13,7 +13,7 @@ class PongCreateGame extends Component {
 				<div class="options-list">
 
 					<div class="option">
-						<input class="input-score" id="max-score" type="number" min="1" max="100" step="1" value="10">
+						<input class="input-score" id="max-score" type="number" min="1" max="100" step="1" value="3">
 						<span class="mode">Max Score</span>
 					</div>
 
