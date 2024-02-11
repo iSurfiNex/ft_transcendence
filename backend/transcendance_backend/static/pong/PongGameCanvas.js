@@ -3,8 +3,8 @@ import * as THREE from "three";
 import * as UNIFORMS from "uniforms";
 
 export class PongGameCanvas {
-  pLScore = undefined
-  pRScore = undefined
+  pLScore = undefined;
+  pRScore = undefined;
 
   light = new THREE.DirectionalLight(0xffffff, 10);
   geometry_line = new THREE.BoxGeometry(2, 1000, 1);
@@ -83,9 +83,12 @@ export class PongGameCanvas {
 
   connectWebsocket() {
     if (state.currentGame < 0) {
-      console.warn("Game webSocket connection canceled because current game id is " + state.currentGame)
+      console.warn(
+        "Game webSocket connection canceled because current game id is " +
+          state.currentGame,
+      );
       setTimeout(() => this.connectWebsocket(), 2000);
-      return
+      return;
     }
 
     this.socket = ws(`game-running/${state.currentGame}/`);
@@ -238,27 +241,27 @@ export class PongGameCanvas {
   }
 
   updateGameOverState(pLScore, pRScore) {
-      const pLWin = pLScore > pRScore
-    const imPL = state.game.p1.id === state.profile.id
-    const iWin = pLWin == imPL
-    state.runningGame.gameOverState = iWin ? "youWin" : "youLose"
+    const pLWin = pLScore > pRScore;
+    const imPL = state.game.p1.id === state.profile.id;
+    const iWin = pLWin == imPL;
+    state.runningGame.gameOverState = iWin ? "youWin" : "youLose";
   }
 
   onmessage(event) {
     const message = event.data;
     const data = JSON.parse(message).message;
     if (this.pLScore !== data.pL.score) {
-      console.log(data.pL.score)
-      state.runningGame.pLPoints = data.pL.score
-      this.pLScore = data.pL.score
+      console.log(data.pL.score);
+      state.runningGame.pLPoints = data.pL.score;
+      this.pLScore = data.pL.score;
     }
     if (this.pRScore !== data.pR.score) {
-      state.runningGame.pRPoints = data.pR.score
-      this.pRScore = data.pR.score
+      state.runningGame.pRPoints = data.pR.score;
+      this.pRScore = data.pR.score;
     }
     if (data.gameOver) {
-      this.updateGameOverState(data.pL.score, data.pR.score)
-      return
+      this.updateGameOverState(data.pL.score, data.pR.score);
+      return;
     }
     // if (data.bonus.size_minus == 'r')
     // 	paddleR.scale.set(1, 2);

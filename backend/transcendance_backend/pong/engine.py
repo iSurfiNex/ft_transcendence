@@ -15,6 +15,7 @@ import random
 
 class PongEngine:
     game_over = False
+
     def __init__(
         self,
         lines_obstacles,

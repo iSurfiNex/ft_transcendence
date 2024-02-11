@@ -18,13 +18,17 @@ PAD_W, PAD_H = 20, 150
 FPS = 20
 PAD_SHIFT = 50
 
-BALL_SPEED=150
-PADDLE_SPEED=250
+BALL_SPEED = 150
+PADDLE_SPEED = 250
 
 ball_reset_pos = Vec(0, 0)
 d = Vec(6, 5).normalized
 ball = Ball(
-    reset_pos=ball_reset_pos, pos=ball_reset_pos, speed=BALL_SPEED, radius=25, direction=d
+    reset_pos=ball_reset_pos,
+    pos=ball_reset_pos,
+    speed=BALL_SPEED,
+    radius=25,
+    direction=d,
 )
 
 
@@ -86,7 +90,7 @@ class Pong:
         player2 = Player(pad=padPlayer2, goal_line=player2_goal_line)
         lines_obstacles = [[player1.pad.line, player2.pad.line, topLine, bottomLine]]
         self.ai = []
-        #if use_ai:
+        # if use_ai:
         #    self.ai.append(PongAI(
         #        speed=ball.s,
         #        player=player2,
@@ -141,13 +145,13 @@ class Pong:
                 "paddle": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y},
                 "goal": goal_p1,
                 "clamp": clamp_p1,
-                "score": p1.score
+                "score": p1.score,
             },
             "pR": {
                 "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y},
                 "goal": goal_p2,
                 "clamp": clamp_p2,
-                "score": p2.score
+                "score": p2.score,
             },
             "ball": {"x": ball.x, "y": ball.x},
             "obstacles": obstacles,
@@ -189,7 +193,6 @@ class Pong:
 
             game_last_tick_ts = current_time
 
-
             self.handle_player_inputs(id, 0)
             self.handle_player_inputs(id, 1)  # TODO handle not for IA
 
@@ -210,5 +213,6 @@ class Pong:
 
         game_data = self.serialize()
         await asend(game_data)
-        print(f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}")
-
+        print(
+            f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}"
+        )
