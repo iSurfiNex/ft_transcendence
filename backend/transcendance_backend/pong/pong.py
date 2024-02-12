@@ -15,7 +15,8 @@ PAD_W, PAD_H = 20, 150
 FPS = 20
 PAD_SHIFT = 50
 
-BALL_SPEED = 150
+BALL_BASE_SPEED = 150
+BALL_ACCELERATION = 5
 PADDLE_SPEED = 250
 
 ball_reset_pos = Vec(0, 0)
@@ -23,7 +24,7 @@ ball_reset_pos = Vec(0, 0)
 ball = Ball(
     reset_pos=ball_reset_pos,
     pos=ball_reset_pos,
-    speed=BALL_SPEED,
+    speed=BALL_BASE_SPEED,
     radius=25,
     direction=Ball.get_random_starting_direction(),
 )
@@ -213,6 +214,7 @@ class Pong:
             [self.handle_ai_inputs(ai) for ai in self.ai_list]
 
             self.engine.update(delta)
+            self.engine.ball.s = BALL_BASE_SPEED + (current_time - self.start_at )*BALL_ACCELERATION
 
             game_data = self.serialize()
             await asend(game_data)
