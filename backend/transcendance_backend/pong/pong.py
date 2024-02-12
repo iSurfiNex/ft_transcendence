@@ -5,7 +5,7 @@ import math
 from .engine import PongEngine
 from .entities import Ball, Pad, Player
 from .ai import PongAI
-from .types import DrawDebug, Vec, Pos, Line
+from .types import Vec, Pos, Line
 
 from .communication import get_game_stopped, get_user_inputs
 from transcendance_backend.manager import set_game_done
