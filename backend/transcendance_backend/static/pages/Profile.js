@@ -68,7 +68,7 @@ class PongProfile extends Component {
 				<div class="profile-title">{language.gameHistory}</div>
 				<div class="profile-games" repeat="games" as="item">
 					<div class="profile-game" hidden={this.getHiddenStatus(item)}>
-						<span class="profile-game-date">{item.date}</span>
+						<span class="profile-game-date">{this.getFormatedDate(item.date)}</span>
 						<div class="profile-game-score">
  							<span class="profile-game-score-name">{this.getPlayerName(item)}</span>
 							<span class="profile-game-score">{this.getPlayerScore(item)}</span>
@@ -85,7 +85,7 @@ class PongProfile extends Component {
 				<div class="profile-title">{language.tournamentHistory}</div>
 				<div class="profile-tournament" repeat="tournaments" as="tournament">
 					<div class="profile-game" hidden={this.getHiddenStatusTournament(tournament)}>
-						<span class="profile-game-date">{tournament.date} - </span><span class="profile-game-status {this.getTournamentStatus(tournament)}">{this.getTournamentStatus(tournament)}</span>
+						<span class="profile-game-date">{this.getFormatedDate(tournament.date)} - </span><span class="profile-game-status {this.getTournamentStatus(tournament)}">{this.getTournamentStatus(tournament)}</span>
 						<div class="profile-tournament-games" repeat="tournament.gamesId" as="gameId">
 							<div class="profile-tournament-game">
 								<div class="profile-game-score">
@@ -430,6 +430,8 @@ class PongProfile extends Component {
 			return (true);
 		if (game.creator == "tournament")
 			return (true);
+		if (game.players.length < 2)
+			return (true);
 		return (false);
 	}
 
@@ -457,7 +459,7 @@ class PongProfile extends Component {
 		if (game.creator == "tournament")
 			return ;
 		const score = game.score.find(score => score.nickname === player);
-		return '(' + score.points + ')';
+		return '(' + score?.points + ')';
 	}
 
 	getOtherPlayerScore(game) {
@@ -472,7 +474,7 @@ class PongProfile extends Component {
 		if (game.creator == "tournament")
 			return ;
 		const score = game.score.find(score => score.nickname === player);
-		return '(' + score.points + ')';
+		return '(' + score?.points + ')';
 	}
 
 	getGameStatus(game) {
@@ -489,10 +491,10 @@ class PongProfile extends Component {
 			return ;
 		const score1 = game.score.find(score => score.nickname === player1);
 		const score2 = game.score.find(score => score.nickname === player2);
-		if (score1.points == score2.points)
+		if (score1?.points == score2?.points)
 			return 'tie';
 		else
-			return score1.points > score2.points ? 'win' : 'lose'
+			return score1?.points > score2?.points ? 'win' : 'lose'
 	}
 
 	getHiddenStatusTournament(game) {
@@ -530,10 +532,10 @@ class PongProfile extends Component {
 
 		const score1 = finalGame.score.find(score => score.nickname === player1);
 		const score2 = finalGame.score.find(score => score.nickname === player2);
-		if (score1.points == score2.points)
+		if (score1?.points == score2?.points)
 			return 'tie';
 		else
-			return score1.points > score2.points ? 'win' : 'lose'
+			return score1?.points > score2?.points ? 'win' : 'lose'
 
 	}
 
@@ -575,7 +577,7 @@ class PongProfile extends Component {
 		if (game.creator != "tournament")
 			return ;
 		const score = game.score.find(score => score.nickname === player);
-		return '(' + score.points + ')';
+		return '(' + score?.points + ')';
 	}
 
 	getTournamentOtherPlayerScore(gameId) {
@@ -596,7 +598,19 @@ class PongProfile extends Component {
 		if (game.creator != "tournament")
 			return ;
 		const score = game.score.find(score => score.nickname === player2);
-		return '(' + score.points + ')';
+		return '(' + score?.points + ')';
+	}
+
+	getFormatedDate(timestamp) {
+		const date = new Date(timestamp);
+
+		const day = date.getDate().toString().padStart(2, '0');
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const year = date.getFullYear();
+		const hours = date.getHours().toString().padStart(2, '0');
+		const minutes = date.getMinutes().toString().padStart(2, '0');
+
+		return `${day}/${month}/${year} ${hours}:${minutes}`;
 	}
 }
 
