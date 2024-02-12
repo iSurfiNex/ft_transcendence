@@ -132,6 +132,9 @@ class Vec(DrawDebug):
         reflect_dir = normalized - 2 * dot_product * normal_dir
         return reflect_dir
 
+    def y_clamped(self, a, b):
+        return Vec(self.x, max(a, min(self.y, b)))
+
     def __str__(self) -> str:
         return str(self._t)
 
