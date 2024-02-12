@@ -7,6 +7,8 @@ class PongGame extends Component {
 
 		<div id="gameContainer" ></div>
 		<div id="gameOverlay">
+			<button class="btn-mobileButtonUp" @touchstart="this.upButtonStart()" @touchend="this.upButtonEnd()" hidden="{!isMobile}"></button>
+			<button class="btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!isMobile}"></button>
 			<div id="startIn" hidden="{!runningGame.startIn}">
 				<div class="bg"></div>
 				<h2>{language.Start} {runningGame.startIn}</h2>
@@ -36,12 +38,6 @@ class PongGame extends Component {
 		<button hidden="{runningGame.gameOverState}" class="btn btn-giveUp" @click="this.giveUp()">
 			{language.ByeButton} LOSER
 		</button>
-	<button class="btn btn-mobileButtonUp" @touchstart="this.upButtonStart()" @touchend="this.upButtonEnd()" hidden="{!isMobile}">
-		UP
-	</button>
-	<button class="btn btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!isMobile}">
-		DOWN
-	</button>
 	`;
 
 	static css = css`
@@ -50,69 +46,24 @@ class PongGame extends Component {
 			bottom: 65px;
 		}
 
-		.btn {
-			cursor: pointer;
-			font-size: 25px;
-			font-family: "Press Start 2P", sans-serif;
-			position: fixed;
-			bottom: 40px;
-			right: 40px;
-			justify-content: center;
-			align-items: center;
-			display: flex;
-			white-space: nowrap;
-			overflow: hidden;
-
-			transition:
-				background-color 0.3s,
-				color 0.3s;
-			opacity: 0.6;
-		}
-
 	.btn-mobileButtonUp {
 		cursor: pointer;
-		font-size: 50px;
-		font-family: "Press Start 2P", sans-serif;
-		position: fixed;
-		bottom: 200px;
-		width: 100vw;
-		height: 100px;
-		justify-content: center;
-		align-items: center;
-		display: flex;
-		white-space: nowrap;
-		overflow: hidden;
-
-		background-color: rgba(42, 42, 42, 0.2);
-		color: #ffffff;
-		border: 1px solid #ffffff;
-		transition:
-			background-color 0.3s,
-			color 0.3s;
-		opacity: 1;
+		position: absolute;
+		width: 50%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		opacity: 0;
 	}
 
 	.btn-mobileButtonDown {
 		cursor: pointer;
-		font-size: 50px;
-		font-family: "Press Start 2P", sans-serif;
-		position: fixed;
-		bottom: 100px;
-		width: 100vw;
-		height: 100px;
-		justify-content: center;
-		align-items: center;
-		display: flex;
-		white-space: nowrap;
-		overflow: hidden;
-
-		background-color: rgba(42, 42, 42, 0.2);
-		color: #ffffff;
-		border: 1px solid #ffffff;
-		transition:
-			background-color 0.3s,
-			color 0.3s;
-		opacity: 1;
+		position: absolute;
+		width: 50%;
+		height: 100%;
+		right: 0;
+		top: 0;
+		opacity: 0;
 	}
 
 		.btn-giveUp:hover {
@@ -292,7 +243,7 @@ class PongGame extends Component {
 
 	downButtonEnd() {
 		this.game?.updateInputs("s", false);
-	}	
+	}
 
 	leave() {
 		//if (state.tournament.status == 'round 1')
@@ -389,7 +340,7 @@ class PongGame extends Component {
 
 		if (game)
 			return (game.wall_hits);
-		return (69);  
+		return (69);
 	}
 
 	getEndMsg() {
@@ -399,7 +350,7 @@ class PongGame extends Component {
 
 		//if (game.winner == state.profile.nickname)
 			return(this.getWinnerMsg(randomNb));
-		
+
 		//else
 		//  return(this.getLoserMsg(randomNb));
 	}
