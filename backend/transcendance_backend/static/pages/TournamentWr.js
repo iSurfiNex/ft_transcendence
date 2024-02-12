@@ -4,30 +4,27 @@ import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 class TournamentWr extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-
     <div class="available-space">
-        <div class="rectangle-waitingRoom-T">
+	    <div class="top-bar">
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
-
-            <div class="player-count">
-                <button class="btn btn-startGame" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">START</button>
-                {tournament.players.length}/{tournament.expectedPlayers}
-                <button class="btn btn-giveUp" @click="this.giveUp()">GIVE UP</button>
-            </div>
-
-            <div class="tournament-room" repeat="tournaments" as="tournament">
-                <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}">
-                    <div class="player-T" repeat="tournament.players" as="player">
-                        <a href="javascript:void(0)" @click="this.navigate(player.nickname)" class="profil-T">
-                            <img src="{this.getPlayerPic(player)}">
-                            <div class="profil-nick-T"> {player} </div>
-                        </a>
-                    </div>
+            <div class="player-count">{tournament.players.length}/{tournament.expectedPlayers}</div>
+        </div>
+        <div class="buttons">
+            <button class="btn btn-startGame" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">{language.GoButton}</button>
+            <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
+        </div>
+        <div class="tournament-room" repeat="tournaments" as="tournament">
+            <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}">
+                <div class="player-T" repeat="tournament.players" as="player">
+                    <a class="profil-T" href="javascript:void(0)" @click="this.navigate(player)">
+                        <img src="{this.getPlayerPic(player)}">
+                        <div class="profil-nick-T">{player}</div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    `
+`
         //<script>document.addEventListener("DOMContentLoaded", this.startRound2())</script>
 
     static css = css`
@@ -37,141 +34,11 @@ class TournamentWr extends Component {
             right: 0;
             bottom: 0;
             width: 100%;
-            height: calc(90% - 10px);
+            height: calc(90% - 6px);
             background-color: rgba(255, 255, 255, 0.5);
             font-family: 'Press Start 2P', sans-serif;
-
-        }
-
-        .rectangle-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
-            backdrop-filter: blur(1px);
-            align-items: center;
-            white-space: nowrap;
-            font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .title-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            left: 0%;
-            right: 15%;
-            top: 0%;
-            overflow: hidden;
-
-            font-size: 8vw;
-        	color: white;
-        	text-shadow:
-        	    2px 2px 3px #ff6600,
-        	    4px 4px 6px #cc3300,
-        	    6px 6px 9px #993300;
-        	text-align: center;
-        }
-
-        .player-count {
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            top: 15%;
-            text-align: center;
-            line-height: 2.5;
-
-            font-size: 3vh;
-            color: white;
-        }
-
-        .tournament-room {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            height: 70%;
-            left: 0%;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .player-list-T{
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .btn-startGame {
-            position: absolute;
-            left: 2%;
-            top: 15%;
-            width: 20%;
-            height: 70%;
-            justify-content: center;
-            align-items: center;
             display: flex;
-
-            font-size: 3vw;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00c7d6;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 1;
-            backdrop-filter: blur(1px);
-        }
-
-        .btn-startGame:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .player-T {
-            position: relative;
             flex-direction: column;
-            width: 50%;
-            left: 25%;
-            height: 20%;
-        }
-
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            margin-bottom: 5%;
-        }
-
-        .profil-T img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        .profil-nick-T {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 40%;
-            left: 20%;
-
-            font-size: 4vw;
-            color: white;
-            text-shadow:
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
         }
     }
 
@@ -181,141 +48,11 @@ class TournamentWr extends Component {
             right: 0;
             bottom: 0;
             width: 100%;
-            height: calc(90% - 10px);
+            height: calc(90% - 6px);
             background-color: rgba(255, 255, 255, 0.5);
             font-family: 'Press Start 2P', sans-serif;
-
-        }
-
-        .rectangle-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0%;
-            background-color: rgba(200, 200, 200, 0.1);
-            box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
-            backdrop-filter: blur(1px);
-            align-items: center;
-            white-space: nowrap;
-            font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .title-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            left: 0%;
-            right: 15%;
-            top: 0%;
-            overflow: hidden;
-
-            font-size: 8vw;
-        	color: white;
-        	text-shadow:
-        	    2px 2px 3px #ff6600,
-        	    4px 4px 6px #cc3300,
-        	    6px 6px 9px #993300;
-        	text-align: center;
-        }
-
-        .player-count {
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            top: 15%;
-            text-align: center;
-            line-height: 2.5;
-
-            font-size: 3vh;
-            color: white;
-        }
-
-        .tournament-room {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            height: 70%;
-            left: 0%;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .player-list-T{
-            position: absolute;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .btn-startGame {
-            position: absolute;
-            left: 2%;
-            top: 15%;
-            width: 20%;
-            height: 70%;
-            justify-content: center;
-            align-items: center;
             display: flex;
-
-            font-size: 3vw;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00c7d6;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 1;
-            backdrop-filter: blur(1px);
-        }
-
-        .btn-startGame:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
-
-        .player-T {
-            position: relative;
             flex-direction: column;
-            width: 50%;
-            left: 25%;
-            height: 20%;
-        }
-
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            margin-bottom: 5%;
-        }
-
-        .profil-T img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        .profil-nick-T {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 40%;
-            left: 20%;
-
-            font-size: 4vw;
-            color: white;
-            text-shadow:
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
         }
     }
 
@@ -328,173 +65,167 @@ class TournamentWr extends Component {
             height: calc(90% - 10px);
             background-color: rgba(255, 255, 255, 0.5);
             font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .rectangle-waitingRoom-T {
-            position: absolute;
-            bottom: 0;
-            width: 50%;
-            height: 90%;
-            left: 25%;
-            background-color: rgb(86, 86, 86);
-            backdrop-filter: blur(1px);
             display: flex;
-            align-items: center;
-            white-space: nowrap;
-            font-family: 'Press Start 2P', sans-serif;
-        }
-
-        .title-waitingRoom-T {
-            position: absolute;
-            width: 100%;
-            height: 15%;
-            left: 0%;
-            right: 15%;
-            top: 0%;
-            overflow: hidden;
-            white-space: nowrap;
-            background-color: rgb(112, 112, 112);
-            font-size: 2.5vw;
-            color: white;
-            text-shadow:
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
-        }
-
-        .player-count {
-            position: absolute;
-            width: 100%;
-            height: 10%;
-            top: 15%;
-            text-align: center;
-            line-height: 2.5;
-
-            font-size: 1.3vw;
-            color: #00ff00;
-            text-shadow:
-                2px 2px 3px #009900,
-                4px 4px 6px #006600,
-                6px 6px 9px #003300;
-        }
-
-        .tournament-room {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            height: 70%;
-            left: 0%;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .player-list-T{
-            position: absolute;
             flex-direction: column;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
         }
+    }
 
-        .btn-startGame {
-            position: absolute;
-            left: 2%;
-            bottom: 0;
-            width: 20%;
-            height: 70%;
-            justify-content: center;
-            align-items: center;
-            display: flex;
+    .top-bar {
+        display: flex;
+        padding: 30px 30px;
+        background-color: rgb(112, 112, 112);
+        justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+    }
 
-            font-size: 1vw;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #00ff00;
-            border: 1px solid #00c7d6;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
-            backdrop-filter: blur(1px);
-        }
+    .title-waitingRoom-T {
+        display: flex;
+        justify-content: center;
+        padding: 1vw;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 2vw;
+        color: white;
+        text-shadow:
+            2px 2px 3px #595959,
+            4px 4px 6px #595959,
+            6px 6px 9px #595959;
+    }
 
-        .btn-startGame:hover {
-            background-color: #00ff00;
-            color: #2a2a2a;
-            opacity: 1;
-        }
+    .player-count {
+        display: flex;
+        line-height: 2.5;
+        font-size: 1.8vw;
+        color: #ff8000;
+        text-shadow:
+            2px 2px 3px #ff6600,
+            4px 4px 6px #cc3300,
+            6px 6px 9px #993300;
+        text-decoration-line: underline;
+    }
 
-        .btn-giveUp {
-            position: absolute;
-            width: 20%;
-            height: 70%;
-            right: 2%;
-            bottom: 0;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            overflow: hidden;
+    .buttons {
+        display: flex;
+        padding: 30px 30px;
+        justify-content: space-around;
+        flex-direction: row;
+        align-items: center;
+    }
 
-            font-size: 1vw;
-            background-color: rgba(42, 42, 42, 0.2);
-            color: #ff0000;
-            border: 1px solid #ff0000;
-            transition: background-color 0.3s, color 0.3s;
-            opacity: 0.6;
-        }
+    .btn-startGame {
+        padding: 20px 12px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        white-space: nowrap;
+        overflow: hidden;
 
-        .btn-giveUp:hover {
-            background-color: #ff0000;
-            color: #2a2a2a;
-            opacity: 1;
-        }
+        font-size: 1vw;
+        background-color: rgba(42, 42, 42, 0.2);
+        color: #00ff00;
+        border: 2px solid #00ff00;
+        border-radius: 10px;
+        transition: background-color 0.3s, color 0.3s;
+        opacity: 0.6;
+        font-family: 'Press Start 2P', sans-serif;
+    }
 
-        .player-T {
-            position: relative;
-            flex-direction: column;
-            width: 100%;
-            left: 0;
-            height: 20%;
-        }
+    .btn-startGame:hover {
+        background-color: #00ff00;
+        color: #2a2a2a;
+        opacity: 1;
+    }
 
-        .profil-T {
-            position: relative;
-            flex-direction: column;
-            left: 0%;
-            width: 100%;
-            height: 100%;
-            margin-bottom: 5%;
-        }
+    .btn-giveUp {
+        padding: 20px 12px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        white-space: nowrap;
+        overflow: hidden;
 
-        .profil-T img {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            max-height: 100%;
-            object-fit: cover;
-            object-position: center +10%;
-            opacity: 1;
-        }
+        font-size: 1vw;
+        background-color: rgba(42, 42, 42, 0.2);
+        color: #ff0000;
+        border: 2px solid #ff0000;
+        border-radius: 10px;
+        transition: background-color 0.3s, color 0.3s;
+        opacity: 0.6;
+        font-family: 'Press Start 2P', sans-serif;
+    }
 
-        .profil-T:hover {
-            height: 450%;
-            transition: all 1s ease;
-        }
+    .btn-giveUp:hover {
+        background-color: #ff0000;
+        color: #2a2a2a;
+        opacity: 1;
+    }
 
-        .profil-nick-T {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            top: 25%;
-            left: 25%;
+    .tournament-room {
+        display: flex;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+    }
 
-            font-size: 1.2vw;
-            color: white;
-            text-shadow:
-                2px 2px 3px #ff6600,
-                4px 4px 6px #cc3300,
-                6px 6px 9px #993300;
-            text-align: center;
-        }
+    .player-list-T {
+        display: flex;
+        overflow-y: auto;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .player-T {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .profil-T {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-top: 8px solid white;
+    }
+
+    .profil-T:last-child {
+        border-bottom: 8px solid white;
+    }
+
+    .profil-T img {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: cover;
+        object-position: center +10%;
+        opacity: 1;
+    }
+
+    .profil-T:hover {
+        height: 450%;
+        transition: all 1s ease;
+    }
+
+    .profil-T:not(hover) {
+        height: 100%;
+        transition: all 1s ease;
+    }
+
+    .profil-nick-T {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+
+        width: 100%;
+        font-size: 1.2vw;
+        color: white;
+        text-shadow:
+            2px 2px 3px #595959,
+            4px 4px 6px #595959,
+            6px 6px 9px #595959;
+        text-align: center;
     }
 
     a {
@@ -587,6 +318,12 @@ class TournamentWr extends Component {
 
     navigate(nickname) {
 		const user = state.users.find(user => user.nickname === nickname);
+
+        console.log(user);
+        console.log(nickname);
+
+        if (!user)
+            return ;
 
 		state.profileLooking = user.id
 		navigateTo('/profile');
