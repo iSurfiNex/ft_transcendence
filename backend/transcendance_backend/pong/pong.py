@@ -157,7 +157,7 @@ class Pong:
                 "score": p1.score,
             },
             "pR": {
-                "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y,"o": p1.pad.line.vec.toRad},
+                "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y,"o": p2.pad.line.vec.toRad},
                 "goal": goal_p2,
                 "clamp": clamp_p2,
                 "score": p2.score,

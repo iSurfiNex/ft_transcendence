@@ -18,16 +18,20 @@ export class PongGameCanvas {
 		depthTest: false,
 	});
 	material_paint_L = new THREE.MeshBasicMaterial({
-		color: 0xb50202,
+		color: 0x6f0101,
+		//transparent: true,
+		alphaTest: 0.5,
 		depthTest: false,
 	});
 	material_paint_R = new THREE.MeshBasicMaterial({
-		color: 0x00fff7,
+		color: 0x00b3ad,
+		//transparent: true,
+		alphaTest: 0.5,
 		depthTest: false,
 	});
 	material_line = new THREE.MeshBasicMaterial({
 		color: 0xffffff,
-		opacity: 0.1,
+		opacity: 0.8,
 		depthTest: false,
 	});
 	material_line_green = new THREE.LineBasicMaterial({ color: 0x00ff00 });
@@ -154,7 +158,7 @@ export class PongGameCanvas {
 
 		if (
 			this.ball.position.x != data.ball.x &&
-			actual_time.getTime() > this.time + 150
+			actual_time.getTime() > this.time + 50
 		) {
 			scale = (Math.random() * 100) % 1.5;
 			this.time = actual_time.getTime();
@@ -176,6 +180,7 @@ export class PongGameCanvas {
 			paint.scale.set(scale, scale, 1);
 			paint.renderOrder = this.paint_z;
 			this.paint_z += 1;
+			paint.opacity = 0.5;
 			this.scene.add(paint);
 			//console.log(this.scene.children.length)
 		}
@@ -283,6 +288,9 @@ export class PongGameCanvas {
 
 		this.paddleR.position.set(data.pR.paddle.x, data.pR.paddle.y, 10);
 		this.paddleL.position.set(data.pL.paddle.x, data.pL.paddle.y, 10);
+
+		this.paddleL.rotation.set(0, 0, data.pL.paddle.o - Math.PI / 2);
+		this.paddleR.rotation.set(0, 0, data.pR.paddle.o - Math.PI / 2);
 
 		this.updateBall(data);
 		this.updateBonus(data);
