@@ -1,4 +1,4 @@
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { GLTFLoader } from "GLTFLoader";
 import * as THREE from "three";
 import * as UNIFORMS from "uniforms";
 
