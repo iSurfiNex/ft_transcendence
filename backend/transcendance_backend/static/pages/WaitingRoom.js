@@ -337,13 +337,13 @@ class PongWaitingRoom extends Component {
     getPTwoName(game) {
         if (game.ia)
             return 'AI';
-        return game.p2.nickname;
+        return game.p2?.nickname;
     }
 
     getPTwoPic(game) {
         if (game.ia)
             return '/media/avatars/bot.jpg';
-        return game.p2.picture;
+        return game.p2?.picture;
     }
 
     navigate(nickname) {

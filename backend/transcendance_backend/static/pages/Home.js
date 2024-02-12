@@ -279,7 +279,8 @@ class PongHome extends Component {
 		visibility: hidden;
 		opacity: 0;
 		width: 0;
-		transition: visibility 0s 0.4s, opacity 0.4s, width 0.4s ease;
+		height: 0;
+		transition: visibility 0s 0.4s, opacity 0.4s, width 0.4s, height 0.4s ease;
 	}
 
 	.hidden-front {
