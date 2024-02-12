@@ -21,13 +21,13 @@ BALL_SPEED = 150
 PADDLE_SPEED = 250
 
 ball_reset_pos = Vec(0, 0)
-d = Vec(-6, 4).normalized
+
 ball = Ball(
     reset_pos=ball_reset_pos,
     pos=ball_reset_pos,
     speed=BALL_SPEED,
     radius=25,
-    direction=d,
+    direction=Ball.get_random_starting_direction(),
 )
 
 

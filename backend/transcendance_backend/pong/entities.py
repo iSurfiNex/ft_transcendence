@@ -1,3 +1,6 @@
+import random
+import math
+
 from .types import Line, Vec
 
 
@@ -25,6 +28,11 @@ class Ball(Moving):
 
     def __str__(self):
         return f"Ball(pos={self.p}, speed={self.s}, radius={self.r}, direction={self.d.__dict__})"
+
+    @staticmethod
+    def get_random_starting_direction():
+        return Vec.random_normalized(-math.pi / 4, math.pi / 4)*(random.choice([1, -1]), 1)
+
 
 
 class Pad(Moving):

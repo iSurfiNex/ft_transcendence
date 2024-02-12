@@ -71,16 +71,12 @@ class PongEngine:
         ):
             self.game_over = True
 
-        # reset ball pos to the middle of the board
-        # reverse the direction of the ball on the x axis
-        # self.ball.d *= Vec(-1, 0)
-        # Generate a random angle between -pi/4 and pi/4 (45 degrees in either direction)
-        # random_angle = random.uniform(-math.pi / 4, math.pi / 4)
+        random_angle = random.uniform(-math.pi / 6, math.pi / 6)
 
-        ## Rotate the direction vector by the random angle
-        # self.ball.d = Vec(
-        #    self.ball.d.x * math.cos(random_angle)
-        #    - self.ball.y * math.sin(random_angle),
-        #    self.ball.d.x * math.sin(random_angle)
-        #    + self.ball.d.y * math.cos(random_angle),
-        # )
+        # Rotate the direction vector by the random angle
+        self.ball.d = Vec(
+           self.ball.d.x * math.cos(random_angle)
+           - self.ball.d.y * math.sin(random_angle),
+           self.ball.d.x * math.sin(random_angle)
+           + self.ball.d.y * math.cos(random_angle),
+        )
