@@ -3,6 +3,7 @@ from .types import Vec
 from .ai import PongAI
 from .entities import Player
 
+from time import time
 import math
 import random
 
@@ -80,3 +81,4 @@ class PongEngine:
            self.ball.d.x * math.sin(random_angle)
            + self.ball.d.y * math.cos(random_angle),
         )
+        self.round_started_at = time()

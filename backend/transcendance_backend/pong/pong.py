@@ -208,6 +208,8 @@ class Pong:
         if start_in > 0:
             sleep(start_in)
 
+        self.engine.round_started_at = current_time
+
         while True:
             if self.pause:
                 continue
@@ -226,7 +228,7 @@ class Pong:
             [self.handle_ai_inputs(ai) for ai in self.ai_list]
 
             self.engine.update(delta)
-            self.engine.ball.s = BALL_BASE_SPEED + (current_time - self.start_at )*BALL_ACCELERATION
+            self.engine.ball.s = BALL_BASE_SPEED + (current_time - self.engine.round_started_at )*BALL_ACCELERATION
 
             game_data = self.serialize()
             await asend(game_data)
