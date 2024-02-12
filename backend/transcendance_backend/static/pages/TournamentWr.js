@@ -317,10 +317,7 @@ class TournamentWr extends Component {
     }
 
     navigate(nickname) {
-		const user = state.users.find(user => user.nickname === nickname);
-
-        console.log(user);
-        console.log(nickname);
+	const user = state.users.find(user => user.nickname === nickname);
 
         if (!user)
             return ;
