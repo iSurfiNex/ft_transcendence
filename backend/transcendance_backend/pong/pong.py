@@ -32,10 +32,10 @@ ball = Ball(
 
 
 wall_contours = [
-    Vec(PAD_SHIFT + BALL_RADIUS + PAD_W / 2 - W / 2, -BALL_RADIUS + H / 2),
-    Vec(-PAD_SHIFT - BALL_RADIUS - PAD_W / 2 + W / 2, -BALL_RADIUS + H / 2),
-    Vec(-PAD_SHIFT - BALL_RADIUS - PAD_W / 2 + W / 2, BALL_RADIUS - H / 2),
-    Vec(PAD_SHIFT + BALL_RADIUS + PAD_W / 2 - W / 2, BALL_RADIUS - H / 2),
+    Vec(BALL_RADIUS - W / 2, -BALL_RADIUS + H / 2),
+    Vec( - BALL_RADIUS + W / 2, -BALL_RADIUS + H / 2),
+    Vec( - BALL_RADIUS  + W / 2, BALL_RADIUS - H / 2),
+    Vec(BALL_RADIUS  - W / 2, BALL_RADIUS - H / 2),
 ]
 
 player1_pad_line = Line()
