@@ -18,21 +18,19 @@ def compute_collision(
     pos: Vec, vec: Vec, obstacles: list[Obstacle], ignore
 ) -> tuple[Collision or None, Vec or None]:
     for obstacle in obstacles:
-        for line in obstacle:
-            p1, p2 = line
-            if line == ignore:
+        for obstacle_line in obstacle:
+            if obstacle_line == ignore:
                 continue
-            l1 = Line(pos, pos + vec)
-            l2 = Line(p1, p2)
-            coll_pos = l1.intersect(l2)
+            ball_line = Line(pos, pos + vec)
+            coll_pos = ball_line.intersect(obstacle_line)
             if coll_pos:
-                n = l2.normal
+                n = obstacle_line.normal
                 r_dir = vec.reflect(n)
                 # TODO improve datetime
                 return (
                     Collision(pos=coll_pos, obstacle=obstacle, ts=datetime.now()),
                     r_dir,
-                    line,
+                    obstacle_line,
                 )
     return None, None, None
 
