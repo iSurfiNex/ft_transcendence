@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		displayContent(path);
 	});
 
+	window.addEventListener('contextmenu', (event) => {
+		event.preventDefault();
+	});
+
 	const initialPath = window.location.pathname;
 	displayContent(initialPath);
 });
@@ -406,7 +410,7 @@ function currentGameUpdate() {
 	if (state.games && state.games.length != 0)
 		isMyGame = state.games.find(game => game.players.includes(state.profile.nickname) && game.status !== 'done');
 
-	
+
 	if (state.tournaments && state.tournaments.length != 0)
 	{
 		isMyTournament = state.tournaments.find(tournament => tournament.players.includes(state.profile.nickname) && tournament.status !== 'done')
@@ -417,6 +421,6 @@ function currentGameUpdate() {
 				currentTournament = isMyTournament.id
 		}
 	}
-	
+
 	state.currentTournament = currentTournament;
 }
