@@ -316,9 +316,6 @@ class PongWaitingRoom extends Component {
         }
 
         put2(url, dataToSend)
-        .then (data => {
-            //navigateTo(LA-PAGE-DU-JEU)
-        })
         .catch(error => {console.error(error)})
     }
 

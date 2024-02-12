@@ -400,6 +400,7 @@ class ManageTournamentView(View):
                     random.shuffle(players)
                     tournament.state = "round 1"
                     tournament.save()
+                    Update(tournament=tournament, tournament_action="update", user=my_player)
                     start_game(0, players[0], players[1])
                     start_game(1, players[2], players[3])
                     #tournament.state = "round 1"

@@ -375,6 +375,9 @@ observe('tournament.status', (newStatus, oldStatus) => {
                 console.log("LEAVE TOURNAMENT WAITING ROOM")
                 navigateTo('/play/tournament')
         }
+		else {
+			console.log("==================   ", newStatus);
+		}
 })
 
 // TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer

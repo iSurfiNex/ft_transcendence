@@ -255,6 +255,9 @@ export class PongGameCanvas {
 		const imPL = state.game.p1.id === state.profile.id;
 		const iWin = pLWin == imPL;
 		state.runningGame.gameOverState = iWin ? "youWin" : "youLose";
+		
+		if (state.runningGame.gameOverState == "youLose")
+			this.socket.close();
 	}
 
 	onmessage(event) {

@@ -211,7 +211,7 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(
         self, close_code
-    ):  # PAS OUBLIER DE DECONNECTER LES JOUEURS DU WS A LA FIN DE LA GAME
+    ):
         if self.group_name:
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
         logger.debug("======WS GAME: USER DISCONNECTED======")
