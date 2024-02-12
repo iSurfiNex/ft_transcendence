@@ -5,7 +5,7 @@ import math
 from .engine import PongEngine
 from .entities import Ball, Pad, Player
 from .ai import PongAI
-from .types import DrawDebug, Vec, Pos, Line
+from .types import Vec, Pos, Line
 
 from .communication import get_game_stopped, get_user_inputs
 from transcendance_backend.manager import set_game_done
@@ -91,7 +91,7 @@ class Pong:
         padPlayer1 = Pad(
             pos=Vec(PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
-            clamp_rot=(-math.pi*2/3, math.pi*2/3),
+            clamp_rot=(math.pi/3, math.pi*2/3),
             clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
             speed=PADDLE_SPEED,

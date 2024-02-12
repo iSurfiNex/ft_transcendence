@@ -5,23 +5,10 @@ Pos = tuple[float, float]
 Contour = list[Pos]
 
 
-class DrawDebug:
-    saved = {}
-
-    def __init__(self, class_name):
-        self.class_name = class_name
-        if not class_name in DrawDebug.saved:
-            DrawDebug.saved[class_name] = {}
-
-    def draw(self, label: str = "", color: tuple = (255, 0, 0)):
-        DrawDebug.saved[self.class_name][label] = (self, color)
-
-
-class Vec(DrawDebug):
+class Vec():
     _t: tuple
 
     def __init__(self, *args):
-        super().__init__("Vec")
         if len(args) == 1:
             self._t = tuple(args[0])
         else:
@@ -162,7 +149,7 @@ class Vec(DrawDebug):
         return Vec(x,y).normalized
 
 
-class Line(DrawDebug):
+class Line():
     a: Vec
     b: Vec = Vec(0, 0)
 
@@ -170,7 +157,6 @@ class Line(DrawDebug):
         return f"Line({self.a}, {self.b})"
 
     def __init__(self, a: Vec or tuple = Vec(0, 0), b: Vec or tuple = Vec(0, 0)):
-        super().__init__("Line")
         self.a = a if isinstance(a, Vec) else Vec(a)
         self.b = b if isinstance(b, Vec) else Vec(b)
 

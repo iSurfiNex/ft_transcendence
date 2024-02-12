@@ -42,10 +42,10 @@ class PongAI:
             goal_pos = line[0] + opponent_line_vec * 0.9
         return goal_pos
 
-    def pad_shift_for_angle(
-        self, angle: float, bounce_angle_on_side, pad_width
-    ) -> float:
-        return angle / bounce_angle_on_side * (pad_width / 2)
+    #def pad_shift_for_angle(
+    #    self, angle: float, bounce_angle_on_side, pad_width
+    #) -> float:
+    #    return angle / bounce_angle_on_side * (pad_width / 2)
 
     def add_pad_goto(self, target_pos: Vec, dir=None, until=None):
         if self.pad_actions:
@@ -65,7 +65,6 @@ class PongAI:
 
     def update_target(self, next_impact: Collision):
         next_impact_pos = next_impact.pos
-        next_impact_pos.draw("impact")
         goal_pos = self.choose_goal_pos()
         goal_pos_proj = self.player.pad.line.project(goal_pos)
         c = goal_pos
@@ -74,22 +73,23 @@ class PongAI:
         ab = (b - a).len
         bc = (c - b).len
         angleACB = math.tan(ab / bc)
-        pad_shift = self.pad_shift_for_angle(
-            angleACB,
-            math.pi / 4,
-            self.opponent.pad.dim.y,
-        )
-        target_pos = next_impact_pos + (0, pad_shift)
+        #pad_shift = self.pad_shift_for_angle(
+        #    angleACB,
+        #    math.pi / 4,
+        #    self.opponent.pad.dim.y,
+        #)
+        target_pos = next_impact_pos# + (0, pad_shift)
         self.pad_actions = []
+        #self.add_pad_goto(target_pos, dir=0, until=next_impact.ts)
+        #self.add_pad_goto(self.player.goal_line.center)
+        if self.target_pos and (self.target_pos - next_impact_pos).len < 10:
+            return
         self.add_pad_goto(next_impact_pos)
-        self.add_pad_goto(target_pos, dir=0, until=next_impact.ts)
-        self.add_pad_goto(self.player.goal_line.center)
         self.player.goal_line.center
         self.goal_pos = goal_pos
         self.target_pos = target_pos
         self.goal_pos_proj = goal_pos_proj
-        goal_pos.draw("goal")
-        self.target_pos.draw("target")
+        #print("TARGET", target_pos)
 
     def update(self):
         now = time()
@@ -98,8 +98,8 @@ class PongAI:
             return
         next_pad_action = self.pad_actions[0]
         dir, until, target_pos = next_pad_action
-        if now > until:
-            del self.pad_actions[0]
+        if now >= until:
+            self.pad_actions.pop(0)
             self.update()
         if dir == 0:
             self.stay_still()
