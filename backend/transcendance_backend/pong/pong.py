@@ -91,7 +91,7 @@ class Pong:
         padPlayer1 = Pad(
             pos=Vec(PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
-            clamp_rot=(-math.pi*2/3, math.pi*2/3),
+            clamp_rot=(math.pi/3, math.pi*2/3),
             clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
             speed=PADDLE_SPEED,
