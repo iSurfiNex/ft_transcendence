@@ -52,11 +52,11 @@ class PongCreateGame extends Component {
 
 			<div class="bottom-bar">
 				<div class="button-space">
-					<button id="pong-button" class="create" @click="this.createGame()">
-						<span class="front-create">{language.Create}</span>
-					</button>
 					<button id="pong-button" class="cancel" @click="this.cancelGame()">
 						<span class="front-cancel">{language.Cancel}</span>
+					</button>
+					<button id="pong-button" class="create" @click="this.createGame()">
+						<span class="front-create">{language.Create}</span>
 					</button>
 				</div>
 			</div>
