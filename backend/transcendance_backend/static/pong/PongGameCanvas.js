@@ -20,13 +20,13 @@ export class PongGameCanvas {
 	material_paint_L = new THREE.MeshBasicMaterial({
 		color: 0x6f0101,
 		transparent: true,
-		opacity: 0.5,
+		opacity: 0.1,
 		depthTest: false,
 	});
 	material_paint_R = new THREE.MeshBasicMaterial({
 		color: 0x00b3ad,
 		transparent: true,
-		opacity: 0.5,
+		opacity: 0.1,
 		depthTest: false,
 	});
 	material_line = new THREE.MeshBasicMaterial({
@@ -127,9 +127,9 @@ export class PongGameCanvas {
 		//	}
 		//});
 
-		
+
 		// return false if the key was ignored
-		
+
 		document.addEventListener("keydown", ({ key }) => this.updateInputs(key, true));
 		document.addEventListener("keyup", ({ key }) => this.updateInputs(key, false));
 	}
