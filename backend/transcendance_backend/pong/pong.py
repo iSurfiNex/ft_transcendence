@@ -1,5 +1,6 @@
 from time import time, sleep
 import random
+import math
 
 from .engine import PongEngine
 from .entities import Ball, Pad, Player
@@ -88,9 +89,9 @@ class Pong:
         ai_collision_lines = [[player1_goal_line, player2_goal_line] + wall_lines]
 
         padPlayer1 = Pad(
-            # pos=Vec(PAD_SHIFT, H / 2 + 30),
             pos=Vec(PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
+            clamp_rot=(-math.pi*2/3, math.pi*2/3),
             clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
             speed=PADDLE_SPEED,
@@ -98,6 +99,7 @@ class Pong:
         padPlayer2 = Pad(
             pos=Vec(W - PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
+            clamp_rot= (math.pi/3, math.pi*2/3),
             clamp_line=player2_clamp_line,
             pad_line=player2_pad_line,
             speed=PADDLE_SPEED,

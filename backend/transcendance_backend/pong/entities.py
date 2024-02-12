@@ -42,11 +42,13 @@ class Pad(Moving):
         dim,
         clamp_line: Line,
         pad_line: Line,
+        clamp_rot,
         speed=100,
         direction=(0, 0),
         orientation=Vec(0, 1),
         rotation=0,
     ):
+        self.clamp_rot = clamp_rot
         self.r = rotation
         self.orientation = orientation
         super().__init__(pos, speed, direction)
@@ -112,7 +114,7 @@ class Pad(Moving):
         new_x = x * math.cos(rotation) - y * math.sin(rotation)
         new_y = x * math.sin(rotation) + y * math.cos(rotation)
         angle = Vec(new_x, new_y).toRad
-        angle_clamped = self.clamp_radian_angle(angle, -math.pi*2/3, math.pi*2/3)
+        angle_clamped = self.clamp_radian_angle(angle, self.clamp_rot[0], self.clamp_rot[1])
         return Vec.angle_to_vector(angle_clamped)
 
 
