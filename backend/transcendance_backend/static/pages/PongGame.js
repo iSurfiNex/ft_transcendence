@@ -48,6 +48,24 @@ class PongGame extends Component {
 			bottom: 65px;
 		}
 
+		.btn {
+			cursor: pointer;
+			font-size: 25px;
+			font-family: "Press Start 2P", sans-serif;
+			position: fixed;
+			bottom: 40px;
+			right: 40px;
+			justify-content: center;
+			align-items: center;
+			display: flex;
+			white-space: nowrap;
+			overflow: hidden;
+			transition:
+				background-color 0.3s,
+				color 0.3s;
+			opacity: 0.6;
+		}
+
 		.btn-mobileButtonUp {
 			cursor: pointer;
 			position: absolute;
