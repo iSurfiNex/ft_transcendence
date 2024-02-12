@@ -45,7 +45,7 @@ class PongEngine:
 
     def physic_update(self, delta):
         for p in self.players:
-            p.pad.update_pos(delta)
+            p.pad.update(delta)
         ball_vec = self.ball.get_vec(delta)
         collisions, next_pos, next_dir, _ = collisions_check(
             self.ball.p, ball_vec, self.lines_obstacles

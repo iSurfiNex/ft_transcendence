@@ -124,6 +124,12 @@ class Vec(DrawDebug):
     def normal(self) -> "Vec":
         return Vec(-self.y, self.x).normalized
 
+    @property
+    def toRad(self) -> float:
+        normed = self.normalized
+        angle_radians = math.atan2(normed.y, normed.x)
+        return angle_radians
+
     # Assums the normal is normalized
     def reflect(self, normal_dir: "Vec") -> "Vec":
         normalized = self.normalized

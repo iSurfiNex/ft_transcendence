@@ -45,7 +45,9 @@ class Pad(Moving):
         speed=100,
         direction=(0, 0),
         orientation=Vec(0, 1),
+        rotation=0,
     ):
+        self.r = rotation
         self.orientation = orientation
         super().__init__(pos, speed, direction)
         self._dim = Vec(dim)
@@ -95,13 +97,33 @@ class Pad(Moving):
         new_b = self._clamp_line.b - shift
         self._clamp_line_constrained = Line(new_a, new_b)
 
+    def clamp_radian_angle(self, angle, lower_bound, upper_bound):
+        if angle < lower_bound:
+            return lower_bound
+        elif angle > upper_bound:
+            return upper_bound
+        else:
+            return angle
+
+
+    def get_next_orientation(self, delta):
+        (x, y) = self.orientation
+        rotation = self.r*delta
+        new_x = x * math.cos(rotation) - y * math.sin(rotation)
+        new_y = x * math.sin(rotation) + y * math.cos(rotation)
+        angle = Vec(new_x, new_y).toRad
+        angle_clamped = self.clamp_radian_angle(angle, -math.pi*2/3, math.pi*2/3)
+        return Vec.angle_to_vector(angle_clamped)
+
+
     def get_next_pos(self, delta: float):
         pos = super().get_next_pos(delta)
         pos = self._clamp_line_constrained.project_clamped(pos)
         return pos
 
-    def update_pos(self, delta):
+    def update(self, delta):
         self.p = self.get_next_pos(delta)
+        self.orientation = self.get_next_orientation(delta)
         self.update_pad_line()
 
 
@@ -120,3 +142,12 @@ class Player:
 
     def stay_still(self):
         self.pad.d = Vec(0, 0)
+
+    def rotate_left(self):
+        self.pad.r = math.pi/4
+
+    def rotate_right(self):
+        self.pad.r = -math.pi/4
+
+    def rotate_still(self):
+        self.pad.r = 0

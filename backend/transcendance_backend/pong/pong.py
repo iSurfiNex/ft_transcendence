@@ -149,13 +149,13 @@ class Pong:
 
         return {
             "pL": {
-                "paddle": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y},
+                "paddle": {"x": ppp1.x, "y": ppp1.y, "h": p1.pad.dim.y, "o": p1.pad.line.vec.toRad},
                 "goal": goal_p1,
                 "clamp": clamp_p1,
                 "score": p1.score,
             },
             "pR": {
-                "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y},
+                "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y,"o": p1.pad.line.vec.toRad},
                 "goal": goal_p2,
                 "clamp": clamp_p2,
                 "score": p2.score,
@@ -170,13 +170,23 @@ class Pong:
     def handle_player_inputs(self, id, idx):
         inputs = get_user_inputs(id, idx)
         player = self.engine.players[idx]
-        if inputs is not None:
-            if inputs["up"] == inputs["down"]:
-                player.stay_still()
-            elif inputs["up"]:
-                player.go_up()
-            elif inputs["down"]:
-                player.go_down()
+        try:
+            if inputs is not None:
+                if inputs["up"] == inputs["down"]:
+                    player.stay_still()
+                elif inputs["up"]:
+                    player.go_up()
+                elif inputs["down"]:
+                    player.go_down()
+
+                if inputs["left"] == inputs["right"]:
+                    player.rotate_still()
+                elif inputs["left"]:
+                    player.rotate_left()
+                elif inputs["right"]:
+                    player.rotate_right()
+        except KeyError as e:
+            print("Invalid player input", str(e))
 
     def handle_ai_inputs(self, ai):
         if "down" in ai.keypressed:

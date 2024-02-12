@@ -47,7 +47,7 @@ export class PongGameCanvas {
 	obstacleLinesContainer = new THREE.Object3D();
 	goalLinesContainer = new THREE.Object3D();
 	clampLinesContainer = new THREE.Object3D();
-	inputs = { up: false, down: false };
+	inputs = { up: false, down: false, left: false, right: false };
 
 	constructor(gameContainerNode) {
 		this.gameContainerNode = gameContainerNode;
@@ -140,7 +140,9 @@ export class PongGameCanvas {
 		};
 		if (
 			handleInput(["ArrowUp", "w"], "up", key, value) ||
-			handleInput(["ArrowDown", "s"], "down", key, value)
+			handleInput(["ArrowDown", "s"], "down", key, value) ||
+			handleInput(["ArrowLeft", "a"], "left", key, value) ||
+			handleInput(["ArrowRight", "d"], "right", key, value)
 		)
 			send_inputs();
 	};
