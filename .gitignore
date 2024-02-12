@@ -5,6 +5,5 @@ tmp/
 Makefile
 __pycache__/
 node_modules/
-backend/media/
 !backend/media/avatars/default.jpg
 !backend/media/avatars/bot.jpg
