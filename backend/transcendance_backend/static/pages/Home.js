@@ -5,49 +5,34 @@ class PongHome extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<div id="home" class="home">
-		<div id="pong" class="pong-pannel">
-			<div id="pong-content" class="content">
-				<div class="content-main">
+		<div id="content" class="content">
+			<div id="pong" class="pong">
+				<div id="pong-content1" class="pong-content">
 					<div id="pong-title" class="title">PONG</div>
 					<div class="button">
 						<button id="pong-button" @click="this.pongHandler()" class="pushable">
 							<span class="front">{language.play}</span>
 						</button>
 					</div>
-					<div class="queue">
-						<span class="player-nb">7</span><span class="player-text"> {language.playerInQueue}</span>
-					</div>
 				</div>
 			</div>
-		</div>
-
-		<div id="other-game" class="other-game">
-			<div id="other-game-content" class="content">
-				<div class="content-main">
-					<div id="other-game-title" class="title">PONG POWERUP</div>
+			<div id="power-up" class="power-up">
+				<div id="pong-content2" class="pong-content">
+					<div id="powerup-title" class="title">PONG POWERUP</div>
 					<div class="button">
 						<button id="other-game-button" @click="this.othergameHandler()" class="pushable">
 							<span class="front">{language.play}</span>
 						</button>
 					</div>
-					<div class="queue">
-						<span class="player-nb">0</span><span class="player-text"> {language.playerInQueue}</span>
-					</div>
 				</div>
 			</div>
-		</div>
-
-		<div id="tournament" class="tournament">
-			<div id="tournament-content" class="content">
-				<div class="content-main">
+			<div id="tournament" class="tournament">
+				<div id="pong-content3" class="pong-content">
 					<div id="tournament-title" class="title">{language.tournament}</div>
 					<div class="button">
 						<button id="tournament-button" @click="this.tournamentHandler()" class="pushable">
 							<span class="front">{language.play}</span>
 						</button>
-					</div>
-					<div class="queue">
-						<span class="player-nb">8.462</span><span class="player-text"> {language.playerInQueue}</span>
 					</div>
 				</div>
 			</div>
@@ -67,97 +52,43 @@ class PongHome extends Component {
 			transition: all 0.4s ease-in-out;
 		}
 
-		.pong-pannel {
-			position: absolute;
-			top: 2.5%;
-			left: 2%;
-			height: 31%;
-			width: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-			text-align: center;
-			transition: all 0.4s ease-in-out;
-			overflow: hidden;
+		.content {
+			flex-direction: row;
 		}
 
-		.other-game {
-			position: absolute;
-			top: calc(2.5% + 31% + 1%);
-			left: 2%;
-			height: 31%;
-			width: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		.pong-content {
+			display: flex;
 			text-align: center;
-			transition: all 0.4s ease-in-out;
+			flex-direction: column;
 			overflow: hidden;
+			height: 85%;
+			width: 100%;
+		}
+
+		.pong {
+			height: 96%;
+			width: 31%;
+		}
+
+		.power-up {
+			height: 96%;
+			width: 31%;
 		}
 
 		.tournament {
-			position: absolute;
-			top: calc(2.5% + 31% + 1% + 31% + 1%);
-			left: 2%;
-			height: 31%;
-			width: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-			text-align: center;
-			transition: all 0.4s ease-in-out;
-			overflow: hidden;
-		}
-
-		.title {
-			width: 50%;
-			font-family: 'Press Start 2P', sans-serif;
-			color: white;
-			font-size: 30px;
-			word-wrap: break-word;
+			height: 96%;
+			width: 31%;
 		}
 
 		.button {
-			margin-left: 20px;
-			color: white;
+			display: flex;
+			align-items: flex-end;
+			justify-content: center;
+			height: 100%;
 			font-size: 40px;
 			word-wrap: break-word;
-		}
-
-		.queue {
-			position: absolute;
-			width: 80%;
-			left: 0;
-			bottom: 0;
-			font-family: 'Roboto', sans-serif;
-		}
-
-		.content-main {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			overflow: hidden;
 			width: 100%;
-			height: 100%;
-		}
-
-		.content {
-			width: 100%;
-			height: 100%;
-		}
-
-		.player-nb {
-			color: white;
-			font-size: 15px;
-			word-wrap: break-word;
-		}
-
-		.player-text {
-			color: white;
-			font-size: 15px;
-			word-wrap: break-word;
 		}
 	}
 
@@ -172,97 +103,45 @@ class PongHome extends Component {
 			transition: all 0.4s ease-in-out;
 		}
 
-		.pong-pannel {
-			position: absolute;
-			top: 2.5%;
-			left: 2%;
-			height: 31%;
-			width: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-			text-align: center;
-			transition: all 0.4s ease-in-out;
-			overflow: hidden;
+		.content {
+			flex-direction: column;
 		}
 
-		.other-game {
-			position: absolute;
-			top: calc(2.5% + 31% + 1%);
-			left: 2%;
-			height: 31%;
-			width: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		.pong-content {
+			display: flex;
 			text-align: center;
-			transition: all 0.4s ease-in-out;
+			flex-direction: row;
+			justify-content: space-evenly;
 			overflow: hidden;
+			height: 100%;
+			width: 85%;
+			align-items: center;
+		}
+
+		.pong {
+			width: 96%;
+			height: 31%;
+		}
+
+		.power-up {
+			width: 96%;
+			height: 31%;
 		}
 
 		.tournament {
-			position: absolute;
-			top: calc(2.5% + 31% + 1% + 31% + 1%);
-			left: 2%;
-			height: 31%;
 			width: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-			text-align: center;
-			transition: all 0.4s ease-in-out;
-			overflow: hidden;
-		}
-
-		.title {
-			width: 50%;
-			font-family: 'Press Start 2P', sans-serif;
-			color: white;
-			font-size: 30px;
-			word-wrap: break-word;
+			height: 31%;
 		}
 
 		.button {
-			margin-left: 20px;
-			color: white;
+			display: flex;
+			height: 100%;
+			width: 100%;
 			font-size: 40px;
 			word-wrap: break-word;
-		}
-
-		.queue {
-			position: absolute;
-			width: 80%;
-			left: 0;
-			bottom: 0;
-			font-family: 'Roboto', sans-serif;
-		}
-
-		.content-main {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 100%;
-			height: 100%;
-		}
-
-		.content {
-			width: 100%;
-			height: 100%;
-		}
-
-		.player-nb {
-			color: white;
-			font-size: 15px;
-			word-wrap: break-word;
-		}
-
-		.player-text {
-			color: white;
-			font-size: 15px;
-			word-wrap: break-word;
+			overflow: hidden;
+    		align-items: center;
+			justify-content: flex-end;
 		}
 	}
 
@@ -276,95 +155,100 @@ class PongHome extends Component {
 			background-color: rgb(29, 29, 29);
 		}
 
-		.pong-pannel {
-			position: absolute;
-			left: 2.5%;
-			top: 2%;
-			width: 31%;
-			height: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-			text-align: center;
-			transition: all 0.4s ease-in-out;
-			overflow: hidden;
+		.content {
+			flex-direction: row;
 		}
 
-		.other-game {
-			position: absolute;
-			left: calc(2.5% + 31% + 1%);
-			top: 2%;
-			width: 31%;
-			height: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		.pong-content {
+			display: flex;
 			text-align: center;
-			transition: all 0.4s ease-in-out;
+			flex-direction: column;
 			overflow: hidden;
+			height: 60%;
+			width: 100%;
+		}
+
+		.pong {
+			height: 96%;
+			width: 31%;
+		}
+
+		.power-up {
+			height: 96%;
+			width: 31%;
 		}
 
 		.tournament {
-			position: absolute;
-			left: calc(2.5% + 31% + 1% + 31% + 1%);
-			top: 2%;
-			width: 31%;
 			height: 96%;
-			background-color: rgba(255, 255, 255, 0.5);
-			backdrop-filter: blur(5px);
-			border-radius: 20px;
-			box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-			text-align: center;
-			transition: all 0.4s ease-in-out;
-			overflow: hidden;
-		}
-
-		.title {
-			position: relative;
-			top: 31%;
-			font-family: 'Press Start 2P', sans-serif;
-			color: white;
-			font-size: 40px;
-			word-wrap: break-word;
+			width: 31%;
 		}
 
 		.button {
-			position: relative;
-			top: 32%;
-			color: white;
+			display: flex;
+			align-items: flex-end;
+			justify-content: center;
+			height: 100%;
+			width: 100%;
 			font-size: 40px;
 			word-wrap: break-word;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			overflow: hidden;
 		}
+	}
 
-		.queue {
-			width: 100%;
-			text-align: center;
-			position: absolute;
-			bottom: 20px;
-			font-family: 'Roboto', sans-serif;
-		}
+	.content {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+	}
 
-		.content, .content-main {
-			width: 100%;
-			height: 100%;
-		}
+	.pong {
+		position: relative;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-		.player-nb {
-			color: white;
-			font-size: 20px;
-			word-wrap: break-word;
-		}
+	.power-up {
+		position: relative;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-		.player-text {
-			color: white;
-			font-size: 20px;
-			word-wrap: break-word;
-		}
+	.tournament {
+		position: relative;
+		background-color: rgba(255, 255, 255, 0.5);
+		backdrop-filter: blur(5px);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		text-align: center;
+		transition: all 0.4s ease-in-out;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.title {
+		font-family: 'Press Start 2P', sans-serif;
+		color: white;
+		font-size: 40px;
+		word-wrap: break-word;
 	}
 
 	.pushable {
@@ -394,7 +278,14 @@ class PongHome extends Component {
 	.hidden {
 		visibility: hidden;
 		opacity: 0;
-		transition: visibility 0s 0.4s, opacity 0.4s ease;
+		width: 0;
+		transition: visibility 0s 0.4s, opacity 0.4s, width 0.4s ease;
+	}
+
+	.hidden-front {
+		visibility: hidden;
+		opacity: 0;
+		transition: visibility 0s 0.4s, opacity 0.4s, width 0.4s ease;
 	}
 
 	.fullsize {
@@ -410,8 +301,10 @@ class PongHome extends Component {
 
 	pongHandler() {
 		this.shadowRoot.getElementById("pong").style.zIndex=50;
-		this.shadowRoot.getElementById("pong-content").classList.add("hidden");
-		this.shadowRoot.getElementById("other-game").classList.add("hidden");
+		this.shadowRoot.getElementById("pong-content1").classList.add("hidden-front");
+		this.shadowRoot.getElementById("powerup-title").style.wordWrap = "normal";
+		this.shadowRoot.getElementById("tournament-title").style.whiteSpace = "nowrap";
+		this.shadowRoot.getElementById("power-up").classList.add("hidden");
 		this.shadowRoot.getElementById("tournament").classList.add("hidden");
 		this.shadowRoot.getElementById("pong").style.borderRadius=0;
 		this.shadowRoot.getElementById("pong").style.left=0;
@@ -428,15 +321,17 @@ class PongHome extends Component {
 	}
 
 	othergameHandler() {
-		this.shadowRoot.getElementById("other-game").style.zIndex=50;
-		this.shadowRoot.getElementById("other-game-content").classList.add("hidden");
+		this.shadowRoot.getElementById("power-up").style.zIndex=50;
+		this.shadowRoot.getElementById("pong-content2").classList.add("hidden-front");
+		this.shadowRoot.getElementById("pong-title").style.wordWrap = "normal";
+		this.shadowRoot.getElementById("tournament-title").style.whiteSpace = "nowrap";
 		this.shadowRoot.getElementById("pong").classList.add("hidden");
 		this.shadowRoot.getElementById("tournament").classList.add("hidden");
-		this.shadowRoot.getElementById("other-game").style.borderRadius=0;
-		this.shadowRoot.getElementById("other-game").style.left=0;
-		this.shadowRoot.getElementById("other-game").style.top=0;
-		this.shadowRoot.getElementById("other-game").style.width="100%";
-		this.shadowRoot.getElementById("other-game").style.height="100%";
+		this.shadowRoot.getElementById("power-up").style.borderRadius=0;
+		this.shadowRoot.getElementById("power-up").style.left=0;
+		this.shadowRoot.getElementById("power-up").style.top=0;
+		this.shadowRoot.getElementById("power-up").style.width="100%";
+		this.shadowRoot.getElementById("power-up").style.height="100%";
 		if (state.isMobile) {
 			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
 			this.shadowRoot.getElementById("home").style.bottom="0";
@@ -448,9 +343,11 @@ class PongHome extends Component {
 
 	tournamentHandler() {
 		this.shadowRoot.getElementById("tournament").style.zIndex=50;
-		this.shadowRoot.getElementById("tournament-content").classList.add("hidden");
+		this.shadowRoot.getElementById("pong-content3").classList.add("hidden-front");
+		this.shadowRoot.getElementById("pong-title").style.wordWrap = "normal";
+		this.shadowRoot.getElementById("powerup-title").style.whiteSpace = "nowrap";
 		this.shadowRoot.getElementById("pong").classList.add("hidden");
-		this.shadowRoot.getElementById("other-game").classList.add("hidden");
+		this.shadowRoot.getElementById("power-up").classList.add("hidden");
 		this.shadowRoot.getElementById("tournament").style.borderRadius=0;
 		this.shadowRoot.getElementById("tournament").style.left=0;
 		this.shadowRoot.getElementById("tournament").style.top=0;
