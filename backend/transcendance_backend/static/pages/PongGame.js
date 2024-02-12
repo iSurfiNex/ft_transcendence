@@ -9,6 +9,8 @@ class PongGame extends Component {
 		<div id="gameOverlay">
 			<button class="btn-mobileButtonUp" @touchstart="this.upButtonStart()" @touchend="this.upButtonEnd()" hidden="{!isMobile}"></button>
 			<button class="btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!isMobile}"></button>
+			<button class="btn-mobileButtonLeft" @touchstart="this.leftButtonStart()" @touchend="this.leftButtonEnd()" hidden="{!isMobile}"></button>
+			<button class="btn-mobileButtonRight" @touchstart="this.rightButtonStart()" @touchend="this.rightButtonEnd()" hidden="{!isMobile}"></button>
 			<div id="startIn" hidden="{!runningGame.startIn}">
 				<div class="bg"></div>
 				<h2>{language.Start} {runningGame.startIn}</h2>
@@ -46,25 +48,45 @@ class PongGame extends Component {
 			bottom: 65px;
 		}
 
-	.btn-mobileButtonUp {
-		cursor: pointer;
-		position: absolute;
-		width: 50%;
-		height: 100%;
-		left: 0;
-		top: 0;
-		opacity: 0;
-	}
+		.btn-mobileButtonUp {
+			cursor: pointer;
+			position: absolute;
+			width: 50%;
+			height: 50%;
+			left: 0;
+			top: 0;
+			opacity: 0;
+		}
 
-	.btn-mobileButtonDown {
-		cursor: pointer;
-		position: absolute;
-		width: 50%;
-		height: 100%;
-		right: 0;
-		top: 0;
-		opacity: 0;
-	}
+		.btn-mobileButtonDown {
+			cursor: pointer;
+			position: absolute;
+			width: 50%;
+			height: 50%;
+			right: 0;
+			top: 0;
+			opacity: 0;
+		}
+
+		.btn-mobileButtonLeft {
+			cursor: pointer;
+			position: absolute;
+			width: 50%;
+			height: 50%;
+			left: 0;
+			bottom: 0;
+			opacity: 0;
+		}
+
+		.btn-mobileButtonRight {
+			cursor: pointer;
+			position: absolute;
+			width: 50%;
+			height: 50%;
+			right: 0;
+			bottom: 0;
+			opacity: 0;
+		}
 
 		.btn-giveUp:hover {
 			background-color: #ff0000;
@@ -225,10 +247,6 @@ class PongGame extends Component {
 		get("/api/giveup/");
 	}
 
-	checkMobile() {
-		return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-	}
-
 	upButtonStart() {
 		this.game?.updateInputs("w", true);
 	}
@@ -243,6 +261,22 @@ class PongGame extends Component {
 
 	downButtonEnd() {
 		this.game?.updateInputs("s", false);
+	}
+
+	leftButtonStart() {
+		this.game?.updateInputs("a", true);
+	}
+
+	leftButtonEnd() {
+		this.game?.updateInputs("a", false);
+	}
+
+	rightButtonStart() {
+		this.game?.updateInputs("d", true);
+	}
+
+	rightButtonEnd() {
+		this.game?.updateInputs("d", false);
 	}
 
 	leave() {
