@@ -17,7 +17,7 @@ class PongWaitingRoom extends Component {
 					</div>
                     <div class="VS-logo">VS</div>
 					<div class="player-div-two">
-                        <a class="playerTwo" href="javascript:void(0)" @click="this.navigate(game.p2.nickname)">{game.p2.nickname}</a>
+                        <a class="playerTwo" href="javascript:void(0)" @click="this.navigate(game.p2.nickname)">{this.getPTwoName(game)}</a>
                     </div>
                 </div>
                 <div class="giveup-game-div">
@@ -28,7 +28,7 @@ class PongWaitingRoom extends Component {
             <div class="profil-pics">
                 <div class="gallery">
                     <img src="{game.p1.picture}" alt="player 1" @click="this.navigate(game.p1.nickname)">
-                    <img src="{game.p2.picture}" alt="player 2" @click="this.navigate(game.p2.nickname)">
+                    <img src="{this.getPTwoPic(game)}" alt="player 2" @click="this.navigate(game.p2.nickname)">
                 </div>
             </div>
     </div>
@@ -335,6 +335,18 @@ class PongWaitingRoom extends Component {
 
     canStart(creatorIsMe,playersCount,ia) {
        return creatorIsMe && (ia || playersCount === 2)
+    }
+
+    getPTwoName(game) {
+        if (game.ia)
+            return 'AI';
+        return game.p2.nickname;
+    }
+
+    getPTwoPic(game) {
+        if (game.ia)
+            return '/media/avatars/bot.jpg';
+        return game.p2.picture;
     }
 
     navigate(nickname) {
