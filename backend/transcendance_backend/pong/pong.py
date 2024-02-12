@@ -73,23 +73,23 @@ class Pong:
         wall_lines = top_lines + bottom_lines
 
         player1_goal_line = Line(
-            Vec(PAD_SHIFT - W / 2, -H / 2), Vec(PAD_SHIFT - W / 2, H / 2)
+            Vec(W / 2, -H / 2), Vec(W / 2, H / 2)
         )
         player2_goal_line = Line(
             Vec(W / 2 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT, H / 2)
         )
 
         player1_clamp_line = Line(
-            Vec(PAD_SHIFT + 100 - W / 2, -H / 2), Vec(PAD_SHIFT + 100 - W / 2, H / 2)
+            Vec( 150 - W / 2, -H / 2), Vec(150 - W / 2, H / 2)
         )
         player2_clamp_line = Line(
-            Vec(W / 2 - 100 - PAD_SHIFT, -H / 2), Vec(W / 2 - PAD_SHIFT - 100, H / 2)
+            Vec(W / 2 - 150, -H / 2), Vec(W / 2 - 150, H / 2)
         )
 
-        ai_collision_lines = [[player1_goal_line, player2_goal_line] + wall_lines]
+        ai_collision_lines = [[player1_clamp_line, player2_clamp_line] + wall_lines]
 
         padPlayer1 = Pad(
-            pos=Vec(PAD_SHIFT, 0),
+            pos=Vec(PAD_SHIFT - W/2, 0),
             dim=Vec(PAD_W, PAD_H),
             clamp_rot=(math.pi/3, math.pi*2/3),
             clamp_line=player1_clamp_line,
@@ -97,7 +97,7 @@ class Pong:
             speed=PADDLE_SPEED,
         )
         padPlayer2 = Pad(
-            pos=Vec(W - PAD_SHIFT, 0),
+            pos=Vec(W/2 - PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
             clamp_rot= (math.pi/3, math.pi*2/3),
             clamp_line=player2_clamp_line,

@@ -82,8 +82,6 @@ class PongAI:
         self.pad_actions = []
         #self.add_pad_goto(target_pos, dir=0, until=next_impact.ts)
         #self.add_pad_goto(self.player.goal_line.center)
-        if self.target_pos and (self.target_pos - next_impact_pos).len < 10:
-            return
         self.add_pad_goto(next_impact_pos)
         self.player.goal_line.center
         self.goal_pos = goal_pos
@@ -126,8 +124,8 @@ class PongAI:
 
     def update_data(self, game):
         self.game = game
-        camp = self.player.goal_line
-        opponent_camp = self.opponent.goal_line
+        camp = self.player.pad.clamp_line
+        opponent_camp = self.opponent.pad.clamp_line
         self.ball_path.clear()
         self.ball_path.append(game.ball.p)
         if not self.frames_data:
