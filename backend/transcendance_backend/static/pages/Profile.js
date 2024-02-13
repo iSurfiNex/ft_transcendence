@@ -19,42 +19,42 @@ class PongProfile extends Component {
 				<div class="profile-title">Stats</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.winLow}:</span>
-					<span class="profile-stat-value">{this.getWin()}</span>
+					<span class="profile-stat-value">{this.getWin(profileLooking)}</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.loseLow}:</span>
-					<span class="profile-stat-value">{this.getLose()}</span>
+					<span class="profile-stat-value">{this.getLose(profileLooking)}</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.totalLow}:</span>
-					<span class="profile-stat-value">{this.getTotal()}</span>
+					<span class="profile-stat-value">{this.getTotal(profileLooking)}</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.winRate}:</span>
-					<span class="profile-stat-value">{this.getWinRate()}%</span>
+					<span class="profile-stat-value">{this.getWinRate(profileLooking)}%</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.ballHit}:</span>
-					<span class="profile-stat-value">{this.getBallHit()}</span>
+					<span class="profile-stat-value">{this.getBallHit(profileLooking)}</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.goal}:</span>
-					<span class="profile-stat-value">{this.getGoal()}</span>
+					<span class="profile-stat-value">{this.getGoal(profileLooking)}</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.tournamentWin}:</span>
-					<span class="profile-stat-value">{this.getTournamentWin()}</span>
+					<span class="profile-stat-value">{this.getTournamentWin(profileLooking)}</span>
 				</div>
 
 				<div class="profile-chart">
-					<div class="profile-bar" style={this.getChartWin()}>
-						{this.getWin()}
+					<div class="profile-bar" style={this.getChartWin(profileLooking)}>
+						{this.getWin(profileLooking)}
 					</div>
-					<div class="profile-bar" style={this.getChartLose()}>
-						{this.getLose()}
+					<div class="profile-bar" style={this.getChartLose(profileLooking)}>
+						{this.getLose(profileLooking)}
 					</div>
-					<div class="profile-bar" style={this.getChartTotal()}>
-						{this.getTotal()}
+					<div class="profile-bar" style={this.getChartTotal(profileLooking)}>
+						{this.getTotal(profileLooking)}
 					</div>
 				</div>
 				<div class="profile-chart-desc">
@@ -328,90 +328,90 @@ class PongProfile extends Component {
 		return user.picture
 	}
 
-	getWin() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getWin(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.win;
+		return user.win;
 	}
 
-	getLose() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getLose(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.lose;
+		return user.lose;
 	}
 
-	getTotal() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getTotal(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.win + profile.lose;
+		return user.total;
 	}
 
-	getWinRate() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getWinRate(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.win / profile.lose * 100;
+		return user.win / user.total * 100;
 	}
 
-	getBallHit() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getBallHit(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.ballHit;
+		return user.paddle_hits;
 	}
 
-	getGoal() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getGoal(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.goal;
+		return user.wall_hits;
 	}
 
-	getTournamentWin() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getTournamentWin(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
-		return profile.tournamentWin;
+		return user.tournament_win;
 	}
 
-	getChartWin() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getChartWin(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
 
-		let ratio = (profile.win / (profile.win + profile.lose)) * 90;
+		let ratio = (user.win / user.total) * 90;
 		let finalValue = Math.max(ratio, 8);
 
 		return 'height: ' + finalValue + '%';
 	}
 
-	getChartLose() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getChartLose(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
 
-		let ratio = (profile.lose / (profile.win + profile.lose)) * 90;
+		let ratio = (user.lose / user.total) * 90;
 		let finalValue = Math.max(ratio, 8);
 
 		return 'height: ' + finalValue + '%';
 	}
 
-	getChartTotal() {
-		const profile = state.profiles.find(profile => profile.nickname === state.profile.nickname);
+	getChartTotal(profileLooking) {
+		const user = state.users.find(user => user.id === profileLooking);
 
-		if (!profile)
+		if (!user)
 			return '';
 
 		let finalValue = 90;
