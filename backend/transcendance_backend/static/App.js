@@ -62,12 +62,6 @@ var state_base = {
 	isPlayerListChecked: true,
 	users: window.users,
 	logginError: "",
-	profiles: [
-		{ nickname: 'rsterin_', win: 8, lose: 64, ballHit: 32, goal: 8, tournamentWin: 2 },
-		{ nickname: 'fjullien', win: 16, lose: 32, ballHit: 64, goal: 16, tournamentWin: 20 },
-		{ nickname: 'jtoulous', win: 32, lose: 16, ballHit: 128, goal: 32, tournamentWin: 200 },
-		{ nickname: 'tlarraze', win: 64, lose: 8, ballHit: 512, goal: 64, tournamentWin: 2000 },
-	],
 	channels: [
 		{ name: 'global', id: 1, notifications: 0, invite: false },
 	],
@@ -360,7 +354,7 @@ observe('tourn.players_r2.length', (newStatus, oldStatus) => {
 	const enterWaitingRoom = tournament.players_r2.find(player => player.nickname == state.profile.nickname);
 
 	if (enterWaitingRoom)
-	{                
+	{
 		console.log("ENTER TOURNAMENT WAITING ROOM")
 		navigateTo('/play/tournament-wr');
 	}
