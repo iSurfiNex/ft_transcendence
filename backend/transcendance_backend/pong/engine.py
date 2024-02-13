@@ -61,11 +61,11 @@ class PongEngine:
         if line == self.players[0].pad.line:
           self.p1_hits += 1
           if not p1.has_powerup and not p1.powerup_activated:
-              p1.has_powerup = random.choice([True, False,])
+              p1.has_powerup = random.choice([True, False, False, False, False, False])
         if line == self.players[1].pad.line:
           self.p2_hits += 1
           if not p2.has_powerup and not p2.powerup_activated:
-              p2.has_powerup = random.choice([True, False,])
+              p2.has_powerup = random.choice([True, False, False, False, False, False])
         elif line is not None:
           self.wall_hits += 1
 
