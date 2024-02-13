@@ -1,3 +1,4 @@
+import os
 from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import json
@@ -221,4 +222,7 @@ class GameRunningConsumer(AsyncWebsocketConsumer):
         self.set_user_input(message)
 
     async def broadcast_message(self, event):
+        if event["message"].get("disconnect") == os.environ.get("DJANGO_SECRET_KEY"):
+            await self.close()
+            return
         await self.send(text_data=json.dumps({"message": event["message"]}))

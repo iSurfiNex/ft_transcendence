@@ -100,8 +100,8 @@ export class PongGameCanvas {
 
 		this.socket.onmessage = this.onmessage.bind(this);
 
-		this.socket.onclose = (event) => {
-			console.log("Game webSocket connection closed, autoreconnect in 2 sec.");
+		this.socket.onerror = (event) => {
+			console.log("Game webSocket connection error, autoreconnect in 2 sec.");
 			setTimeout(() => this.connectWebsocket(), 2000);
 		};
 	}

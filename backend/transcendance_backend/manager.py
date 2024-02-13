@@ -8,4 +8,4 @@ async def set_game_done(id):
     game.state = 'done'
     await game.asave()
 
-    print(">> GAME set as done")
+    print(f">> GAME {id} set as done")

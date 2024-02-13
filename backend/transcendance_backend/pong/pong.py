@@ -1,6 +1,7 @@
 from time import time, sleep
 import random
 import math
+import os
 
 from .engine import PongEngine
 from .entities import Ball, Pad, Player
@@ -20,15 +21,6 @@ BALL_BASE_SPEED = 150
 BALL_ACCELERATION = 5
 PADDLE_SPEED = 250
 
-ball_reset_pos = Vec(0, 0)
-
-ball = Ball(
-    reset_pos=ball_reset_pos,
-    pos=ball_reset_pos,
-    speed=BALL_BASE_SPEED,
-    radius=25,
-    direction=Ball.get_random_starting_direction(),
-)
 
 
 def add_line_bumbs(line_list: list[Line], amplitude: float, iter: int = 1):
@@ -46,12 +38,22 @@ def add_line_bumbs(line_list: list[Line], amplitude: float, iter: int = 1):
         return add_line_bumbs(flattened_list, amplitude * -1, iter - 1)
     return flattened_list
 
-player1_pad_line = Line()
-player2_pad_line = Line()
-
 
 class Pong:
     def __init__(self, win_score, use_powerups, use_ai, start_at):
+
+        ball_reset_pos = Vec(0, 0)
+
+        ball = Ball(
+            reset_pos=ball_reset_pos,
+            pos=ball_reset_pos,
+            speed=BALL_BASE_SPEED,
+            radius=25,
+            direction=Ball.get_random_starting_direction(),
+        )
+        player1_pad_line = Line()
+        player2_pad_line = Line()
+
         self.use_ai = use_ai
         self.pause = False
         self.start_at = start_at
@@ -247,6 +249,7 @@ class Pong:
         game_data = self.serialize()
         await asend(game_data)
         await set_game_done(id)
+        await asend({"disconnect": os.environ.get("DJANGO_SECRET_KEY")})
         print(
             f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}"
         )
