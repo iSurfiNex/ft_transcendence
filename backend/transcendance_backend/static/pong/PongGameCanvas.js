@@ -31,7 +31,8 @@ export class PongGameCanvas {
 	});
 	material_line = new THREE.MeshBasicMaterial({
 		color: 0xffffff,
-		opacity: 0.8,
+		opacity: 0.2,
+        transparent: true,
 		depthTest: false,
 	});
 	material_line_green = new THREE.LineBasicMaterial({ color: 0x00ff00 });
@@ -82,7 +83,7 @@ export class PongGameCanvas {
 		this.scene.add(this.line);
 		this.scene.add(this.light);
 		this.scene.add(this.obstacleLinesContainer);
-		this.scene.add(this.goalLinesContainer);
+		//this.scene.add(this.goalLinesContainer);
 		this.scene.add(this.clampLinesContainer);
 	}
 
@@ -236,6 +237,7 @@ export class PongGameCanvas {
 			data.obstacles,
 			this.obstacleLinesContainer,
 			0x00ff00,
+            0.4,
 		);
 		this.updateLinesContainer(
 			[data.pL.goal, data.pR.goal],
@@ -339,35 +341,35 @@ export class PongGameCanvas {
 			},
 		);
 
-		this.loader.load(
-			"power_up_box.glb",
-			(gltf) => {
-				this.bonus = gltf.scene.children[0];
-				if (this.bonus) {
-					// Make the model ignore lights by setting MeshBasicMaterial
-					this.bonus.traverse((child) => {
-						if (child.isMesh) {
-							const basicMaterial = new THREE.MeshBasicMaterial({
-								map: child.material.map, // You can copy other properties if needed
-								color: 0xffffff, // Set the desired color
-							});
-							child.material = basicMaterial;
-							child.material.transparent = true;
-						}
-					});
-					this.ball.renderOrder = 5010;
-					this.bonus.scale.multiplyScalar(25);
-					this.bonus.position.set(0, 500, 0);
-					this.scene.add(this.bonus);
-				}
-			},
-			(xhr) => {
-				// console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Bonus");
-			},
-			(error) => {
-				console.error("Error loading GLTF model", error);
-			},
-		);
+		//this.loader.load(
+		//	"power_up_box.glb",
+		//	(gltf) => {
+		//		this.bonus = gltf.scene.children[0];
+		//		if (this.bonus) {
+		//			// Make the model ignore lights by setting MeshBasicMaterial
+		//			this.bonus.traverse((child) => {
+		//				if (child.isMesh) {
+		//					const basicMaterial = new THREE.MeshBasicMaterial({
+		//						map: child.material.map, // You can copy other properties if needed
+		//						color: 0xffffff, // Set the desired color
+		//					});
+		//					child.material = basicMaterial;
+		//					child.material.transparent = true;
+		//				}
+		//			});
+		//			this.ball.renderOrder = 5010;
+		//			this.bonus.scale.multiplyScalar(25);
+		//			this.bonus.position.set(0, 500, 0);
+		//			this.scene.add(this.bonus);
+		//		}
+		//	},
+		//	(xhr) => {
+		//		// console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Bonus");
+		//	},
+		//	(error) => {
+		//		console.error("Error loading GLTF model", error);
+		//	},
+		//);
 	}
 
 	render() {

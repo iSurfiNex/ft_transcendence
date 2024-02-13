@@ -192,7 +192,7 @@ class PongGame extends Component {
 			position: absolute;
 			font-size: 44px;
 			color: white;
-			opacity: 0.4;
+			opacity: 0.6;
 		}
 
 		#pLPoints {
