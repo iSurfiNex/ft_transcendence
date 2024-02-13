@@ -164,7 +164,7 @@ class Pong:
                 "goal": goal_p2,
                 "clamp": clamp_p2,
                 "score": p2.score,
-                "hasPowerups": p1.has_powerup,
+                "hasPowerups": p2.has_powerup,
             },
             "ball": {"x": ball.x, "y": ball.y},
             "obstacles": obstacles,
@@ -213,7 +213,7 @@ class Pong:
         else:
             ai.player.rotate_still()
 
-        if "space" in ai.keypressed:
+        if "space" in ai.keypressed and ai.player.has_powerup:
             ai.player.powerup_activated = True
 
     async def run(self, asend, id):
@@ -258,7 +258,6 @@ class Pong:
                 l2.b -= p2_clamp_line_vec
                 self.engine.players[1].pad.clamp_line = l2
                 if current_time > p1_powerup_activated_at + 2*powerup_half_duration:
-                    p1_powerup_activated_at = 0
                     self.engine.players[0].powerup_activated = False
                 elif current_time > p1_powerup_activated_at + powerup_half_duration:
                     p2_clamp_line_vec = (-1,0)
@@ -274,7 +273,6 @@ class Pong:
                 l1.b -= p1_clamp_line_vec
                 self.engine.players[0].pad.clamp_line = l1
                 if current_time > p2_powerup_activated_at + 2*powerup_half_duration:
-                    p2_powerup_activated_at = 0
                     self.engine.players[1].powerup_activated = False
                 elif current_time > p2_powerup_activated_at + powerup_half_duration:
                     p1_clamp_line_vec = (1,0)

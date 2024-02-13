@@ -41,6 +41,27 @@ export class PongGameCanvas {
         transparent: true,
 		depthTest: false,
 	});
+shinyMaterial = new THREE.ShaderMaterial({
+            uniforms: {},
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normal;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vec3 normal = normalize(vNormal);
+                    vec3 eyeDirection = normalize(vec3(0, 0, 1));
+                    float shininess = 20.0;
+                    float specularIntensity = 1.0;
+                    float specularHighlight = pow(max(dot(normalize(eyeDirection + normal), normalize(eyeDirection)), 0.0), shininess);
+                    gl_FragColor = vec4(vec3(specularHighlight * specularIntensity), 1.0);
+                }
+            `
+        })
 	material_line_green = new THREE.LineBasicMaterial({ color: 0x00ff00 });
 	material_line_yellow = new THREE.LineBasicMaterial({ color: 0xffff00 });
 	line = new THREE.Mesh(this.geometry_line, this.material_line);
@@ -297,6 +318,15 @@ export class PongGameCanvas {
 			this.updateGameOverState(data.pL.score, data.pR.score);
 			return;
 		}
+        if (data.pL.hasPowerups)
+            this.paddleL.material = this.shinyMaterial
+        else
+            this.paddleL.material = UNIFORMS.uniform_red
+
+        if (data.pR.hasPowerups)
+            this.paddleR.material = this.shinyMaterial
+        else
+            this.paddleR.material = UNIFORMS.uniform_blue
 		// if (data.bonus.size_minus == 'r')
 		// 	paddleR.scale.set(1, 2);
 		// else
