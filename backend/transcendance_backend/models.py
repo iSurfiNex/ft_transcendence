@@ -255,7 +255,7 @@ class Tournament(models.Model):
             "power_ups": self.power_ups,
             "players": [player.nickname for player in self.players.all()],
             "players_r2": [player.nickname for player in self.players_r2.all()],
-            "losers": [bigLoser.nickname for bigLoser in self.losers.all()],
+            "losers": [bigLoser.serialize_summary() for bigLoser in self.losers.all()],
             "gamesId": [game.id for game in self.game_set.all()],
             "creator": self.created_by.nickname,
             "winner": self.winner.serialize_summary() if self.winner else None,

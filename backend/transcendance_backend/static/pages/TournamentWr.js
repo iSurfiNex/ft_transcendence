@@ -248,6 +248,25 @@ class TournamentWr extends Component {
 
     `
 
+    connectedCallback() {
+        var tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
+        let url = "/api/manage-tournament/" + state.currentTournament + "/";
+
+        if (tournament)
+        {
+            if (tournament.status == "round 1")
+            {
+                if (tournament.players_r2.length == 2)
+                {
+                    var dataToSend = {
+                        action: "start-round",
+                    };
+                    put2(url, dataToSend).catch(error => console.log(error));
+                }
+            }
+        }
+    }
+
     StartRound2() {
         let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
 

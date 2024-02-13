@@ -353,6 +353,17 @@ observe('tournament.status', (newStatus, oldStatus) => {
 		}
 })
 
+observe('tournaments[state.currentTournamentId].players_r2.length', (newStatus, oldStatus) => {
+	const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournamentId)
+	const enterWaitingRoom = tournament.players_r2.find(player => player.nickname == state.profile.nickname);
+
+	if (enterWaitingRoom)
+	{                
+		console.log("ENTER TOURNAMENT WAITING ROOM")
+		navigateTo('/play/tournament-wr');
+	}
+})
+
 // TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer
 state.game.status
 state.tournament.status

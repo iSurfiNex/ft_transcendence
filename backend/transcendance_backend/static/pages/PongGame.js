@@ -387,7 +387,7 @@ class PongGame extends Component {
 	}
 
 	getWallHits() {
-		let my_user = state.users.find(user =>{console.log('=======',user.nickname); console.log(state.profile.nickname);console.log(user.nickname == state.profile.nickname); return user.nickname == state.profile.nickname});
+		let my_user = state.users.find(user => user.nickname == state.profile.nickname);
 		let game = state.games.find(game => game.id == my_user.lastGameId);
 
 		if (game)
