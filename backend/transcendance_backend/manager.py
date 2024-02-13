@@ -16,13 +16,33 @@ async def set_game_done(id, p1_score, p2_score, paddle_hits, wall_hits):
     game.state = 'done'
     game.p1_score = p1_score
     game.p2_score = p2_score
+    p1 = await get_player(game, 0)
+    p2 = await get_player(game, 1)
+    loser = p1 if game.winner is p2 else p1
+    if p1:
+        p1.lastGameId = game.id
+    if p2:
+        p2.lastGameId = game.id
     if p1_score > p2_score:
-        game.winner = await get_player(game, 0)
+        game.winner = p1
     else:
-        game.winner = await get_player(game, 1)
+        game.winner = p2
     game.paddle_hits = paddle_hits
     game.wall_hits = wall_hits
     game.state = "done"
     await game.asave()
+
+    if game.tournament is not None:
+        tournament = game.tournament
+        if tournament.state == "round 1":
+            tournament.players_r2.add(game.winner)
+            tournament.losers.add(loser)
+
+        elif tournament.state == "round 2":
+            tournament.winner = game.winner
+            tournament.losers.add(loser)
+            tournament.state = "done"
+
+    
 
     print(f">> GAME {id} set as done")
