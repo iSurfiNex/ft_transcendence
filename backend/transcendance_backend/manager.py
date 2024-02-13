@@ -1,4 +1,5 @@
 from .models import Game
+from .views import Update
 from asgiref.sync import sync_to_async
 
 @sync_to_async
@@ -43,8 +44,7 @@ async def set_game_done(id, p1_score, p2_score, paddle_hits, wall_hits):
             tournament.winner = game.winner
             await sync_to_async(tournament.losers.add)(loser)
             tournament.state = "done"
-
         await tournament.asave()
-    
+        Update(tournament=tournament, tournament_action="update")
 
     print(f">> GAME {id} set as done")
