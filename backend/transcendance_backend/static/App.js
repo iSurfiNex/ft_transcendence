@@ -353,7 +353,9 @@ observe('tournament.status', (newStatus, oldStatus) => {
 		}
 })
 
-observe('tournaments[state.currentTournamentId].players_r2.length', (newStatus, oldStatus) => {
+var tourn = tournaments[state.currentTournamentId] 
+
+observe('tourn.players_r2.length', (newStatus, oldStatus) => {
 	const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournamentId)
 	const enterWaitingRoom = tournament.players_r2.find(player => player.nickname == state.profile.nickname);
 
