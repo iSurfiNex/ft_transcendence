@@ -315,7 +315,11 @@ class Pong:
             p2_score=self.engine.players[1].score,
             paddle_hits=self.engine.p1_hits + self.engine.p2_hits,
             wall_hits=self.engine.wall_hits)
-        await asend({"disconnect": os.environ.get("DJANGO_SECRET_KEY")})
+        try:
+            await asend({"disconnect": os.environ.get("DJANGO_SECRET_KEY")})
+        except: # Prevent error in Tournament raise Disconnected("Attempt to send on a closed protocol")
+
+            pass
         print(
             f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}"
         )

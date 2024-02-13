@@ -45,6 +45,6 @@ async def set_game_done(id, p1_score, p2_score, paddle_hits, wall_hits):
             await sync_to_async(tournament.losers.add)(loser)
             tournament.state = "done"
         await tournament.asave()
-        Update(tournament=tournament, tournament_action="update")
+        sync_to_async(Update)(tournament=tournament, tournament_action="update")
 
     print(f">> GAME {id} set as done")
