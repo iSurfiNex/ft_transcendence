@@ -211,7 +211,7 @@ class PongGame extends Component {
 		}
 
 		#maxPoints {
-			font-size: 20px;
+			font-size: 16px;
 			color: white;
 		}
 
