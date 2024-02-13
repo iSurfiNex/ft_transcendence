@@ -214,7 +214,7 @@ class Pong:
             ai.player.rotate_still()
 
         if "space" in ai.keypressed:
-            pass
+            ai.player.powerup_activated = True
 
     async def run(self, asend, id):
         current_time = time()
@@ -248,7 +248,7 @@ class Pong:
 
 
             if self.engine.players[0].powerup_activated:
-                if self.engine.players[0].has_powerup == True and p1_powerup_activated_at == 0:
+                if self.engine.players[0].has_powerup == True:
                     p1_powerup_activated_at = current_time
                     self.engine.players[0].has_powerup = False
                     p2_clamp_line_vec = (1,0)
@@ -264,7 +264,7 @@ class Pong:
                     p2_clamp_line_vec = (-1,0)
 
             if self.engine.players[1].powerup_activated:
-                if self.engine.players[1].has_powerup == True and p2_powerup_activated_at == 0:
+                if self.engine.players[1].has_powerup == True:
                     p2_powerup_activated_at = current_time
                     self.engine.players[1].has_powerup = False
                     p1_clamp_line_vec = (-1,0)

@@ -218,8 +218,11 @@ class PongAI:
         if line == opponent_camp and collisions:
             self.add_pad_goto(self.player.pad.clamp_line.center)
             self.add_pad_rotateto(math.pi/2)
+            self.keypressed.add("space")
             #self.update_target(Collision(Vec(0,0), [self.player.pad.line], time()), game.ball.p)
         if line == camp and collisions:
+            if "space" in self.keypressed:
+                self.keypressed.remove("space")
             self.update_target(collisions[-1],  game.ball.p)
         #else :
         #    self.update_target(Vec(0,0), 0)
