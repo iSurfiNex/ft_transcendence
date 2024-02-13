@@ -258,7 +258,7 @@ export class PongGameCanvas {
 		const iWin = pLWin == imPL;
 		state.runningGame.gameOverState = iWin ? "youWin" : "youLose";
 		
-		if (state.runningGame.gameOverState == "youLose")
+		if (state.runningGame.gameOverState == "youLose" || state.runningGame.gameOverState == "youWin")
 			this.socket.close();
 	}
 
