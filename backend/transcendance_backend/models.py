@@ -93,14 +93,14 @@ class Player(models.Model):
             "blocked": [user.nickname for user in self.blocked_users.all()],
             "friends": [user.nickname for user in self.friend_users.all()],
             "lastGameId": self.lastGameId,
-            "games": list(self.games.filter(state="done", players=self).all()),
-            "tournaments": list(self.tournaments.filter(state="done", players=self).all()),
-            "win": self.games.filter(state="done", winner=self).count() or 0,
-            "lose": self.games.filter(state="done").exclude(winner=self).count() or 0,
-            "total": self.games.filter(state="done", players=self).count() or 0,
-            "tournament_win": self.tournaments.filter(state="done", winner=self).count() or 0,
-            "paddle_hits": self.games.filter(state="done", players=self).aggregate(Sum('paddle_hits'))['paddle_hits__sum'] or 0,
-            "wall_hits": self.games.filter(state="done", players=self).aggregate(Sum('wall_hits'))['wall_hits__sum'] or 0,
+            # "games": [game.serialize() for game in self.games.filter(state="done", players=self).all()],
+            # "tournaments": list(self.tournaments.filter(state="done", players=self).all()),
+            # "win": self.games.filter(state="done", winner=self).count() or 0,
+            # "lose": self.games.filter(state="done", players=self).exclude(winner=self).count() or 0,
+            # "total": self.games.filter(state="done", players=self).count() or 0,
+            # "tournament_win": self.tournaments.filter(state="done", winner=self).count() or 0,
+            # "paddle_hits": self.games.filter(state="done", players=self).aggregate(Sum('paddle_hits'))['paddle_hits__sum'] or 0,
+            # "wall_hits": self.games.filter(state="done", players=self).aggregate(Sum('wall_hits'))['wall_hits__sum'] or 0,
         }
 
     def serialize_summary(self):
