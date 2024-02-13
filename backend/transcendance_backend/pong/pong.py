@@ -233,7 +233,7 @@ class Pong:
         p2_clamp_line_vec = (0,0)
         p1_powerup_activated_at = 0
         p2_powerup_activated_at = 0
-        powerup_half_duration = 6
+        powerup_half_duration = 3
 
         while True:
             if self.pause:
@@ -252,31 +252,35 @@ class Pong:
                 if self.engine.players[0].has_powerup == True:
                     p1_powerup_activated_at = current_time
                     self.engine.players[0].has_powerup = False
-                    p2_clamp_line_vec = (1,0)
+                    p2_clamp_line_vec = (2,0)
 
                 l2 = self.engine.players[1].pad.clamp_line
                 l2.a -= p2_clamp_line_vec
                 l2.b -= p2_clamp_line_vec
                 self.engine.players[1].pad.clamp_line = l2
-                if current_time > p1_powerup_activated_at + 2*powerup_half_duration:
+                if current_time > p1_powerup_activated_at + 2*powerup_half_duration + 4:
                     self.engine.players[0].powerup_activated = False
+                elif current_time > p1_powerup_activated_at + powerup_half_duration + 4:
+                    p2_clamp_line_vec = (-2,0)
                 elif current_time > p1_powerup_activated_at + powerup_half_duration:
-                    p2_clamp_line_vec = (-1,0)
+                    p2_clamp_line_vec = (0,0)
 
             if self.engine.players[1].powerup_activated:
                 if self.engine.players[1].has_powerup == True:
                     p2_powerup_activated_at = current_time
                     self.engine.players[1].has_powerup = False
-                    p1_clamp_line_vec = (-1,0)
+                    p1_clamp_line_vec = (-2,0)
 
                 l1 = self.engine.players[0].pad.clamp_line
                 l1.a -= p1_clamp_line_vec
                 l1.b -= p1_clamp_line_vec
                 self.engine.players[0].pad.clamp_line = l1
-                if current_time > p2_powerup_activated_at + 2*powerup_half_duration:
+                if current_time > p2_powerup_activated_at + 2*powerup_half_duration + 4:
                     self.engine.players[1].powerup_activated = False
+                elif current_time > p2_powerup_activated_at + powerup_half_duration + 4:
+                    p1_clamp_line_vec = (2,0)
                 elif current_time > p2_powerup_activated_at + powerup_half_duration:
-                    p1_clamp_line_vec = (1,0)
+                    p1_clamp_line_vec = (0,0)
 
 
 
