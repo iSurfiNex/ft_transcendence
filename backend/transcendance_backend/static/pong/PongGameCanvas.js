@@ -19,15 +19,21 @@ export class PongGameCanvas {
 	});
 	material_paint_L = new THREE.MeshBasicMaterial({
 		color: 0x6f0101,
-		transparent: true,
+		//transparent: true,
 		opacity: 0.1,
 		depthTest: false,
 	});
 	material_paint_R = new THREE.MeshBasicMaterial({
 		color: 0x00b3ad,
-		transparent: true,
+		//transparent: true,
 		opacity: 0.1,
 		depthTest: false,
+	});
+	material_paint_R_opacity = new THREE.MeshBasicMaterial({
+		color: 0x00b3ad,
+		transparent: true,
+		opacity: 1,
+		//depthTest: false,
 	});
 	material_line = new THREE.MeshBasicMaterial({
 		color: 0xffffff,
@@ -42,7 +48,8 @@ export class PongGameCanvas {
 	paddleR = new THREE.Mesh(this.geometry_paddle, UNIFORMS.uniform_blue);
 	paint_geo = new THREE.CircleGeometry(15, 128);
 	scene = new THREE.Scene();
-	paint_z = -5;
+	paint_z = 0;
+	paint_list = [];
 	ball;
 	bonus;
 	camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
@@ -178,11 +185,19 @@ export class PongGameCanvas {
 				this.ball.position.x + Math.round((Math.random() * 100) % 15);
 			paint.position.y =
 				this.ball.position.y + Math.round((Math.random() * 100) % 15);
-			paint.position.z = this.paint_z;
 			paint.scale.set(scale, scale, 1);
 			paint.renderOrder = this.paint_z;
-			paint.opacity = 0.5;
+			this.paint_z += 1;
+			paint.opacity = 0;
 			this.scene.add(paint);
+			this.paint_list.push(paint);
+			if (this.paint_list.length > 100) {
+				// Remove the oldest mesh (the first one added)
+				let removedMesh = this.paint_list.shift();
+				removedMesh.material = this.material_paint_R_opacity;
+				this.opacityFadeOut(removedMesh);
+			}
+			
 			//console.log(this.scene.children.length)
 		}
 		actual_time = null;
@@ -303,16 +318,23 @@ export class PongGameCanvas {
 		this.drawDebugLines(data);
 	}
 
-	opacityFadeOut(material) {
-		let opacity = material.opacity;
+	opacityFadeOut(mesh) {
+		let opacity = mesh.material.opacity;
 		const reduceOpacityInterval = setInterval(() => {
 			if (opacity > 0.001) {
-				opacity -= 0.01;
-				material.opacity = opacity;
+				opacity -= 0.1;
+				mesh.material.opacity = opacity;
+				console.log(opacity);
+				this.render();
 			} else {
 				clearInterval(reduceOpacityInterval); // Stop the interval when opacity reaches 0.01
+				// Remove the mesh from the scene
+				this.scene.remove(mesh);
+				// Dispose of the geometry and material to release memory
+				mesh.geometry.dispose();
+				mesh.material.dispose();
 			}
-		}, 1); // Reduce opacity every second
+		}, 0.5); // Reduce opacity every second
 	}
 
 	loadAssets() {
