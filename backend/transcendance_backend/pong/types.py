@@ -15,7 +15,7 @@ class Vec():
             self._t = tuple(args)
 
     @staticmethod
-    def fromPoints(p1: "Vec", p2: "Vec") -> "Vec":
+    def from_points(p1: "Vec", p2: "Vec") -> "Vec":
         return Vec(p2[0] - p1[0], p2[1] - p1[1])
 
     @property
@@ -185,8 +185,8 @@ class Line():
 
     def project_clamped(self, p: Vec):
         q = self.project(p)
-        aq_len = Vec.fromPoints(self.a, q).len
-        bq_len = Vec.fromPoints(self.b, q).len
+        aq_len = Vec.from_points(self.a, q).len
+        bq_len = Vec.from_points(self.b, q).len
         ab_len = self.len
         if aq_len > ab_len or bq_len > ab_len:
             if aq_len > bq_len:

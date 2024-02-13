@@ -93,7 +93,7 @@ class Pong:
         padPlayer1 = Pad(
             pos=Vec(PAD_SHIFT - W/2, 0),
             dim=Vec(PAD_W, PAD_H),
-            clamp_rot=(math.pi/3, math.pi*2/3),
+            clamp_rot=(math.pi*1.2/3, math.pi*1.8/3),
             clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
             speed=PADDLE_SPEED,
@@ -101,7 +101,7 @@ class Pong:
         padPlayer2 = Pad(
             pos=Vec(W/2 - PAD_SHIFT, 0),
             dim=Vec(PAD_W, PAD_H),
-            clamp_rot= (math.pi/3, math.pi*2/3),
+            clamp_rot=(math.pi*1.2/3, math.pi*1.8/3),
             clamp_line=player2_clamp_line,
             pad_line=player2_pad_line,
             speed=PADDLE_SPEED,
@@ -199,6 +199,12 @@ class Pong:
             ai.player.go_down()
         else:
             ai.player.stay_still()
+        if "left" in ai.keypressed:
+            ai.player.rotate_right()
+        elif "right" in ai.keypressed:
+            ai.player.rotate_left()
+        else:
+            ai.player.rotate_still()
 
     async def run(self, asend, id):
         current_time = time()

@@ -47,7 +47,9 @@ class Pad(Moving):
         direction=(0, 0),
         orientation=Vec(0, 1),
         rotation=0,
+        rot_speed=math.pi/4
     ):
+        self.rot_speed = rot_speed
         self.clamp_rot = clamp_rot
         self.r = rotation
         self.orientation = orientation
@@ -99,11 +101,11 @@ class Pad(Moving):
         new_b = self._clamp_line.b - shift
         self._clamp_line_constrained = Line(new_a, new_b)
 
-    def clamp_radian_angle(self, angle, lower_bound, upper_bound):
-        if angle < lower_bound:
-            return lower_bound
-        elif angle > upper_bound:
-            return upper_bound
+    def clamp_radian_angle(self, angle):
+        if angle < self.clamp_rot[0]:
+            return self.clamp_rot[0]
+        elif angle > self.clamp_rot[1]:
+            return self.clamp_rot[1]
         else:
             return angle
 
@@ -114,7 +116,7 @@ class Pad(Moving):
         new_x = x * math.cos(rotation) - y * math.sin(rotation)
         new_y = x * math.sin(rotation) + y * math.cos(rotation)
         angle = Vec(new_x, new_y).toRad
-        angle_clamped = self.clamp_radian_angle(angle, self.clamp_rot[0], self.clamp_rot[1])
+        angle_clamped = self.clamp_radian_angle(angle)
         return Vec.angle_to_vector(angle_clamped)
 
 
@@ -146,10 +148,10 @@ class Player:
         self.pad.d = Vec(0, 0)
 
     def rotate_left(self):
-        self.pad.r = math.pi/4
+        self.pad.r = self.pad.rot_speed
 
     def rotate_right(self):
-        self.pad.r = -math.pi/4
+        self.pad.r = -self.pad.rot_speed
 
     def rotate_still(self):
         self.pad.r = 0
