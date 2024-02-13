@@ -157,12 +157,14 @@ class Pong:
                 "goal": goal_p1,
                 "clamp": clamp_p1,
                 "score": p1.score,
+                "hasPowerups": p1.has_powerup,
             },
             "pR": {
                 "paddle": {"x": ppp2.x, "y": ppp2.y, "h": p2.pad.dim.y,"o": p2.pad.line.vec.toRad},
                 "goal": goal_p2,
                 "clamp": clamp_p2,
                 "score": p2.score,
+                "hasPowerups": p1.has_powerup,
             },
             "ball": {"x": ball.x, "y": ball.y},
             "obstacles": obstacles,
@@ -189,6 +191,10 @@ class Pong:
                     player.rotate_left()
                 elif inputs["right"]:
                     player.rotate_right()
+
+                if inputs["space"] and player.has_powerup:
+                    player.powerup_activated = True
+
         except KeyError as e:
             print("Invalid player input", str(e))
 
@@ -199,12 +205,16 @@ class Pong:
             ai.player.go_down()
         else:
             ai.player.stay_still()
+
         if "left" in ai.keypressed:
             ai.player.rotate_right()
         elif "right" in ai.keypressed:
             ai.player.rotate_left()
         else:
             ai.player.rotate_still()
+
+        if "space" in ai.keypressed:
+            pass
 
     async def run(self, asend, id):
         current_time = time()
@@ -229,6 +239,21 @@ class Pong:
                 continue
 
             game_last_tick_ts = current_time
+
+            self.engine.players[0].has_powerup = True
+            if self.engine.players[0].powerup_activated:
+                self.engine.players[0].powerup_activated = False
+                l = self.engine.players[0].pad.clamp_line
+                shift = (30,0)
+                l.a -= shift
+                l.b -= shift
+                self.engine.players[0].pad.clamp_line = l
+
+                l2 = self.engine.players[1].pad.clamp_line
+                shift = (150,0)
+                l2.a -= shift
+                l2.b -= shift
+                self.engine.players[1].pad.clamp_line = l2
 
             self.handle_player_inputs(id, 0)
             if not self.use_ai:
