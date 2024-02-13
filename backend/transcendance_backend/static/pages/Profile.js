@@ -357,7 +357,7 @@ class PongProfile extends Component {
 
 		if (!user)
 			return '';
-		return round(user.win / user.total * 100, 2);
+		return (user.win / user.total * 100).toFixed(2);
 	}
 
 	getBallHit(profileLooking) {
