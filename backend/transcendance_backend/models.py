@@ -10,6 +10,7 @@ from imagekit.processors import ResizeToFill
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime
+from django.db.models import Sum
 
 
 class Player(models.Model):
@@ -92,6 +93,14 @@ class Player(models.Model):
             "blocked": [user.nickname for user in self.blocked_users.all()],
             "friends": [user.nickname for user in self.friend_users.all()],
             "lastGameId": self.lastGameId,
+            "games": list(self.games.filter(state="done", players=self).all()),
+            "tournaments": list(self.tournaments.filter(state="done", players=self).all()),
+            "win": self.games.filter(state="done", winner=self).count() or 0,
+            "lose": self.games.filter(state="done").exclude(winner=self).count() or 0,
+            "total": self.games.filter(state="done", players=self).count() or 0,
+            "tournament_win": self.tournaments.filter(state="done", winner=self).count() or 0,
+            "paddle_hits": self.games.filter(state="done", players=self).aggregate(Sum('paddle_hits'))['paddle_hits__sum'] or 0,
+            "wall_hits": self.games.filter(state="done", players=self).aggregate(Sum('wall_hits'))['wall_hits__sum'] or 0,
         }
 
     def serialize_summary(self):
@@ -220,7 +229,7 @@ class Tournament(models.Model):
     state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
     power_ups = models.BooleanField(default=False)
     players = models.ManyToManyField(Player, blank=True)
-    players_r2 = models.ManyToManyField(Player, blank=True, related_name="tournament_r2") 
+    players_r2 = models.ManyToManyField(Player, blank=True, related_name="tournament_r2")
     losers = models.ManyToManyField(Player, blank=True, related_name="tournament_losers")
     created_by = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name="created_tournaments"
