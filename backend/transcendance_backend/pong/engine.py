@@ -16,6 +16,9 @@ import random
 
 class PongEngine:
     game_over = False
+    p1_hits = 0
+    p2_hits = 0
+    wall_hits = 0
 
     def __init__(
         self,
@@ -48,9 +51,17 @@ class PongEngine:
         for p in self.players:
             p.pad.update(delta)
         ball_vec = self.ball.get_vec(delta)
-        collisions, next_pos, next_dir, _ = collisions_check(
+        collisions, next_pos, next_dir, line = collisions_check(
             self.ball.p, ball_vec, self.lines_obstacles, pl=self.players[0].pad.line, pr=self.players[1].pad.line
         )
+
+        if line == self.players[0].pad.line:
+          self.p1_hits += 1
+        elif line == self.players[1].pad.line:
+          self.p2_hits += 1
+        elif line is not None:
+          self.wall_hits += 1
+
         self.bounces += collisions
         self.ball.p = next_pos
         if next_dir:

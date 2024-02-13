@@ -254,7 +254,13 @@ class Pong:
 
         game_data = self.serialize()
         await asend(game_data)
-        await set_game_done(id)
+
+        await set_game_done(
+            id,
+            p1_score=self.engine.players[0].score,
+            p2_score=self.engine.players[1].score,
+            paddle_hits=self.engine.p1_hits + self.engine.p2_hits,
+            wall_hits=self.engine.wall_hits)
         await asend({"disconnect": os.environ.get("DJANGO_SECRET_KEY")})
         print(
             f"Game stop, final score P1:{self.engine.players[0].score} P2:{self.engine.players[1].score}"

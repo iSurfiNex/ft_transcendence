@@ -101,7 +101,9 @@ def collisions_check(
     r_dir = None
     line = None
     while len(collisions) < max_coll:
-        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line, pl=pl, pr=pr)
+        coll, next_dir, _line = compute_collision(pos, vec, obstacles, ignore=line, pl=pl, pr=pr)
+        if _line is not None:
+            line=_line
 
         if not coll or not next_dir:
             break
