@@ -55,10 +55,17 @@ class PongEngine:
             self.ball.p, ball_vec, self.lines_obstacles, pl=self.players[0].pad.line, pr=self.players[1].pad.line
         )
 
+        p1 = self.players[0]
+        p2 = self.players[1]
+
         if line == self.players[0].pad.line:
           self.p1_hits += 1
+          if not p1.has_powerup:
+              p1.has_powerup = random.choice([True, False ])
         elif line == self.players[1].pad.line:
           self.p2_hits += 1
+          if not p1.has_powerup:
+              p2.has_powerup = random.choice([True, False])
         elif line is not None:
           self.wall_hits += 1
 

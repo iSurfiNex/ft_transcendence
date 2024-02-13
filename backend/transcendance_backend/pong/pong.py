@@ -228,6 +228,12 @@ class Pong:
 
         self.engine.round_started_at = current_time
 
+        p1_clamp_line_vec = (0,0)
+        p2_clamp_line_vec = (0,0)
+        p1_powerup_activated_at = 0
+        p2_powerup_activated_at = 0
+        powerup_half_duration = 6
+
         while True:
             if self.pause:
                 continue
@@ -240,20 +246,40 @@ class Pong:
 
             game_last_tick_ts = current_time
 
-            self.engine.players[0].has_powerup = True
+
             if self.engine.players[0].powerup_activated:
-                self.engine.players[0].powerup_activated = False
-                l = self.engine.players[0].pad.clamp_line
-                shift = (30,0)
-                l.a -= shift
-                l.b -= shift
-                self.engine.players[0].pad.clamp_line = l
+                if self.engine.players[0].has_powerup == True and p1_powerup_activated_at == 0:
+                    p1_powerup_activated_at = current_time
+                    self.engine.players[0].has_powerup = False
+                    p2_clamp_line_vec = (1,0)
 
                 l2 = self.engine.players[1].pad.clamp_line
-                shift = (150,0)
-                l2.a -= shift
-                l2.b -= shift
+                l2.a -= p2_clamp_line_vec
+                l2.b -= p2_clamp_line_vec
                 self.engine.players[1].pad.clamp_line = l2
+                if current_time > p1_powerup_activated_at + 2*powerup_half_duration:
+                    p1_powerup_activated_at = 0
+                    self.engine.players[0].powerup_activated = False
+                elif current_time > p1_powerup_activated_at + powerup_half_duration:
+                    p2_clamp_line_vec = (-1,0)
+
+            if self.engine.players[1].powerup_activated:
+                if self.engine.players[1].has_powerup == True and p2_powerup_activated_at == 0:
+                    p2_powerup_activated_at = current_time
+                    self.engine.players[1].has_powerup = False
+                    p1_clamp_line_vec = (-1,0)
+
+                l1 = self.engine.players[0].pad.clamp_line
+                l1.a -= p1_clamp_line_vec
+                l1.b -= p1_clamp_line_vec
+                self.engine.players[0].pad.clamp_line = l1
+                if current_time > p2_powerup_activated_at + 2*powerup_half_duration:
+                    p2_powerup_activated_at = 0
+                    self.engine.players[1].powerup_activated = False
+                elif current_time > p2_powerup_activated_at + powerup_half_duration:
+                    p1_clamp_line_vec = (1,0)
+
+
 
             self.handle_player_inputs(id, 0)
             if not self.use_ai:
