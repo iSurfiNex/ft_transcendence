@@ -19,13 +19,13 @@ export class PongGameCanvas {
 	});
 	material_paint_L = new THREE.MeshBasicMaterial({
 		color: 0x6f0101,
-		//transparent: true,
+		transparent: true,
 		opacity: 0.1,
 		depthTest: false,
 	});
 	material_paint_R = new THREE.MeshBasicMaterial({
 		color: 0x00b3ad,
-		//transparent: true,
+		transparent: true,
 		opacity: 0.1,
 		depthTest: false,
 	});
@@ -76,6 +76,7 @@ export class PongGameCanvas {
 		this.line.renderOrder = 5003;
 		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 		this.gameContainerNode.appendChild(this.renderer.domElement);
+		this.scene.background = new THREE.Color(0x1d1d1d);
 
 		this.camera.position.set(0, 0, 600);
 
@@ -121,23 +122,6 @@ export class PongGameCanvas {
 	}
 
 	setupKeyListener() {
-		// NOTE plus besoin ça doit être controlé par le serveur
-		//document.addEventListener('keydown', function(event) {
-		//	if (event.key == "p" && this.bonus) {
-		//		this.bonus.traverse((child) => {
-		//			if (child.isMesh && child.material) {
-		//  				this.opacityFadeOut(child.material);
-		//			  this.paddleR.scale.set(1, 1.5);
-		//			  this.paddleL.scale.set(1, 0.5);
-
-		//			}
-		//		});
-		//	}
-		//});
-
-
-		// return false if the key was ignored
-
 		document.addEventListener("keydown", ({ key }) => this.updateInputs(key, true));
 		document.addEventListener("keyup", ({ key }) => this.updateInputs(key, false));
 	}
@@ -192,16 +176,39 @@ export class PongGameCanvas {
 			paint.opacity = 0;
 			this.scene.add(paint);
 			this.paint_list.push(paint);
-			if (this.paint_list.length > 100) {
-				// Remove the oldest mesh (the first one added)
-				let removedMesh = this.paint_list.shift();
-				removedMesh.material = this.material_paint_R_opacity;
-				this.opacityFadeOut(removedMesh);
-			}
-			
-			//console.log(this.scene.children.length)
 		}
 		actual_time = null;
+	}
+
+	resetPaintList() {
+		this.paint_list.forEach((mesh) => {
+			this.scene.remove(mesh);
+			// Dispose of the geometry and material to release memory
+			mesh.geometry.dispose();
+			mesh.material.dispose();
+		});
+
+		this.paint_list = [];
+		this.render();
+	}
+
+	opacityFadeOut(mesh, initialOpacity) {
+		let opacity = initialOpacity;
+		const reduceOpacityInterval = setInterval(() => {
+			if (opacity > 0.0011) {
+				opacity -= 0.01;
+				mesh.material.opacity = opacity;
+
+				this.render();
+			} else {
+				clearInterval(reduceOpacityInterval); // Stop the interval when opacity reaches 0.01
+				// Remove the mesh from the scene
+				this.scene.remove(mesh);
+				// Dispose of the geometry and material to release memory
+				mesh.geometry.dispose();
+				mesh.material.dispose();
+			}
+		}, 100); // Reduce opacity every second
 	}
 
 	updateBall(data) {
@@ -252,19 +259,14 @@ export class PongGameCanvas {
 		this.updateLinesContainer(
 			data.obstacles,
 			this.obstacleLinesContainer,
-			0x00ff00,
-            0.4,
-		);
-		this.updateLinesContainer(
-			[data.pL.goal, data.pR.goal],
-			this.goalLinesContainer,
-			0xffff00,
+			0xffffff,
+            0.8,
 		);
 		this.updateLinesContainer(
 			[data.pL.clamp, data.pR.clamp],
 			this.clampLinesContainer,
-			0x0000ff,
-			0.4,
+			0xffffff,
+			0.8,
 		);
 	}
 
@@ -273,7 +275,7 @@ export class PongGameCanvas {
 		const imPL = state.game.p1.id === state.profile.id;
 		const iWin = pLWin == imPL;
 		state.runningGame.gameOverState = iWin ? "youWin" : "youLose";
-		
+
 		if (state.runningGame.gameOverState == "youLose" || state.runningGame.gameOverState == "youWin")
 			this.socket.close();
 	}
@@ -283,10 +285,12 @@ export class PongGameCanvas {
 		const data = JSON.parse(message).message;
 		if (this.pLScore !== data.pL.score) {
 			state.runningGame.pLPoints = data.pL.score;
+			this.resetPaintList();
 			this.pLScore = data.pL.score;
 		}
 		if (this.pRScore !== data.pR.score) {
 			state.runningGame.pRPoints = data.pR.score;
+			this.resetPaintList();
 			this.pRScore = data.pR.score;
 		}
 		if (data.gameOver) {
@@ -317,25 +321,6 @@ export class PongGameCanvas {
 		this.updateBonus(data);
 
 		this.drawDebugLines(data);
-	}
-
-	opacityFadeOut(mesh) {
-		let opacity = mesh.material.opacity;
-		const reduceOpacityInterval = setInterval(() => {
-			if (opacity > 0.001) {
-				opacity -= 0.1;
-				mesh.material.opacity = opacity;
-				console.log(opacity);
-				this.render();
-			} else {
-				clearInterval(reduceOpacityInterval); // Stop the interval when opacity reaches 0.01
-				// Remove the mesh from the scene
-				this.scene.remove(mesh);
-				// Dispose of the geometry and material to release memory
-				mesh.geometry.dispose();
-				mesh.material.dispose();
-			}
-		}, 0.5); // Reduce opacity every second
 	}
 
 	loadAssets() {
