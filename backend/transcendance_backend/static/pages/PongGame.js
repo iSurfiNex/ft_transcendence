@@ -31,15 +31,12 @@ class PongGame extends Component {
 					<li>\n</li>
 					<li>{this.getEndMsg()}</li>
 				</ul>
+				<button hidden="{!runningGame.gameOverState}" id="pong-button" class="leave" @click="this.leave()">
+					<span class="front-leave">{language.leave}</span>
+				</button>
 			</div>
 		</div>
 		<span hidden="{runningGame.gameOverState}" id="info">Score to win: {game.goal_objective}</span>
-		<button hidden="{!runningGame.gameOverState}" class="btn btn-leave" @click="this.leave()">
-			{language.leave}
-		</button>
-		<button hidden="{runningGame.gameOverState}" class="btn btn-giveUp" @click="this.giveUp()">
-			{language.ByeButton} LOSER
-		</button>
 	`;
 
 	static css = css`
@@ -48,22 +45,26 @@ class PongGame extends Component {
 			bottom: 65px;
 		}
 
-		.btn {
+		.leave {
+			background: hsl(130, 100%, 32%);
+			border-radius: 12px;
+			border: none;
+			padding: 0;
 			cursor: pointer;
-			font-size: 25px;
-			font-family: "Press Start 2P", sans-serif;
-			position: fixed;
-			bottom: 40px;
-			right: 40px;
-			justify-content: center;
-			align-items: center;
-			display: flex;
-			white-space: nowrap;
-			overflow: hidden;
-			transition:
-				background-color 0.3s,
-				color 0.3s;
-			opacity: 0.6;
+			outline-offset: 4px;
+			margin: 10px 30px;
+		}
+
+		.front-leave {
+			display: block;
+			padding: 12px 42px;
+			border-radius: 12px;
+			font-size: 1.25rem;
+			background: hsl(123, 100%, 39%);
+			color: white;
+			text-wrap: nowrap;
+			transform: translateY(-6px);
+			font-family: 'Press Start 2P', sans-serif;
 		}
 
 		.btn-mobileButtonUp {
