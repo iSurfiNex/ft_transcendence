@@ -57,6 +57,7 @@ class Pong:
         self.use_ai = use_ai
         self.pause = False
         self.start_at = start_at
+        self.use_powerup = use_powerups
 
         top_lines = [Line(
             Vec(BALL_RADIUS - W / 2, -BALL_RADIUS + H / 2),
