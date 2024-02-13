@@ -15,7 +15,7 @@ class Collision:
 
 
 def compute_collision(
-    pos: Vec, vec: Vec, obstacles: list[Obstacle], ignore
+        pos: Vec, vec: Vec, obstacles: list[Obstacle], ignore, pl=None, pr=None
 ) -> tuple[Collision or None, Vec or None]:
     for obstacle in obstacles:
         for obstacle_line in obstacle:
@@ -23,9 +23,26 @@ def compute_collision(
                 continue
             ball_line = Line(pos, pos + vec)
             coll_pos = ball_line.intersect(obstacle_line)
+            # Add extra colliders for players pad fo not missing collision
+            if obstacle_line == pl:
+                if not coll_pos:
+                    coll_pos = ball_line.intersect(Line(obstacle_line.a + Vec(-3,0), obstacle_line.b + Vec(-3,0)))
+                if not coll_pos:
+                    coll_pos = ball_line.intersect(Line(obstacle_line.a + Vec(-5,0), obstacle_line.b + Vec(-5,0)))
+                if not coll_pos:
+                    coll_pos = ball_line.intersect(Line(obstacle_line.a + Vec(-8,0), obstacle_line.b + Vec(-8,0)))
+            if obstacle_line == pr:
+                if not coll_pos:
+                    coll_pos = ball_line.intersect(Line(obstacle_line.a + Vec(3,0), obstacle_line.b + Vec(3,0)))
+                if not coll_pos:
+                    coll_pos = ball_line.intersect(Line(obstacle_line.a + Vec(5,0), obstacle_line.b + Vec(5,0)))
+                if not coll_pos:
+                    coll_pos = ball_line.intersect(Line(obstacle_line.a + Vec(8,0), obstacle_line.b + Vec(8,0)))
             if coll_pos:
                 n = obstacle_line.normal
                 r_dir = vec.reflect(n)
+                if (obstacle_line == pl and r_dir.x < 0) or (obstacle_line == pr and r_dir.x > 0):
+                    return None, None, None
                 # TODO improve datetime
                 return (
                     Collision(pos=coll_pos, obstacle=obstacle, ts=datetime.now()),
@@ -76,13 +93,15 @@ def collisions_check(
     obstacles: list[Obstacle],
     max_coll=100,
     until_coll_with: list[Line] = [],
+        pl=None,
+        pr=None,
 ) -> tuple[list[Collision], Vec, Vec or None, Line or None]:
     remaining_dist: float = vec.len
     collisions: list[Collision] = []
     r_dir = None
     line = None
     while len(collisions) < max_coll:
-        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line)
+        coll, next_dir, line = compute_collision(pos, vec, obstacles, ignore=line, pl=pl, pr=pr)
 
         if not coll or not next_dir:
             break
