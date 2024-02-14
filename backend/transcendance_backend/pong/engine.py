@@ -21,6 +21,7 @@ class PongEngine:
     p1_hits = 0
     p2_hits = 0
     wall_hits = 0
+    map_transition = False
 
     def __init__(
         self,
@@ -88,6 +89,7 @@ class PongEngine:
         self.players[0].pad.p = Vec(PAD_SHIFT - W/2, 0)
         self.players[1].pad.p = Vec(PAD_SHIFT - W/2, 0)
         self.ball.reset()
+        self.map_transition = True
 
         if (
             self.players[0].score >= self.win_score

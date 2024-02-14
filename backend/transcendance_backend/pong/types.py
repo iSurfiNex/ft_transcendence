@@ -32,7 +32,7 @@ class Vec():
 
     @y.setter
     def y(self, value: float) -> None:
-        self = (self.x, value)
+        self._t = (self.x, value)
 
     def __getitem__(self, index: int) -> float:
         return self._t[index]

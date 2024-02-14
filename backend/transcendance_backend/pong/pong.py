@@ -2,6 +2,7 @@ from time import time, sleep
 import random
 import math
 import os
+import copy
 
 from .engine import PongEngine
 from .entities import Ball, Pad, Player
@@ -19,8 +20,11 @@ PAD_SHIFT = 50
 
 BALL_BASE_SPEED = 120
 BALL_ACCELERATION = 5
-PADDLE_SPEED = 130
-PADDLE_ROT_SPEED = math.pi / 5
+PADDLE_ACCELERATION = 1.5
+PADDLE_SPEED = 140
+PADDLE_ROT_SPEED = math.pi / 4
+
+MAP_TRANSITION_DURATION = 2
 
 
 def add_line_bumbs(line_list: list[Line], amplitude: float, iter: int = 1):
@@ -38,10 +42,26 @@ def add_line_bumbs(line_list: list[Line], amplitude: float, iter: int = 1):
         return add_line_bumbs(flattened_list, amplitude * -1, iter - 1)
     return flattened_list
 
+def generate_walls(use_powerups):
+    top_lines = [Line(
+        Vec(BALL_RADIUS - W / 2, -BALL_RADIUS + H / 2),
+        Vec(-BALL_RADIUS + W / 2, -BALL_RADIUS + H / 2),
+    )]
+
+    bottom_lines = [Line(
+        Vec(-BALL_RADIUS + W / 2, BALL_RADIUS - H / 2),
+        Vec(BALL_RADIUS - W / 2, BALL_RADIUS - H / 2),
+    )]
+
+    if use_powerups:
+        top_lines = add_line_bumbs(top_lines, -1, 2)
+        bottom_lines = add_line_bumbs(bottom_lines, 1, 2)
+    return top_lines, bottom_lines
+
 
 class Pong:
     def __init__(self, win_score, use_powerups, use_ai, start_at):
-
+        self.map_transition_started_at = 0
         ball_reset_pos = Vec(0, 0)
 
         ball = Ball(
@@ -59,20 +79,10 @@ class Pong:
         self.start_at = start_at
         self.use_powerup = use_powerups
 
-        top_lines = [Line(
-            Vec(BALL_RADIUS - W / 2, -BALL_RADIUS + H / 2),
-            Vec(-BALL_RADIUS + W / 2, -BALL_RADIUS + H / 2),
-        )]
 
-        bottom_lines = [Line(
-            Vec(-BALL_RADIUS + W / 2, BALL_RADIUS - H / 2),
-            Vec(BALL_RADIUS - W / 2, BALL_RADIUS - H / 2),
-        )]
-
-        if use_powerups:
-            top_lines = add_line_bumbs(top_lines, -1, 2)
-            bottom_lines = add_line_bumbs(bottom_lines, 1, 2)
-
+        (top_lines, bottom_lines) = generate_walls(use_powerups)
+        self.top_lines = top_lines
+        self.bottom_lines = bottom_lines
         wall_lines = top_lines + bottom_lines
 
         player1_goal_line = Line(
@@ -246,6 +256,32 @@ class Pong:
 
             game_last_tick_ts = current_time
 
+            if self.engine.map_transition and self.use_powerup:
+                self.map_transition_started_at = current_time
+                prev_top_lines = copy.deepcopy(self.top_lines)
+                prev_bottom_lines = copy.deepcopy(self.bottom_lines)
+                (next_top_lines, next_bottom_lines) = generate_walls(True)
+                self.engine.map_transition = False
+
+            print(self.map_transition_started_at)
+            if self.map_transition_started_at:
+                elapsed_transition_time = current_time - self.map_transition_started_at
+                if elapsed_transition_time > MAP_TRANSITION_DURATION:
+                    self.map_transition_started_at = 0
+                progress = elapsed_transition_time / MAP_TRANSITION_DURATION
+                print(progress)
+                for line, prev_line, next_line in zip(self.top_lines, prev_top_lines, next_top_lines):
+                    line.a.x = prev_line.a.x + (next_line.a.x - prev_line.a.x) * progress
+                    line.a.y = prev_line.a.y + (next_line.a.y - prev_line.a.y) * progress
+                    line.b.x = prev_line.b.x + (next_line.b.x - prev_line.b.x) * progress
+                    line.b.y = prev_line.b.y + (next_line.b.y - prev_line.b.y) * progress
+                for line, prev_line, next_line in zip(self.bottom_lines, prev_bottom_lines, next_bottom_lines):
+                    line.a.x = prev_line.a.x + (next_line.a.x - prev_line.a.x) * progress
+                    line.a.y = prev_line.a.y + (next_line.a.y - prev_line.a.y) * progress
+                    line.b.x = prev_line.b.x + (next_line.b.x - prev_line.b.x) * progress
+                    line.b.y = prev_line.b.y + (next_line.b.y - prev_line.b.y) * progress
+
+
 
             if self.engine.players[0].powerup_activated:
                 if self.engine.players[0].has_powerup == True:
@@ -290,6 +326,8 @@ class Pong:
 
             self.engine.update(delta)
             self.engine.ball.s = BALL_BASE_SPEED + (current_time - self.engine.round_started_at )*BALL_ACCELERATION
+            self.engine.players[0].pad.s = PADDLE_SPEED + (current_time - self.engine.round_started_at )*PADDLE_ACCELERATION
+            self.engine.players[1].pad.s = PADDLE_SPEED + (current_time - self.engine.round_started_at )*PADDLE_ACCELERATION
 
             game_data = self.serialize()
             await asend(game_data)
