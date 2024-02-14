@@ -39,7 +39,7 @@ class PongProfile extends Component {
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.goal}:</span>
-					<span class="profile-stat-value">{this.getGoal(profileLooking)}</span>
+					<span class="profile-stat-value">{this.getWallHit(profileLooking)}</span>
 				</div>
 				<div class="profile-stat">
 					<span class="profile-stat-name">{language.tournamentWin}:</span>
@@ -321,6 +321,9 @@ class PongProfile extends Component {
 	}
 `
 
+
+// "tournament_win": self.tournaments.filter(state="done", winner=self).count() or 0,
+
 	getAvatarUrl(profileLooking, picture) {
         if (profileLooking === state.profile.id)
             return picture
@@ -329,92 +332,121 @@ class PongProfile extends Component {
 	}
 
 	getWin(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return user.win;
+		if (!lookingUser)
+			return 0;
+
+		const winCount = state.games.filter(game => game.status === "done" && game.winner?.id === lookingUser.id).length;
+
+		return winCount ? winCount : 0;
 	}
 
 	getLose(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return user.lose;
+		if (!lookingUser)
+			return 0;
+
+		const loseCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname && game.winner?.id !== lookingUser.id).length;
+
+		return loseCount ? loseCount : 0;
 	}
 
 	getTotal(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return user.total;
+		if (!lookingUser)
+			return 0;
+
+		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+
+		return totalCount ? totalCount : 0;
 	}
 
 	getWinRate(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return (user.win / user.total * 100).toFixed(2);
+		if (!lookingUser)
+			return 0;
+
+		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const winCount = state.games.filter(game => game.status === "done" && game.winner?.id === lookingUser.id).length;
+
+		return (winCount ? winCount : 0) / (totalCount ? totalCount : 1) * 100;
 	}
 
 	getBallHit(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return user.paddle_hits;
+		if (!lookingUser)
+			return 0;
+
+		const ballHits = Math.floor(state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.paddle_hits, 0) / 2);
+
+		return ballHits ? ballHits : 0;
 	}
 
-	getGoal(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+	getWallHit(profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return user.wall_hits;
+		if (!lookingUser)
+			return 0;
+
+		const wallHits = Math.floor(state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.wall_hits, 0) / 2);
+
+		return wallHits ? wallHits : 0;
 	}
 
 	getTournamentWin(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
-		return user.tournament_win;
+		if (!lookingUser)
+			return 0;
+
+		const winCount = state.tournaments.filter(tournament => tournament.status === "done" && tournament.winner.id === lookingUser.id).length;
+
+		return winCount ? winCount : 0;
 	}
 
 	getChartWin(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
+		if (!lookingUser)
+			return 0;
 
-		let ratio = (user.win / user.total) * 90;
-		let finalValue = Math.max(ratio, 8);
+		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const winCount = state.tournaments.filter(tournament => tournament.status === "done" && tournament.winner.id === lookingUser.id).length;
+
+		if (winCount === totalCount)
+			return 'height: ' + 90 + '%';
+
+		const ratio = (winCount / totalCount) * 90;
+		const finalValue = Math.max(ratio, 8);
 
 		return 'height: ' + finalValue + '%';
 	}
 
 	getChartLose(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 
-		if (!user)
-			return '';
+		if (!lookingUser)
+			return 0;
 
-		let ratio = (user.lose / user.total) * 90;
-		let finalValue = Math.max(ratio, 8);
+		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const loseCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname && game.winner?.id !== lookingUser.id).length;
+
+		if (loseCount === totalCount)
+			return 'height: ' + 90 + '%';
+
+		const ratio = (loseCount / totalCount) * 90;
+		const finalValue = Math.max(ratio, 8);
 
 		return 'height: ' + finalValue + '%';
 	}
 
 	getChartTotal(profileLooking) {
-		const user = state.users.find(user => user.id === profileLooking);
-
-		if (!user)
-			return '';
-
-		let finalValue = 90;
+		const finalValue = 90;
 
 		return 'height: ' + finalValue + '%';
 	}
@@ -424,13 +456,7 @@ class PongProfile extends Component {
 
 		if (!player)
 			return (true);
-		if (game.type == "tournament")
-			return (true);
 		if (game.status != "done")
-			return (true);
-		if (game.creator == "tournament")
-			return (true);
-		if (game.players.length < 2)
 			return (true);
 		return (false);
 	}
@@ -452,11 +478,7 @@ class PongProfile extends Component {
 
 		if (!player)
 			return ;
-		if (game.type == "tournament")
-			return ;
 		if (game.status != "done")
-			return ;
-		if (game.creator == "tournament")
 			return ;
 		const score = game.score.find(score => score.nickname === player);
 		return '(' + score?.points + ')';
@@ -466,12 +488,8 @@ class PongProfile extends Component {
 		const player = game.players.find(player => player !== state.profile.nickname);
 
 		if (!player)
-			return ;
-		if (game.type == "tournament")
-			return ;
+			return "IA";
 		if (game.status != "done")
-			return ;
-		if (game.creator == "tournament")
 			return ;
 		const score = game.score.find(score => score.nickname === player);
 		return '(' + score?.points + ')';
@@ -483,11 +501,7 @@ class PongProfile extends Component {
 
 		if (!player1)
 			return ;
-		if (game.type == "tournament")
-			return ;
 		if (game.status != "done")
-			return ;
-		if (game.creator == "tournament")
 			return ;
 		const score1 = game.score.find(score => score.nickname === player1);
 		const score2 = game.score.find(score => score.nickname === player2);
@@ -501,8 +515,6 @@ class PongProfile extends Component {
 		const player = game.players.find(player => player === state.profile.nickname);
 
 		if (!player)
-			return (true);
-		if (game.type != "tournament")
 			return (true);
 		if (game.status != "done")
 			return (true);
