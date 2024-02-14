@@ -4,7 +4,7 @@ import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 class PongTopBar extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-	<div class="topbar">
+	<div class="topbar" id="topbar">
 		<a href="/" onclick="navigateTo('/'); return false;" class="logo">
 			<div class="logo-text">PONG</div>
 		</a>
@@ -424,6 +424,23 @@ class PongTopBar extends Component {
 	}
 `
 
+	connectedCallback() {
+		window.addEventListener("resize", this.hideTopBar.bind(this));
+	}
+
+	hideTopBar() {
+		const currentPath = window.location.pathname;
+
+		const shouldHideTopBar = state.isMobile && currentPath === '/play/game';
+
+		const topBar = this.shadowRoot.getElementById('topbar');
+
+		if (shouldHideTopBar)
+			topBar.style.display = 'none';
+		else
+			topBar.style.display = 'block';
+	}
+
 	selectedLanguage(language) {
 		if (state.language.username == language.username)
 			return true;
@@ -440,16 +457,16 @@ class PongTopBar extends Component {
 
 	updateActiveLanguage(lang) {
 		state.language = lang;
-        let langkey = ""
-        // TODO c'est dégueulasse
-        if (lang.username === 'Username')
-            langkey = 'en'
-        else if (lang.username === 'Nom d\'utilisateur')
-            langkey = 'fr'
-        else if (lang.username === "Nutzername")
-            langkey = 'de'
+		let langkey = ""
+		// TODO c'est dégueulasse
+		if (lang.username === 'Username')
+			langkey = 'en'
+		else if (lang.username === 'Nom d\'utilisateur')
+			langkey = 'fr'
+		else if (lang.username === "Nutzername")
+			langkey = 'de'
 
-        document.cookie = `lang=${langkey}; path=/; SameSite=Strict;`;
+		document.cookie = `lang=${langkey}; path=/; SameSite=Strict;`;
 	}
 }
 

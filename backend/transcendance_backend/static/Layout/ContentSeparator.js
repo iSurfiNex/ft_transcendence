@@ -4,7 +4,7 @@ import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 class PongContentSeparator extends Component {
 	static sheets = [bootstrapSheet]
 	static template = html`
-	<div class="layout">
+	<div class="layout" id="layout">
 		<div class="vertical-separator"></div>
 		<div class="horizontal-separator"></div>
 	</div>
@@ -77,6 +77,23 @@ class PongContentSeparator extends Component {
 		}
 	}
 `
+
+	connectedCallback() {
+		window.addEventListener("resize", this.hideLayout.bind(this));
+	}
+
+	hideLayout() {
+		const currentPath = window.location.pathname;
+
+		const shouldHideLayout = state.isMobile && currentPath === '/play/game';
+
+		const layout = this.shadowRoot.getElementById('layout');
+
+		if (shouldHideLayout)
+			layout.style.display = 'none';
+		else
+			layout.style.display = 'block';
+	}
 }
 
 register(PongContentSeparator);
