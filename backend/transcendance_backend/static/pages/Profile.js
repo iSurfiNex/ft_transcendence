@@ -373,7 +373,8 @@ class PongProfile extends Component {
 		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
 		const winCount = state.games.filter(game => game.status === "done" && game.winner?.id === lookingUser.id).length;
 
-		return (winCount ? winCount : 0) / (totalCount ? totalCount : 1) * 100;
+		const winRate = (winCount ? winCount : 0) / (totalCount ? totalCount : 1) * 100;
+		return winRate.toFixed(2);
 	}
 
 	getBallHit(profileLooking) {
@@ -382,7 +383,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const ballHits = Math.floor(state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.paddle_hits, 0) / 2);
+		const ballHits = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.paddle_hits, 0);
 
 		return ballHits ? ballHits : 0;
 	}
@@ -393,7 +394,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const wallHits = Math.floor(state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.wall_hits, 0) / 2);
+		const wallHits = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.wall_hits, 0);
 
 		return wallHits ? wallHits : 0;
 	}
@@ -416,7 +417,7 @@ class PongProfile extends Component {
 			return 0;
 
 		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
-		const winCount = state.tournaments.filter(tournament => tournament.status === "done" && tournament.winner.id === lookingUser.id).length;
+		const winCount = state.games.filter(game => game.status === "done" && game.winner?.id === lookingUser.id).length;
 
 		if (winCount == totalCount)
 			return 'height: ' + 90 + '%';
