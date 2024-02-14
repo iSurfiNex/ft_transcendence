@@ -21,6 +21,11 @@ var state_base = {
                 my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
         }),
+        lastGame: computedProperty(['currentGame', 'games'], function (currentGameId, games) {
+                if (currentGameId > 0)
+                        window.lastGameId = currentGameId
+                return games.find(game => game.id === window.lastGameId) || {}
+        }),
         tournament: computedProperty(['currentTournament', 'tournaments', 'profile.id'], function (currentTournamentId) {
                 const tournaments = state.tournaments
                 if (!tournaments && !Array.isArray(tournaments) || !(currentTournamentId>=0))

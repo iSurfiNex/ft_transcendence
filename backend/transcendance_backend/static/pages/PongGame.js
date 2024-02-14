@@ -29,8 +29,8 @@ class PongGame extends Component {
 					<span id="gameOverState" class="blinking"
 						>{lang(runningGame.gameOverState)}</span>
 					<ul class="stat-list">
-						<li>Ball hit: {this.getPaddleHits(runningGame.gameOverState)} times</li>
-						<li>Wall hit: {this.getWallHits(runningGame.gameOverState)} times</li>
+						<li>Ball hit: {lastGame.paddle_hits} times</li>
+						<li>Wall hit: {lastGame.wall_hits} times</li>
 						<li>\n</li>
 						<li>{this.getEndMsg()}</li>
 					</ul>
@@ -397,24 +397,6 @@ class PongGame extends Component {
 
 	getRandomInt() {
 		return Math.floor(Math.random() * 100);
-	}
-
-	getPaddleHits() {
-		let my_user = state.users.find(user => user.id == state.profile.id);
-		let game = state.games.find(game => game.id == my_user.lastGameId);
-
-		if (game)
-			return (game.paddle_hits);
-		return (69);
-	}
-
-	getWallHits() {
-		let my_user = state.users.find(user => user.nickname == state.profile.nickname);
-		let game = state.games.find(game => game.id == my_user.lastGameId);
-
-		if (game)
-			return (game.wall_hits);
-		return (69);
 	}
 
 	getEndMsg() {
