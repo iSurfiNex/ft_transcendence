@@ -7,16 +7,19 @@ class TournamentWr extends Component {
     <div class="available-space">
 	    <div class="top-bar">
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
-            <div class="player-count">{tournament.players.length}/{tournament.expectedPlayers}</div>
+            <div class="player-count" >{tournament.playersCount}/{tournament.expectedPlayers}</div>
         </div>
         <div class="buttons">
-            <button class="btn btn-startGame" @click="this.startTournament()" hidden="{this.isTournamentCreator()}">{language.GoButton}</button>
-            <button class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
+            <button hidden="{tournament.imReady}" class="btn btn-startGame" @click="this.ready()">{language.ReadyButton}</button>
+            <button hidden="{this.cantGiveup(tournament.imReady, tournament.status)}" class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
+            <div hidden="{!tournament.imReady}">{language.waitingOther}</div>
         </div>
         <div class="tournament-room" repeat="tournaments" as="tournament">
             <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}">
                 <div class="player-T" repeat="tournament.players" as="player">
                     <a class="profil-T" href="javascript:void(0)" @click="this.navigate(player)">
+                        <div class="player-text player-ready" hidden="{!this.isPlayerReady(player, tournament.readyPlayersId, users)}">READY</div>
+                        <div class="player-text player-out" hidden="{!this.isPlayerOut(player, tournament.players_r2, users, tournament.status)}">OUT</div>
                         <img src="{this.getPlayerPic(player)}">
                         <div class="profil-nick-T">{player}</div>
                     </a>
@@ -28,6 +31,27 @@ class TournamentWr extends Component {
         //<script>document.addEventListener("DOMContentLoaded", this.startRound2())</script>
 
     static css = css`
+    :host {
+        font-family: 'Press Start 2P', sans-serif;
+    }
+
+    .player-text {
+        color: green;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: none;
+        z-index: 1;
+    }
+
+    .player-ready {
+        color: green;
+    }
+
+    .player-out {
+        color: red;
+    }
+
 	@media only screen and (max-width: 768px) {
         .available-space {
             position: absolute;
@@ -251,48 +275,10 @@ class TournamentWr extends Component {
     connectedCallback() {
         var tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
         let url = "/api/manage-tournament/" + state.currentTournament + "/";
-
-        if (tournament)
-        {
-            if (tournament.status == "round 1")
-            {
-                if (tournament.players_r2.length == 2)
-                {
-                    var dataToSend = {
-                        action: "start-round",
-                    };
-                    put2(url, dataToSend).catch(error => console.log(error));
-                }
-            }
-        }
-    }
-
-    StartRound2() {
-        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-
-        if (tournament.status == "waiting")
-            return ;
-
-        if (tournament.players.lenght == 2)
-        {
-            //start round 2
-        }
-        else
-            setInterval(checkPlayersSize, 1000);
     }
 
     IsCurrentTournament(tournamentId) {
         return !(tournamentId == state.currentTournament);
-    }
-
-    isTournamentCreator() {
-        if (state.currentTournament == -1 )
-            return !(false);
-
-        let tournament = state.tournaments.find(tournament => tournament.id == state.currentTournament)
-        if (state.profile.nickname == tournament.creator && tournament.status == "waiting")
-            return !(true);
-        return !(false);
     }
 
     getPlayerPic(nickname) {
@@ -318,18 +304,12 @@ class TournamentWr extends Component {
         .catch(error => console.error(error));
     }
 
-    startTournament() {
+    ready() {
         const nb_players = state.tournament.players.length;
         const url = "/api/manage-tournament/" + state.currentTournament + "/";
 
-        if (nb_players != 4)
-        {
-            console.error("not enought players");
-            return ;
-        }
-
         const dataToPut = {
-            action: "start-round",
+            action: "ready",
         }
 
         put2(url, dataToPut).catch(error => console.error(error));
@@ -345,6 +325,22 @@ class TournamentWr extends Component {
 		navigateTo('/profile');
 		return false;
 	}
+
+    isPlayerReady(nickname, readyPlayers, users) {
+        const u = users.find(u => u.nickname === nickname)
+        return u && readyPlayers.some(id => id === u.id)
+    }
+
+    isPlayerOut(nickname, players_r2_nicknames, users, tournament_status) {
+        if (tournament_status != 'round 1' || players_r2_nicknames.length != 2)
+            return false
+        const u = users.find(u => u.nickname === nickname)
+        return u && !players_r2_nicknames.some(nickname => nickname === u.nickname)
+    }
+
+    cantGiveup(imReady, status) {
+       return imReady || status !== "waiting" // no given for last round, avoids problems, make things simpler
+    }
 }
 
 register(TournamentWr)
