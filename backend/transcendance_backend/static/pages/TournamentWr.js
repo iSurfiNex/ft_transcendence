@@ -18,7 +18,8 @@ class TournamentWr extends Component {
             <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}">
                 <div class="player-T" repeat="tournament.players" as="player">
                     <a class="profil-T" href="javascript:void(0)" @click="this.navigate(player)">
-                        <div class="player-ready" hidden="{!this.isPlayerReady(player, tournament.readyPlayersId, users)}">READY</div>
+                        <div class="player-text player-ready" hidden="{!this.isPlayerReady(player, tournament.readyPlayersId, users)}">READY</div>
+                        <div class="player-text player-out" hidden="{!this.isPlayerOut(player, tournament.players_r2, users, tournament.status)}">OUT</div>
                         <img src="{this.getPlayerPic(player)}">
                         <div class="profil-nick-T">{player}</div>
                     </a>
@@ -34,13 +35,21 @@ class TournamentWr extends Component {
         font-family: 'Press Start 2P', sans-serif;
     }
 
-    .player-ready {
+    .player-text {
         color: green;
         position: absolute;
         bottom: 20px;
         right: 20px;
         background: none;
         z-index: 1;
+    }
+
+    .player-ready {
+        color: green;
+    }
+
+    .player-out {
+        color: red;
     }
 
 	@media only screen and (max-width: 768px) {
@@ -320,6 +329,13 @@ class TournamentWr extends Component {
     isPlayerReady(nickname, readyPlayers, users) {
         const u = users.find(u => u.nickname === nickname)
         return u && readyPlayers.some(id => id === u.id)
+    }
+
+    isPlayerOut(nickname, players_r2_nicknames, users, tournament_status) {
+        if (tournament_status != 'round 1')
+            return false
+        const u = users.find(u => u.nickname === nickname)
+        return u && !players_r2_nicknames.some(nickname => nickname === u.nickname)
     }
 
     cantGiveup(imReady, status) {
