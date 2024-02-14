@@ -17,10 +17,10 @@ PAD_W, PAD_H = 20, 150
 FPS = 24
 PAD_SHIFT = 50
 
-BALL_BASE_SPEED = 150
+BALL_BASE_SPEED = 120
 BALL_ACCELERATION = 5
-PADDLE_SPEED = 150
-
+PADDLE_SPEED = 130
+PADDLE_ROT_SPEED = math.pi / 5
 
 
 def add_line_bumbs(line_list: list[Line], amplitude: float, iter: int = 1):
@@ -98,6 +98,7 @@ class Pong:
             clamp_line=player1_clamp_line,
             pad_line=player1_pad_line,
             speed=PADDLE_SPEED,
+            rot_speed=PADDLE_ROT_SPEED,
         )
         padPlayer2 = Pad(
             pos=Vec(W/2 - PAD_SHIFT, 0),
@@ -106,6 +107,7 @@ class Pong:
             clamp_line=player2_clamp_line,
             pad_line=player2_pad_line,
             speed=PADDLE_SPEED,
+            rot_speed=PADDLE_ROT_SPEED,
         )
 
         player1 = Player(pad=padPlayer1, goal_line=player1_goal_line)
