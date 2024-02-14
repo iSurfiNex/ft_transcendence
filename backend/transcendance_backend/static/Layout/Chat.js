@@ -842,7 +842,7 @@ class PongChat extends Component {
 	getUserFullNameFromString(string) {
 		const user = state.users.find(user => user.nickname === string);
 
-		if (user && user.fullname != 'Default Name')
+		if (user && user.fullname != 'Jean Michel')
 			return (user.fullname)
 		else
 			return (string);
