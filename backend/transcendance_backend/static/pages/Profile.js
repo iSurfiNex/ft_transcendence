@@ -67,16 +67,16 @@ class PongProfile extends Component {
 			<div class="profile-game-history">
 				<div class="profile-title">{language.gameHistory}</div>
 				<div class="profile-games" repeat="games" as="item">
-					<div class="profile-game" hidden={this.getHiddenStatus(item)}>
+					<div class="profile-game" hidden={this.getHiddenStatus(item,profileLooking)}>
 						<span class="profile-game-date">{this.getFormatedDate(item.date)}</span>
 						<div class="profile-game-score">
- 							<span class="profile-game-score-name">{this.getPlayerName(item)}</span>
-							<span class="profile-game-score">{this.getPlayerScore(item)}</span>
+ 							<span class="profile-game-score-name">{this.getPlayerName(item,profileLooking)}</span>
+							<span class="profile-game-score">{this.getPlayerScore(item,profileLooking)}</span>
 							<span class="profile-game-versus">VS</span>
-							<span class="profile-game-score">{this.getOtherPlayerScore(item)}</span>
-							<span class="profile-game-score-name">{this.getOtherPlayerName(item)}</span>
+							<span class="profile-game-score">{this.getOtherPlayerScore(item,profileLooking)}</span>
+							<span class="profile-game-score-name">{this.getOtherPlayerName(item,profileLooking)}</span>
 						</div>
-						<span class="profile-game-status {this.getGameStatus(item)}">{this.getGameStatus(item)}</span>
+						<span class="profile-game-status {this.getGameStatus(item,profileLooking)}">{this.getGameStatus(item,profileLooking)}</span>
 					</div>
 				</div>
 			</div>
@@ -84,16 +84,16 @@ class PongProfile extends Component {
 			<div class="profile-tournament-history">
 				<div class="profile-title">{language.tournamentHistory}</div>
 				<div class="profile-tournament" repeat="tournaments" as="tournament">
-					<div class="profile-game" hidden={this.getHiddenStatusTournament(tournament)}>
-						<span class="profile-game-date">{this.getFormatedDate(tournament.date)} - </span><span class="profile-game-status {this.getTournamentStatus(tournament)}">{this.getTournamentStatus(tournament)}</span>
+					<div class="profile-game" hidden={this.getHiddenStatusTournament(tournament,profileLooking)}>
+						<span class="profile-game-date">{this.getFormatedDate(tournament.date)} - </span><span class="profile-game-status {this.getTournamentStatus(tournament,profileLooking)}">{this.getTournamentStatus(tournament,profileLooking)}</span>
 						<div class="profile-tournament-games" repeat="tournament.gamesId" as="gameId">
 							<div class="profile-tournament-game">
-								<div class="profile-game-score">
-									<span class="profile-game-score-name">{this.getTournamentPlayerName(gameId)}</span>
-									<span class="profile-game-score">{this.getTournamentPlayerScore(gameId)}</span>
+								<div class="profile-game-score" hidden={this.getHiddenTourGames(gameId,profileLooking)}>
+									<span class="profile-game-score-name">{this.getTournamentPlayerName(gameId,profileLooking)}</span>
+									<span class="profile-game-score">{this.getTournamentPlayerScore(gameId,profileLooking)}</span>
 									<span class="profile-game-versus">VS</span>
-									<span class="profile-game-score">{this.getTournamentOtherPlayerScore(gameId)}</span>
-									<span class="profile-game-score-name">{this.getTournamentOtherPlayerName(gameId)}</span>
+									<span class="profile-game-score">{this.getTournamentOtherPlayerScore(gameId,profileLooking)}</span>
+									<span class="profile-game-score-name">{this.getTournamentOtherPlayerName(gameId,profileLooking)}</span>
 								</div>
 							</div>
 						</div>
@@ -418,7 +418,7 @@ class PongProfile extends Component {
 		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
 		const winCount = state.tournaments.filter(tournament => tournament.status === "done" && tournament.winner.id === lookingUser.id).length;
 
-		if (winCount === totalCount)
+		if (winCount == totalCount)
 			return 'height: ' + 90 + '%';
 
 		const ratio = (winCount / totalCount) * 90;
@@ -436,7 +436,7 @@ class PongProfile extends Component {
 		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
 		const loseCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname && game.winner?.id !== lookingUser.id).length;
 
-		if (loseCount === totalCount)
+		if (loseCount == totalCount)
 			return 'height: ' + 90 + '%';
 
 		const ratio = (loseCount / totalCount) * 90;
@@ -451,8 +451,9 @@ class PongProfile extends Component {
 		return 'height: ' + finalValue + '%';
 	}
 
-	getHiddenStatus(game) {
-		const player = game.players.find(player => player === state.profile.nickname);
+	getHiddenStatus(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
 			return (true);
@@ -461,58 +462,110 @@ class PongProfile extends Component {
 		return (false);
 	}
 
-	getPlayerName(game) {
-		const player1 = game.players.find(player => player === state.profile.nickname);
+	getPlayerName(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player1 = game.players.find(player => player === lookingUser.nickname);
 
 		return player1;
 	}
 
-	getOtherPlayerName(game) {
-		const player2 = game.players.find(player => player !== state.profile.nickname);
+	getOtherPlayerName(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player2 = game.players.find(player => player !== lookingUser.nickname);
 
+		if (!player2)
+			return "AI";
 		return player2;
 	}
 
-	getPlayerScore(game) {
-		const player = game.players.find(player => player === state.profile.nickname);
+	getPlayerScore(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
 			return ;
 		if (game.status != "done")
 			return ;
-		const score = game.score.find(score => score.nickname === player);
-		return '(' + score?.points + ')';
+
+		let score = 0;
+
+		if (player == game.p1.nickname)
+			score = game.p1_score;
+		else
+			score = game.p2_score;
+
+		if (!score)
+			score = 0;
+
+		return '(' + score + ')';
 	}
 
-	getOtherPlayerScore(game) {
-		const player = game.players.find(player => player !== state.profile.nickname);
+	getOtherPlayerScore(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player = game.players.find(player => player !== lookingUser.nickname);
 
-		if (!player)
-			return "IA";
+		if (!player) {
+			const player1 = game.players.find(player => player === lookingUser.nickname);
+
+			let score = 0;
+
+			if (player1 == game.p2.nickname)
+				score = game.p1_score;
+			else
+				score = game.p2_score;
+
+			if (!score)
+				score = 0;
+
+			return '(' + score + ')';
+		}
 		if (game.status != "done")
 			return ;
-		const score = game.score.find(score => score.nickname === player);
-		return '(' + score?.points + ')';
+
+		let score = 0;
+
+		if (player == game.p2.nickname)
+			score = game.p2_score;
+		else
+			score = game.p1_score;
+
+		if (!score)
+			score = 0;
+
+		return '(' + score + ')';
 	}
 
-	getGameStatus(game) {
-		const player1 = game.players.find(player => player === state.profile.nickname);
-		const player2 = game.players.find(player => player !== state.profile.nickname);
+	getGameStatus(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player1 = game.players.find(player => player === lookingUser.nickname);
+		const player2 = game.players.find(player => player !== lookingUser.nickname);
 
 		if (!player1)
 			return ;
 		if (game.status != "done")
 			return ;
-		const score1 = game.score.find(score => score.nickname === player1);
-		const score2 = game.score.find(score => score.nickname === player2);
-		if (score1?.points == score2?.points)
+
+		let score1 = 0;
+		let score2 = 0;
+
+		if (player1 == game.p1.nickname) {
+			score1 = game.p1_score;
+			score2 = game.p2_score;
+		}
+		else {
+			score1 = game.p2_score;
+			score2 = game.p1_score;
+		}
+
+		if (score1 == score2)
 			return 'tie';
 		else
-			return score1?.points > score2?.points ? 'win' : 'lose'
+			return score1 > score2 ? 'win' : 'lose'
 	}
 
-	getHiddenStatusTournament(game) {
-		const player = game.players.find(player => player === state.profile.nickname);
+	getHiddenStatusTournament(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
 			return (true);
@@ -521,9 +574,8 @@ class PongProfile extends Component {
 		return (false);
 	}
 
-	getTournamentStatus(game) {
-		if (game.type != "tournament")
-			return ;
+	getTournamentStatus(game, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 		if (game.status != "done")
 			return ;
 
@@ -535,82 +587,118 @@ class PongProfile extends Component {
 		if (!finalGame)
 			return ;
 
-		const player1 = finalGame.players.find(player => player == state.profile.nickname);
-		const player2 = finalGame.players.find(player => player !== state.profile.nickname);
+		const player1 = finalGame.players.find(player => player == lookingUser.nickname);
+		const player2 = finalGame.players.find(player => player !== lookingUser.nickname);
 		if (!player1)
 			return 'lose';
 		if (!player2)
-			return ;
+			return 'win';
 
-		const score1 = finalGame.score.find(score => score.nickname === player1);
-		const score2 = finalGame.score.find(score => score.nickname === player2);
-		if (score1?.points == score2?.points)
+		let score1 = 0;
+		let score2 = 0;
+
+		if (player1 == game.p1.nickname) {
+			score1 = game.p1_score;
+			score2 = game.p2_score;
+		}
+		else {
+			score1 = game.p2_score;
+			score2 = game.p1_score;
+		}
+
+		if (score1 == score2)
 			return 'tie';
 		else
-			return score1?.points > score2?.points ? 'win' : 'lose'
+			return score1 > score2 ? 'win' : 'lose'
 
 	}
 
-	getTournamentPlayerName(gameId) {
+	getTournamentPlayerName(gameId, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player1 = game.players.find(player => player === state.profile.nickname);
+		let player1 = game.players.find(player => player === lookingUser.nickname);
 		if (!player1)
 			player1 = game.players[0];
 
 		return player1;
 	}
 
-	getTournamentOtherPlayerName(gameId) {
+	getTournamentOtherPlayerName(gameId, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player2 = game.players.find(player => player !== state.profile.nickname);
-		const player1 = game.players.find(player => player === state.profile.nickname);
+		let player2 = game.players.find(player => player !== lookingUser.nickname);
+		const player1 = game.players.find(player => player === lookingUser.nickname);
 		if (!player1)
 			player2 = game.players[1];
 
 		return player2;
 	}
 
-	getTournamentPlayerScore(gameId) {
+	getTournamentPlayerScore(gameId, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player = game.players.find(player => player === state.profile.nickname);
+		let player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
 			player = game.players[0];
-		if (game.type == "tournament")
-			return ;
 		if (game.status != "done")
 			return ;
-		if (game.creator != "tournament")
-			return ;
-		const score = game.score.find(score => score.nickname === player);
-		return '(' + score?.points + ')';
+
+		let score = 0;
+
+		if (player == game.p1.nickname)
+			score = game.p1_score;
+		else
+			score = game.p2_score;
+
+		if (!score)
+			score = 0;
+
+		return '(' + score + ')';
 	}
 
-	getTournamentOtherPlayerScore(gameId) {
+	getTournamentOtherPlayerScore(gameId, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
-		let player1 = game.players.find(player => player === state.profile.nickname);
-		let player2 = game.players.find(player => player !== state.profile.nickname);
+		let player1 = game.players.find(player => player === lookingUser.nickname);
+		let player2 = game.players.find(player => player !== lookingUser.nickname);
 
 		if (!player1)
 			player2 = game.players[1];
 		if (!player2)
 			return ;
-		if (game.type == "tournament")
-			return ;
 		if (game.status != "done")
 			return ;
-		if (game.creator != "tournament")
-			return ;
-		const score = game.score.find(score => score.nickname === player2);
-		return '(' + score?.points + ')';
+
+		let score = 0;
+
+		if (player2 == game.p2.nickname)
+			score = game.p2_score;
+		else
+			score = game.p1_score;
+
+		if (!score)
+			score = 0;
+
+		return '(' + score + ')';
+	}
+
+	getHiddenTourGames(gameId, profileLooking) {
+		const lookingUser = state.users.find(user => user.id === profileLooking);
+		const game = state.games.find(game => game.id === gameId);
+
+		const player = game.players.find(player => player === lookingUser.nickname);
+		if (!player)
+			return true;
+		return false;
 	}
 
 	getFormatedDate(timestamp) {
