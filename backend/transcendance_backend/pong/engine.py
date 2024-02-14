@@ -7,6 +7,8 @@ from time import time
 import math
 import random
 
+W, H = 1000, 900
+PAD_SHIFT = 50
 
 # def obstacles_to_lines(contours: list[Contour]) -> list[Line]:
 #    contours_as_lines = map(contour_to_lines, contours)
@@ -82,6 +84,9 @@ class PongEngine:
         else:
             return
 
+
+        self.players[0].pad.p = Vec(PAD_SHIFT - W/2, 0)
+        self.players[1].pad.p = Vec(PAD_SHIFT - W/2, 0)
         self.ball.reset()
 
         if (
