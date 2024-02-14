@@ -99,7 +99,7 @@ var state_base = {
 		login: 'Login',
 		register: 'Register',
 		connectionWith: 'Connection with 42',
-                errUnknown: 'An error occured.',
+		errUnknown: 'An error occured.',
 
 		// HOME
 		play: 'PLAY',
@@ -125,7 +125,7 @@ var state_base = {
 		tournamentHistory: 'Tournament history',
 		link42: 'Link with 42',
 
-                // UPDATE PROFILE
+		// UPDATE PROFILE
 		save: 'Save',
 		pseudo: 'Pseudo',
 		avatar: 'Avatar',
@@ -146,7 +146,7 @@ var state_base = {
 		GoButton: 'START',
 		ReadyButton: 'READY',
 		ByeButton: 'GIVE UP',
-                waitingOther: 'Waiting for other players',
+		waitingOther: 'Waiting for other players',
 
 		//create-game
 		GameEditor: 'Game Editor',
@@ -157,12 +157,12 @@ var state_base = {
 		Create: 'Create',
 		Cancel: 'Cancel',
 
-                //GAME
+		//GAME
 		Start: 'STARTING IN',
-                gameOver: 'GAME OVER',
-                youWin: 'YOU WIN',
-                youLose: 'YOU LOSE',
-                leave: 'Leave',
+		gameOver: 'GAME OVER',
+		youWin: 'YOU WIN',
+		youLose: 'YOU LOSE',
+		leave: 'Leave',
 	},
 	fr: {
 		// LOGIN
@@ -173,7 +173,7 @@ var state_base = {
 		login: 'Se connecter',
 		register: 'S\'inscrire',
 		connectionWith: 'Connexion avec 42',
-                errUnknown: "Une erreur s'est produite.",
+		errUnknown: "Une erreur s'est produite.",
 
 		// HOME
 		play: 'JOUER',
@@ -199,7 +199,7 @@ var state_base = {
 		tournamentHistory: 'Historique des tournois',
 		link42: 'Lier avec 42',
 
-                // UPDATE PROFILE
+		// UPDATE PROFILE
 		save: 'Enregistrer',
 		pseudo: 'Pseudo',
 		avatar: 'Avatar',
@@ -217,10 +217,10 @@ var state_base = {
 
 		//Waiting-room
 		WaitingRoom: 'Salle d\'attente',
-		GoButton: 'GO',
+		GoButton: 'DÉMARRER',
 		ByeButton: 'ABANDON',
 		ReadyButton: 'PRET',
-                waitingOther: 'En attente des autres joueurs',
+		waitingOther: 'En attente des autres joueurs',
 
 		//Create-game
 		GameEditor: 'Editeur',
@@ -231,12 +231,12 @@ var state_base = {
 		Create: 'Creer',
 		Cancel: 'Annuler',
 
-                //GAME
+		//GAME
 		Start: 'DEBUT DANS',
-                gameOver: 'GAME OVER',
-                youWin: 'VICTOIRE',
-                youLose: 'DÉFAITE',
-                leave: 'Partir',
+		gameOver: 'GAME OVER',
+		youWin: 'VICTOIRE',
+		youLose: 'DÉFAITE',
+		leave: 'Partir',
 	},
 	de: {
 		// LOGIN
@@ -247,7 +247,7 @@ var state_base = {
 		login: 'Anmeldung',
 		register: 'Registrieren',
 		connectionWith: 'Verbindung mit 42',
-                errUnknown: 'Es ist ein Fehler aufgetreten.',
+		errUnknown: 'Es ist ein Fehler aufgetreten.',
 
 		// HOME
 		play: 'SPIELEN',
@@ -273,7 +273,7 @@ var state_base = {
 		tournamentHistory: 'Turniergeschichte',
 		link42: 'Link zu 42',
 
-                // UPDATE PROFILE
+		// UPDATE PROFILE
 		save: 'Speichern',
 		pseudo: 'Pseudo',
 		avatar: 'Benutzerbild',
@@ -291,10 +291,10 @@ var state_base = {
 
 		//Waiting-room
 		WaitingRoom: 'Wartezimmer',
-		GoButton: 'GO',
+		GoButton: 'ZUM STARTEN',
 		ByeButton: 'AUFGEBEN',
 		ReadyButton: 'BEREIT',
-                waitingOther: 'Warten auf andere Spieler',
+		waitingOther: 'Warten auf andere Spieler',
 
 		//Create-game
 		GameEditor: 'Spiel-Editor',
@@ -305,12 +305,12 @@ var state_base = {
 		Create: 'anlegen',
 		Cancel: 'abbrechen',
 
-                //GAME
+		//GAME
 		Start: 'BEGINN IN',
-                gameOver: 'GAME OVER',
-                youWin: 'SIEG',
-                youLose: 'VERLUST',
-                leave: 'Verlassen',
+		gameOver: 'GAME OVER',
+		youWin: 'SIEG',
+		youLose: 'VERLUST',
+		leave: 'Verlassen',
 	},
 
     lang(key) {
