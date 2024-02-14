@@ -15,24 +15,15 @@ class TournamentWr extends Component {
             <div hidden="{!tournament.imReady}">{language.waitingOther}</div>
         </div>
         <div class="tournament-room" repeat="tournaments" as="tournament">
-            <div class="player-list" hidden="{this.IsCurrentTournament(tournament.id)}">
-            
-                <div class="player" repeat="tournament.players" as="player" hidden="{this.isRoundOne(tournament.status)}">
-                    <a class="profil" href="javascript:void(0)" @click="this.navigate(player)">
-                        <div class="player-ready" hidden="{!this.isPlayerReady(player, tournament.readyPlayersId, users)}">READY</div>
+            <div class="player-list-T" hidden="{this.IsCurrentTournament(tournament.id)}">
+                <div class="player-T" repeat="tournament.players" as="player">
+                    <a class="profil-T" href="javascript:void(0)" @click="this.navigate(player)">
+                        <div class="player-text player-ready" hidden="{!this.isPlayerReady(player, tournament.readyPlayersId, users)}">READY</div>
+                        <div class="player-text player-out" hidden="{!this.isPlayerOut(player, tournament.players_r2, users, tournament.status)}">OUT</div>
                         <img src="{this.getPlayerPic(player)}">
                         <div class="profil-nick-T">{player}</div>
                     </a>
                 </div>
-
-                <div class="player" repeat="tournament.players_r2" as="player" hidden="{this.isRoundTwo(tournament.status)}">
-                    <a class="profil" href="javascript:void(0)" @click="this.navigate(player)">
-                        <div class="player-ready" hidden="{!this.isPlayerReady(player, tournament.readyPlayersId, users)}">READY</div>
-                        <img src="{this.getPlayerPic(player)}">
-                        <div class="profil-nick-T">{player}</div>
-                    </a>
-                </div>
-
             </div>
         </div>
     </div>
@@ -201,31 +192,31 @@ class TournamentWr extends Component {
         height: 100%;
     }
 
-    .player-list {
+    .player-list-T {
         display: flex;
         overflow-y: auto;
         width: 100%;
         background-color: rgba(255, 255, 255, 0.5);
     }
 
-    .player {
+    .player-T {
         display: flex;
         flex-direction: column;
         width: 100%;
     }
 
-    .profil {
+    .profil-T {
         position: relative;
         width: 100%;
         height: 100%;
         border-top: 8px solid white;
     }
 
-    .profil:last-child {
+    .profil-T:last-child {
         border-bottom: 8px solid white;
     }
 
-    .profil img {
+    .profil-T img {
         position: absolute;
         width: 100%;
         height: auto;
@@ -235,12 +226,12 @@ class TournamentWr extends Component {
         opacity: 1;
     }
 
-    .profil:hover {
+    .profil-T:hover {
         height: 450%;
         transition: all 1s ease;
     }
 
-    .profil:not(hover) {
+    .profil-T:not(hover) {
         height: 100%;
         transition: all 1s ease;
     }
@@ -349,18 +340,6 @@ class TournamentWr extends Component {
 
     cantGiveup(imReady, status) {
        return imReady || status !== "waiting" // no given for last round, avoids problems, make things simpler
-    }
-
-    isRoundOne(status) {
-        if (status == "waiting")
-            return (!true);
-        return (!false)
-    }
-
-    isRoundTwo(status) {
-        if (status == "round 1")
-            return (!true);
-        return (!false);
     }
 }
 
