@@ -12,6 +12,7 @@ class PongGame extends Component {
 				<button class="btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!isMobile}"></button>
 				<button class="btn-mobileButtonLeft" @touchstart="this.leftButtonStart()" @touchend="this.leftButtonEnd()" hidden="{!isMobile}"></button>
 				<button class="btn-mobileButtonRight" @touchstart="this.rightButtonStart()" @touchend="this.rightButtonEnd()" hidden="{!isMobile}"></button>
+				<button class="btn-mobileButtonPowerUp" @touchstart="this.buttonPowerUpStart()" @touchend="this.buttonPowerUpEnd()" hidden="{!isMobile}"></button>
 				<div id="startIn" hidden="{!runningGame.startIn}">
 					<div class="bg"></div>
 					<h2>{language.Start} {runningGame.startIn}</h2>
@@ -78,6 +79,7 @@ class PongGame extends Component {
 			left: 0;
 			top: 0;
 			opacity: 0;
+			z-index: 40;
 		}
 
 		.btn-mobileButtonDown {
@@ -88,6 +90,7 @@ class PongGame extends Component {
 			right: 0;
 			top: 0;
 			opacity: 0;
+			z-index: 40;
 		}
 
 		.btn-mobileButtonLeft {
@@ -98,6 +101,7 @@ class PongGame extends Component {
 			left: 0;
 			bottom: 0;
 			opacity: 0;
+			z-index: 40;
 		}
 
 		.btn-mobileButtonRight {
@@ -108,6 +112,18 @@ class PongGame extends Component {
 			right: 0;
 			bottom: 0;
 			opacity: 0;
+			z-index: 40;
+		}
+
+		.btn-mobileButtonPowerUp {
+			cursor: pointer;
+			position: absolute;
+			width: 30%;
+			height: 30%;
+			right: 35%;
+			bottom: 35%;
+			opacity: 0;
+			z-index: 50;
 		}
 
 		.btn-giveUp:hover {
@@ -317,6 +333,14 @@ class PongGame extends Component {
 
 	rightButtonEnd() {
 		this.game?.updateInputs("d", false);
+	}
+
+	buttonPowerUpStart() {
+		this.game?.updateInputs(" ", true);
+	}
+
+	buttonPowerUpEnd() {
+		this.game?.updateInputs(" ", false);
 	}
 
 	leave() {
