@@ -68,6 +68,10 @@ def on_game_pre_save(sender, instance, **kwargs):
             set_game_stopped(id)
             print(">> GAME STOP RUNNING : tell game thread to stop")
 
+@receiver(post_save, sender=Tournament)
+def on_tournament_post_save(sender, instance, created, **kwargs):
+    stateUpdate(instance, "create" if created else "update", "tournament")
+
 @receiver(post_save, sender=Game)
 def on_game_post_save(sender, instance, created, **kwargs):
     stateUpdate(instance, "create" if created else "update", "game")

@@ -21,7 +21,7 @@ var state_base = {
                 my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
         }),
-        tournament: computedProperty(['currentTournament', 'tournaments'], function (currentTournamentId) {
+        tournament: computedProperty(['currentTournament', 'tournaments', 'profile.id'], function (currentTournamentId) {
                 const tournaments = state.tournaments
                 if (!tournaments && !Array.isArray(tournaments) || !(currentTournamentId>=0))
                         return {id: -1, status: 'no-tournament'}
@@ -30,7 +30,12 @@ var state_base = {
                         return {id: -1, status: 'no-tournament'}
                 my_tournament.creator_is_me = my_tournament.creator_id === state.profile.id
                 my_tournament.expectedPlayers = my_tournament.status === "waiting" ? 4 : 2
+                my_tournament.imReady = my_tournament.readyPlayersId.some(id => id == state.profile.id)
+                my_tournament.playersCount = my_tournament.status === "waiting" ? my_tournament.players.length : my_tournament.players_r2.length
                 return my_tournament
+        }),
+        waitingForTournament: computedProperty(['tournament'], function (currentTournament) {
+                return state.tournament.status === 'waiting' || (state.tournament.status === 'round 1' && state.tournament.players_r2.some(nickname => nickname === state.profile.nickname))
         }),
         createGamePresets: {
                 tournament: false,
@@ -134,7 +139,9 @@ var state_base = {
 		//waiting-room
 		WaitingRoom: 'Waiting Room',
 		GoButton: 'START',
+		ReadyButton: 'READY',
 		ByeButton: 'GIVE UP',
+                waitingOther: 'Waiting for other players',
 
 		//create-game
 		GameEditor: 'Game Editor',
@@ -207,6 +214,8 @@ var state_base = {
 		WaitingRoom: 'Salle d\'attente',
 		GoButton: 'GO',
 		ByeButton: 'ABANDON',
+		ReadyButton: 'PRET',
+                waitingOther: 'En attente des autres joueurs',
 
 		//Create-game
 		GameEditor: 'Editeur',
@@ -279,6 +288,8 @@ var state_base = {
 		WaitingRoom: 'Wartezimmer',
 		GoButton: 'GO',
 		ByeButton: 'AUFGEBEN',
+		ReadyButton: 'BEREIT',
+                waitingOther: 'Warten auf andere Spieler',
 
 		//Create-game
 		GameEditor: 'Spiel-Editor',
@@ -347,18 +358,6 @@ observe('tournament.status', (newStatus, oldStatus) => {
 		}
 })
 
-var tourn = tournaments[state.currentTournamentId]
-
-observe('tourn.players_r2.length', (newStatus, oldStatus) => {
-	const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournamentId)
-	const enterWaitingRoom = tournament.players_r2.find(player => player.nickname == state.profile.nickname);
-
-	if (enterWaitingRoom)
-	{
-		console.log("ENTER TOURNAMENT WAITING ROOM")
-		navigateTo('/play/tournament-wr');
-	}
-})
 
 // TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer
 state.game.status

@@ -16,7 +16,7 @@ import requests
 import random
 from datetime import datetime, timedelta
 
-from .models import Player, Tournament, Game
+from .models import Player, Tournament, Game, Update
 from .forms import PlayerForm, TournamentForm, GameForm
 from .utils import stateUpdate, stateUpdateAll
 from typing import Type
@@ -387,80 +387,22 @@ class ManageTournamentView(View):
             tournament = get_object_or_404(Tournament, id=id)
             my_player = request.user.player
 
-            def start_game(i, p1, p2):
-                game = tournament.game_set.all()[i]
-                game.players.add(p1, p2)
-                game.started_at = datetime.now() + timedelta(seconds=5)
-                game.state = "running"
-                game.save()
 
-            if data['action'] == "start-round":
-                if tournament.state == "waiting":
-                    players = list(tournament.players.all())
-                    random.shuffle(players)
-                    tournament.state = "round 1"
-                    tournament.save()
-                    Update(tournament=tournament, tournament_action="update", user=my_player)
-                    start_game(0, players[0], players[1])
-                    start_game(1, players[2], players[3])
-                    #tournament.state = "round 1"
-                    #tournament.players.clear()
+            if data['action'] == "ready":
+                # Check that player blelong to this game
+                tournament.set_player_ready(my_player)
 
-                elif tournament.state == "round 1":
-                    players = list(tournament.players_r2.all())
-                    tournament.state = "round 2"
-                    tournament.save()
-                    start_game(3, players[0], players[1])
+            #if data['action'] == "start-round":
+            #    tournament.start_next_round()
 
-            elif data['action'] == "end-round":
-                tournament_games = tournament.game_set.all()
-                for game in tournament_games:
-                    if my_player in game.players and game.state != "done":
-                        if game.players.all()[0].nickname != my_player.nickname:
-                            player2 = get_object_or_404(Player, nickname=game.players.all()[0].nickname)
-                        else:
-                            player2 = get_object_or_404(Player, nickname=game.players.all()[1].nickname)
-                        my_player.lastGameId = game.id
-                        player2.lastGameId = game.id
-                        game.p1_score = data["p1_score"]
-                        game.p2_score = data["p2_score"]
-                        game.winner = data["winner"]
-                        game.paddle_hits = data["paddle_hits"]
-                        game.wall_hits = data["wall_hits"]
-                        game.state = "done"
-                        my_player.save()
-                        player2.save()
-                        game.save()
-
-                        if tournament.state == "round 1":
-                            tournament.players_r2.add(get_object_or_404(Player, nickname=data["winner"]))
-                            tournament.losers.add(get_object_or_404(Player, nickname=data["loser"]))
-
-                        elif tournament.state == "round 2":
-                            tournament.winner = get_object_or_404(Player, nickname=data["winner"])
-                            tournament.losers.add(get_object_or_404(Player, nickname=data["loser"]))
-                            tournament.state = "done"
+            #elif data['action'] == "end-round":
+            #    tournament.end_round(my_player, data)
 
             elif (data["action"] == "join"):
                 tournament.players.add(my_player)
 
             elif data["action"] == "leave":
-                if my_player == tournament.created_by:
-                    if tournament.players.count() > 1:
-                        tournament.players.remove(my_player)
-                        newCreator = tournament.players.first()
-                        tournament.created_by = newCreator
-                        for game in tournament.game_set.all():
-                            game.created_by = newCreator
-                            game.save()
-                    else:
-                        for i in range(3):
-                            tournament.game_set.all()[0].delete()
-                        tournament.delete()
-                        Update(game="all", tournament="all", user=my_player)
-                        return JsonResponse({}, status=200)
-                else:
-                    tournament.players.remove(my_player)
+                tournament.leave(my_player)
 
             tournament.save()
             Update(game="all", tournament=tournament, tournament_action="update", user=my_player)
@@ -587,25 +529,6 @@ def reconnectUpdate(request):
     Update(game="all", tournament="all", user=request.user.player)
     return JsonResponse({"status": "ok"}, status=200)
 
-def Update(game=None, game_action=None, tournament=None, tournament_action=None, user=None):
-    if (game == "all"):
-        stateUpdateAll(Game, "all games")
-    elif (game):
-        if (game_action == "update"):
-            stateUpdate(game, "update", "game")
-        elif (game_action == "create"):
-            stateUpdate(game, "create", "game")
-
-    if (tournament == "all"):
-        stateUpdateAll(Tournament, "all tournaments")
-    elif (tournament):
-        if (tournament_action == "update"):
-            stateUpdate(tournament, "update", "tournament")
-        elif (tournament_action == "create"):
-            stateUpdate(tournament, "create", "tournament")
-
-    if (user):
-        stateUpdate(user, "update", "user" )
 
 
 

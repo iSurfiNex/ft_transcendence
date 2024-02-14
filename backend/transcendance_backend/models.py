@@ -1,3 +1,5 @@
+import random
+from datetime import datetime, timedelta
 from django.db import models
 from django.core.validators import (
     MinValueValidator,
@@ -11,6 +13,12 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime
 from django.db.models import Sum
+
+from django.shortcuts import get_object_or_404
+
+from .utils import stateUpdate, stateUpdateAll
+
+from django.http import JsonResponse
 
 
 class Player(models.Model):
@@ -221,6 +229,7 @@ class Tournament(models.Model):
     state = models.CharField(max_length=10, choices=GAME_STATES, default="waiting")
     power_ups = models.BooleanField(default=False)
     players = models.ManyToManyField(Player, blank=True)
+    ready_players = models.ManyToManyField(Player, related_name="tournament_ready_players", blank=True)
     players_r2 = models.ManyToManyField(Player, blank=True, related_name="tournament_r2")
     losers = models.ManyToManyField(Player, blank=True, related_name="tournament_losers")
     created_by = models.ForeignKey(
@@ -256,6 +265,7 @@ class Tournament(models.Model):
             "power_ups": self.power_ups,
             "players": [player.nickname for player in self.players.all()],
             "players_r2": [player.nickname for player in self.players_r2.all()],
+            "readyPlayersId": [player.id for player in self.ready_players.all()],
             "losers": [bigLoser.serialize_summary() for bigLoser in self.losers.all()],
             "gamesId": [game.id for game in self.game_set.all()],
             "creator": self.created_by.nickname,
@@ -270,4 +280,84 @@ class Tournament(models.Model):
             "id": self.id,
         }
 
+    def start_game(self, i, p1, p2):
+        game = self.game_set.all()[i]
+        game.players.add(p1, p2)
+        game.started_at = datetime.now() + timedelta(seconds=5)
+        game.state = "running"
+        game.save()
 
+    def get_round_players_count(self):
+        if self.state == "waiting":
+            return 4
+        if self.state == "round 1":
+            return 2
+        return -1
+
+    def set_player_ready(self, player: Player):
+       id = player.id
+       get_object_or_404(self.players, id=id)
+       self.ready_players.add(id)
+       if self.ready_players.count() == self.get_round_players_count():
+           self.ready_players.clear()
+           self.start_next_round()
+
+    def start_next_round(self):
+        if self.state == "waiting":
+            self.start_round1()
+        elif self.state == "round 1":
+            self.start_round2()
+
+    def start_round2(self):
+        players = list(self.players_r2.all())
+        self.state = "round 2"
+        self.save()
+        self.start_game(2, players[0], players[1])
+
+    def start_round1(self):
+        players = list(self.players.all())
+        random.shuffle(players)
+        self.state = "round 1"
+        self.save()
+        self.start_game(0, players[0], players[1])
+        self.start_game(1, players[2], players[3])
+
+
+    def leave(self, player: Player):
+        if player == self.created_by:
+            if self.players.count() > 1:
+                self.players.remove(player)
+                newCreator = self.players.first()
+                self.created_by = newCreator
+                for game in self.game_set.all():
+                    game.created_by = newCreator
+                    game.save()
+            else:
+                for i in range(3):
+                    self.game_set.all()[0].delete()
+                self.delete()
+                Update(game="all", tournament="all", user=player)
+                return JsonResponse({}, status=200)
+        else:
+            self.players.remove(player)
+
+
+def Update(game=None, game_action=None, tournament=None, tournament_action=None, user=None):
+    if (game == "all"):
+        stateUpdateAll(Game, "all games")
+    elif (game):
+        if (game_action == "update"):
+            stateUpdate(game, "update", "game")
+        elif (game_action == "create"):
+            stateUpdate(game, "create", "game")
+
+    if (tournament == "all"):
+        stateUpdateAll(Tournament, "all tournaments")
+    elif (tournament):
+        if (tournament_action == "update"):
+            stateUpdate(tournament, "update", "tournament")
+        elif (tournament_action == "create"):
+            stateUpdate(tournament, "create", "tournament")
+
+    if (user):
+        stateUpdate(user, "update", "user" )

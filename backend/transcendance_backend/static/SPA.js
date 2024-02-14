@@ -193,7 +193,7 @@ function displayContent(path) {
                 navigateTo("/play/game")
                 return;
             }
-			else if (path !== "/play/tournament-wr" && state.tournament.status === 'waiting') {
+			else if (path !== "/play/tournament-wr" && state.waitingForTournament) {
 		        console.log("REDIRECT - TOURNAMENT WAITING ROOM")
                 navigateTo("/play/tournament-wr")
                 return;

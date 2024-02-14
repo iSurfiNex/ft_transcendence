@@ -29,6 +29,10 @@ class Command(BaseCommand):
             help="Nickname of player 4",
         )
 
+    def clean_game_tournament(self):
+        Game.objects.all().delete()
+        Tournament.objects.all().delete()
+
     def handle(self, *args, **options):
         nickname_p1 = options["p1"]
         nickname_p2 = options["p2"]
@@ -58,24 +62,12 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"P4({nickname_p4}) not found"))
             return
 
-        if p1.games.filter(state__in=["running", "waiting"]).first() is not None:
-            self.stdout.write(self.style.ERROR(f"{nickname_p1} is already in a game"))
-            return
-        if p2.games.filter(state__in=["running", "waiting"]).first() is not None:
-            self.stdout.write(self.style.ERROR(f"{nickname_p2} is already in a game"))
-            return
-
-        if p3.games.filter(state__in=["running", "waiting"]).first() is not None:
-            self.stdout.write(self.style.ERROR(f"{nickname_p3} is already in a game"))
-            return
-        if p4.games.filter(state__in=["running", "waiting"]).first() is not None:
-            self.stdout.write(self.style.ERROR(f"{nickname_p4} is already in a game"))
-            return
+        self.clean_game_tournament()
 
 
         tournament = Tournament.objects.create(
             state="waiting",
-            power_ups=True,
+            power_ups=False,
             goal_objective=1,
             created_by=p1,
         )
