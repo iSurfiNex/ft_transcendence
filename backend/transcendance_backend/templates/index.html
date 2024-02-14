@@ -64,20 +64,21 @@
 			}
 		}
 		</script>
-		<script src="/static/SPA.js"></script>
-		<script src="/static/App.js" type="module"></script>
-		<script src="/static/Layout/Chat.js" type="module"></script>
-		<script src="/static/Layout/TopBar.js" type="module"></script>
-		<script src="/static/Layout/ContentSeparator.js" type="module"></script>
-		<script src="/static/pages/Home.js" type="module"></script>
-		<script src="/static/pages/Login.js" type="module"></script>
-		<script src="/static/pages/Profile.js" type="module"></script>
-		<script src="/static/pages/NotFound.js" type="module"></script>
-		<script src="/static/pages/PongGame.js" type="module"></script>
-		<script src="/static/pages/JoinList.js" type="module"></script>
-		<script src="/static/pages/CreateGame.js" type="module"></script>
-		<script src="/static/pages/WaitingRoom.js" type="module"></script>
-		<script src="/static/pages/TournamentWr.js" type="module"></script>
+		{% load static %}
+		<script src="{%static 'SPA.js' %}"></script>
+		<script src="{%static 'App.js' %}" type="module"></script>
+		<script src="{%static 'Layout/Chat.js' %}" type="module"></script>
+		<script src="{%static 'Layout/TopBar.js' %}" type="module"></script>
+		<script src="{%static 'Layout/ContentSeparator.js' %}" type="module"></script>
+		<script src="{%static 'pages/Home.js' %}" type="module"></script>
+		<script src="{%static 'pages/Login.js' %}" type="module"></script>
+		<script src="{%static 'pages/Profile.js' %}" type="module"></script>
+		<script src="{%static 'pages/NotFound.js' %}" type="module"></script>
+		<script src="{%static 'pages/PongGame.js' %}" type="module"></script>
+		<script src="{%static 'pages/JoinList.js' %}" type="module"></script>
+		<script src="{%static 'pages/CreateGame.js' %}" type="module"></script>
+		<script src="{%static 'pages/WaitingRoom.js' %}" type="module"></script>
+		<script src="{%static 'pages/TournamentWr.js' %}" type="module"></script>
 
 	</body>
 </html>
