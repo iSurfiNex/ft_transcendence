@@ -20,6 +20,8 @@ class PongGame extends Component {
 				<div id="points" hidden="{runningGame.startIn}">
 					<span id="pLPoints" class="points">{runningGame.pLPoints}</span>
 					<span id="pRPoints" class="points">{runningGame.pRPoints}</span>
+					<span class="player-name" id="player-left">{lastGame.p1.nickname}</span>
+					<span class="player-name" id="player-right">{this.getP2Nickname(lastGame.p2)}</span>
 					<div class="max-points">
 						<span id="maxPoints">Objective: {lastGame.goal_objective}</span>
 					</div>
@@ -44,6 +46,20 @@ class PongGame extends Component {
 
 
 	static css = css`
+		.player-name {
+			position: absolute;
+  			color: white;
+  			bottom: 0;
+		}
+
+		#player-left {
+  			left: 0;
+		}
+
+		#player-right {
+  			right: 0;
+		}
+
 		#info {
 			position: absolute;
 			bottom: 65px;
@@ -352,6 +368,13 @@ class PongGame extends Component {
 		//if (state.tournament.status == 'round 1')
 		navigateTo('/')
 	}
+
+    getP2Nickname(p2) {
+        if (p2.id == -1) {
+            return "Bot"
+        }
+        else p2.nickname
+    }
 
 	updatedStartIn(startedAt) {
 		if (this.timeoutId) clearTimeout(this.timeoutId);
