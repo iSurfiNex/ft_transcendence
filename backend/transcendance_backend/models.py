@@ -281,7 +281,7 @@ class Tournament(models.Model):
         }
 
     def start_game(self, i, p1, p2):
-        game = self.game_set.all()[i]
+        game = self.game_set.all().order_by('id')[i]
         game.players.add(p1, p2)
         game.started_at = datetime.now() + timedelta(seconds=5)
         game.state = "running"
