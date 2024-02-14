@@ -158,7 +158,7 @@ class PongGame extends Component {
 			position: absolute;
 			right: 0;
 			bottom: 0;
-			height: calc(90% - 6px);
+			height: 100%;
 			width: 100%;
 			font-family: "Press Start 2P", sans-serif;
 			font-weight: bold;
@@ -182,7 +182,7 @@ class PongGame extends Component {
 		}
 
 		canvas {
-			width: calc(100% - 10px);
+			width: 100%;
 			overflow: hidden;
 		}
 
@@ -453,9 +453,9 @@ class PongGame extends Component {
 
 	getEndMsg() {
 		let randomNb = this.getRandomInt();
-		
+
 		let my_user = state.users.find(user => user.nickname == state.profile.nickname);
-		
+
 		if (my_user)
 			var game = state.games.find(game => game.id == my_user.lastGameId);
 
