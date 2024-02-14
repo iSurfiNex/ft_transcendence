@@ -7,7 +7,7 @@ class TournamentWr extends Component {
     <div class="available-space">
 	    <div class="top-bar">
             <div class="title-waitingRoom-T">{language.WaitingRoom}</div>
-            <div class="player-count">{tournament.playersCount}/{tournament.expectedPlayers}</div>
+            <div class="player-count" >{tournament.playersCount}/{tournament.expectedPlayers}</div>
         </div>
         <div class="buttons">
             <button hidden="{tournament.imReady}" class="btn btn-startGame" @click="this.ready()">{language.ReadyButton}</button>
@@ -332,7 +332,7 @@ class TournamentWr extends Component {
     }
 
     isPlayerOut(nickname, players_r2_nicknames, users, tournament_status) {
-        if (tournament_status != 'round 1')
+        if (tournament_status != 'round 1' || players_r2_nicknames.length != 2)
             return false
         const u = users.find(u => u.nickname === nickname)
         return u && !players_r2_nicknames.some(nickname => nickname === u.nickname)
