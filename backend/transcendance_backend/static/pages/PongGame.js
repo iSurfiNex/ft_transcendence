@@ -21,7 +21,7 @@ class PongGame extends Component {
 					<span id="pLPoints" class="points">{runningGame.pLPoints}</span>
 					<span id="pRPoints" class="points">{runningGame.pRPoints}</span>
 					<div class="max-points">
-						<span id="maxPoints">Objective: {game.goal_objective}</span>
+						<span id="maxPoints">Objective: {lastGame.goal_objective}</span>
 					</div>
 				</div>
 				<div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
@@ -219,6 +219,11 @@ class PongGame extends Component {
 			font-size: 44px;
 			color: white;
 			opacity: 0.6;
+		}
+
+		#points {
+   			width: 100%;
+			position: absolute;
 		}
 
 		#pLPoints {
