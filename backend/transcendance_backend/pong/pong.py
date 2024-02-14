@@ -14,12 +14,12 @@ from transcendance_backend.manager import set_game_done
 W, H = 1000, 900
 BALL_RADIUS = 25
 PAD_W, PAD_H = 20, 150
-FPS = 20
+FPS = 24
 PAD_SHIFT = 50
 
-BALL_BASE_SPEED = 200
+BALL_BASE_SPEED = 150
 BALL_ACCELERATION = 5
-PADDLE_SPEED = 290
+PADDLE_SPEED = 150
 
 
 
