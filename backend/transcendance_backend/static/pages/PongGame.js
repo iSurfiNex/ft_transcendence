@@ -27,8 +27,7 @@ class PongGame extends Component {
 					<div class="bg"></div>
 					<span id="gameOverTxt">{language.gameOver}</span>
 					<span id="gameOverState" class="blinking"
-						>{lang(runningGame.gameOverState)}</span
-					>
+						>{lang(runningGame.gameOverState)}</span>
 					<ul class="stat-list">
 						<li>Ball hit: {this.getPaddleHits(runningGame.gameOverState)} times</li>
 						<li>Wall hit: {this.getWallHits(runningGame.gameOverState)} times</li>
