@@ -5,38 +5,40 @@ import { PongGameCanvas } from "pong_game";
 class PongGame extends Component {
 	static template = html`
 
-		<div id="gameContainer" ></div>
-		<div id="gameOverlay">
-			<button class="btn-mobileButtonUp" @touchstart="this.upButtonStart()" @touchend="this.upButtonEnd()" hidden="{!isMobile}"></button>
-			<button class="btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!isMobile}"></button>
-			<button class="btn-mobileButtonLeft" @touchstart="this.leftButtonStart()" @touchend="this.leftButtonEnd()" hidden="{!isMobile}"></button>
-			<button class="btn-mobileButtonRight" @touchstart="this.rightButtonStart()" @touchend="this.rightButtonEnd()" hidden="{!isMobile}"></button>
-			<div id="startIn" hidden="{!runningGame.startIn}">
-				<div class="bg"></div>
-				<h2>{language.Start} {runningGame.startIn}</h2>
-			</div>
-			<div id="points" hidden="{runningGame.startIn}">
-				<span id="pLPoints" class="points">{runningGame.pLPoints}</span>
-				<span id="pRPoints" class="points">{runningGame.pRPoints}</span>
-				<div class="max-points">
-					<span id="maxPoints">Objective: {game.goal_objective}</span>
+		<div id="gameContainer"></div>
+		<div class="center">
+			<div id="gameOverlay">
+				<button class="btn-mobileButtonUp" @touchstart="this.upButtonStart()" @touchend="this.upButtonEnd()" hidden="{!isMobile}"></button>
+				<button class="btn-mobileButtonDown" @touchstart="this.downButtonStart()" @touchend="this.downButtonEnd()" hidden="{!isMobile}"></button>
+				<button class="btn-mobileButtonLeft" @touchstart="this.leftButtonStart()" @touchend="this.leftButtonEnd()" hidden="{!isMobile}"></button>
+				<button class="btn-mobileButtonRight" @touchstart="this.rightButtonStart()" @touchend="this.rightButtonEnd()" hidden="{!isMobile}"></button>
+				<div id="startIn" hidden="{!runningGame.startIn}">
+					<div class="bg"></div>
+					<h2>{language.Start} {runningGame.startIn}</h2>
 				</div>
-			</div>
-			<div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
-				<div class="bg"></div>
-				<span id="gameOverTxt">{language.gameOver}</span>
-				<span id="gameOverState" class="blinking"
-					>{lang(runningGame.gameOverState)}</span
-				>
-				<ul class="stat-list">
-					<li>Ball hit: {this.getPaddleHits(runningGame.gameOverState)} times</li>
-					<li>Wall hit: {this.getWallHits(runningGame.gameOverState)} times</li>
-					<li>\n</li>
-					<li>{this.getEndMsg()}</li>
-				</ul>
-				<button hidden="{!runningGame.gameOverState}" id="pong-button" class="leave" @click="this.leave()">
-					<span class="front-leave">{language.leave}</span>
-				</button>
+				<div id="points" hidden="{runningGame.startIn}">
+					<span id="pLPoints" class="points">{runningGame.pLPoints}</span>
+					<span id="pRPoints" class="points">{runningGame.pRPoints}</span>
+					<div class="max-points">
+						<span id="maxPoints">Objective: {game.goal_objective}</span>
+					</div>
+				</div>
+				<div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
+					<div class="bg"></div>
+					<span id="gameOverTxt">{language.gameOver}</span>
+					<span id="gameOverState" class="blinking"
+						>{lang(runningGame.gameOverState)}</span
+					>
+					<ul class="stat-list">
+						<li>Ball hit: {this.getPaddleHits(runningGame.gameOverState)} times</li>
+						<li>Wall hit: {this.getWallHits(runningGame.gameOverState)} times</li>
+						<li>\n</li>
+						<li>{this.getEndMsg()}</li>
+					</ul>
+					<button hidden="{!runningGame.gameOverState}" id="pong-button" class="leave" @click="this.leave()">
+						<span class="front-leave">{language.leave}</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	`;
@@ -121,23 +123,10 @@ class PongGame extends Component {
 			opacity: 1;
 		}
 
-		.btn-giveUp {
-					border: 1px solid #ff0000;
-					background-color: rgba(42, 42, 42, 0.2);
-					color: #ff0000;
-		}
-
-		.btn-leave {
-					border: 1px solid #00ff00;
-					background-color: rgba(42, 42, 42, 0.2);
-					color: #00ff00;
-		}
-
 		:host {
 			position: absolute;
 			right: 0;
 			bottom: 0;
-			background-color: rgba(255, 255, 255, 0.5);
 			height: calc(90% - 6px);
 			width: 100%;
 			font-family: "Press Start 2P", sans-serif;
@@ -155,10 +144,15 @@ class PongGame extends Component {
 			width: 100%;
 			height: 100%;
 			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
 		}
 
 		canvas {
-			width: 100%;
+			width: calc(100% - 10px);
+			overflow: hidden;
 		}
 
 		#gameOverlay,
@@ -168,6 +162,20 @@ class PongGame extends Component {
 			position: absolute;
 			width: 100%;
 			height: 100%;
+			overflow: hidden;
+		}
+
+		#gameOverlay {
+			border: 5px solid white;
+		}
+
+		.center {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+			position: absolute;
 			top: 0;
 		}
 
@@ -354,8 +362,8 @@ class PongGame extends Component {
 
 		this.game?.renderer?.setSize(w, h);
 		const overlayNode = this.shadowRoot.getElementById("gameOverlay");
-		overlayNode.style.width = w + "px";
-		overlayNode.style.height = h + "px";
+		overlayNode.style.width = "calc(" + w + "px" + " - 10px)";
+		overlayNode.style.height = "calc(" + h + "px" + " - 10px)";
 	}
 
 	isGameFinished() {
