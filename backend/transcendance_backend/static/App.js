@@ -358,9 +358,6 @@ observe('tournament.status', (newStatus, oldStatus) => {
                 console.log("LEAVE TOURNAMENT WAITING ROOM")
                 navigateTo('/play/tournament')
         }
-		else {
-			console.log("==================   ", newStatus);
-		}
 })
 
 

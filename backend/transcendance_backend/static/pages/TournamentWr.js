@@ -11,7 +11,7 @@ class TournamentWr extends Component {
         </div>
         <div class="buttons">
             <button hidden="{tournament.imReady}" class="btn btn-startGame" @click="this.ready()">{language.ReadyButton}</button>
-            <button hidden="{tournament.imReady}" class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
+            <button hidden="{this.cantGiveup(tournament.imReady, tournament.status)}" class="btn btn-giveUp" @click="this.giveUp()">{language.ByeButton}</button>
             <div hidden="{!tournament.imReady}">{language.waitingOther}</div>
         </div>
         <div class="tournament-room" repeat="tournaments" as="tournament">
@@ -320,6 +320,10 @@ class TournamentWr extends Component {
     isPlayerReady(nickname, readyPlayers, users) {
         const u = users.find(u => u.nickname === nickname)
         return u && readyPlayers.some(id => id === u.id)
+    }
+
+    cantGiveup(imReady, status) {
+       return imReady || status !== "waiting" // no given for last round, avoids problems, make things simpler
     }
 }
 

@@ -402,7 +402,8 @@ class ManageTournamentView(View):
                 tournament.players.add(my_player)
 
             elif data["action"] == "leave":
-                tournament.leave(my_player)
+                if tournament.leave(my_player): # return True if tournament was deleted
+                    return JsonResponse({}, status=200)
 
             tournament.save()
             Update(game="all", tournament=tournament, tournament_action="update", user=my_player)

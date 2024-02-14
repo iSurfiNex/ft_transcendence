@@ -324,20 +324,20 @@ class Tournament(models.Model):
 
 
     def leave(self, player: Player):
+        if self.players.count() == 1:
+            for i in range(3):
+                self.game_set.all()[0].delete()
+            self.delete()
+            Update(game="all", tournament="all")
+            return True
         if player == self.created_by:
             if self.players.count() > 1:
-                self.players.remove(player)
                 newCreator = self.players.first()
                 self.created_by = newCreator
+                self.players.remove(player)
                 for game in self.game_set.all():
                     game.created_by = newCreator
                     game.save()
-            else:
-                for i in range(3):
-                    self.game_set.all()[0].delete()
-                self.delete()
-                Update(game="all", tournament="all", user=player)
-                return JsonResponse({}, status=200)
         else:
             self.players.remove(player)
 
