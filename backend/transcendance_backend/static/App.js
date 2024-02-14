@@ -106,7 +106,7 @@ var state_base = {
 		totalLow: 'Total',
 		winRate: 'Win rate',
 		ballHit: 'Ball hit',
-		goal: 'Goal',
+		goal: 'Wall hit',
 		tournamentWin: 'Tournaments win',
 		win: 'WIN',
 		lose: 'LOSE',
@@ -178,7 +178,7 @@ var state_base = {
 		totalLow: 'Total',
 		winRate: 'Ratio gagner/perdu',
 		ballHit: 'Balles touchées',
-		goal: 'But',
+		goal: 'Murs touchées',
 		tournamentWin: 'Tournois gagnés',
 		win: 'GAGNER',
 		lose: 'PERDU',
@@ -250,7 +250,7 @@ var state_base = {
 		totalLow: 'Gesamt',
 		winRate: 'Gewinnrate',
 		ballHit: 'Balltreffer',
-		goal: 'Ziel',
+		goal: 'Wände betroffen',
 		tournamentWin: 'Turniersieg',
 		win: 'GEWINNEN',
 		lose: 'VERLIEREN',
@@ -347,7 +347,7 @@ observe('tournament.status', (newStatus, oldStatus) => {
 		}
 })
 
-var tourn = tournaments[state.currentTournamentId] 
+var tourn = tournaments[state.currentTournamentId]
 
 observe('tourn.players_r2.length', (newStatus, oldStatus) => {
 	const tournament = state.tournaments.find(tournament => tournament.id == state.currentTournamentId)
