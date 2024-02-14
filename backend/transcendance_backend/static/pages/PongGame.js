@@ -632,6 +632,6 @@ class PongGame extends Component {
 //	}
 //
 //
-//}
+}
 
 register(PongGame);
