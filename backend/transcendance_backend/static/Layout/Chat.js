@@ -658,7 +658,6 @@ class PongChat extends Component {
     connectWsChat() {
         this.socket = ws('chat')
 		this.socket.addEventListener('message', (event) => {
-			console.log('Received message:', event.data);
 			// TODO try catch
 			const data = JSON.parse(event.data)
 			const {channel, sender, nickname, text, datetime} = data
@@ -898,8 +897,6 @@ class PongChat extends Component {
 
 		if (!text)
 			return ;
-
-		console.log("SENDING: ", text, " TO: ", state.activeChannel)
 
 		if (text === '/invite') {
 			if (state.activeChannel != "global")
