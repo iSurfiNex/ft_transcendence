@@ -236,14 +236,11 @@ class Pong:
         powerup_half_duration = 3
 
         while True:
-            if self.pause:
-                continue
-
             current_time = time()
             game_elapsed_time = current_time - game_last_tick_ts
 
             if game_elapsed_time < delta:
-                continue
+                sleep(delta -game_elapsed_time)
 
             game_last_tick_ts = current_time
 
