@@ -43,9 +43,7 @@ websocket_urlpatterns = [
     re_path(r"ws/chat$", ChatConsumer.as_asgi()),
 ]
 
-urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-urlpatterns += [
+urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/giveup/", giveup, name="giveup"),
     path("api/register/", register_user, name="register-user"),

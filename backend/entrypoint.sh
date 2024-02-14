@@ -10,6 +10,7 @@ ALTER ROLE $DB_USER WITH PASSWORD '$DB_PASSWORD';" | sudo -u postgres psql
 
 redis-server --daemonize yes
 
+python3 manage.py collectstatic
 python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py createsuperuser --noinput
