@@ -147,7 +147,10 @@ shinyMaterial = new THREE.ShaderMaterial({
 		document.addEventListener("keyup", ({ key }) => this.updateInputs(key, false));
 	}
 	updateInputs (key, value) {
-		const send_inputs = () => this.socket.send(JSON.stringify(this.inputs)); // Send the typed message to the server
+		const send_inputs = () => {
+			if (state.currentGame >= 0)
+				this.socket.send(JSON.stringify(this.inputs));
+		};
 
 		const handleInput = (keyList, inputKey, key, value) => {
 			// key not pressed or held down
