@@ -8,7 +8,7 @@ export class PongGameCanvas {
 
 	light = new THREE.DirectionalLight(0xffffff, 10);
 	geometry_line = new THREE.BoxGeometry(2, 1000, 1);
-	geometry_paddle = new THREE.BoxGeometry(10, 1, 20, 5, 5, 5);
+	geometry_paddle = new THREE.BoxGeometry(15, 1, 40, 5, 5, 5);
 	material_paddleL = new THREE.MeshBasicMaterial({
 		color: 0xb50202,
 		depthTest: false,
