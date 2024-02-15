@@ -372,10 +372,7 @@ class PongGame extends Component {
     getP2Nickname(p2) {
         if (!p2)
             return ''
-        if (p2.id == -1) {
-            return "Bot"
-        }
-        else p2.nickname
+        return p2.id == -1 ? "Bot" : p2.nickname
     }
 
 	updatedStartIn(startedAt) {
