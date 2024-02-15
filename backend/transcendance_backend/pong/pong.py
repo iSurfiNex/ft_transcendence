@@ -263,13 +263,11 @@ class Pong:
                 (next_top_lines, next_bottom_lines) = generate_walls(True)
                 self.engine.map_transition = False
 
-            print(self.map_transition_started_at)
             if self.map_transition_started_at:
                 elapsed_transition_time = current_time - self.map_transition_started_at
                 if elapsed_transition_time > MAP_TRANSITION_DURATION:
                     self.map_transition_started_at = 0
                 progress = elapsed_transition_time / MAP_TRANSITION_DURATION
-                print(progress)
                 for line, prev_line, next_line in zip(self.top_lines, prev_top_lines, next_top_lines):
                     line.a.x = prev_line.a.x + (next_line.a.x - prev_line.a.x) * progress
                     line.a.y = prev_line.a.y + (next_line.a.y - prev_line.a.y) * progress
