@@ -16,6 +16,9 @@ class PongGame extends Component {
 				<div id="startIn" hidden="{!runningGame.startIn}">
 					<div class="bg"></div>
 					<h2>{language.Start} {runningGame.startIn}</h2>
+					<span class="player-name-starting" id="player-left">{lastGame.p1.nickname}</span>
+					<span class="player-name-starting" id="player-right">{this.getP2Nickname(lastGame.p2)}</span>
+                    <div class="VS-logo">VS</div>
 				</div>
 				<div id="points" hidden="{runningGame.startIn}">
 					<span id="pLPoints" class="points">{runningGame.pLPoints}</span>
@@ -49,10 +52,32 @@ class PongGame extends Component {
 //<li hidden="{!(state.lastGame && state.lastGame.winner && state.lastGame.winner.id == state.profile.id)}">{this.WinnerMsg()}</li>
 //<li hidden="{!(state.lastGame && state.lastGame.winner && state.lastGame.winner.id != state.profile.id)}">{this.LoserMsg()}</li>
 	static css = css`
+
+    .VS-logo {
+		position: absolute;
+		bottom: 50px;
+        margin: 20px;
+        line-height: 2;
+        font-size: 2.5vw;
+        color: #ff8000;
+        text-shadow:
+            2px 2px 3px #ff6600,
+            4px 4px 6px #cc3300,
+            6px 6px 9px #993300;
+    }
 		.player-name {
 			position: absolute;
   			color: white;
   			bottom: 0;
+		}
+
+		.player-name-starting {
+			position: absolute;
+  			color: white;
+  			bottom: 0;
+			padding: 20px;
+			font-size: 28px;
+			bottom: 55px;
 		}
 
 		#player-left {
