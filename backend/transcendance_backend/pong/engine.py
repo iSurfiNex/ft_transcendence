@@ -77,6 +77,15 @@ class PongEngine:
         if next_dir:
             self.ball.d = next_dir
 
+
+    def clamp_radian_angle(self, angle, min, max):
+        if angle < min:
+            return min
+        elif angle > max:
+            return max
+        else:
+            return angle
+
     def score_update(self):
         if self.ball.p.x <= -self.dim.x / 2:
             self.players[1].score += 1
@@ -98,12 +107,6 @@ class PongEngine:
             self.game_over = True
 
         random_angle = random.uniform(-math.pi / 6, math.pi / 6)
-
-        # Rotate the direction vector by the random angle
-        self.ball.d = Vec(
-           self.ball.d.x * math.cos(random_angle)
-           - self.ball.d.y * math.sin(random_angle),
-           self.ball.d.x * math.sin(random_angle)
-           + self.ball.d.y * math.cos(random_angle),
-        )
+        dir = 1 if self.ball.d.x > 0 else -1
+        self.ball.d = (Vec.angle_to_vector(random_angle)*dir).normalized
         self.round_started_at = time()

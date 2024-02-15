@@ -31,7 +31,7 @@ class Ball(Moving):
 
     @staticmethod
     def get_random_starting_direction():
-        return Vec.random_normalized(-math.pi / 4, math.pi / 4)*(random.choice([1, -1]), 1)
+        return Vec.random_normalized(-math.pi / 5, math.pi / 5)*(random.choice([1, -1]), 1)
 
 
 

@@ -135,13 +135,13 @@ class Vec():
         return f"Vec({self._t})"
 
     @classmethod
-    def random_normalized(self, rad_bound_a:float, rad_bound_b:float)->"Vec":
+    def random_normalized(cls, rad_bound_a:float, rad_bound_b:float)->"Vec":
         random_angle = random.uniform(-math.pi / 4, math.pi / 4)
         return Vec.angle_to_vector(random_angle)
 
 
     @classmethod
-    def angle_to_vector(self, angle_rad:float) -> "Vec":
+    def angle_to_vector(cls, angle_rad:float) -> "Vec":
         # Calculate x and y components of the vector
         x = math.cos(angle_rad)
         y = math.sin(angle_rad)
