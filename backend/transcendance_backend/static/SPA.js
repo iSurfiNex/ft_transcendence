@@ -190,7 +190,7 @@ function displayContent(path) {
 			navigateTo("/play/game")
 			return;
 		}
-		else if (path !== "/play/tournament-wr" && state.waitingForTournament) {
+		else if (path !== "/play/tournament-wr" && state.waitingForTournament && state.tournament.status != 'no-tournament') {
 			navigateTo("/play/tournament-wr")
 			return;
 		}
