@@ -1,6 +1,7 @@
 from django.http import JsonResponse, Http404
 from django.db.utils import IntegrityError
 from django.views import View
+from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST, require_GET
 from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
@@ -54,6 +55,7 @@ def login_user(request):
         return getLoginResponse(user)
 
 
+@login_required
 @require_GET  # Ensure that the view only responds to POST requests
 def logout_user(request):
     response = JsonResponse({"status": "OK"})
@@ -250,7 +252,7 @@ def request_42_login(request):
             {"errors": {"global": str(e)}}, status=HTTPStatus.BAD_REQUEST
         )
 
-
+@method_decorator(login_required, name='dispatch')
 class ManageTournamentView(View):
     def get(self, request, id=None):
         try:
@@ -330,6 +332,7 @@ class ManageTournamentView(View):
             return JsonResponse({"errors": "Object not found"}, status=404)
 
 
+@method_decorator(login_required, name='dispatch')
 class ManageGameView(View):
     def get(self, request, id=None):
         try:
@@ -430,6 +433,7 @@ class ManageGameView(View):
 
 
 # Let Player giveup his running game
+@login_required
 @require_GET
 def giveup(request):
     my_player = request.user.player
@@ -441,6 +445,7 @@ def giveup(request):
     # TODO update users ?
     return JsonResponse({"status": "ok"}, status=200)
 
+@login_required
 @require_GET
 def reconnectUpdate(request):
     Update(game="all", tournament="all", user=request.user.player)
