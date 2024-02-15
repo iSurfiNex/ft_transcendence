@@ -7,15 +7,15 @@ const attach_class_obs = (scope, prefixes, query, i, classList) => {
       newVal = transform(newVal)
     if (useValue) {
       if (oldVal !== newVal)
-        classList.toggle(oldVal, false);
-      classList.toggle(newVal, true);
+        oldVal && classList.toggle(oldVal, false);
+      newVal && classList.toggle(newVal, true);
     } else {
-      classList.toggle(forwardVal, newVal);
+      newVal && classList.toggle(forwardVal, newVal);
     }
     oldVal = newVal
   }
   let hasBinding = bracketEval(query, scope, prefixes, onClassBindingChange)
-  if (hasBinding)
+  if (hasBinding && query)
     classList.toggle(query, false)
 }
 
