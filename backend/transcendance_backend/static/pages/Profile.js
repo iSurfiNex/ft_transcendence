@@ -456,6 +456,8 @@ class PongProfile extends Component {
         if (!game)
             return true
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
@@ -469,6 +471,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player1 = game.players.find(player => player === lookingUser.nickname);
 
 		return player1;
@@ -478,6 +482,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player2 = game.players.find(player => player !== lookingUser.nickname);
 
 		if (!player2)
@@ -489,6 +495,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
@@ -513,6 +521,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player = game.players.find(player => player !== lookingUser.nickname);
 
 		if (!player) {
@@ -550,6 +560,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player1 = game.players.find(player => player === lookingUser.nickname);
 		const player2 = game.players.find(player => player !== lookingUser.nickname);
 
@@ -593,6 +605,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		if (game.status != "done")
 			return ;
 
@@ -632,6 +646,8 @@ class PongProfile extends Component {
 
 	getTournamentPlayerName(gameId, profileLooking) {
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
@@ -644,6 +660,8 @@ class PongProfile extends Component {
 
 	getTournamentOtherPlayerName(gameId, profileLooking) {
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
@@ -657,6 +675,8 @@ class PongProfile extends Component {
 
 	getTournamentPlayerScore(gameId, profileLooking) {
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
@@ -682,6 +702,8 @@ class PongProfile extends Component {
 
 	getTournamentOtherPlayerScore(gameId, profileLooking) {
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const game = state.games.find(game => game.id === gameId);
 		if (!game)
 			return ;
@@ -710,6 +732,8 @@ class PongProfile extends Component {
 
 	getHiddenTourGames(gameId, profileLooking) {
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const game = state.games.find(game => game.id === gameId);
         if (!game)
             return true
