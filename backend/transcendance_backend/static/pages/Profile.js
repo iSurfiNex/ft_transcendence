@@ -630,13 +630,13 @@ class PongProfile extends Component {
 		let score1 = 0;
 		let score2 = 0;
 
-		if (player1 == game.p1.nickname) {
-			score1 = game.p1_score;
-			score2 = game.p2_score;
+		if (player1 == finalGame.p1.nickname) {
+			score1 = finalGame.p1_score;
+			score2 = finalGame.p2_score;
 		}
 		else {
-			score1 = game.p2_score;
-			score2 = game.p1_score;
+			score1 = finalGame.p2_score;
+			score2 = finalGame.p1_score;
 		}
 
 		if (score1 == score2)
