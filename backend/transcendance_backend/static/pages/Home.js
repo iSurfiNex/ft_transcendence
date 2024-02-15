@@ -316,9 +316,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
-		setTimeout(function() {
 			navigateTo("/play/pong");
-		}, 400);
 	}
 
 	othergameHandler() {
@@ -337,9 +335,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
-		setTimeout(function() {
 			navigateTo("/play/pong-up");
-		}, 400);
 	}
 
 	tournamentHandler() {
@@ -358,9 +354,7 @@ class PongHome extends Component {
 			this.shadowRoot.getElementById("home").style.height="calc(90% - 8px)";
 			this.shadowRoot.getElementById("home").style.bottom="0";
 		}
-		setTimeout(function() {
 			navigateTo("/play/tournament");
-		}, 400);
 	}
 }
 
