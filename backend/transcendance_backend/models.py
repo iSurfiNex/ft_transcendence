@@ -54,6 +54,10 @@ class Player(models.Model):
     )
     tournaments = models.ManyToManyField("Tournament", blank=True)
     lastGameId = models.IntegerField(null=True, default=-1)
+
+    def is_in_game(self):
+        return self.games.filter(state__in=["running", "waiting"]).exists()
+
     # Get the object serialized as JS object
     @property
     def serialized(self):

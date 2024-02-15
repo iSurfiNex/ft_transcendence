@@ -363,6 +363,9 @@ class ManageTournamentView(View):
 
             creator = request.user.player
 
+            if creator.is_in_game():
+                return JsonResponse({}, status=400)
+
             tournament = Tournament.objects.create(
                 state="waiting",
                 power_ups=data["power_ups"],
@@ -439,6 +442,8 @@ class ManageGameView(View):
             data = json.loads(request.body)
 
             creator = request.user.player
+            if creator.is_in_game():
+                return JsonResponse({}, status=400)
             game = Game.objects.create(
                 state="waiting",
                 goal_objective=data["goal_objective"],
