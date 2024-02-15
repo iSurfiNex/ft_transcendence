@@ -143,9 +143,13 @@ shinyMaterial = new THREE.ShaderMaterial({
 	}
 
 	setupKeyListener() {
-		document.addEventListener("keydown", ({ key }) => this.updateInputs(key, true));
-		document.addEventListener("keyup", ({ key }) => this.updateInputs(key, false));
+		this.a = ({ key }) => this.updateInputs(key, true);
+		this.b = ({ key }) => this.updateInputs(key, false);
+
+		document.addEventListener("keydown", this.a);
+		document.addEventListener("keyup", this.b);
 	}
+
 	updateInputs (key, value) {
 		const send_inputs = () => {
 			if (state.currentGame >= 0)
@@ -299,6 +303,9 @@ shinyMaterial = new THREE.ShaderMaterial({
 		const imPL = state.game.p1.id === state.profile.id;
 		const iWin = pLWin == imPL;
 		state.runningGame.gameOverState = iWin ? "youWin" : "youLose";
+
+		document.removeEventListener("keydown", this.a);
+		document.removeEventListener("keyup", this.b);
 
 		if (state.runningGame.gameOverState == "youLose" || state.runningGame.gameOverState == "youWin")
 			this.socket.close();
