@@ -332,7 +332,7 @@ class TournamentWr extends Component {
     }
 
     isPlayerOut(nickname, players_r2_nicknames, users, tournament_status) {
-        if (tournament_status != 'round 1' || players_r2_nicknames.length != 2)
+        if (tournament_status != 'round 1' || !players_r2_nicknames || players_r2_nicknames.length != 2)
             return false
         const u = users.find(u => u.nickname === nickname)
         return u && !players_r2_nicknames.some(nickname => nickname === u.nickname)
