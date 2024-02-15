@@ -328,7 +328,7 @@ class PongProfile extends Component {
         if (profileLooking === state.profile.id)
             return picture
 		const user = state.users.find(user => user.id === profileLooking);
-		return user.picture
+		return user?.picture
 	}
 
 	getWin(profileLooking) {
@@ -592,6 +592,8 @@ class PongProfile extends Component {
         if (!game)
             return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
+        if (!lookingUser)
+            return ''
 		const player = game.players.find(player => player === lookingUser.nickname);
 
 		if (!player)
