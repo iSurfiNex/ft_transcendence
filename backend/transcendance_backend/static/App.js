@@ -12,12 +12,13 @@ window.ws = route => {
 
 var state_base = {
         game: computedProperty(['currentGame', 'games'], function (currentGameId) {
+                const gameNotFound = {id: -1, status: 'no-game', players: [], p1: {}, p2: {}, score: []}
                 const games = state.games
                 if (!games && !Array.isArray(games) || !(currentGameId>=0))
-                        return {id: -1, status: 'no-game'}
+                        return gameNotFound
                 const my_game =  games.find(game => game.id === currentGameId)
                 if (!my_game)
-                        return {id: -1, status: 'no-game'}
+                        return gameNotFound
                 my_game.creator_is_me = my_game.creator_id === state.profile.id
                 return my_game
         }),

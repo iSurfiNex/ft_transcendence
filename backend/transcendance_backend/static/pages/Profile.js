@@ -453,6 +453,8 @@ class PongProfile extends Component {
 	}
 
 	getHiddenStatus(game, profileLooking) {
+        if (!game)
+            return true
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player = game.players.find(player => player === lookingUser.nickname);
 
@@ -464,6 +466,8 @@ class PongProfile extends Component {
 	}
 
 	getPlayerName(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player1 = game.players.find(player => player === lookingUser.nickname);
 
@@ -471,6 +475,8 @@ class PongProfile extends Component {
 	}
 
 	getOtherPlayerName(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player2 = game.players.find(player => player !== lookingUser.nickname);
 
@@ -480,6 +486,8 @@ class PongProfile extends Component {
 	}
 
 	getPlayerScore(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player = game.players.find(player => player === lookingUser.nickname);
 
@@ -502,6 +510,8 @@ class PongProfile extends Component {
 	}
 
 	getOtherPlayerScore(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player = game.players.find(player => player !== lookingUser.nickname);
 
@@ -537,6 +547,8 @@ class PongProfile extends Component {
 	}
 
 	getGameStatus(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player1 = game.players.find(player => player === lookingUser.nickname);
 		const player2 = game.players.find(player => player !== lookingUser.nickname);
@@ -565,6 +577,8 @@ class PongProfile extends Component {
 	}
 
 	getHiddenStatusTournament(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const player = game.players.find(player => player === lookingUser.nickname);
 
@@ -576,6 +590,8 @@ class PongProfile extends Component {
 	}
 
 	getTournamentStatus(game, profileLooking) {
+        if (!game)
+            return ''
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		if (game.status != "done")
 			return ;
