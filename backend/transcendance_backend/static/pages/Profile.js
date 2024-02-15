@@ -348,7 +348,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const loseCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname && game.winner?.id !== lookingUser.id).length;
+		const loseCount = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname) && game.winner?.nickname !== lookingUser.nickname).length;
 
 		return loseCount ? loseCount : 0;
 	}
@@ -359,7 +359,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const totalCount = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname)).length;
 
 		return totalCount ? totalCount : 0;
 	}
@@ -370,7 +370,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const totalCount = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname)).length;
 		const winCount = state.games.filter(game => game.status === "done" && game.winner?.id === lookingUser.id).length;
 
 		const winRate = (winCount ? winCount : 0) / (totalCount ? totalCount : 1) * 100;
@@ -383,7 +383,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const ballHits = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.paddle_hits, 0);
+		const ballHits = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname)).reduce((sum, game) => sum + game.paddle_hits, 0);
 
 		return ballHits ? ballHits : 0;
 	}
@@ -394,7 +394,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const wallHits = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).reduce((sum, game) => sum + game.wall_hits, 0);
+		const wallHits = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname)).reduce((sum, game) => sum + game.wall_hits, 0);
 
 		return wallHits ? wallHits : 0;
 	}
@@ -416,7 +416,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const totalCount = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname)).length;
 		const winCount = state.games.filter(game => game.status === "done" && game.winner?.id === lookingUser.id).length;
 
 		if (winCount == totalCount)
@@ -434,7 +434,7 @@ class PongProfile extends Component {
 		if (!lookingUser)
 			return 0;
 
-		const totalCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname).length;
+		const totalCount = state.games.filter(game => game.status === "done" && game.players.some(player => player === lookingUser.nickname)).length;
 		const loseCount = state.games.filter(game => game.status === "done" && game.players == lookingUser.nickname && game.winner?.id !== lookingUser.id).length;
 
 		if (loseCount == totalCount)
