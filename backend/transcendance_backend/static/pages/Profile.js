@@ -711,6 +711,8 @@ class PongProfile extends Component {
 	getHiddenTourGames(gameId, profileLooking) {
 		const lookingUser = state.users.find(user => user.id === profileLooking);
 		const game = state.games.find(game => game.id === gameId);
+        if (!game)
+            return true
 
 		const player = game.players.find(player => player === lookingUser.nickname);
 		if (!player)
