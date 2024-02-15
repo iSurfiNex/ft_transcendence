@@ -98,6 +98,7 @@ class PongGame extends Component {
 			cursor: pointer;
 			outline-offset: 4px;
 			margin: 10px 30px;
+			z-index: 500;
 		}
 
 		.front-leave {
