@@ -382,35 +382,6 @@ shinyMaterial = new THREE.ShaderMaterial({
 			},
 		);
 
-		//this.loader.load(
-		//	"power_up_box.glb",
-		//	(gltf) => {
-		//		this.bonus = gltf.scene.children[0];
-		//		if (this.bonus) {
-		//			// Make the model ignore lights by setting MeshBasicMaterial
-		//			this.bonus.traverse((child) => {
-		//				if (child.isMesh) {
-		//					const basicMaterial = new THREE.MeshBasicMaterial({
-		//						map: child.material.map, // You can copy other properties if needed
-		//						color: 0xffffff, // Set the desired color
-		//					});
-		//					child.material = basicMaterial;
-		//					child.material.transparent = true;
-		//				}
-		//			});
-		//			this.ball.renderOrder = 5010;
-		//			this.bonus.scale.multiplyScalar(25);
-		//			this.bonus.position.set(0, 500, 0);
-		//			this.scene.add(this.bonus);
-		//		}
-		//	},
-		//	(xhr) => {
-		//		// console.log((xhr.loaded / xhr.total) * 100 + "% loaded of Bonus");
-		//	},
-		//	(error) => {
-		//		console.error("Error loading GLTF model", error);
-		//	},
-		//);
 	}
 
 	render() {

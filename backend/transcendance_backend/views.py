@@ -1,10 +1,8 @@
 from django.http import JsonResponse, Http404
 from django.db.utils import IntegrityError
 from django.views import View
-from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST, require_GET
-from urllib.parse import urlencode
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
 from django.core.files.base import ContentFile
 from http import HTTPStatus
@@ -13,13 +11,11 @@ import json
 import os
 
 import requests
-import random
 from datetime import datetime, timedelta
 
 from .models import Player, Tournament, Game, Update
-from .forms import PlayerForm, TournamentForm, GameForm
-from .utils import stateUpdate, stateUpdateAll
-from typing import Type
+from .forms import PlayerForm
+from .utils import stateUpdateAll
 
 # from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -29,8 +25,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Player
 
 import logging
-
-import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -257,89 +251,6 @@ def request_42_login(request):
         )
 
 
-def create_rest_api_endpoint(model: Type, modelForm: Type, name: str):
-    class EndpointView(View):
-        def get(self, request, id=None):
-            try:
-                if id:
-                    player = model.objects.get(id=id)
-                    response = player.serialize()
-                    return JsonResponse(response, status=HTTPStatus.OK)
-                else:
-                    players = model.objects.all()
-                    response = [player.serialize() for player in players]
-                    return JsonResponse(response, safe=False, status=HTTPStatus.OK)
-            except model.DoesNotExist:
-                return JsonResponse(
-                    {"errors": f"{name} not found"}, status=HTTPStatus.NOT_FOUND
-                )
-
-        def post(self, request):
-            try:
-                data = json.loads(request.body)
-                form = modelForm(data)
-                if not form.is_valid():
-                    return JsonResponse({"errors": form.errors})
-                new_player = model(**form.cleaned_data)
-                new_player.save()
-                created_player = model.objects.get(id=new_player.id)
-                response = created_player.serialize()
-                return JsonResponse(response, status=201)
-            except KeyError:
-                return JsonResponse(
-                    {"errors": "Invalid data"}, status=HTTPStatus.BAD_REQUEST
-                )
-            except IntegrityError as e:
-                return JsonResponse({"errors": str(e)}, status=HTTPStatus.BAD_REQUEST)
-            except json.JSONDecodeError as e:
-                return JsonResponse({"errors": str(e)}, status=HTTPStatus.BAD_REQUEST)
-
-            def put(self, request, id):
-                try:
-                    player = model.objects.get(id=id)
-                    put_data = json.loads(request.body)
-                    # Merge the current player attribute with the put data
-                    updated_player_data = player.__dict__ | put_data
-                    # By giving the instance, we prevent running into "already exist" validation error
-                    form = modelForm(updated_player_data, instance=player)
-                    if not form.is_valid():
-                        return JsonResponse({"errors": form.errors})
-                    for key, value in form.cleaned_data.items():
-                        setattr(player, key, value)
-                        player.save()
-                        updated_player = model.objects.get(id=player.id)
-                        response = updated_player.serialize()
-                        return JsonResponse(response, status=HTTPStatus.OK)
-                except model.DoesNotExist:
-                    return JsonResponse(
-                        {"errors": f"{name} not found"}, status=HTTPStatus.NOT_FOUND
-                    )
-                except IntegrityError as e:
-                    return JsonResponse(
-                        {"errors": str(e)}, status=HTTPStatus.BAD_REQUEST
-                    )
-                except KeyError:
-                    return JsonResponse(
-                        {"errors": "Invalid data"}, status=HTTPStatus.BAD_REQUEST
-                    )
-                except json.JSONDecodeError as e:
-                    return JsonResponse(
-                        {"errors": str(e)}, status=HTTPStatus.BAD_REQUEST
-                    )
-
-                def delete(self, request, id):
-                    try:
-                        player = model.objects.get(id=id)
-                        player.delete()
-                        return JsonResponse({}, status=204)
-                    except model.DoesNotExist:
-                        return JsonResponse(
-                            {"errors": f"{name} not found"}, status=HTTPStatus.NOT_FOUND
-                        )
-
-    return EndpointView
-
-
 class ManageTournamentView(View):
     def get(self, request, id=None):
         try:
@@ -534,14 +445,6 @@ def giveup(request):
 def reconnectUpdate(request):
     Update(game="all", tournament="all", user=request.user.player)
     return JsonResponse({"status": "ok"}, status=200)
-
-
-
-
-PlayerView = create_rest_api_endpoint(Player, PlayerForm, "Player")
-TournamentView = create_rest_api_endpoint(Tournament, TournamentForm, "Tournament")
-GameView = create_rest_api_endpoint(Game, GameForm, "Game")
-
 
 class CustomTemplateView(TemplateView):
     template_name = "index.html"

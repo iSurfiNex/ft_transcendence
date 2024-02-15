@@ -16,13 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from django.conf.urls.static import static
-from django.conf import settings
 from .consumers import ChatConsumer, StateUpdateConsumer, GameRunningConsumer
 from .views import (
-    PlayerView,
-    TournamentView,
-    GameView,
     request_42_login,
     register_user,
     login_user,
@@ -51,15 +46,7 @@ urlpatterns = [
     path("api/logout/", logout_user, name="logout-user"),
     path("api/update_profile/", update_profile, name="update_profile"),
     path("api/profile/<int:id>/", get_user_profile, name="get_user_profile"),
-    path("api/players/", PlayerView.as_view(), name="player-list"),
-    path("api/players/<int:id>/", PlayerView.as_view(), name="player-detail"),
-    path("api/tournaments/", TournamentView.as_view(), name="tournament-list"),
-    path(
-        "api/tournaments/<int:id>/", TournamentView.as_view(), name="tournament-detail"
-    ),
     path("api/request_42_login/", request_42_login, name="request-42-login"),
-    path("api/games/", GameView.as_view(), name="game-list"),
-    path("api/games/<int:id>/", GameView.as_view(), name="game-detail"),
     path(
         "api/manage-tournament/",
         ManageTournamentView.as_view(),

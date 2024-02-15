@@ -4,7 +4,6 @@ import logging
 import json
 from datetime import datetime
 from asgiref.sync import sync_to_async
-from .utils import stateUpdate
 from .models import Game
 from django.core.exceptions import ObjectDoesNotExist
 from channels.db import database_sync_to_async

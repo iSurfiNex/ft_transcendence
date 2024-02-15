@@ -5,7 +5,6 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
 )
-from .validators import even_value_validator
 from django.contrib.auth.models import User
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
