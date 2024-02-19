@@ -28,7 +28,6 @@ class TournamentWr extends Component {
         </div>
     </div>
 `
-        //<script>document.addEventListener("DOMContentLoaded", this.startRound2())</script>
 
     static css = css`
     :host {

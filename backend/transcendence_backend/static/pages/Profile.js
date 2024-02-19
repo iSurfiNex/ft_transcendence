@@ -321,9 +321,6 @@ class PongProfile extends Component {
 	}
 `
 
-
-// "tournament_win": self.tournaments.filter(state="done", winner=self).count() or 0,
-
 	getAvatarUrl(profileLooking, picture) {
         if (profileLooking === state.profile.id)
             return picture
