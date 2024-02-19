@@ -148,7 +148,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")  # 'data' is my media folder
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -164,20 +164,6 @@ TEST_DATABASE_USER = os.environ.get("TEST_DB_USER")
 
 ASGI_APPLICATION = "transcendence_backend.asgi.application"
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#         },
-#     },
-#     "root": {
-#         "handlers": ["console"],
-#         "level": "DEBUG",
-#     },
-# }
-
 CHANNEL_LAYERS = {
 	"default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -187,5 +173,5 @@ CHANNEL_LAYERS = {
     },
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")  # 'data' is my media folder
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"

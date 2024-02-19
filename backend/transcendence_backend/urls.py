@@ -32,7 +32,6 @@ from .views import (
 )
 
 websocket_urlpatterns = [
-    # re_path(r"ws/game/(?P<room_id>\w+)/$", ChatConsumer.as_asgi()),
     path("ws/state-update", StateUpdateConsumer.as_asgi()),
     path("ws/game-running/<int:id>/", GameRunningConsumer.as_asgi()),
     re_path(r"ws/chat$", ChatConsumer.as_asgi()),

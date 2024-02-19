@@ -169,14 +169,12 @@ function displayContent(path) {
 	}
 	else if (path === "/login/") {
         state.loginLoading = false;
-        // TODO ça marche mais c'est dégeulasse
 
         // Remove every pong-something nodes
         const pongNodes = Array.from(document.body.children).filter(node => node.tagName.toLowerCase().startsWith('pong-'));
         pongNodes.forEach(node => node.remove());
         // notify the Layout function it will have to recreate the missing elements when players reconnect
         topbar = chat = contentSeparator = undefined
-        // readd the pong login
 		displayElement("pong-login");
 	}
 	else if (!loggedIn) {
@@ -305,14 +303,11 @@ function stateUpdate(data)
 {
 	data_type = data.data_type;
 
-	if (data_type == 'tournament')//tournament update
+	if (data_type == 'tournament') //tournament update
 		tournamentUpdate(data, data.action);
 
-	else if (data_type == 'game')//game update
+	else if (data_type == 'game') //game update
 		gameUpdate(data, data.action);
-
-	//else if (data_type == 'profile')
-	//	profileUpdate(data, data.action);
 
 	else if (data_type == 'all tournaments')
 		tournamentUpdateAll(data);

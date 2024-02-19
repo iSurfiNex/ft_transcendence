@@ -336,10 +336,6 @@ observe('game.status', (newStatus, oldStatus) => {
                 navigateTo('/play/game')
         } else if(gameOver) {
                 console.log("GAME OVER")
-                //if (state.currentTournament.status === ???)
-                //        navigateTo('play/tournament-wr')
-                //else
-                //navigateTo('/')
         } else if (enterWaitingRoom) {
                 console.log("ENTER WAITING ROOM")
                 navigateTo('/play/waiting-room');
@@ -361,8 +357,6 @@ observe('tournament.status', (newStatus, oldStatus) => {
         }
 })
 
-
-// TODO Bizarement ce truc est nécessaire, juste appeller state.game.status déclenche l'observer
 state.game.status
 state.tournament.status
 

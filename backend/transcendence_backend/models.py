@@ -21,7 +21,6 @@ from django.http import JsonResponse
 
 
 class Player(models.Model):
-    # TODO user default avatar by requesting https://thispersondoesnotexist.com/
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     # True while the user is connected to the chat websocket

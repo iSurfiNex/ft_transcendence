@@ -127,7 +127,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         logger.debug(text_data)
 
         data = json.loads(text_data)
-        # TODO protect key error if the keys does not exist
         text = data["text"]
         to = data["to"]
 
@@ -146,15 +145,7 @@ class StateUpdateConsumer(AsyncWebsocketConsumer):
             logger.error(f"Error: {e}")
 
     async def disconnect(self, close_code):
-        # await self.channel_layer.group_discard("state-update", self.channel_name)
         pass
-
-    # async def receive(self, text_data):
-    #    text_data_json = json.loads(text_data)
-    #    message = text_data_json["message"]
-    #    str_resp = json.dumps({"message": message})
-    #    # TODO change this, I just send back the received msg
-    #    #await self.send(text_data=str_resp)
 
     async def send_update(self, event):
         await self.send(text_data=json.dumps(event["data"]))

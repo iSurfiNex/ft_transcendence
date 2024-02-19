@@ -18,7 +18,6 @@ from .models import Player, Tournament, Game, Update
 from .forms import PlayerForm
 from .utils import stateUpdateAll
 
-# from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.decorators import login_required
@@ -89,7 +88,7 @@ def register_user(request):
     except Exception as e:
         return JsonResponse(
             {"errors": {"any": str(e)}},
-            status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
+            status=HTTPStatus.BAD_REQUEST,
         )
 
 
@@ -128,7 +127,7 @@ def update_profile(request):
     except Exception as e:
         return JsonResponse(
             {"errors": {"any": str(e)}},
-            status=HTTPStatus.BAD_REQUEST,  # Internal Server Error instead ?
+            status=HTTPStatus.BAD_REQUEST,
         )
 
 
@@ -308,12 +307,6 @@ class ManageTournamentView(View):
                 # Check that player blelong to this game
                 tournament.set_player_ready(my_player)
 
-            #if data['action'] == "start-round":
-            #    tournament.start_next_round()
-
-            #elif data['action'] == "end-round":
-            #    tournament.end_round(my_player, data)
-
             elif (data["action"] == "join"):
                 tournament.players.add(my_player)
 
@@ -420,7 +413,6 @@ class ManageGameView(View):
                     game.players.remove(my_player)
 
             game.save()
-            #Update(game=game, game_action="update", user=my_player)
             response = game.serialize()
             return JsonResponse(response, status=200)
 
@@ -442,7 +434,6 @@ def giveup(request):
         return JsonResponse({"errors": {"__all__": "No game running"}}, status=400)
     game.state = "done"
     game.save()
-    # TODO update users ?
     return JsonResponse({"status": "ok"}, status=200)
 
 @login_required
