@@ -38,9 +38,9 @@ SECURE_URL_SCHEME = "https"
 
 DEBUG = False
 
-ALLOWED_HOSTS = [os.environ.get("GF_IP"), "localhost"]
+ALLOWED_HOSTS = [os.environ.get("SITE_DOMAIN"), "localhost"]
 
-CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "https://" + os.environ.get("GF_IP") + ":8000"]
+CSRF_TRUSTED_ORIGINS = ["https://localhost:8000", "https://" + os.environ.get("SITE_DOMAIN") + ":8000"]
 
 # Application definition
 AUTHENTICATION_BACKENDS = [
