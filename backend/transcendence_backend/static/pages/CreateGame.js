@@ -2,7 +2,6 @@ import { Component, register, html, css } from 'pouic'
 import { bootstrapSheet } from '/static/bootstrap/bootstrap_css.js'
 
 class PongCreateGame extends Component {
-	//onSwitchChange(event) {this.shadowRoot.getElementById("input-players").hidden = false;}
 	static sheets = [bootstrapSheet]
 	static template = html`
 	<meta name="csrf-token" content="{% csrf_token %}">
@@ -343,7 +342,6 @@ class PongCreateGame extends Component {
 
 		post2("/api/manage-game/", dataToSend)
 		.catch(error => console.error(error))
-		//NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
 	}
 
 
