@@ -4,7 +4,6 @@ import { PongGameCanvas } from "pong_game";
 
 class PongGame extends Component {
 	static template = html`
-
 		<div id="gameContainer"></div>
 		<div class="center">
 			<div id="gameOverlay">
@@ -32,13 +31,12 @@ class PongGame extends Component {
 				<div id="gameOverLayer" hidden="{!runningGame.gameOverState}">
 					<div class="bg"></div>
 					<span id="gameOverTxt">{language.gameOver}</span>
-					<span id="gameOverState" class="blinking"
-						>{lang(runningGame.gameOverState)}</span>
+					<span id="gameOverState" class="blinking">{lang(runningGame.gameOverState)}</span>
 					<ul class="stat-list">
 						<li>Ball hit: {lastGame.paddle_hits} times</li>
 						<li>Wall hit: {lastGame.wall_hits} times</li>
-						<li hidden="{this.isWinner(lastGame)}">{this.WinnerMsg()}</li>
-						<li hidden="{this.isLoser(lastGame)}">{this.LoserMsg()}</li>
+						<li hidden="{!this.isWinner(lastGame)}">{this.WinnerMsg()}</li>
+						<li hidden="{this.isWinner(lastGame)}">{this.LoserMsg()}</li>
 					</ul>
 					<button hidden="{!runningGame.gameOverState}" id="pong-button" class="leave" @click="this.leave()">
 						<span class="front-leave">{language.leave}</span>
@@ -47,10 +45,7 @@ class PongGame extends Component {
 			</div>
 		</div>
 	`;
-//<li>{this.getEndMsg()}</li>
 
-//<li hidden="{!(state.lastGame && state.lastGame.winner && state.lastGame.winner.id == state.profile.id)}">{this.WinnerMsg()}</li>
-//<li hidden="{!(state.lastGame && state.lastGame.winner && state.lastGame.winner.id != state.profile.id)}">{this.LoserMsg()}</li>
 	static css = css`
 
     .VS-logo {
@@ -187,7 +182,7 @@ class PongGame extends Component {
 			position: absolute;
 			right: 0;
 			bottom: 0;
-			height: 100%;
+			height: calc(90% - 6px);
 			width: 100%;
 			font-family: "Press Start 2P", sans-serif;
 			font-weight: bold;
@@ -394,7 +389,6 @@ class PongGame extends Component {
 	}
 
 	leave() {
-		//if (state.tournament.status == 'round 1')
 		navigateTo('/')
 	}
 
@@ -427,7 +421,19 @@ class PongGame extends Component {
 		this.gameContainer = this.shadowRoot.getElementById("gameContainer");
 		this.canvasRatio = 600 / 800;
 		this.game = new PongGameCanvas(this.gameContainer);
-		this.setCanvasSize();
+
+		let w = this.gameContainer.clientWidth;
+		let h = this.gameContainer.clientWidth * this.canvasRatio;
+
+		if (h > this.gameContainer.clientHeight) {
+			h = this.gameContainer.clientHeight;
+			w = h / this.canvasRatio;
+		}
+
+		this.game?.renderer?.setSize(w, h);
+		const overlayNode = this.shadowRoot.getElementById("gameOverlay");
+		overlayNode.style.width = "calc(" + w + "px" + " - 0px)";
+		overlayNode.style.height = "calc(" + h + "px" + " - 0px)";
 	}
 
 	setCanvasSize() {
@@ -476,26 +482,10 @@ class PongGame extends Component {
 
 	isWinner(lastGame) {
 		if (lastGame)
-		{
 			if (lastGame.winner)
-			{
-				if (lastGame.winner.id == profile.id)
-					return (!true)
-			}
-		}
-		return (!false)
-	}
-
-	isLoser(lastGame) {
-		if (lastGame)
-		{
-			if (lastGame.winner)
-			{
-				if (lastGame.winner.id != profile.id)
-					return (!false)
-			}
-		}
-		return (!true)
+				if (lastGame.winner.id == state.profile.id)
+					return (true)
+		return (false)
 	}
 
 	WinnerMsg() {
@@ -865,7 +855,7 @@ class PongGame extends Component {
 
 	LoserMsg() {
 		let randomNb = this.getRandomInt();
-	
+
 		let language = "en"
 
 		if (state.language.WaitingRoom == "Salle d\'attente")
@@ -1233,7 +1223,7 @@ class PongGame extends Component {
 					return "Viel Glück beim nächsten Mal! Lerne aus deinen Fehlern.";
 		}
 	}
-	
+
 }
 
 register(PongGame);
