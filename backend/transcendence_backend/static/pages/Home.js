@@ -53,7 +53,7 @@ class PongHome extends Component {
 		}
 
 		.content {
-			flex-direction: row;
+			flex-direction: column;
 		}
 
 		.pong-content {
@@ -61,23 +61,13 @@ class PongHome extends Component {
 			text-align: center;
 			flex-direction: column;
 			overflow: hidden;
-			height: 85%;
-			width: 100%;
+			height: 100%;
+			width: 85%;
 		}
 
-		.pong {
-			height: 96%;
-			width: 31%;
-		}
-
-		.power-up {
-			height: 96%;
-			width: 31%;
-		}
-
-		.tournament {
-			height: 96%;
-			width: 31%;
+		.pong, .power-up, .tournament{
+			width: 96%;
+			height: 31%;
 		}
 
 		.button {
@@ -118,17 +108,7 @@ class PongHome extends Component {
 			align-items: center;
 		}
 
-		.pong {
-			width: 96%;
-			height: 31%;
-		}
-
-		.power-up {
-			width: 96%;
-			height: 31%;
-		}
-
-		.tournament {
+		.pong, .power-up, .tournament{
 			width: 96%;
 			height: 31%;
 		}
