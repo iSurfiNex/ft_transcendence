@@ -424,23 +424,6 @@ class PongTopBar extends Component {
 	}
 `
 
-	connectedCallback() {
-		window.addEventListener("resize", this.hideTopBar.bind(this));
-	}
-
-	hideTopBar() {
-		const currentPath = window.location.pathname;
-
-		const shouldHideTopBar = state.isMobile && currentPath === '/play/game';
-
-		const topBar = this.shadowRoot.getElementById('topbar');
-
-		if (shouldHideTopBar)
-			topBar.style.display = 'none';
-		else
-			topBar.style.display = 'block';
-	}
-
 	selectedLanguage(language) {
 		if (state.language.username == language.username)
 			return true;
