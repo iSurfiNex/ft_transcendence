@@ -390,7 +390,7 @@ class PongTopBar extends Component {
 			height: auto;
 			overflow: hidden;
 			margin: 10%;
-}
+		}
 	}
 
 	::-webkit-scrollbar {
@@ -458,7 +458,6 @@ class PongTopBar extends Component {
 	updateActiveLanguage(lang) {
 		state.language = lang;
 		let langkey = ""
-		// TODO c'est dégueulasse
 		if (lang.username === 'Username')
 			langkey = 'en'
 		else if (lang.username === 'Nom d\'utilisateur')
