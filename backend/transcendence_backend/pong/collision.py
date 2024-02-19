@@ -43,7 +43,6 @@ def compute_collision(
                 r_dir = vec.reflect(n)
                 if (obstacle_line == pl and r_dir.x < 0) or (obstacle_line == pr and r_dir.x > 0):
                     return None, None, None
-                # TODO improve datetime
                 return (
                     Collision(pos=coll_pos, obstacle=obstacle, ts=datetime.now()),
                     r_dir,
@@ -80,7 +79,6 @@ def ai_collisions_check(
     )
     collisions += next_collisions
 
-    # TODO simplify/cleanup
     if line2:
         line = line2
 

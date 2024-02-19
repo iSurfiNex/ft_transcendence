@@ -319,7 +319,7 @@ class Pong:
 
             self.handle_player_inputs(id, 0)
             if not self.use_ai:
-                self.handle_player_inputs(id, 1)  # TODO handle not for IA
+                self.handle_player_inputs(id, 1)
             [self.handle_ai_inputs(ai) for ai in self.ai_list]
 
             self.engine.update(delta)

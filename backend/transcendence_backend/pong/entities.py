@@ -87,10 +87,6 @@ class Pad(Moving):
     # This method should be called every time the height, direction or posiiton of the pad changes
     def update_pad_line(self):
         a, b = self._get_pad_line()
-        # self.line.a.x = a.x
-        # self.line.a.y = a.y
-        # self.line.b.x = b.x
-        # self.line.b.y = b.y
         self.line.a = a
         self.line.b = b
 

@@ -43,11 +43,6 @@ class PongAI:
             goal_pos = line[0] + opponent_line_vec * 0.8
         return goal_pos
 
-    #def pad_shift_for_angle(
-    #    self, angle: float, bounce_angle_on_side, pad_width
-    #) -> float:
-    #    return angle / bounce_angle_on_side * (pad_width / 2)
-
     def add_pad_goto(self, target_pos: Vec, dir=None, until=None):
         if self.pad_go_actions:
             prev_dir, prev_time, prev_pos = self.pad_go_actions[-1]
@@ -80,7 +75,6 @@ class PongAI:
             prev_time = time()
             prev_o = self.player.pad.orientation.toRad
 
-        #prev_time = time()
         rot = self.shortest_angle_rotation(prev_o, target_o)
 
         rot_absolute = rot if rot > 0 else -rot
@@ -105,23 +99,15 @@ class PongAI:
         next_orientation =  Vec.from_points(Line(goal_pos_proj, prev_ball_coll_pos).center, next_impact_pos).toRad + math.pi/2
 
         next_orientation = self.player.pad.clamp_radian_angle(next_orientation)
-        #pad_shift = self.pad_shift_for_angle(
-        #    angleACB,
-        #    math.pi / 4,
-        #    self.opponent.pad.dim.y,
-        #)
-        target_pos = next_impact_pos# + (0, pad_shift)
+        target_pos = next_impact_pos
         self.pad_go_actions = []
         self.pad_rot_actions = []
-        #self.add_pad_goto(target_pos, dir=0, until=next_impact.ts)
-        #self.add_pad_goto(self.player.goal_line.center)
         self.add_pad_goto(next_impact_pos)
         self.add_pad_rotateto(next_orientation)
         self.player.goal_line.center
         self.goal_pos = goal_pos
         self.target_pos = target_pos
         self.goal_pos_proj = goal_pos_proj
-        #print("TARGET", target_pos)
 
     def update(self):
         self.update_go()
@@ -219,12 +205,9 @@ class PongAI:
             self.add_pad_goto(self.player.pad.clamp_line.center)
             self.add_pad_rotateto(math.pi/2)
             self.keypressed.add("space")
-            #self.update_target(Collision(Vec(0,0), [self.player.pad.line], time()), game.ball.p)
         if line == camp and collisions:
             if "space" in self.keypressed:
                 self.keypressed.remove("space")
             self.update_target(collisions[-1],  game.ball.p)
-        #else :
-        #    self.update_target(Vec(0,0), 0)
         self.ball_path += [collision.pos for collision in collisions]
         self.frames_data.append(last_coll)
