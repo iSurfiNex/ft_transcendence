@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "transcendance-backend"
+name = "transcendence-backend"
 version = "0.1.0"
-description = "Django backend application for ft_transcendance 42 project."
+description = "Django backend application for ft_transcendence 42 project."
 authors = ["Félix JULLIEN <jullienfelix@gmail.com>"]
 license = "MIT"
 readme = "README.md"

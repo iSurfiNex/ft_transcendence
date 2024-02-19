@@ -1,4 +1,4 @@
-# ft_transcendance BACKEND
+# ft_transcendence BACKEND
 
 ## Requirements
 
@@ -30,7 +30,7 @@ poetry --version
 ### Use the dependencies
 
 ``` sh
-cd ft_transcendance/backend # where pyproject.toml file is
+cd ft_transcendence/backend # where pyproject.toml file is
 poetry install # Install the dependencies
 poetry shell # Do this any time you open your terminal
 ```
@@ -70,13 +70,13 @@ You can generate a `DJANGO_SECRET_KEY` by running `python ./scripts/generate_sec
 
 ### Create DB
 
-The following code-block creates a database named `transcendance_db` with a user `my_postgres_user` with password `my_postgres_pw`. Make sure to reflect your `.env` file.
+The following code-block creates a database named `transcendence_db` with a user `my_postgres_user` with password `my_postgres_pw`. Make sure to reflect your `.env` file.
 
 ``` sh
 
 sudo -u postgres psql
 
-CREATE DATABASE transcendance_db;
+CREATE DATABASE transcendence_db;
 CREATE ROLE my_postgres_user LOGIN;
 ALTER ROLE my_postgres_user WITH PASSWORD 'my_postgres_pw';
 
@@ -129,7 +129,7 @@ When you make changes to your Django models (e.g., adding, modifying, or deletin
 │ ├── scripts/
 │ │ ├── visualize_db.sh
 │ │ ├── generate_secret_key.py
-│ ├── transcendance_backend/
+│ ├── transcendence_backend/
 │ │ ├── admin.py
 │ │ ├── asgi.py
 │ │ ├── migrations/

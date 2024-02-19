@@ -1116,7 +1116,7 @@
 			"editorMode": "code",
 			"format": "table",
 			"rawQuery": true,
-			"rawSql": "SELECT COUNT(id) FROM transcendance_backend_player",
+			"rawSql": "SELECT COUNT(id) FROM transcendence_backend_player",
 			"refId": "A",
 			"sql": {
 			  "columns": [
@@ -1141,7 +1141,7 @@
 			  ],
 			  "limit": 50
 			},
-			"table": "transcendance_backend_player"
+			"table": "transcendence_backend_player"
 		  }
 		],
 		"title": "User count",
@@ -1207,7 +1207,7 @@
 			"editorMode": "code",
 			"format": "table",
 			"rawQuery": true,
-			"rawSql": "SELECT COUNT(id) FROM transcendance_backend_game",
+			"rawSql": "SELECT COUNT(id) FROM transcendence_backend_game",
 			"refId": "A",
 			"sql": {
 			  "columns": [
@@ -1232,7 +1232,7 @@
 			  ],
 			  "limit": 50
 			},
-			"table": "transcendance_backend_game"
+			"table": "transcendence_backend_game"
 		  }
 		],
 		"title": "Game count",
@@ -1298,7 +1298,7 @@
 			"editorMode": "code",
 			"format": "table",
 			"rawQuery": true,
-			"rawSql": "SELECT COUNT(id) FROM transcendance_backend_tournament ",
+			"rawSql": "SELECT COUNT(id) FROM transcendence_backend_tournament ",
 			"refId": "A",
 			"sql": {
 			  "columns": [
@@ -1323,7 +1323,7 @@
 			  ],
 			  "limit": 50
 			},
-			"table": "transcendance_backend_game"
+			"table": "transcendence_backend_game"
 		  }
 		],
 		"title": "Tournament count",
@@ -1389,7 +1389,7 @@
 			"editorMode": "code",
 			"format": "table",
 			"rawQuery": true,
-			"rawSql": "SELECT COUNT(*) FROM transcendance_backend_game WHERE state = 'running';",
+			"rawSql": "SELECT COUNT(*) FROM transcendence_backend_game WHERE state = 'running';",
 			"refId": "A",
 			"sql": {
 			  "columns": [
@@ -1414,7 +1414,7 @@
 			  ],
 			  "limit": 50
 			},
-			"table": "transcendance_backend_game"
+			"table": "transcendence_backend_game"
 		  }
 		],
 		"title": "Game running",
