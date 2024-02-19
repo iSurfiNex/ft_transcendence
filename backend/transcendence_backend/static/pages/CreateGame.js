@@ -342,6 +342,7 @@ class PongCreateGame extends Component {
 
 		post2("/api/manage-game/", dataToSend)
 		.catch(error => console.error(error))
+		//NOTE after the request, state.currentGame will be updated by websocket and an observer on state.currentGame will redirect to the correct page
 	}
 
 
