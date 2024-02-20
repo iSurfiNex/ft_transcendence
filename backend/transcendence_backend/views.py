@@ -157,12 +157,13 @@ def request_42_login(request):
             raise Exception("Invalid type")
 
         url = "https://api.intra.42.fr/oauth/token"
+        client_id = os.environ.get("API_CLIENTID", "")
         secret_key = os.environ.get("API_SECRETKEY", "")
         base_uri = os.environ.get("SITE_ORIGIN", "")
         redirect_uri = f"{base_uri}/{type}/"
         data = {
             "grant_type": "authorization_code",
-            "client_id": "u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080",
+            "client_id": client_id,
             "client_secret": secret_key,
             "code": token_42,
             "redirect_uri": redirect_uri,
