@@ -80,35 +80,35 @@ To do so we had a list of modules that we can do to earn points, down below are 
 
 ## Modules :
 ### Web
-<img alt="Django" src=".readme/icons/django.png" width="12px"/> Django ➝ 10pts \
-<img alt="Bootstrap" src=".readme/icons/bootstrap.png" width="12px"/> Bootstrap ➝ 5pts \
-<img alt="PostgreSQL" src=".readme/icons/postgresql.png" width="12px"/> PostgreSQL ➝ 5pts
+<img alt="Django" src=".readme/icons/django.png" width="13px"/> Django ➝ 10pts \
+<img alt="Bootstrap" src=".readme/icons/bootstrap.png" width="13px"/> Bootstrap ➝ 5pts \
+<img alt="PostgreSQL" src=".readme/icons/postgresql.png" width="13px"/> PostgreSQL ➝ 5pts
 
 ### User management
-<img alt="Standard user management" src=".readme/icons/user-management.png" width="12px"/> Standard user management ➝ 10pts \
-<img alt="42 Login" src=".readme/icons/42-login.png" width="12px"/>  OAuth 2.0 with 42 ➝ 10pts
+<img alt="Standard user management" src=".readme/icons/user-management.png" width="13px"/> Standard user management ➝ 10pts \
+<img alt="42 Login" src=".readme/icons/42-login.png" width="13px"/>  OAuth 2.0 with 42 ➝ 10pts
 
 ### Gameplay and user experience
-<img alt="Remote player" src=".readme/icons/remote-player.png" width="12px"/>  Remote player ➝ 10pts \
-<img alt="PowerUps" src=".readme/icons/powerups.png" width="12px"/> Game cusomization options (powerups and random maps) ➝ 10pts \
-<img alt="Chat" src=".readme/icons/chat.png" width="12px"/> Live Chat ➝ 10pts
+<img alt="Remote player" src=".readme/icons/remote-player.png" width="13px"/>  Remote player ➝ 10pts \
+<img alt="PowerUps" src=".readme/icons/powerups.png" width="13px"/> Game cusomization options (powerups and random maps) ➝ 10pts \
+<img alt="Chat" src=".readme/icons/chat.png" width="13px"/> Live Chat ➝ 10pts
 
 ### AI-Algo
-<img alt="AI" src=".readme/icons/ai.png" width="12px"/> AI Opponent ➝ 10pts \
-<img alt="Dashboards" src=".readme/icons/dashboards.png" width="12px"/> User and Game stats dashboards ➝ 5pts
+<img alt="AI" src=".readme/icons/ai.png" width="13px"/> AI Opponent ➝ 10pts \
+<img alt="Dashboards" src=".readme/icons/dashboards.png" width="13px"/> User and Game stats dashboards ➝ 5pts
 
 ### DevOps
-<img alt="Monitoring" src=".readme/icons/monitoring.png" width="12px"/> Monitoring system (grafana) ➝ 5pts
+<img alt="Monitoring" src=".readme/icons/monitoring.png" width="13px"/> Monitoring system (grafana) ➝ 5pts
 
 ### Graphics
-<img alt="3D" src=".readme/icons/3d.png" width="12px"/> Implementing 3D ➝ 10pts
+<img alt="3D" src=".readme/icons/3d.png" width="13px"/> Implementing 3D ➝ 10pts
 
 ### Accessibility
-<img alt="All devices" src=".readme/icons/mobile.png" width="12px"/> Support on all devices ➝ 5pts \
-<img alt="Browser" src=".readme/icons/browser.png" width="12px"/> Expand browser compatibility ➝ 5pts \
-<img alt="Multiple language" src=".readme/icons/language.png" width="12px"/> Multiple language supports ➝ 5pts
+<img alt="All devices" src=".readme/icons/mobile.png" width="13px"/> Support on all devices ➝ 5pts \
+<img alt="Browser" src=".readme/icons/browser.png" width="13px"/> Expand browser compatibility ➝ 5pts \
+<img alt="Multiple language" src=".readme/icons/language.png" width="13px"/> Multiple language supports ➝ 5pts
 
-### That bring us to a total of 115pts + 25pts of the mandatory part which made 140pts
+### That bring us to a total of 115pts + 25pts of the mandatory part which made 140pts.
 
 ## Installation
 
