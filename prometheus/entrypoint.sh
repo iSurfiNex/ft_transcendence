@@ -1,7 +1,7 @@
 #!/bin/sh
 
-export SITE_DOMAIN="${SITE_DOMAIN:-localhost}"
-sed -i "s/\${SITE_DOMAIN:localhost}/$SITE_DOMAIN/g" /etc/prometheus/prometheus.yml
+export GF_IP="${GF_IP:-localhost}"
+sed -i "s/\${GF_IP:localhost}/$GF_IP/g" /etc/prometheus/prometheus.yml
 
 sleep 5
 
