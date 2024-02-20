@@ -1,4 +1,4 @@
-VOLUME_PATH = /sgoinfre/goinfre/Perso/rsterin/data
+VOLUME_PATH = /volumes
 
 all: volumes up
 
@@ -7,6 +7,7 @@ volumes:
 	@mkdir -p ${VOLUME_PATH}/backend
 	@mkdir -p ${VOLUME_PATH}/prometheus
 	@mkdir -p ${VOLUME_PATH}/grafana
+	@mkdir -p ${VOLUME_PATH}/node_exporter
 	@mkdir -p ${VOLUME_PATH}/alertmanager
 
 up:
