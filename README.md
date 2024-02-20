@@ -43,7 +43,7 @@
 	<img alt="Waiting room page" src=".readme/preview/waiting-room-page.png"/>
 </div>
 
-<h3 align="center"><b>Tournaments's Waiting room<b></h3>
+<h3 align="center"><b>Tournament's Waiting room + Chat<b></h3>
 <div align="center">
 	<img alt="Tournament Waiting room page" src=".readme/preview/tournament-waiting-room-page.png"/>
 </div>
