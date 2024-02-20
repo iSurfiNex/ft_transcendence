@@ -110,7 +110,7 @@ To do so we had a list of modules that we can do to earn points, down below are 
 
 ### That bring us to a total of 115pts + 25pts of the mandatory part which made 140pts.
 
-## Installation
+# Installation
 
 Firstly, create your own .env using the example one.
 
@@ -126,13 +126,12 @@ After that, all you need to do is either:
 ```bash
 make
 ```
-
 **OR**
 ```bash
 docker compose up --build
 ```
 
-## Usage
+# Usage
 
 The main website is accessible at ``https://SERVER_IP:8000`` (set in .env).
 
