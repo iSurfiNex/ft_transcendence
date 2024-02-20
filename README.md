@@ -127,7 +127,7 @@ After that, all you need to do is either:
 make
 ```
 
-OR
+**OR**
 ```bash
 docker compose up --build
 ```
