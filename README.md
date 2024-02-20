@@ -76,7 +76,7 @@ In this project, we had a mandatory part and some modules to do. The mandatory p
 
 100pts means the project is done, over 100pts means with bonus, max is 125pts.
 
-To do so we had a list of modules that we can do to earn points, down below are the one we chose.
+To do so we had a list of modules that we can do to earn points, down below are the one we choose.
 
 ## Modules :
 ### Web
