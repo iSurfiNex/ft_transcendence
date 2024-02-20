@@ -182,7 +182,8 @@ button label {
 
     link42Account() {
 		const hostname = encodeURIComponent(window.location.origin + '/profile/')
-		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-fe7d42984dd6575235bba558210f67f242c7853d17282449450969f21d6f9080&redirect_uri=' + hostname + '&response_type=code';
+		const client_id = "hehe"
+		const apiUrl = 'https://api.intra.42.fr/oauth/authorize?client_id=' + client_id +'&redirect_uri=' + hostname + '&response_type=code';
 
 		window.location.href = apiUrl;
 	}
