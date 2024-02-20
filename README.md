@@ -23,48 +23,48 @@
 
 # Preview
 
-<h3 align="center"><b>Login page<b></h3>
+<h3 align="center"><b>Login page</b></h3>
 <div align="center">
 	<img alt="Login page" src=".readme/preview/login-page.png"/>
 </div>
 
-<h3 align="center"><b>Home page<b></h3>
+<h3 align="center"><b>Home page</b></h3>
 <div align="center">
 	<img alt="Home page" src=".readme/preview/home-page.png"/>
 </div>
 
-<h3 align="center"><b>Game list + Player list<b></h3>
+<h3 align="center"><b>Game list + Player list</b></h3>
 <div align="center">
 	<img alt="Join-list page" src=".readme/preview/join-list-page.png"/>
 </div>
 
-<h3 align="center"><b>Game's Waiting room<b></h3>
+<h3 align="center"><b>Game's Waiting room</b></h3>
 <div align="center">
 	<img alt="Waiting room page" src=".readme/preview/waiting-room-page.png"/>
 </div>
 
-<h3 align="center"><b>Tournament's Waiting room + Chat<b></h3>
+<h3 align="center"><b>Tournament's Waiting room + Chat</b></h3>
 <div align="center">
 	<img alt="Tournament Waiting room page" src=".readme/preview/tournament-waiting-room-page.png"/>
 </div>
 
-<h3 align="center"><b>The Game (power-ups version)<b></h3>
+<h3 align="center"><b>The Game (power-ups version)</b></h3>
 <div align="center">
 	<img alt="Game page" src=".readme/preview/game-page.png"/>
 </div>
 
-<h3 align="center"><b>Profile page<b></h3>
+<h3 align="center"><b>Profile page</b></h3>
 <div align="center">
 	<img alt="Profile page" src=".readme/preview/profile-page.png"/>
 </div>
 
-<h3 align="center"><b>Mobile support<b></h3>
+<h3 align="center"><b>Mobile support</b></h3>
 <div align="center">
 	<img alt="Mobile support vertical" src=".readme/preview/mobile-support-vertical.png"/>
 	<img alt="Mobile support horizontal" src=".readme/preview/mobile-support-horizontal.png"/>
 </div>
 
-<h3 align="center"><b>Grafana page (monitoring)<b></h3>
+<h3 align="center"><b>Grafana page (monitoring)</b></h3>
 <div align="center">
 	<img alt="Grafana page" src=".readme/preview/grafana-page.png"/>
 </div>
