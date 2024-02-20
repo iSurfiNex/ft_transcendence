@@ -40,6 +40,19 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+  node_exporter:
+    container_name: node_exporter
+    build: ./node_exporter
+    image: node_exporter
+    volumes:
+      - node_exporter:/volumes/node_exporter
+    ports:
+      - '9100:9100'
+    networks:
+      - ft_transcendence
+    env_file:
+      - .env
+    restart: unless-stopped
   alertmanager:
     container_name: alertmanager
     build: ./alertmanager
@@ -87,6 +100,13 @@ volumes:
     driver: local
     driver_opts:
       device: ${VOLUME_PATH}/grafana
+      o: bind
+      type: none
+  node_exporter:
+    name: node_exporter
+    driver: local
+    driver_opts:
+      device: ${VOLUME_PATH}/node_exporter
       o: bind
       type: none
   alertmanager:
