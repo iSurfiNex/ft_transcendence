@@ -4,11 +4,11 @@
 	<b><i>This is a 42school's project that is about creating a pong website with many additional features.</i></b><br>
 </p>
 <p align="center">
-	<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/iSurfiNex/ft_transcendence?color=lightblue" />
-	<img alt="Number of lines of code" src="https://img.shields.io/tokei/lines/github/iSurfiNex/ft_transcendence?color=critical" />
-	<img alt="Code language count" src="https://img.shields.io/github/languages/count/iSurfiNex/ft_transcendence?color=yellow" />
-	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/iSurfiNex/ft_transcendence?color=blue" />
-	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/iSurfiNex/ft_transcendence?color=green" />
+	<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/iSurfiNex/ft_transcendence?color=lightblue&style=for-the-badge">
+	<img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/t/iSurfiNex/ft_transcendence?color=critical&style=for-the-badge">
+	<img alt="Code language count" src="https://img.shields.io/github/languages/count/iSurfiNex/ft_transcendence?color=yellow&style=for-the-badge"/>
+	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/iSurfiNex/ft_transcendence?color=blue&style=for-the-badge"/>
+	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/iSurfiNex/ft_transcendence?color=green&style=for-the-badge"/>
 </p>
 <div align="center">
 	<img width="180px" src=".readme/final-note.png" alt="Final score">
