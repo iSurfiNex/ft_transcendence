@@ -32,7 +32,7 @@
 <div align="center">
 	<img alt="Home page" src=".readme/preview/home-page.png"/>
 </div>
-
+ 
 <h3 align="center"><b>Game list + Player list</b></h3>
 <div align="center">
 	<img alt="Join-list page" src=".readme/preview/join-list-page.png"/>
