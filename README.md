@@ -11,7 +11,7 @@
 	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/iSurfiNex/ft_transcendence?color=green&style=for-the-badge"/>
 </p>
 <div align="center">
-	<img width="180px" src=".readme/final-note.png" alt="Final score">
+	<a href="https://github.com/Coday-meric/badge42"><img src="https://badge42.coday.fr/api/v2/clt38xgf41137601p4ax754vzt/project/3406525" alt="rsterin's 42 ft_transcendence Score" /></a>
 </div>
 
 # Table of Contents
